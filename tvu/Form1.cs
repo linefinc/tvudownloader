@@ -23,6 +23,8 @@ namespace tvu
         private string ServiceUrl;
         public int IntervalTime;
 
+        private Icon IconUp;
+        private Icon IconDown;
 
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.ContextMenu contextMenu1;
@@ -54,6 +56,11 @@ namespace tvu
 
         private void SetupNotify()
         {
+
+            IconUp = tvu.Properties.Resources.appicon1; 
+            
+            IconDown = tvu.Properties.Resources.appicon2; 
+            
             this.components = new System.ComponentModel.Container();
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
             this.menuItem1 = new System.Windows.Forms.MenuItem();
@@ -77,7 +84,7 @@ namespace tvu
 
             // The Icon property sets the icon that will appear
             // in the systray for this application.
-            notifyIcon1.Icon = new Icon("appicon2.ico");
+            notifyIcon1.Icon = IconUp;
 
             // The ContextMenu property sets the menu that will
             // appear when the systray icon is right clicked.
@@ -98,14 +105,14 @@ namespace tvu
             {
                 this.Hide();
                 this.contextMenu1.MenuItems[1].Text = "Show";
-                notifyIcon1.Icon = new Icon("appicon1.ico");
+                notifyIcon1.Icon = IconDown;
 
             }
             else
             {
                 this.Show();
                 this.contextMenu1.MenuItems[1].Text = "Hide";
-                notifyIcon1.Icon = new Icon("appicon2.ico");
+                notifyIcon1.Icon = IconUp;
             }
 
         }
