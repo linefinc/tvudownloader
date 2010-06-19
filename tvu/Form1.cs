@@ -31,6 +31,8 @@ namespace tvu
         private System.Windows.Forms.MenuItem menuItem1;
         private System.Windows.Forms.MenuItem menuItem2;
 
+        private DateTime DateTime2;
+        
 
         public List<RssFeed> RssFeedList;
 
@@ -46,7 +48,7 @@ namespace tvu
 
             SetupNotify();
 
-
+            DateTime2 = DateTime.Now;
 
 
 
@@ -222,39 +224,7 @@ namespace tvu
 
         private void button1_Click(object sender, EventArgs e)
         {
-            List<string> lEd2kList = new List<string>();
-
-            foreach (RssFeed feed in RssFeedList)
-            {
-                XmlDocument doc = new XmlDocument();
-                doc.Load(feed.Url);
-
-                XmlNodeList elemList = doc.GetElementsByTagName("guid");
-
-                
-
-                textBox1.Clear();
-                for (int i = 0; i < elemList.Count; i++)
-                {
-                    Console.WriteLine(elemList[i].InnerXml);
-                    textBox1.Text += elemList[i].InnerXml;
-                    string page;
-                    page = DownloadPage(elemList[i].InnerXml);
-                    string sEd2k = findEd2kLink(page);
-                    textBox1.Text += sEd2k;
-
-                    textBox1.AppendText(sEd2k);
-                    lEd2kList.Add(sEd2k);
-
-
-                }
-
-            }
-
-            //DownloadEd2k(sEd2k);
-            //Thread t = new Thread(Form1.DoWork);
-            //t.Start(textBox1.Text, textBox2.Text, lEd2kList);
-            DoWork(textBox2.Text, textBox3.Text, lEd2kList);
+           DownloadNow();
         }
 
         public static string DownloadPage(string sUrl)
@@ -888,7 +858,44 @@ namespace tvu
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            List<string> lEd2kList = new List<string>();
+            
+            DateTime DateTime1 = DateTime.Now;
+            TimeSpan diff = DateTime1.Subtract(DateTime2);
+            if (diff.Minutes > numericUpDown1.Value)
+            {
+                DateTime2 = DateTime.Now;
+                DownloadNow();
+            }
+
+            
+
+
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+
+            //string appPath = Environment.GetFolderPath(Path.GetDirectoryName(Application.ExecutablePath);
+            string appPath;
+            appPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
+
+            
+
+        }
+
+        public static string ApplicationConfigPath()
+        {
+            string appPath;
+            appPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
+            return appPath;
+
+        }
+
+        private void  DownloadNow()
+        {
+             List<string> lEd2kList = new List<string>();
 
             foreach (RssFeed feed in RssFeedList)
             {
@@ -897,7 +904,7 @@ namespace tvu
 
                 XmlNodeList elemList = doc.GetElementsByTagName("guid");
 
-
+                
 
                 textBox1.Clear();
                 for (int i = 0; i < elemList.Count; i++)
@@ -921,31 +928,10 @@ namespace tvu
             //Thread t = new Thread(Form1.DoWork);
             //t.Start(textBox1.Text, textBox2.Text, lEd2kList);
             DoWork(textBox2.Text, textBox3.Text, lEd2kList);
-        }
+        
 
-        private void button7_Click(object sender, EventArgs e)
-        {
-
-            //string appPath = Environment.GetFolderPath(Path.GetDirectoryName(Application.ExecutablePath);
-            string appPath;
-            appPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-
-
-            
 
         }
-
-        public static string ApplicationConfigPath()
-        {
-            string appPath;
-            appPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            //appPath += Environment.
-
-            return appPath;
-
-        }
-
-
 
 
    
