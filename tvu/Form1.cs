@@ -32,7 +32,13 @@ namespace tvu
         private System.Windows.Forms.MenuItem menuItem2;
 
         private DateTime DateTime2;
-        
+
+        public struct sDonwloadFile
+        {
+            public string Ed2kLink;
+            public bool PauseDownload;
+            public int Category;
+        };
 
         public List<RssFeed> RssFeedList;
 
@@ -152,11 +158,11 @@ namespace tvu
 
             XmlNodeList ServiceUrlNode = xDoc.GetElementsByTagName("ServiceUrl");
             ServiceUrl = ServiceUrlNode[0].InnerText;
-            textBox2.Text = ServiceUrl;
+            ServiceUrlTextBox.Text = ServiceUrl;
 
             XmlNodeList PasswordNode = xDoc.GetElementsByTagName("Password");
             Password = PasswordNode[0].InnerText;
-            textBox3.Text = Password;
+            PasswordTextBox.Text = Password;
 
             XmlNodeList IntervalTimeNode = xDoc.GetElementsByTagName("IntervalTime");
             IntervalTime = (int)Convert.ToInt32(IntervalTimeNode[0].InnerText);
@@ -209,8 +215,8 @@ namespace tvu
             foreach (RssFeed t in RssFeedList)
             {
                 ListViewItem item1 = new ListViewItem(t.Title);
-                item1.SubItems.Add(t.PauseDownload.ToString());
                 item1.SubItems.Add(t.Category.ToString());
+                item1.SubItems.Add(t.PauseDownload.ToString());
                 item1.SubItems.Add(t.Url);
 
                 listView1.Items.Add(item1);
@@ -276,41 +282,7 @@ namespace tvu
 
         static void DoWork(object Url, object pass, object DataIn)
         {
-            string sPass = (string)pass;
-            string sUrl = (string)Url;
-            List<string> sList = (List<string>)DataIn;
-
-            string temp = LogInEmuleServer(sUrl, sPass);
-            if (temp == null)
-                return;
-            
-            int j = temp.IndexOf("logout");
-            if (j < 0)
-                return;
-            
-            string sSesId = GetSessionID(temp);
-
-            foreach (string ed2k in sList)
-            {
-
-                int cat = 2;
-                if (ExistInHistory(ed2k) == false) // if file is not dwnl
-                {
-                    AddEd2kToDownload(sUrl, sSesId, ed2k, cat);
-                    StartDownloadFromEd2k(sUrl, sSesId, ed2k);
-                    StopDownloadEd2k(sUrl, sSesId, ed2k);
-                    AddToXmlHostory(ed2k);
-                }
-                else
-                {
-                    CreateDumpFile("File alredy exist " + ed2k);
-                }
-            }
-            
-            
-
-            LogOut(sUrl, sSesId);
-            //textBox1.Text += string.Format("Session id {0}", sSesId);
+           
 
 
 
@@ -412,18 +384,18 @@ namespace tvu
 
         private void DownloadEd2k(string ed2k)
         {
-            string temp = LogInEmuleServer(textBox2.Text, textBox3.Text);
-            textBox1.Text = temp;
+            string temp = LogInEmuleServer(ServiceUrlTextBox.Text, PasswordTextBox.Text);
+            LogTextBox.Text = temp;
             int j = temp.IndexOf("logout");
             if (j > 0)
-                textBox1.Text = "ok";
+                LogTextBox.Text = "ok";
             else
-                textBox1.Text = "error";
+                LogTextBox.Text = "error";
 
             CreateDumpFile("Get Session ID phase");
 
             string sSesId = GetSessionID(temp);
-            textBox1.Text += string.Format("Session id {0}", sSesId);
+            LogTextBox.Text += string.Format("Session id {0}", sSesId);
 
             CreateDumpFile("Ses ID " + sSesId);
             //GetCategory(temp);
@@ -432,10 +404,10 @@ namespace tvu
 
             
 
-            AddEd2kToDownload(textBox2.Text, sSesId, ed2k, cat);
-            StartDownloadFromEd2k(textBox2.Text, sSesId, ed2k);
-            StopDownloadEd2k(textBox2.Text, sSesId, ed2k);
-            LogOut(textBox2.Text, sSesId);
+            AddEd2kToDownload(ServiceUrlTextBox.Text, sSesId, ed2k, cat);
+            StartDownloadFromEd2k(ServiceUrlTextBox.Text, sSesId, ed2k);
+            StopDownloadEd2k(ServiceUrlTextBox.Text, sSesId, ed2k);
+            LogOut(ServiceUrlTextBox.Text, sSesId);
 
         }
 
@@ -555,7 +527,7 @@ namespace tvu
 
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
-            ServiceUrl = textBox2.Text;
+            ServiceUrl = ServiceUrlTextBox.Text;
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -789,6 +761,8 @@ namespace tvu
 
          private void button5_Click(object sender, EventArgs e)
         {
+            comboBox1.Items.Clear();
+
             button5.Enabled = false;
 
             string temp = LogInEmuleServer(ServiceUrl, Password);
@@ -825,7 +799,7 @@ namespace tvu
 
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
-            Password = textBox3.Text;
+            Password = PasswordTextBox.Text;
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -895,7 +869,7 @@ namespace tvu
 
         private void  DownloadNow()
         {
-             List<string> lEd2kList = new List<string>();
+            List<sDonwloadFile> myList = new List<sDonwloadFile>();
 
             foreach (RssFeed feed in RssFeedList)
             {
@@ -906,18 +880,20 @@ namespace tvu
 
                 
 
-                textBox1.Clear();
+                LogTextBox.Clear();
                 for (int i = 0; i < elemList.Count; i++)
                 {
-                    Console.WriteLine(elemList[i].InnerXml);
-                    textBox1.Text += elemList[i].InnerXml;
-                    string page;
-                    page = DownloadPage(elemList[i].InnerXml);
+                    LogTextBox.AppendText(string.Format("Process feed {0} \n",elemList[i].InnerXml));
+                    string page = DownloadPage(elemList[i].InnerXml);
                     string sEd2k = findEd2kLink(page);
-                    textBox1.Text += sEd2k;
+                    
+                    LogTextBox.AppendText(string.Format("Found new file {0} \n", sEd2k));
+                    sDonwloadFile DL;
+                    DL.Ed2kLink = sEd2k;
+                    DL.PauseDownload = feed.PauseDownload;
+                    DL.Category = feed.Category;
 
-                    textBox1.AppendText(sEd2k);
-                    lEd2kList.Add(sEd2k);
+                    myList.Add(DL);
 
 
                 }
@@ -927,9 +903,58 @@ namespace tvu
             //DownloadEd2k(sEd2k);
             //Thread t = new Thread(Form1.DoWork);
             //t.Start(textBox1.Text, textBox2.Text, lEd2kList);
-            DoWork(textBox2.Text, textBox3.Text, lEd2kList);
-        
+            //DoWork(textBox2.Text, textBox3.Text, lEd2kList);
 
+
+            // for future separation in thread
+            string sUrl = ServiceUrlTextBox.Text;
+            string sPass = PasswordTextBox.Text;
+            //List<string> sList = lEd2kList;
+
+            string temp = LogInEmuleServer(sUrl, sPass);
+            if (temp == null)
+            {
+                LogTextBox.AppendText("Unable to connect to web service" + Environment.NewLine);
+                return;
+            }
+
+            int j = temp.IndexOf("logout");
+            if (j < 0)
+            {
+                LogTextBox.AppendText("Unable to log in" + Environment.NewLine);
+                return;
+            }
+
+            string sSesId = GetSessionID(temp);
+
+            foreach (sDonwloadFile DownloadFile in myList)
+            {
+
+                int cat = 2;
+                if (ExistInHistory(DownloadFile.Ed2kLink) == false) // if file is not dwnl
+                {
+                    AddEd2kToDownload(sUrl, sSesId, DownloadFile.Ed2kLink, DownloadFile.Category);
+
+                    if (DownloadFile.PauseDownload == true)
+                    {
+                        StopDownloadEd2k(sUrl, sSesId, DownloadFile.Ed2kLink);
+                    }
+                    else
+                    {
+                        StartDownloadFromEd2k(sUrl, sSesId, DownloadFile.Ed2kLink);
+                    }
+                    AddToXmlHostory(DownloadFile.Ed2kLink);
+                }
+                else
+                {
+                    CreateDumpFile("File alredy exist " + DownloadFile.Ed2kLink);
+                }
+            }
+
+
+
+            LogOut(sUrl, sSesId);
+            //textBox1.Text += string.Format("Session id {0}", sSesId);
 
         }
 

@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             this.button1 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.LogTextBox = new System.Windows.Forms.TextBox();
+            this.ServiceUrlTextBox = new System.Windows.Forms.TextBox();
+            this.PasswordTextBox = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
@@ -65,31 +65,31 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // textBox1
+            // LogTextBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 112);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(544, 125);
-            this.textBox1.TabIndex = 1;
+            this.LogTextBox.Location = new System.Drawing.Point(12, 112);
+            this.LogTextBox.Multiline = true;
+            this.LogTextBox.Name = "LogTextBox";
+            this.LogTextBox.Size = new System.Drawing.Size(544, 125);
+            this.LogTextBox.TabIndex = 1;
             // 
-            // textBox2
+            // ServiceUrlTextBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(113, 12);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(443, 20);
-            this.textBox2.TabIndex = 2;
-            this.textBox2.Text = "http://linefinc.homeip.net:4000";
-            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            this.ServiceUrlTextBox.Location = new System.Drawing.Point(113, 12);
+            this.ServiceUrlTextBox.Name = "ServiceUrlTextBox";
+            this.ServiceUrlTextBox.Size = new System.Drawing.Size(443, 20);
+            this.ServiceUrlTextBox.TabIndex = 2;
+            this.ServiceUrlTextBox.Text = "http://linefinc.homeip.net:4000";
+            this.ServiceUrlTextBox.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
-            // textBox3
+            // PasswordTextBox
             // 
-            this.textBox3.Location = new System.Drawing.Point(113, 34);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(443, 20);
-            this.textBox3.TabIndex = 3;
-            this.textBox3.Text = "tellurio";
-            this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
+            this.PasswordTextBox.Location = new System.Drawing.Point(113, 34);
+            this.PasswordTextBox.Name = "PasswordTextBox";
+            this.PasswordTextBox.Size = new System.Drawing.Size(443, 20);
+            this.PasswordTextBox.TabIndex = 3;
+            this.PasswordTextBox.Text = "tellurio";
+            this.PasswordTextBox.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // button2
             // 
@@ -208,7 +208,7 @@
             0,
             0});
             this.numericUpDown1.Minimum = new decimal(new int[] {
-            15,
+            30,
             0,
             0,
             0});
@@ -216,7 +216,7 @@
             this.numericUpDown1.Size = new System.Drawing.Size(86, 20);
             this.numericUpDown1.TabIndex = 16;
             this.numericUpDown1.Value = new decimal(new int[] {
-            15,
+            30,
             0,
             0,
             0});
@@ -224,6 +224,7 @@
             // timer1
             // 
             this.timer1.Enabled = true;
+            this.timer1.Interval = 10000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // label1
@@ -282,12 +283,13 @@
             this.Controls.Add(this.button3);
             this.Controls.Add(this.textBox4);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.PasswordTextBox);
+            this.Controls.Add(this.ServiceUrlTextBox);
+            this.Controls.Add(this.LogTextBox);
             this.Controls.Add(this.button1);
+            this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "TvUnderground Downloader";
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -297,9 +299,9 @@
         #endregion
 
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox LogTextBox;
+        private System.Windows.Forms.TextBox ServiceUrlTextBox;
+        private System.Windows.Forms.TextBox PasswordTextBox;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.Button button3;
