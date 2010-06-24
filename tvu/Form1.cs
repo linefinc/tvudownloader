@@ -232,7 +232,10 @@ namespace tvu
 
         private void button1_Click(object sender, EventArgs e)
         {
-           DownloadNow();
+
+            CheckButton.Enabled = false;
+            DownloadNow();
+            CheckButton.Enabled = true;
         }
 
         public static string DownloadPage(string sUrl)
@@ -902,8 +905,11 @@ namespace tvu
         {
             List<sDonwloadFile> myList = new List<sDonwloadFile>();
 
+            LogTextBox.Clear();
             foreach (RssFeed feed in RssFeedList)
             {
+                LogTextBox.AppendText("Read RSS " + feed.Url + Environment.NewLine);
+                
                 XmlDocument doc = new XmlDocument();
                 doc.Load(feed.Url);
 
@@ -911,7 +917,7 @@ namespace tvu
 
                 
 
-                LogTextBox.Clear();
+                
                 for (int i = 0; i < elemList.Count; i++)
                 {
                     string FeedLink = elemList[i].InnerXml;
@@ -995,6 +1001,24 @@ namespace tvu
             LogOut(sUrl, sSesId);
             //textBox1.Text += string.Format("Session id {0}", sSesId);
 
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listView1.Items.Count == 0)
+                return;
+
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
+
+
+            ListViewItem temp = listView1.SelectedItems[0];
+            int i = listView1.Items.IndexOf(temp);
+
+            textBox4.Text = RssFeedList[i].Url;
+            checkBox1.Checked = RssFeedList[i].PauseDownload;
+            
         }
 
 

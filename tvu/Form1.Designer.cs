@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.button1 = new System.Windows.Forms.Button();
+            this.CheckButton = new System.Windows.Forms.Button();
             this.LogTextBox = new System.Windows.Forms.TextBox();
             this.ServiceUrlTextBox = new System.Windows.Forms.TextBox();
             this.PasswordTextBox = new System.Windows.Forms.TextBox();
@@ -54,15 +54,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
-            // button1
+            // CheckButton
             // 
-            this.button1.Location = new System.Drawing.Point(224, 242);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 36);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Check Now";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.CheckButton.Location = new System.Drawing.Point(224, 242);
+            this.CheckButton.Name = "CheckButton";
+            this.CheckButton.Size = new System.Drawing.Size(100, 36);
+            this.CheckButton.TabIndex = 0;
+            this.CheckButton.Text = "Check Now";
+            this.CheckButton.UseVisualStyleBackColor = true;
+            this.CheckButton.Click += new System.EventHandler(this.button1_Click);
             // 
             // LogTextBox
             // 
@@ -179,6 +179,7 @@
             this.listView1.TabIndex = 15;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
             // columnHeader1
             // 
@@ -274,7 +275,7 @@
             this.Controls.Add(this.PasswordTextBox);
             this.Controls.Add(this.ServiceUrlTextBox);
             this.Controls.Add(this.LogTextBox);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.CheckButton);
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "TvUnderground Downloader";
@@ -286,7 +287,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button CheckButton;
         private System.Windows.Forms.TextBox LogTextBox;
         private System.Windows.Forms.TextBox ServiceUrlTextBox;
         private System.Windows.Forms.TextBox PasswordTextBox;
