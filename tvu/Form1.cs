@@ -35,6 +35,8 @@ namespace tvu
 
         public struct sDonwloadFile
         {
+            public string FeedSource;
+            public string FeedLink;
             public string Ed2kLink;
             public bool PauseDownload;
             public int Category;
@@ -575,7 +577,7 @@ namespace tvu
         }
 
 
-        public static void AddToXmlHostory(string ed2k)
+        public static void AddToXmlHostory(string ed2k, string FeedLink, string FeedSource)
         {
             if (!File.Exists("History.xml"))
             {
@@ -595,11 +597,24 @@ namespace tvu
             xmlDoc.Load("History.xml");
 
             //Item
-            XmlElement appendedElementItem = xmlDoc.CreateElement("Item");
-            XmlText xmlTextLink = xmlDoc.CreateTextNode(ed2k);
-            appendedElementItem.AppendChild(xmlTextLink);
-            xmlDoc.DocumentElement.AppendChild(appendedElementItem);
-           
+            {
+                XmlElement Element1 = xmlDoc.CreateElement("Item");
+                XmlElement Element2 = xmlDoc.CreateElement("Ed2k");
+                XmlElement Element3 = xmlDoc.CreateElement("FeedLink");
+                XmlElement Element4 = xmlDoc.CreateElement("FeedSource");
+
+                Element2.AppendChild(xmlDoc.CreateTextNode(ed2k));
+                Element3.AppendChild(xmlDoc.CreateTextNode(FeedLink));
+                Element4.AppendChild(xmlDoc.CreateTextNode(FeedSource));
+
+                Element1.AppendChild(Element2);
+                Element1.AppendChild(Element3);
+                Element1.AppendChild(Element4);
+
+                xmlDoc.DocumentElement.AppendChild(Element1);
+            }
+            
+
             xmlDoc.Save("History.xml");
         }
 
@@ -628,7 +643,7 @@ namespace tvu
             return 0;
         }
 
-        public static bool ExistInHistory(string ed2k)
+        public static bool ExistInHistoryByEd2k(string ed2k)
         {
             if (!File.Exists("History.xml"))
             {
@@ -638,7 +653,7 @@ namespace tvu
             XmlDocument doc = new XmlDocument();
             doc.Load("history.xml");
 
-            XmlNodeList elemList = doc.GetElementsByTagName("Item");
+            XmlNodeList elemList = doc.GetElementsByTagName("Ed2k");
 
         
             for (int i = 0; i < elemList.Count; i++)
@@ -651,6 +666,32 @@ namespace tvu
             }
             return false;
         }
+
+        public static bool ExistInHistoryByFeedLink(string link)
+        {
+            if (!File.Exists("History.xml"))
+            {
+                return false;
+            }
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load("history.xml");
+
+            XmlNodeList elemList = doc.GetElementsByTagName("FeedLink");
+
+
+            for (int i = 0; i < elemList.Count; i++)
+            {
+                string temp = elemList[i].InnerXml;
+                temp = temp.Replace("&amp;","&");
+                if (temp == link)
+                    return true;
+                
+                
+            }
+            return false;
+        }
+
 
         private void button4_Click(object sender, EventArgs e)
         {
@@ -846,17 +887,7 @@ namespace tvu
 
         }
 
-        private void button7_Click(object sender, EventArgs e)
-        {
 
-            //string appPath = Environment.GetFolderPath(Path.GetDirectoryName(Application.ExecutablePath);
-            string appPath;
-            appPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-
-
-            
-
-        }
 
         public static string ApplicationConfigPath()
         {
@@ -883,18 +914,27 @@ namespace tvu
                 LogTextBox.Clear();
                 for (int i = 0; i < elemList.Count; i++)
                 {
-                    LogTextBox.AppendText(string.Format("Process feed {0} \n",elemList[i].InnerXml));
-                    string page = DownloadPage(elemList[i].InnerXml);
-                    string sEd2k = findEd2kLink(page);
-                    
-                    LogTextBox.AppendText(string.Format("Found new file {0} \n", sEd2k));
-                    sDonwloadFile DL;
-                    DL.Ed2kLink = sEd2k;
-                    DL.PauseDownload = feed.PauseDownload;
-                    DL.Category = feed.Category;
+                    string FeedLink = elemList[i].InnerXml;
 
-                    myList.Add(DL);
+                    FeedLink = FeedLink.Replace("&amp;", "&");
 
+                    if (ExistInHistoryByFeedLink(FeedLink) == false)
+                    {
+
+                        LogTextBox.AppendText(string.Format("Process feed {0} \n", FeedLink));
+                        string page = DownloadPage(elemList[i].InnerXml);
+                        string sEd2k = findEd2kLink(page);
+
+                        LogTextBox.AppendText(string.Format("Found new file {0} \n", sEd2k));
+                        sDonwloadFile DL;
+                        DL.FeedSource = feed.Url;
+                        DL.FeedLink = FeedLink;
+                        DL.Ed2kLink = sEd2k;
+                        DL.PauseDownload = feed.PauseDownload;
+                        DL.Category = feed.Category;
+
+                        myList.Add(DL);
+                    }
 
                 }
 
@@ -930,8 +970,7 @@ namespace tvu
             foreach (sDonwloadFile DownloadFile in myList)
             {
 
-                int cat = 2;
-                if (ExistInHistory(DownloadFile.Ed2kLink) == false) // if file is not dwnl
+                if (ExistInHistoryByEd2k(DownloadFile.Ed2kLink) == false) // if file is not dwnl
                 {
                     AddEd2kToDownload(sUrl, sSesId, DownloadFile.Ed2kLink, DownloadFile.Category);
 
@@ -943,7 +982,7 @@ namespace tvu
                     {
                         StartDownloadFromEd2k(sUrl, sSesId, DownloadFile.Ed2kLink);
                     }
-                    AddToXmlHostory(DownloadFile.Ed2kLink);
+                    AddToXmlHostory(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);
                 }
                 else
                 {
