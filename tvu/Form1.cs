@@ -361,6 +361,7 @@ namespace tvu
 
         private void button2_Click(object sender, EventArgs e)
         {
+            SaveConfigButton.Enabled = false;
             string temp = LogInEmuleServer(ServiceUrl, Password);
             if (temp == null)
             {
@@ -381,8 +382,11 @@ namespace tvu
             LogOut(ServiceUrl, sSesId);
 
             MessageBox.Show("OK service is configure");
+
+            SaveConfigButton.Enabled = true;
+
             return;
-       
+            
 
 
         }
@@ -1020,6 +1024,19 @@ namespace tvu
             checkBox1.Checked = RssFeedList[i].PauseDownload;
             
         }
+
+        private void ServiceUrlTextBox_TextChanged(object sender, EventArgs e)
+        {
+            SaveConfigButton.Enabled = false;
+        }
+
+        private void PasswordTextBox_TextChanged(object sender, EventArgs e)
+        {
+            SaveConfigButton.Enabled = false;
+        }
+
+
+
 
 
    
