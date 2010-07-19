@@ -33,6 +33,10 @@
             this.SaveConfigButton = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.Log = new System.Windows.Forms.TabPage();
+            this.ClearButton = new System.Windows.Forms.Button();
+            this.CheckButton = new System.Windows.Forms.Button();
+            this.LogTextBox = new System.Windows.Forms.TextBox();
             this.Main = new System.Windows.Forms.TabPage();
             this.listView2 = new System.Windows.Forms.ListView();
             this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
@@ -42,10 +46,6 @@
             this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
             this.button4 = new System.Windows.Forms.Button();
-            this.Log = new System.Windows.Forms.TabPage();
-            this.ClearButton = new System.Windows.Forms.Button();
-            this.CheckButton = new System.Windows.Forms.Button();
-            this.LogTextBox = new System.Windows.Forms.TextBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -62,8 +62,8 @@
             this.PasswordTextBox = new System.Windows.Forms.TextBox();
             this.ServiceUrlTextBox = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
-            this.Main.SuspendLayout();
             this.Log.SuspendLayout();
+            this.Main.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.Config.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -107,6 +107,47 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(547, 478);
             this.tabControl1.TabIndex = 21;
+            // 
+            // Log
+            // 
+            this.Log.Controls.Add(this.ClearButton);
+            this.Log.Controls.Add(this.CheckButton);
+            this.Log.Controls.Add(this.LogTextBox);
+            this.Log.Location = new System.Drawing.Point(4, 22);
+            this.Log.Name = "Log";
+            this.Log.Padding = new System.Windows.Forms.Padding(3);
+            this.Log.Size = new System.Drawing.Size(539, 452);
+            this.Log.TabIndex = 1;
+            this.Log.Text = "Log";
+            this.Log.UseVisualStyleBackColor = true;
+            // 
+            // ClearButton
+            // 
+            this.ClearButton.Location = new System.Drawing.Point(112, 410);
+            this.ClearButton.Name = "ClearButton";
+            this.ClearButton.Size = new System.Drawing.Size(100, 36);
+            this.ClearButton.TabIndex = 18;
+            this.ClearButton.Text = "Clear";
+            this.ClearButton.UseVisualStyleBackColor = true;
+            this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
+            // 
+            // CheckButton
+            // 
+            this.CheckButton.Location = new System.Drawing.Point(6, 410);
+            this.CheckButton.Name = "CheckButton";
+            this.CheckButton.Size = new System.Drawing.Size(100, 36);
+            this.CheckButton.TabIndex = 17;
+            this.CheckButton.Text = "Check Now";
+            this.CheckButton.UseVisualStyleBackColor = true;
+            this.CheckButton.Click += new System.EventHandler(this.CheckButton_Click);
+            // 
+            // LogTextBox
+            // 
+            this.LogTextBox.Location = new System.Drawing.Point(6, 6);
+            this.LogTextBox.Multiline = true;
+            this.LogTextBox.Name = "LogTextBox";
+            this.LogTextBox.Size = new System.Drawing.Size(527, 398);
+            this.LogTextBox.TabIndex = 3;
             // 
             // Main
             // 
@@ -178,46 +219,6 @@
             this.button4.TabIndex = 19;
             this.button4.Text = "Delete feed";
             this.button4.UseVisualStyleBackColor = true;
-            // 
-            // Log
-            // 
-            this.Log.Controls.Add(this.ClearButton);
-            this.Log.Controls.Add(this.CheckButton);
-            this.Log.Controls.Add(this.LogTextBox);
-            this.Log.Location = new System.Drawing.Point(4, 22);
-            this.Log.Name = "Log";
-            this.Log.Padding = new System.Windows.Forms.Padding(3);
-            this.Log.Size = new System.Drawing.Size(539, 452);
-            this.Log.TabIndex = 1;
-            this.Log.Text = "Log";
-            this.Log.UseVisualStyleBackColor = true;
-            // 
-            // ClearButton
-            // 
-            this.ClearButton.Location = new System.Drawing.Point(112, 410);
-            this.ClearButton.Name = "ClearButton";
-            this.ClearButton.Size = new System.Drawing.Size(100, 36);
-            this.ClearButton.TabIndex = 18;
-            this.ClearButton.Text = "Clear";
-            this.ClearButton.UseVisualStyleBackColor = true;
-            this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
-            // 
-            // CheckButton
-            // 
-            this.CheckButton.Location = new System.Drawing.Point(6, 410);
-            this.CheckButton.Name = "CheckButton";
-            this.CheckButton.Size = new System.Drawing.Size(100, 36);
-            this.CheckButton.TabIndex = 17;
-            this.CheckButton.Text = "Check Now";
-            this.CheckButton.UseVisualStyleBackColor = true;
-            // 
-            // LogTextBox
-            // 
-            this.LogTextBox.Location = new System.Drawing.Point(6, 6);
-            this.LogTextBox.Multiline = true;
-            this.LogTextBox.Name = "LogTextBox";
-            this.LogTextBox.Size = new System.Drawing.Size(527, 398);
-            this.LogTextBox.TabIndex = 3;
             // 
             // tabPage1
             // 
@@ -392,9 +393,9 @@
             this.Name = "Form1";
             this.Text = "TvUnderground Downloader";
             this.tabControl1.ResumeLayout(false);
-            this.Main.ResumeLayout(false);
             this.Log.ResumeLayout(false);
             this.Log.PerformLayout();
+            this.Main.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.Config.ResumeLayout(false);

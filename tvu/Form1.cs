@@ -230,13 +230,6 @@ namespace tvu
         
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-            CheckButton.Enabled = false;
-            DownloadNow();
-            CheckButton.Enabled = true;
-        }
 
         public static string DownloadPage(string sUrl)
         {
@@ -1020,6 +1013,8 @@ namespace tvu
                 return ;
             }
 
+            listView2.Items.Clear();
+
             ListViewItem temp = listView1.SelectedItems[0];
             int i = listView1.Items.IndexOf(temp);
             string feedUrl = RssFeedList[i].Url;
@@ -1048,18 +1043,6 @@ namespace tvu
 
             }
 
-
-
-
-            
-
-
-
-            //ListViewItem temp = listView1.SelectedItems[0];
-            //int i = listView1.Items.IndexOf(temp);
-
-            //textBox4.Text = RssFeedList[i].Url;
-            //checkBox1.Checked = RssFeedList[i].PauseDownload;
             
         }
 
@@ -1076,6 +1059,13 @@ namespace tvu
         private void ClearButton_Click(object sender, EventArgs e)
         {
             LogTextBox.Clear();
+        }
+
+        private void CheckButton_Click(object sender, EventArgs e)
+        {
+            CheckButton.Enabled = false;
+            DownloadNow();
+            CheckButton.Enabled = true;
         }
 
 
