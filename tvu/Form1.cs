@@ -1015,13 +1015,51 @@ namespace tvu
             if (listView1.SelectedItems.Count == 0)
                 return;
 
-
+            if (!File.Exists("History.xml"))
+            {
+                return ;
+            }
 
             ListViewItem temp = listView1.SelectedItems[0];
             int i = listView1.Items.IndexOf(temp);
+            string feedUrl = RssFeedList[i].Url;
+            
+            
 
-            textBox4.Text = RssFeedList[i].Url;
-            checkBox1.Checked = RssFeedList[i].PauseDownload;
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load("history.xml");
+
+            XmlNodeList FeedLinkList = doc.GetElementsByTagName("FeedLink");
+            XmlNodeList Ed2kList = doc.GetElementsByTagName("Ed2k");
+            XmlNodeList FeedSourceList = doc.GetElementsByTagName("FeedSource");
+
+            for (i = 0; i < FeedSourceList.Count; i++)
+            {
+                if (FeedSourceList[i].FirstChild.InnerText == feedUrl)
+                {
+                    string str = Ed2kList[i].FirstChild.InnerText;
+                    
+                    ListViewItem item1 = new ListViewItem(str);
+                    listView2.Items.Add(item1);
+
+
+                }
+
+            }
+
+
+
+
+            
+
+
+
+            //ListViewItem temp = listView1.SelectedItems[0];
+            //int i = listView1.Items.IndexOf(temp);
+
+            //textBox4.Text = RssFeedList[i].Url;
+            //checkBox1.Checked = RssFeedList[i].PauseDownload;
             
         }
 
@@ -1034,6 +1072,14 @@ namespace tvu
         {
             SaveConfigButton.Enabled = false;
         }
+
+        private void ClearButton_Click(object sender, EventArgs e)
+        {
+            LogTextBox.Clear();
+        }
+
+
+
 
 
 

@@ -34,14 +34,17 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Main = new System.Windows.Forms.TabPage();
+            this.listView2 = new System.Windows.Forms.ListView();
+            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
             this.button4 = new System.Windows.Forms.Button();
-            this.CheckButton = new System.Windows.Forms.Button();
             this.Log = new System.Windows.Forms.TabPage();
+            this.ClearButton = new System.Windows.Forms.Button();
+            this.CheckButton = new System.Windows.Forms.Button();
             this.LogTextBox = new System.Windows.Forms.TextBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label5 = new System.Windows.Forms.Label();
@@ -95,8 +98,8 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.Main);
             this.tabControl1.Controls.Add(this.Log);
+            this.tabControl1.Controls.Add(this.Main);
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.Config);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
@@ -107,16 +110,32 @@
             // 
             // Main
             // 
+            this.Main.Controls.Add(this.listView2);
             this.Main.Controls.Add(this.listView1);
             this.Main.Controls.Add(this.button4);
-            this.Main.Controls.Add(this.CheckButton);
             this.Main.Location = new System.Drawing.Point(4, 22);
             this.Main.Name = "Main";
             this.Main.Padding = new System.Windows.Forms.Padding(3);
             this.Main.Size = new System.Drawing.Size(539, 452);
             this.Main.TabIndex = 0;
-            this.Main.Text = "Main";
+            this.Main.Text = "Feed";
             this.Main.UseVisualStyleBackColor = true;
+            // 
+            // listView2
+            // 
+            this.listView2.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader5});
+            this.listView2.Location = new System.Drawing.Point(6, 291);
+            this.listView2.Name = "listView2";
+            this.listView2.Size = new System.Drawing.Size(527, 155);
+            this.listView2.TabIndex = 24;
+            this.listView2.UseCompatibleStateImageBehavior = false;
+            this.listView2.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "File";
+            this.columnHeader5.Width = 500;
             // 
             // listView1
             // 
@@ -127,10 +146,11 @@
             this.columnHeader4});
             this.listView1.Location = new System.Drawing.Point(6, 6);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(527, 398);
+            this.listView1.Size = new System.Drawing.Size(527, 236);
             this.listView1.TabIndex = 23;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
             // columnHeader1
             // 
@@ -152,24 +172,17 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(113, 410);
+            this.button4.Location = new System.Drawing.Point(433, 248);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(100, 36);
             this.button4.TabIndex = 19;
             this.button4.Text = "Delete feed";
             this.button4.UseVisualStyleBackColor = true;
             // 
-            // CheckButton
-            // 
-            this.CheckButton.Location = new System.Drawing.Point(7, 410);
-            this.CheckButton.Name = "CheckButton";
-            this.CheckButton.Size = new System.Drawing.Size(100, 36);
-            this.CheckButton.TabIndex = 16;
-            this.CheckButton.Text = "Check Now";
-            this.CheckButton.UseVisualStyleBackColor = true;
-            // 
             // Log
             // 
+            this.Log.Controls.Add(this.ClearButton);
+            this.Log.Controls.Add(this.CheckButton);
             this.Log.Controls.Add(this.LogTextBox);
             this.Log.Location = new System.Drawing.Point(4, 22);
             this.Log.Name = "Log";
@@ -179,12 +192,31 @@
             this.Log.Text = "Log";
             this.Log.UseVisualStyleBackColor = true;
             // 
+            // ClearButton
+            // 
+            this.ClearButton.Location = new System.Drawing.Point(112, 410);
+            this.ClearButton.Name = "ClearButton";
+            this.ClearButton.Size = new System.Drawing.Size(100, 36);
+            this.ClearButton.TabIndex = 18;
+            this.ClearButton.Text = "Clear";
+            this.ClearButton.UseVisualStyleBackColor = true;
+            this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
+            // 
+            // CheckButton
+            // 
+            this.CheckButton.Location = new System.Drawing.Point(6, 410);
+            this.CheckButton.Name = "CheckButton";
+            this.CheckButton.Size = new System.Drawing.Size(100, 36);
+            this.CheckButton.TabIndex = 17;
+            this.CheckButton.Text = "Check Now";
+            this.CheckButton.UseVisualStyleBackColor = true;
+            // 
             // LogTextBox
             // 
             this.LogTextBox.Location = new System.Drawing.Point(6, 6);
             this.LogTextBox.Multiline = true;
             this.LogTextBox.Name = "LogTextBox";
-            this.LogTextBox.Size = new System.Drawing.Size(527, 440);
+            this.LogTextBox.Size = new System.Drawing.Size(527, 398);
             this.LogTextBox.TabIndex = 3;
             // 
             // tabPage1
@@ -394,7 +426,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button CheckButton;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
@@ -403,6 +434,10 @@
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.Button ClearButton;
+        private System.Windows.Forms.Button CheckButton;
+        private System.Windows.Forms.ListView listView2;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
     }
 }
 
