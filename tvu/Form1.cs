@@ -16,7 +16,6 @@ using tvu;
 
 namespace tvu
 {
-   
     public partial class Form1 : Form
     {
         private string Password;
@@ -41,6 +40,7 @@ namespace tvu
             public bool PauseDownload;
             public int Category;
         };
+
 
         public List<RssFeed> RssFeedList;
 
@@ -461,7 +461,6 @@ namespace tvu
         private static string AddEd2kToDownload(string sUrl,string sSesID, string Ed2k, int Category)
         {
             string temp;
-            //http://linefinc.homeip.net:4000/?ses=-323522093&w=transfer&ed2k=Ed2kprova&cat=1
             temp = string.Format("{0}/?ses={1}&w=transfer&ed2k={2}&cat={3}", sUrl, sSesID, Ed2k, Category);
             CreateDumpFile("AddEd2kToDownload  " + temp);
             return DownloadPage(temp);
@@ -485,9 +484,6 @@ namespace tvu
 
 
             string sHash = Ed2k.Substring(i + 1, 32);// 32 is the size of md4
-            
-
-            //http://linefinc.homeip.net:4000/?ses=-323522093&w=transfer&op=resume&file=546EE8DE741752FBA9899DFF30C4FE75
             string temp = string.Format("{0}/?ses={1}&w=transfer&op=resume&file={2}", sUrl, sSesID, sHash);
 
             CreateDumpFile("StartDownloadFromEd2k  " + temp);
@@ -510,9 +506,6 @@ namespace tvu
 
 
             string sHash = Ed2k.Substring(i + 1, 32);// 32 is the size of md4
-
-
-            //http://linefinc.homeip.net:4000/?ses=-323522093&w=transfer&op=resume&file=546EE8DE741752FBA9899DFF30C4FE75
             string temp = string.Format("{0}/?ses={1}&w=transfer&op=stop&file={2}", sUrl, sSesID, sHash);
 
             CreateDumpFile("StopDownloadEd2k  " + temp);
@@ -1059,6 +1052,8 @@ namespace tvu
         private void ClearButton_Click(object sender, EventArgs e)
         {
             LogTextBox.Clear();
+         
+
         }
 
         private void CheckButton_Click(object sender, EventArgs e)
@@ -1069,7 +1064,12 @@ namespace tvu
         }
 
 
-
+        public static string GetUserAppDataPath()
+        {
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            path += '\\' + Application.ProductName + '\\';
+            return path;
+        }
 
 
 
