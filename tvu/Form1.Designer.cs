@@ -49,12 +49,17 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.button5 = new System.Windows.Forms.Button();
+            this.UpdateCategoryButton = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.button3 = new System.Windows.Forms.Button();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.Config = new System.Windows.Forms.TabPage();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -81,7 +86,6 @@
             // 
             // SaveConfigButton
             // 
-            this.SaveConfigButton.Enabled = false;
             this.SaveConfigButton.Location = new System.Drawing.Point(126, 98);
             this.SaveConfigButton.Name = "SaveConfigButton";
             this.SaveConfigButton.Size = new System.Drawing.Size(100, 36);
@@ -224,7 +228,7 @@
             // 
             this.tabPage1.Controls.Add(this.label5);
             this.tabPage1.Controls.Add(this.label4);
-            this.tabPage1.Controls.Add(this.button5);
+            this.tabPage1.Controls.Add(this.UpdateCategoryButton);
             this.tabPage1.Controls.Add(this.comboBox1);
             this.tabPage1.Controls.Add(this.checkBox1);
             this.tabPage1.Controls.Add(this.button3);
@@ -254,14 +258,15 @@
             this.label4.TabIndex = 28;
             this.label4.Text = "Category";
             // 
-            // button5
+            // UpdateCategoryButton
             // 
-            this.button5.Location = new System.Drawing.Point(246, 144);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(131, 34);
-            this.button5.TabIndex = 27;
-            this.button5.Text = "Update Category List";
-            this.button5.UseVisualStyleBackColor = true;
+            this.UpdateCategoryButton.Location = new System.Drawing.Point(246, 144);
+            this.UpdateCategoryButton.Name = "UpdateCategoryButton";
+            this.UpdateCategoryButton.Size = new System.Drawing.Size(131, 34);
+            this.UpdateCategoryButton.TabIndex = 27;
+            this.UpdateCategoryButton.Text = "Update Category List";
+            this.UpdateCategoryButton.UseVisualStyleBackColor = true;
+            this.UpdateCategoryButton.Click += new System.EventHandler(this.UpdateCategoryButton_Click);
             // 
             // comboBox1
             // 
@@ -301,6 +306,11 @@
             // 
             // Config
             // 
+            this.Config.Controls.Add(this.checkBox4);
+            this.Config.Controls.Add(this.checkBox3);
+            this.Config.Controls.Add(this.checkBox2);
+            this.Config.Controls.Add(this.label6);
+            this.Config.Controls.Add(this.textBox1);
             this.Config.Controls.Add(this.label3);
             this.Config.Controls.Add(this.label2);
             this.Config.Controls.Add(this.SaveConfigButton);
@@ -315,6 +325,52 @@
             this.Config.TabIndex = 2;
             this.Config.Text = "Config";
             this.Config.UseVisualStyleBackColor = true;
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Location = new System.Drawing.Point(19, 253);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(186, 17);
+            this.checkBox4.TabIndex = 30;
+            this.checkBox4.Text = "Close eMule if file added are done";
+            this.checkBox4.UseVisualStyleBackColor = true;
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(19, 230);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(142, 17);
+            this.checkBox3.TabIndex = 29;
+            this.checkBox3.Text = "Close eMule if all is done";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(19, 207);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(116, 17);
+            this.checkBox2.TabIndex = 28;
+            this.checkBox2.Text = "Start Emule if close";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(16, 184);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(79, 13);
+            this.label6.TabIndex = 27;
+            this.label6.Text = "eMule Exeguile";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(101, 181);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(435, 20);
+            this.textBox1.TabIndex = 26;
             // 
             // label3
             // 
@@ -430,7 +486,7 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button UpdateCategoryButton;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Button button3;
@@ -439,6 +495,11 @@
         private System.Windows.Forms.Button CheckButton;
         private System.Windows.Forms.ListView listView2;
         private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.CheckBox checkBox3;
     }
 }
 

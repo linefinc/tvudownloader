@@ -11,6 +11,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Threading;
 using System.Configuration;
+using System.Diagnostics;
 
 using tvu;
 
@@ -43,7 +44,7 @@ namespace tvu
 
 
         public List<RssFeed> RssFeedList;
-
+        
         public Form1()
         {
 
@@ -57,10 +58,7 @@ namespace tvu
             SetupNotify();
 
             DateTime2 = DateTime.Now;
-
-
-
-
+            
         }
 
 
@@ -231,52 +229,7 @@ namespace tvu
         }
 
 
-        public static string DownloadPage(string sUrl)
-        {
-            try
-            {
-                // used to build entire input
-                StringBuilder sb = new StringBuilder();
-
-                // used on each read operation
-                byte[] buf = new byte[8192];
-
-                // prepare the web page we will be asking for
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(sUrl);
-
-                // execute the request
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-                // we will read data via the response stream
-                Stream resStream = response.GetResponseStream();
-
-                string tempString = null;
-                int count = 0;
-
-                do
-                {
-                    // fill the buffer with data
-                    count = resStream.Read(buf, 0, buf.Length);
-
-                    // make sure we read some data
-                    if (count != 0)
-                    {
-                        // translate from bytes to ASCII text
-                        tempString = Encoding.ASCII.GetString(buf, 0, count);
-
-                        // continue building the string
-                        sb.Append(tempString);
-                    }
-                }
-                while (count > 0); // any more data to read?
-
-                return sb.ToString();
-            }
-            catch
-            { 
-                return null; 
-            }
-        }
+  
 
         static void DoWork(object Url, object pass, object DataIn)
         {
@@ -305,7 +258,7 @@ namespace tvu
             string temp;
             //http://localhost:4000/?w=password&p=PASSWORD
             temp = string.Format("{0}/?w=password&p={1}", sUrl, sPassword);
-            return DownloadPage(temp);
+            return eMuleWebManager.DownloadPage(temp);
             
             
             ////string parameters = " name1=value1&name2=value2";
@@ -354,171 +307,35 @@ namespace tvu
 
         private void button2_Click(object sender, EventArgs e)
         {
-            SaveConfigButton.Enabled = false;
-            string temp = LogInEmuleServer(ServiceUrl, Password);
-            if (temp == null)
+
+            eMuleWebManager service = new eMuleWebManager(ServiceUrlTextBox.Text, PasswordTextBox.Text);
+            bool? rc = service.LogIn();
+
+            if (rc == null)
             {
                 MessageBox.Show("Unable conncet with target URL");
                 return;
             }
-
-
             
-            int j = temp.IndexOf("name=w value=\"password\"");
-            if (j > 0)
+            if(rc == false)
             {
-                MessageBox.Show("Error in password");
+                MessageBox.Show("Password error ");
                 return;
             }
 
-            string sSesId = GetSessionID(temp);
-            LogOut(ServiceUrl, sSesId);
-
-            MessageBox.Show("OK service is configure");
-
-            SaveConfigButton.Enabled = true;
-
+            MessageBox.Show("OK service is correctly configured");
+            
             return;
             
 
 
         }
 
-        private void DownloadEd2k(string ed2k)
-        {
-            string temp = LogInEmuleServer(ServiceUrlTextBox.Text, PasswordTextBox.Text);
-            LogTextBox.Text = temp;
-            int j = temp.IndexOf("logout");
-            if (j > 0)
-                LogTextBox.Text = "ok";
-            else
-                LogTextBox.Text = "error";
-
-            CreateDumpFile("Get Session ID phase");
-
-            string sSesId = GetSessionID(temp);
-            LogTextBox.Text += string.Format("Session id {0}", sSesId);
-
-            CreateDumpFile("Ses ID " + sSesId);
-            //GetCategory(temp);
-            
-            int cat = 2;
-
-            
-
-            AddEd2kToDownload(ServiceUrlTextBox.Text, sSesId, ed2k, cat);
-            StartDownloadFromEd2k(ServiceUrlTextBox.Text, sSesId, ed2k);
-            StopDownloadEd2k(ServiceUrlTextBox.Text, sSesId, ed2k);
-            LogOut(ServiceUrlTextBox.Text, sSesId);
-
-        }
-
-
-        private static string GetSessionID(string text)
-        {
-
-            int i = text.IndexOf("&amp;w=logout");
-            text = text.Substring(0,i);
-            i = text.LastIndexOf("ses=");
-            text = text.Substring(i + ("ses=").Length);
-            return text;
-        }
-
-
-        private List<string> GetCategory(string text)
-        {
-            int i, j;
-            i = text.IndexOf("<select name=\"cat\" size=\"1\">");
-            text = text.Substring(i);
-            i = text.IndexOf("</select>");
-            text = text.Substring(0, i);
-
-            List<string> lsOut = new List<string>();
-
-            while (text.Length > 10)
-            {
-                i = text.IndexOf("value=\"") + ("value=\"").Length;
-                j = text.IndexOf("\">", i);
-
-                string sCatId = text.Substring(i, j - i);
-                
-                text = text.Substring(j);
-
-                i = text.IndexOf(">") + ">".Length;
-                j = text.IndexOf("</option>");
-
-                string sValue = text.Substring(i, j - i);
-                lsOut.Add(sValue);
-                text = text.Substring(j);
-
-                
-
-            }
-            return lsOut;
-
-        }
-
-        private static string AddEd2kToDownload(string sUrl,string sSesID, string Ed2k, int Category)
-        {
-            string temp;
-            temp = string.Format("{0}/?ses={1}&w=transfer&ed2k={2}&cat={3}", sUrl, sSesID, Ed2k, Category);
-            CreateDumpFile("AddEd2kToDownload  " + temp);
-            return DownloadPage(temp);
-            
-        }
-
-
-        private static string StartDownloadFromEd2k(string sUrl, string sSesID, string Ed2k)
-        {
-
-            int i;
-            
-            // if the link is not a ed2k file link return
-            if (Ed2k.IndexOf("ed2k://|file|") < 0)
-            {
-                return null;
-            }
-
-            i = Ed2k.IndexOf("|", "ed2k://|file|".Length + 1);
-            i = Ed2k.IndexOf("|", i + 1);
-
-
-            string sHash = Ed2k.Substring(i + 1, 32);// 32 is the size of md4
-            string temp = string.Format("{0}/?ses={1}&w=transfer&op=resume&file={2}", sUrl, sSesID, sHash);
-
-            CreateDumpFile("StartDownloadFromEd2k  " + temp);
-            return DownloadPage(temp);
-        }
-
-        private static string StopDownloadEd2k(string sUrl, string sSesID, string Ed2k)
-        {
-
-            int i;
-
-            // if the link is not a ed2k file link return
-            if (Ed2k.IndexOf("ed2k://|file|") < 0)
-            {
-                return null;
-            }
-
-            i = Ed2k.IndexOf("|", "ed2k://|file|".Length + 1);
-            i = Ed2k.IndexOf("|", i + 1);
-
-
-            string sHash = Ed2k.Substring(i + 1, 32);// 32 is the size of md4
-            string temp = string.Format("{0}/?ses={1}&w=transfer&op=stop&file={2}", sUrl, sSesID, sHash);
-
-            CreateDumpFile("StopDownloadEd2k  " + temp);
-            return DownloadPage(temp);
-        }
 
 
 
-        private static string LogOut(string sUrl, string sSesID)
-        {
-            string temp = string.Format("{0}/?ses={1}&w=logout", sUrl, sSesID);
-            return DownloadPage(temp);
-        }
+
+
 
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
@@ -793,43 +610,6 @@ namespace tvu
 
         }
 
-         private void button5_Click(object sender, EventArgs e)
-        {
-            comboBox1.Items.Clear();
-
-            button5.Enabled = false;
-
-            string temp = LogInEmuleServer(ServiceUrl, Password);
-            if (temp == null)
-            {
-                MessageBox.Show("Unable to connect Emule service");
-                return;
-            }
-
-            int j = temp.IndexOf("logout");
-            if (j < 0)
-            {
-                MessageBox.Show("Unable to log in Emule service (wrong password)");
-                return;
-            }
-
-            string sSesId = GetSessionID(temp);
-
-            List<string> category = GetCategory(temp);
-            foreach (string t in category)
-            {
-                comboBox1.Items.Add(t);
-            }
-
-            comboBox1.SelectedIndex = 0;
-
-
-
-
-            LogOut(ServiceUrl, sSesId);
-
-            button5.Enabled = true;
-        }
 
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
@@ -893,6 +673,7 @@ namespace tvu
 
         private void  DownloadNow()
         {
+            
             List<sDonwloadFile> myList = new List<sDonwloadFile>();
 
             LogTextBox.Clear();
@@ -918,7 +699,7 @@ namespace tvu
                     {
 
                         LogTextBox.AppendText(string.Format("Process feed {0} \n", FeedLink));
-                        string page = DownloadPage(elemList[i].InnerXml);
+                        string page = eMuleWebManager.DownloadPage(elemList[i].InnerXml);
                         string sEd2k = findEd2kLink(page);
 
                         LogTextBox.AppendText(string.Format("Found new file {0} \n", sEd2k));
@@ -936,10 +717,6 @@ namespace tvu
 
             }
 
-            //DownloadEd2k(sEd2k);
-            //Thread t = new Thread(Form1.DoWork);
-            //t.Start(textBox1.Text, textBox2.Text, lEd2kList);
-            //DoWork(textBox2.Text, textBox3.Text, lEd2kList);
 
 
             // for future separation in thread
@@ -947,50 +724,47 @@ namespace tvu
             string sPass = PasswordTextBox.Text;
             //List<string> sList = lEd2kList;
 
-            string temp = LogInEmuleServer(sUrl, sPass);
-            if (temp == null)
+            eMuleWebManager Service = new eMuleWebManager(sUrl, sPass);
+            bool? rc = Service.LogIn();
+
+
+            if (rc == null) 
             {
-                LogTextBox.AppendText("Unable to connect to web service" + Environment.NewLine);
-                return;
-            }
-
-            int j = temp.IndexOf("logout");
-            if (j < 0)
-            {
-                LogTextBox.AppendText("Unable to log in" + Environment.NewLine);
-                return;
-            }
-
-            string sSesId = GetSessionID(temp);
-
-            foreach (sDonwloadFile DownloadFile in myList)
-            {
-
-                if (ExistInHistoryByEd2k(DownloadFile.Ed2kLink) == false) // if file is not dwnl
+                if (checkBox2.Checked == true)
                 {
-                    AddEd2kToDownload(sUrl, sSesId, DownloadFile.Ed2kLink, DownloadFile.Category);
-
-                    if (DownloadFile.PauseDownload == true)
-                    {
-                        StopDownloadEd2k(sUrl, sSesId, DownloadFile.Ed2kLink);
-                    }
-                    else
-                    {
-                        StartDownloadFromEd2k(sUrl, sSesId, DownloadFile.Ed2kLink);
-                    }
-                    AddToXmlHostory(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);
+                    Process.Start(textBox1.Text);
+                    LogTextBox.AppendText("Start eMule app" + Environment.NewLine);
+                    return;
                 }
                 else
                 {
-                    CreateDumpFile("File alredy exist " + DownloadFile.Ed2kLink);
+                    LogTextBox.AppendText("Unable to connect to eMule web server" + Environment.NewLine);
+                    return;
                 }
+                
             }
 
+            
 
-
-            LogOut(sUrl, sSesId);
-            //textBox1.Text += string.Format("Session id {0}", sSesId);
-
+            foreach (sDonwloadFile DownloadFile in myList)
+            {
+                if (ExistInHistoryByEd2k(DownloadFile.Ed2kLink) == false) // if file is not dwnl
+                {
+                    Ed2kParser ed2klink = new Ed2kParser(DownloadFile.Ed2kLink);
+                    Service.AddToDownload(ed2klink, DownloadFile.Category);
+                    
+                    if (DownloadFile.PauseDownload == true)
+                    {
+                        Service.StopDownload(ed2klink);
+                    }
+                    else
+                    {
+                        Service.StartDownload(ed2klink);
+                    }
+                    AddToXmlHostory(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);
+                }
+             }
+            Service.LogOut();
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -1027,11 +801,8 @@ namespace tvu
                 if (FeedSourceList[i].FirstChild.InnerText == feedUrl)
                 {
                     string str = Ed2kList[i].FirstChild.InnerText;
-                    
                     ListViewItem item1 = new ListViewItem(str);
                     listView2.Items.Add(item1);
-
-
                 }
 
             }
@@ -1041,12 +812,12 @@ namespace tvu
 
         private void ServiceUrlTextBox_TextChanged(object sender, EventArgs e)
         {
-            SaveConfigButton.Enabled = false;
+            ServiceUrl = ServiceUrlTextBox.Text;
         }
 
         private void PasswordTextBox_TextChanged(object sender, EventArgs e)
         {
-            SaveConfigButton.Enabled = false;
+            Password = PasswordTextBox.Text;
         }
 
         private void ClearButton_Click(object sender, EventArgs e)
@@ -1070,6 +841,42 @@ namespace tvu
             path += '\\' + Application.ProductName + '\\';
             return path;
         }
+
+        private void UpdateCategoryButton_Click(object sender, EventArgs e)
+        {
+            comboBox1.Items.Clear();
+
+            UpdateCategoryButton.Enabled = false;
+
+            eMuleWebManager Service = new eMuleWebManager(ServiceUrl, Password);
+            bool? rc = Service.LogIn();
+
+            if ((rc == null)&(rc == false))
+            {
+                MessageBox.Show("Unable to connect Emule service");
+                return;
+            }
+
+
+
+
+            List<string> category = Service.GetCategory();
+            foreach (string t in category)
+            {
+                comboBox1.Items.Add(t);
+            }
+
+            comboBox1.SelectedIndex = 0;
+
+            Service.LogOut();
+
+            UpdateCategoryButton.Enabled = true;
+        }
+
+
+
+
+
 
 
 

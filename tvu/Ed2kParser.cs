@@ -22,14 +22,28 @@ namespace tvu
             // if the link is not a ed2k file link return
             int i, j, k;
 
-            k = "ed2k://|file|".Length ;
-            i = link.IndexOf("|", k + 1 );
-            j = link.IndexOf("|", i + 1);
-            _FileName = link.Substring(k + 1, k - j - 1);
-            _Size = uint.Parse( _Link.Substring(i + 1, j - i - 1));
-            _Hash = link.Substring(j + 1, 32);// 32 is the size of md4
+            string[] temp = link.Split('|');
+
+            if (temp[0] == "")
+            {
+
+            }
+            if (temp[1] == "")
+            {
+
+            }
+
+            _FileName = temp[2];
+            _Size = uint.Parse(temp[3]);
+            _Hash = temp[4];
+
         }
 
+        public string GetLink()
+        {
+            return _Link;
+        }
+        
         public string GetFileName()
         {
             return _FileName;
@@ -44,5 +58,21 @@ namespace tvu
         {
             return _Hash;
         }
+
+        public override bool Equals(Ed2kParser temp)
+        {
+            if(temp._Size != this._Size)
+            {
+                return false;
+            }
+
+            if(temp._Hash != this._Hash)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
     }
 }
