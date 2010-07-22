@@ -11,6 +11,11 @@ namespace tvu
         private string _FileName;
         private string _Hash;
 
+        public Ed2kParser()
+        {
+         
+        }
+
         public Ed2kParser(string link)
         {
             _Link = link;
@@ -59,20 +64,43 @@ namespace tvu
             return _Hash;
         }
 
-        public override bool Equals(Ed2kParser temp)
+        public static bool operator ==(Ed2kParser A, Ed2kParser B)
         {
-            if(temp._Size != this._Size)
+            if (A._Size != B._Size)
             {
                 return false;
             }
 
-            if(temp._Hash != this._Hash)
+            if (A._Hash != B._Hash)
             {
                 return false;
             }
 
             return true;
         }
+
+
+
+        public static bool operator !=(Ed2kParser A, Ed2kParser B)
+        {
+            if (A._Size == B._Size)
+            {
+                return false;
+            }
+
+            if (A._Hash == B._Hash)
+            {
+                return false;
+            }
+
+            return true;
+        }
+        
+        public override int GetHashCode()
+        {
+            return 0;
+        }
+
 
     }
 }

@@ -47,9 +47,9 @@ namespace tvu
             {
                 string temp = page;
                 i = temp.IndexOf("&amp;w=logout");
-                temp = temp.Substring(0, i);
-                i = temp.LastIndexOf("ses=");
-                SesID = temp.Substring(i + ("ses=").Length);
+                //temp = temp.Substring(0, i);
+                j = temp.LastIndexOf("ses=", i) + ("ses=").Length;
+                SesID = temp.Substring(j, i - j);
             }
 
             if (SesID.Length == 0)

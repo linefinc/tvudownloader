@@ -33,11 +33,12 @@ namespace tvu
 
         private DateTime DateTime2;
 
-        public struct sDonwloadFile
+        public class sDonwloadFile
         {
             public string FeedSource;
             public string FeedLink;
             public string Ed2kLink;
+           
             public bool PauseDownload;
             public int Category;
         };
@@ -469,9 +470,12 @@ namespace tvu
             for (int i = 0; i < elemList.Count; i++)
             {
 
-                int rc = CompareEd2k(elemList[i].InnerXml, ed2k);
-                if (rc == 0)
+                Ed2kParser A = new Ed2kParser(elemList[i].InnerXml);
+                Ed2kParser B = new Ed2kParser(ed2k);
+
+                if (A == B)
                     return true;
+                
 
             }
             return false;
@@ -703,7 +707,7 @@ namespace tvu
                         string sEd2k = findEd2kLink(page);
 
                         LogTextBox.AppendText(string.Format("Found new file {0} \n", sEd2k));
-                        sDonwloadFile DL;
+                        sDonwloadFile DL = new sDonwloadFile();
                         DL.FeedSource = feed.Url;
                         DL.FeedLink = FeedLink;
                         DL.Ed2kLink = sEd2k;
