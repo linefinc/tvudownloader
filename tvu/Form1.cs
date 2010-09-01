@@ -30,6 +30,7 @@ namespace tvu
         private System.Windows.Forms.ContextMenu contextMenu1;
         private System.Windows.Forms.MenuItem menuItem1;
         private System.Windows.Forms.MenuItem menuItem2;
+        private System.Windows.Forms.MenuItem menuItem3;
 
         private DateTime DateTime2;
 
@@ -74,19 +75,23 @@ namespace tvu
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
             this.menuItem1 = new System.Windows.Forms.MenuItem();
             this.menuItem2 = new System.Windows.Forms.MenuItem();
-
-            // Initialize contextMenu1
-            this.contextMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] { this.menuItem1, this.menuItem2 });
+            this.menuItem3 = new System.Windows.Forms.MenuItem();
 
             // Initialize menuItem1
             this.menuItem1.Index = 0;
-            this.menuItem1.Text = "E&xit";
-            this.menuItem1.Click += new System.EventHandler(this.menuItem1_Click);
+            this.menuItem1.Text = "Check Now";
+            this.menuItem1.Click += new System.EventHandler(this.menuItem1_Prova_Click);
+            this.contextMenu1.MenuItems.Add(menuItem1);
 
             this.menuItem2.Index = 1;
             this.menuItem2.Text = "Hide";
             this.menuItem2.Click += new System.EventHandler(this.menuItem1_Prova_Click);
+            this.contextMenu1.MenuItems.Add(menuItem2);
 
+            this.menuItem3.Index = 0;
+            this.menuItem3.Text = "E&xit";
+            this.menuItem3.Click += new System.EventHandler(this.menuItem1_Click);
+            this.contextMenu1.MenuItems.Add(menuItem3);
 
             // Create the NotifyIcon.
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
@@ -812,6 +817,8 @@ namespace tvu
             dialog.Dispose();
             return;
         }
+
+
 
 
 
