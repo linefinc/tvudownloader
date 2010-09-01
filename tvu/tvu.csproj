@@ -62,6 +62,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AboutBox1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutBox1.Designer.cs">
+      <DependentUpon>AboutBox1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddFeedDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddFeedDialog.Designer.cs">
+      <DependentUpon>AddFeedDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Ed2kParser.cs" />
     <Compile Include="eMuleWebManager.cs" />
     <Compile Include="Form1.cs">
@@ -72,6 +84,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AboutBox1.resx">
+      <DependentUpon>AboutBox1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddFeedDialog.resx">
+      <DependentUpon>AddFeedDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

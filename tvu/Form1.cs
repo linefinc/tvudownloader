@@ -708,7 +708,10 @@ namespace tvu
                 if (FeedSourceList[i].FirstChild.InnerText == feedUrl)
                 {
                     string str = Ed2kList[i].FirstChild.InnerText;
-                    ListViewItem item1 = new ListViewItem(str);
+                    Ed2kParser parser = new Ed2kParser (str);
+
+
+                    ListViewItem item1 = new ListViewItem(parser.GetFileName());
                     listView2.Items.Add(item1);
                 }
 
@@ -827,6 +830,13 @@ namespace tvu
             DeleteFromXMLConfig(RssFeedList[i].Url);
             LoadConfig();
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //AddFeedDialog dialog = new AddFeedDialog();
+            AddFeedDialog dialog = new AddFeedDialog("prova","cazzo",true);
+            dialog.ShowDialog();
         }
 
 

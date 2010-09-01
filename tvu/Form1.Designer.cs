@@ -66,6 +66,7 @@
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.PasswordTextBox = new System.Windows.Forms.TextBox();
             this.ServiceUrlTextBox = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.Log.SuspendLayout();
             this.Main.SuspendLayout();
@@ -155,6 +156,7 @@
             // 
             // Main
             // 
+            this.Main.Controls.Add(this.button1);
             this.Main.Controls.Add(this.listView2);
             this.Main.Controls.Add(this.listView1);
             this.Main.Controls.Add(this.button4);
@@ -441,6 +443,16 @@
             this.ServiceUrlTextBox.Text = "http://linefinc.homeip.net:4000";
             this.ServiceUrlTextBox.TextChanged += new System.EventHandler(this.ServiceUrlTextBox_TextChanged);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(6, 248);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(100, 37);
+            this.button1.TabIndex = 25;
+            this.button1.Text = "Add ";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -502,6 +514,7 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.Button button1;
     }
 }
 
