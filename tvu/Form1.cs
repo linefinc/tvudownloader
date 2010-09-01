@@ -28,9 +28,9 @@ namespace tvu
 
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.ContextMenu contextMenu1;
-        private System.Windows.Forms.MenuItem menuItem1;
-        private System.Windows.Forms.MenuItem menuItem2;
-        private System.Windows.Forms.MenuItem menuItem3;
+        private System.Windows.Forms.MenuItem menuItemCheckNow;
+        private System.Windows.Forms.MenuItem menuItemHide;
+        private System.Windows.Forms.MenuItem menuItemExit;
 
         private DateTime DateTime2;
 
@@ -73,25 +73,25 @@ namespace tvu
             
             this.components = new System.ComponentModel.Container();
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
-            this.menuItem1 = new System.Windows.Forms.MenuItem();
-            this.menuItem2 = new System.Windows.Forms.MenuItem();
-            this.menuItem3 = new System.Windows.Forms.MenuItem();
+            this.menuItemCheckNow = new System.Windows.Forms.MenuItem();
+            this.menuItemHide = new System.Windows.Forms.MenuItem();
+            this.menuItemExit = new System.Windows.Forms.MenuItem();
 
             // Initialize menuItem1
-            this.menuItem1.Index = 0;
-            this.menuItem1.Text = "Check Now";
-            this.menuItem1.Click += new System.EventHandler(this.menuItem1_Prova_Click);
-            this.contextMenu1.MenuItems.Add(menuItem1);
+            this.menuItemCheckNow.Index = 0;
+            this.menuItemCheckNow.Text = "Check Now";
+            this.menuItemCheckNow.Click += new System.EventHandler(this.menu_CheckNow);
+            this.contextMenu1.MenuItems.Add(menuItemCheckNow);
 
-            this.menuItem2.Index = 1;
-            this.menuItem2.Text = "Hide";
-            this.menuItem2.Click += new System.EventHandler(this.menuItem1_Prova_Click);
-            this.contextMenu1.MenuItems.Add(menuItem2);
+            this.menuItemHide.Index = 1;
+            this.menuItemHide.Text = "Hide";
+            this.menuItemHide.Click += new System.EventHandler(this.menu_Hide);
+            this.contextMenu1.MenuItems.Add(menuItemHide);
 
-            this.menuItem3.Index = 0;
-            this.menuItem3.Text = "E&xit";
-            this.menuItem3.Click += new System.EventHandler(this.menuItem1_Click);
-            this.contextMenu1.MenuItems.Add(menuItem3);
+            this.menuItemExit.Index = 0;
+            this.menuItemExit.Text = "E&xit";
+            this.menuItemExit.Click += new System.EventHandler(this.menu_Exit);
+            this.contextMenu1.MenuItems.Add(menuItemExit);
 
             // Create the NotifyIcon.
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
@@ -113,7 +113,7 @@ namespace tvu
             notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
 
         }
-        private void menuItem1_Prova_Click(object Sender, EventArgs e)
+        private void menu_Hide(object Sender, EventArgs e)
         {
             if (this.Visible == true)
             {
@@ -131,6 +131,11 @@ namespace tvu
 
         }
 
+        private void menu_CheckNow(object Sender, EventArgs e)
+        {
+            CheckNow();
+        }
+
         private void notifyIcon1_DoubleClick(object Sender, EventArgs e)
         {
             // Show the form when the user double clicks on the notify icon.
@@ -143,7 +148,7 @@ namespace tvu
             this.Activate();
         }
 
-        private void menuItem1_Click(object Sender, EventArgs e)
+        private void menu_Exit(object Sender, EventArgs e)
         {
             // Close the form, which closes the application.
             this.Close();
@@ -773,11 +778,17 @@ namespace tvu
 
         private void CheckButton_Click(object sender, EventArgs e)
         {
-            CheckButton.Enabled = false;
-            DownloadNow();
-            CheckButton.Enabled = true;
+            CheckNow();
         }
 
+        private void CheckNow()
+        {
+            CheckButton.Enabled = false;
+            menuItemCheckNow.Enabled = false;
+            DownloadNow();
+            menuItemCheckNow.Enabled = true;
+            CheckButton.Enabled = true;
+        }
 
         public static string GetUserAppDataPath()
         {

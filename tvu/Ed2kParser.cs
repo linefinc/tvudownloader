@@ -24,18 +24,16 @@ namespace tvu
 
         private void Decode(string link)
         {
-            // if the link is not a ed2k file link return
-            int i, j, k;
 
             string[] temp = link.Split('|');
 
             if (temp[0] == "")
             {
-
+                // add excemption
             }
             if (temp[1] == "")
             {
-
+                // add exception
             }
 
             _FileName = temp[2];

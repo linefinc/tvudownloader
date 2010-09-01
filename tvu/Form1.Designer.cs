@@ -259,6 +259,7 @@
             this.checkBox4.TabIndex = 30;
             this.checkBox4.Text = "Close eMule if file added are done";
             this.checkBox4.UseVisualStyleBackColor = true;
+            this.checkBox4.Visible = false;
             // 
             // checkBox3
             // 
@@ -269,6 +270,7 @@
             this.checkBox3.TabIndex = 29;
             this.checkBox3.Text = "Close eMule if all is done";
             this.checkBox3.UseVisualStyleBackColor = true;
+            this.checkBox3.Visible = false;
             // 
             // checkBox2
             // 
@@ -279,6 +281,7 @@
             this.checkBox2.TabIndex = 28;
             this.checkBox2.Text = "Start Emule if close";
             this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.Visible = false;
             // 
             // label6
             // 
@@ -288,6 +291,7 @@
             this.label6.Size = new System.Drawing.Size(79, 13);
             this.label6.TabIndex = 27;
             this.label6.Text = "eMule Exeguile";
+            this.label6.Visible = false;
             // 
             // textBox1
             // 
@@ -295,6 +299,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(435, 20);
             this.textBox1.TabIndex = 26;
+            this.textBox1.Visible = false;
             // 
             // label3
             // 
@@ -351,7 +356,6 @@
             this.PasswordTextBox.Name = "PasswordTextBox";
             this.PasswordTextBox.Size = new System.Drawing.Size(417, 20);
             this.PasswordTextBox.TabIndex = 21;
-            this.PasswordTextBox.Text = "tellurio";
             this.PasswordTextBox.TextChanged += new System.EventHandler(this.PasswordTextBox_TextChanged);
             // 
             // ServiceUrlTextBox
@@ -360,7 +364,6 @@
             this.ServiceUrlTextBox.Name = "ServiceUrlTextBox";
             this.ServiceUrlTextBox.Size = new System.Drawing.Size(417, 20);
             this.ServiceUrlTextBox.TabIndex = 20;
-            this.ServiceUrlTextBox.Text = "http://linefinc.homeip.net:4000";
             this.ServiceUrlTextBox.TextChanged += new System.EventHandler(this.ServiceUrlTextBox_TextChanged);
             // 
             // Form1
