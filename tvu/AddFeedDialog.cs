@@ -62,13 +62,7 @@ namespace tvu
 
             newfeed.PauseDownload = checkBoxPause.Checked;
 
-            int index = comboBoxCategory.SelectedIndex;
-            if (index < 0)
-            {
-                index = 0;
-            }
-
-            newfeed.Category = (string)comboBoxCategory.Items[index];
+            newfeed.Category = comboBoxCategory.Text;
 
             this.Feed = newfeed;
             this.DialogResult = DialogResult.OK;
