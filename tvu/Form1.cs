@@ -22,6 +22,8 @@ namespace tvu
         private string Password;
         private string ServiceUrl;
         public int IntervalTime;
+        private bool StartMinimized;
+        
 
         private Icon IconUp;
         private Icon IconDown;
@@ -60,7 +62,8 @@ namespace tvu
             SetupNotify();
 
             DateTime2 = DateTime.Now;
-            
+
+
         }
 
 
@@ -119,14 +122,12 @@ namespace tvu
             {
                 this.Hide();
                 this.contextMenu1.MenuItems[1].Text = "Show";
-                notifyIcon1.Icon = IconDown;
-
+                
             }
             else
             {
                 this.Show();
                 this.contextMenu1.MenuItems[1].Text = "Hide";
-                notifyIcon1.Icon = IconUp;
             }
 
         }
@@ -179,6 +180,11 @@ namespace tvu
             IntervalTime = (int)Convert.ToInt32(IntervalTimeNode[0].InnerText);
             numericUpDown1.Value = IntervalTime;
 
+            XmlNodeList StartMinimizedNode = xDoc.GetElementsByTagName("StartMinimized");
+            StartMinimized = (bool)Convert.ToBoolean(StartMinimizedNode[0].InnerText);
+            checkBoxStartMinimized.Checked = StartMinimized;
+            
+            numericUpDown1.Value = IntervalTime;           
 
             XmlNodeList Channels = xDoc.GetElementsByTagName("Channel");
 
@@ -454,6 +460,9 @@ namespace tvu
                 textWritter.WriteStartElement("IntervalTime");
                 textWritter.WriteString("30");
                 textWritter.WriteEndElement();
+                textWritter.WriteStartElement("StartMinimized");
+                textWritter.WriteString("false");
+                textWritter.WriteEndElement();
                 textWritter.WriteStartElement("RSSChannel");
                 textWritter.WriteEndElement();
 
@@ -547,6 +556,16 @@ namespace tvu
 
             temp = xmlDoc.GetElementsByTagName("IntervalTime");
             temp[0].FirstChild.Value = IntervalTime.ToString();
+
+            temp = xmlDoc.GetElementsByTagName("StartMinimized");
+            if (checkBoxStartMinimized.Checked == true)
+            {
+                temp[0].FirstChild.Value = "true";
+            }
+            else
+            {
+                temp[0].FirstChild.Value = "false";
+            }
 
             xmlDoc.Save("Config.xml");
 
@@ -830,8 +849,22 @@ namespace tvu
         }
 
 
+        void Form1_VisibleChanged(object sender, System.EventArgs e)
+        {
 
-
+            //if (HideWindows == true)
+            //{
+            //    notifyIcon1.Icon = IconDown;
+            //    this.contextMenu1.MenuItems[1].Text = "Show";
+            //    Visible = false; // inhibit the minimizing animation
+            //}
+            //else
+            //{
+            //    notifyIcon1.Icon = IconUp;
+            //    this.contextMenu1.MenuItems[1].Text = "Hide";
+            //    Visible = true; // inhibit the minimizing animation
+            //}
+        }
 
 
 

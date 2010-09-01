@@ -48,6 +48,7 @@
             this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
             this.button4 = new System.Windows.Forms.Button();
             this.Config = new System.Windows.Forms.TabPage();
+            this.checkBoxStartMinimized = new System.Windows.Forms.CheckBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
@@ -68,7 +69,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(25, 98);
+            this.button2.Location = new System.Drawing.Point(25, 123);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(95, 36);
             this.button2.TabIndex = 4;
@@ -78,7 +79,7 @@
             // 
             // SaveConfigButton
             // 
-            this.SaveConfigButton.Location = new System.Drawing.Point(126, 98);
+            this.SaveConfigButton.Location = new System.Drawing.Point(126, 123);
             this.SaveConfigButton.Name = "SaveConfigButton";
             this.SaveConfigButton.Size = new System.Drawing.Size(100, 36);
             this.SaveConfigButton.TabIndex = 14;
@@ -230,6 +231,7 @@
             // 
             // Config
             // 
+            this.Config.Controls.Add(this.checkBoxStartMinimized);
             this.Config.Controls.Add(this.checkBox4);
             this.Config.Controls.Add(this.checkBox3);
             this.Config.Controls.Add(this.checkBox2);
@@ -249,6 +251,16 @@
             this.Config.TabIndex = 2;
             this.Config.Text = "Config";
             this.Config.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxStartMinimized
+            // 
+            this.checkBoxStartMinimized.AutoSize = true;
+            this.checkBoxStartMinimized.Location = new System.Drawing.Point(25, 100);
+            this.checkBoxStartMinimized.Name = "checkBoxStartMinimized";
+            this.checkBoxStartMinimized.Size = new System.Drawing.Size(97, 17);
+            this.checkBoxStartMinimized.TabIndex = 31;
+            this.checkBoxStartMinimized.Text = "Start Minimized";
+            this.checkBoxStartMinimized.UseVisualStyleBackColor = true;
             // 
             // checkBox4
             // 
@@ -374,7 +386,8 @@
             this.Controls.Add(this.tabControl1);
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "TvUnderground Downloader";
+            this.Text = "TvUnderground Downloader 0.02";
+            this.VisibleChanged += new System.EventHandler(this.Form1_VisibleChanged);
             this.tabControl1.ResumeLayout(false);
             this.Log.ResumeLayout(false);
             this.Log.PerformLayout();
@@ -385,6 +398,8 @@
             this.ResumeLayout(false);
 
         }
+
+       
 
         #endregion
 
@@ -418,6 +433,7 @@
         private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox checkBoxStartMinimized;
     }
 }
 
