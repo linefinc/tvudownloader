@@ -8,7 +8,7 @@ namespace tvu
     {
         public string Title;
         public string Url;
-        public int Category;
+        public string Category;
         public bool PauseDownload;
         public string LastUpgradeData;
     }

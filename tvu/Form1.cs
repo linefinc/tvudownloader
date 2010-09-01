@@ -40,7 +40,7 @@ namespace tvu
             public string Ed2kLink;
            
             public bool PauseDownload;
-            public int Category;
+            public string Category;
         };
 
 
@@ -201,7 +201,7 @@ namespace tvu
 
                     if (t.Name == "Category")
                     {
-                        newfeed.Category = Convert.ToInt32(t.FirstChild.Value);
+                        newfeed.Category = t.FirstChild.Value;
                     }
 
                     
@@ -254,58 +254,6 @@ namespace tvu
             return text;
         }
 
-        private static string LogInEmuleServer(string sUrl, string sPassword)
-        {
-            string temp;
-            //http://localhost:4000/?w=password&p=PASSWORD
-            temp = string.Format("{0}/?w=password&p={1}", sUrl, sPassword);
-            return eMuleWebManager.DownloadPage(temp);
-            
-            
-            ////string parameters = " name1=value1&name2=value2";
-            ////string parameters = " p=tellurio&w=password";
-            //string parameters = string.Format("p={0}&w=password", sPassword);
-            //WebRequest webRequest = WebRequest.Create(sUrl);
-            //webRequest.ContentType = "application/x-www-form-urlencoded";
-            //webRequest.Method = "POST";
-            //byte[] bytes = Encoding.ASCII.GetBytes(parameters);
-            //Stream os = null;
-            //try
-            //{ // send the Post
-            //    webRequest.ContentLength = bytes.Length;   //Count bytes to send
-            //    os = webRequest.GetRequestStream();
-            //    os.Write(bytes, 0, bytes.Length);         //Send it
-            //}
-            //catch (WebException ex)
-            //{
-            //    MessageBox.Show(ex.Message, "HttpPost: Request error",
-            //       MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
-            //finally
-            //{
-            //    if (os != null)
-            //    {
-            //        os.Close();
-            //    }
-            //}
-
-            //try
-            //{ // get the response
-            //    WebResponse webResponse = webRequest.GetResponse();
-            //    if (webResponse == null)
-            //    { return null; }
-            //    StreamReader sr = new StreamReader(webResponse.GetResponseStream());
-            //    return sr.ReadToEnd().Trim();
-            //}
-            //catch (WebException ex)
-            //{
-            //    MessageBox.Show(ex.Message, "HttpPost: Response error",
-            //       MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
-            //return null;
-
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
 
@@ -341,36 +289,6 @@ namespace tvu
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
             ServiceUrl = ServiceUrlTextBox.Text;
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            if(textBox4.Text.IndexOf("http://tvunderground.org.ru/rss.php") < 0)
-            {
-                MessageBox.Show("Only tvunderground.org.ru service supported");
-                return;
-            }
-
-            
-            RssFeed newfeed = new RssFeed();
-            
-            XmlDocument doc = new XmlDocument();
-            doc.Load(textBox4.Text);
-
-            XmlNodeList elemList = doc.GetElementsByTagName("title");
-            newfeed.Title = elemList[0].FirstChild.Value;
-            newfeed.Url = textBox4.Text;
-
-
-            newfeed.PauseDownload = checkBox1.Checked;
-            newfeed.Category = comboBox1.SelectedIndex;
-
-            if (newfeed.Category < 0) newfeed.Category = 0;
-
-            AddRssToXMLConfig(newfeed.Title, newfeed.Url, newfeed.PauseDownload, newfeed.Category);
-
-            LoadConfig();
-
         }
 
 
@@ -507,23 +425,6 @@ namespace tvu
         }
 
 
-        private void button4_Click(object sender, EventArgs e)
-        {
-            if (listView1.Items.Count == 0)
-                return;
-
-            if (listView1.SelectedItems.Count == 0)
-                return;
-
-          
-
-            ListViewItem  temp = listView1.SelectedItems[0];
-            int i = listView1.Items.IndexOf(temp);
-            DeleteFromXMLConfig(RssFeedList[i].Url);
-            LoadConfig();
-        }
-
-
         public void InitConfig()
         {
             if (!File.Exists("Config.xml"))
@@ -551,7 +452,7 @@ namespace tvu
 
         }
 
-        public void AddRssToXMLConfig(string Title, string url, bool DonwloadInPause, int Category)
+        public void AddRssToXMLConfig(string Title, string url, bool DonwloadInPause, string Category)
         {
             XmlDocument xmlDoc = new XmlDocument();
 
@@ -567,7 +468,7 @@ namespace tvu
             XmlText TitleXmlText = xmlDoc.CreateTextNode(Title);
             XmlText UrlXmlText = xmlDoc.CreateTextNode(url);
             XmlText PauseXmlText = xmlDoc.CreateTextNode(DonwloadInPause.ToString());
-            XmlText CategoryXmlText = xmlDoc.CreateTextNode(Category.ToString());
+            XmlText CategoryXmlText = xmlDoc.CreateTextNode(Category);
 
             TitleElementItem.AppendChild(TitleXmlText);
             UrlElementItem.AppendChild(UrlXmlText);
@@ -607,11 +508,7 @@ namespace tvu
                 }
 
             }
-
             return;
-
-
-
         }
 
 
@@ -721,7 +618,12 @@ namespace tvu
 
             }
 
+            if (myList.Count == 0)
+            {
+                // nothing to download
+                return;
 
+            }
 
             // for future separation in thread
             string sUrl = ServiceUrlTextBox.Text;
@@ -748,7 +650,8 @@ namespace tvu
                 
             }
 
-            
+
+            Service.GetCategory(true);  // force upgrade category list 
 
             foreach (sDonwloadFile DownloadFile in myList)
             {
@@ -861,10 +764,9 @@ namespace tvu
                 return;
             }
 
+            List<string> category = new List<string>();
+            category.AddRange (Service.GetCategory(true));
 
-
-
-            List<string> category = Service.GetCategory();
             foreach (string t in category)
             {
                 comboBox1.Items.Add(t);
@@ -875,6 +777,56 @@ namespace tvu
             Service.LogOut();
 
             UpdateCategoryButton.Enabled = true;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (textBox4.Text.IndexOf("http://tvunderground.org.ru/rss.php") < 0)
+            {
+                MessageBox.Show("Only tvunderground.org.ru service supported");
+                return;
+            }
+
+            RssFeed newfeed = new RssFeed();
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load(textBox4.Text);
+
+            XmlNodeList elemList = doc.GetElementsByTagName("title");
+            newfeed.Title = elemList[0].FirstChild.Value;
+            newfeed.Url = textBox4.Text;
+
+
+            newfeed.PauseDownload = checkBox1.Checked;
+            
+            
+            int index = comboBox1.SelectedIndex;
+            if (index < 0)
+            {
+                index = 0;
+            }
+
+            newfeed.Category = (string) comboBox1.Items[index];
+
+
+            AddRssToXMLConfig(newfeed.Title, newfeed.Url, newfeed.PauseDownload, newfeed.Category);
+
+            LoadConfig();
+        }
+
+        private void button4_Click_1(object sender, EventArgs e)
+        {
+            if (listView1.Items.Count == 0)
+                return;
+
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
+            ListViewItem temp = listView1.SelectedItems[0];
+            int i = listView1.Items.IndexOf(temp);
+            DeleteFromXMLConfig(RssFeedList[i].Url);
+            LoadConfig();
+
         }
 
 

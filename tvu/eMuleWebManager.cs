@@ -12,17 +12,54 @@ namespace tvu
         private string Host;
         private string Password;
         private string SesID;
-        private List<string> Category;
-
+        private List<string> CategoryCache;
+        
         public eMuleWebManager(string Host, string Password)
         {
             this.Host = Host;
             this.Password = Password;
+            this.CategoryCache = new List<string>();
         }
 
-        public List<string> GetCategory()
+        public List<string> GetCategory(bool forceUpdate)
         {
-            return Category;
+            if ((this.CategoryCache.Count > 0) ^ (forceUpdate == false))
+            {
+                return this.CategoryCache;
+            }
+            
+            List<string> myList = new List<string>();
+            int i, j;
+            string temp;
+
+            temp = string.Format("{0}/?ses={1}&w=search", Host, SesID);
+            temp = DownloadPage(temp);
+            //
+            //  Parse html to find category
+            //
+            i = temp.IndexOf("<select name=\"cat\" size=\"1\">");
+            temp = temp.Substring(i);
+            i = temp.IndexOf("</select>");
+            temp = temp.Substring(0, i);
+            while (temp.Length > 10)
+            {
+                i = temp.IndexOf("value=\"") + ("value=\"").Length;
+                j = temp.IndexOf("\">", i);
+
+                string sCatId = temp.Substring(i, j - i);
+
+                temp = temp.Substring(j);
+
+                i = temp.IndexOf(">") + ">".Length;
+                j = temp.IndexOf("</option>");
+
+                string sValue = temp.Substring(i, j - i);
+                myList.Add(sValue);
+                temp = temp.Substring(j);
+            }
+            this.CategoryCache = myList;
+            return myList;
+
         }
 
         public bool? LogIn()
@@ -67,10 +104,16 @@ namespace tvu
             DownloadPage(temp);
         }
 
-        public void AddToDownload(Ed2kParser Ed2kLink, int Category)
+        public void AddToDownload(Ed2kParser Ed2kLink, string Category)
         {
+            int CategoryId = CategoryCache.IndexOf(Category);
+            if (CategoryId == -1)
+            {
+                CategoryId = 0;
+            }
+            
             string temp;
-            temp = string.Format("{0}/?ses={1}&w=transfer&ed2k={2}&cat={3}", Host, SesID, Ed2kLink.GetLink(), Category);
+            temp = string.Format("{0}/?ses={1}&w=transfer&ed2k={2}&cat={3}", Host, SesID, Ed2kLink.GetLink(), CategoryId);
             DownloadPage(temp);
         }
 
@@ -113,7 +156,7 @@ namespace tvu
                 lsOut.Add(sValue);
                 text = text.Substring(j);
             }
-            Category = lsOut;
+            //Category = lsOut;
 
         }
 
