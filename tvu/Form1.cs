@@ -693,9 +693,6 @@ namespace tvu
             int i = listView1.Items.IndexOf(temp);
             string feedUrl = RssFeedList[i].Url;
             
-            
-
-
             XmlDocument doc = new XmlDocument();
             doc.Load("history.xml");
 
@@ -710,15 +707,47 @@ namespace tvu
                     string str = Ed2kList[i].FirstChild.InnerText;
                     Ed2kParser parser = new Ed2kParser (str);
 
-
                     ListViewItem item1 = new ListViewItem(parser.GetFileName());
                     listView2.Items.Add(item1);
                 }
+            }
+        }
 
+        private void listView1_DoubleClick(object sender, EventArgs e)
+        {
+            if (listView1.Items.Count == 0)
+                return;
+
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
+            if (!File.Exists("History.xml"))
+            {
+                return ;
             }
 
-            
+            ListViewItem temp = listView1.SelectedItems[0];
+            int i = listView1.Items.IndexOf(temp);
+            RssFeed feed = RssFeedList[i];
+
+
+            AddFeedDialog dialog = new AddFeedDialog(ServiceUrl, Password, feed);
+            dialog.ShowDialog();
+
+            if (dialog.DialogResult == DialogResult.OK)
+            {
+                feed = dialog.Feed;
+                DeleteFromXMLConfig(feed.Url);
+                AddRssToXMLConfig(feed.Title, feed.Url, feed.PauseDownload, feed.Category);
+                LoadConfig();
+                dialog.Dispose();
+                return;
+            }
+
+            dialog.Dispose();
+            return;
         }
+
 
         private void ServiceUrlTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -752,71 +781,6 @@ namespace tvu
             return path;
         }
 
-        private void UpdateCategoryButton_Click(object sender, EventArgs e)
-        {
-            comboBox1.Items.Clear();
-
-            UpdateCategoryButton.Enabled = false;
-
-            eMuleWebManager Service = new eMuleWebManager(ServiceUrl, Password);
-            bool? rc = Service.LogIn();
-
-            if ((rc == null)&(rc == false))
-            {
-                MessageBox.Show("Unable to connect Emule service");
-                return;
-            }
-
-            List<string> category = new List<string>();
-            category.AddRange (Service.GetCategory(true));
-
-            foreach (string t in category)
-            {
-                comboBox1.Items.Add(t);
-            }
-
-            comboBox1.SelectedIndex = 0;
-
-            Service.LogOut();
-
-            UpdateCategoryButton.Enabled = true;
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            if (textBox4.Text.IndexOf("http://tvunderground.org.ru/rss.php") < 0)
-            {
-                MessageBox.Show("Only tvunderground.org.ru service supported");
-                return;
-            }
-
-            RssFeed newfeed = new RssFeed();
-
-            XmlDocument doc = new XmlDocument();
-            doc.Load(textBox4.Text);
-
-            XmlNodeList elemList = doc.GetElementsByTagName("title");
-            newfeed.Title = elemList[0].FirstChild.Value;
-            newfeed.Url = textBox4.Text;
-
-
-            newfeed.PauseDownload = checkBox1.Checked;
-            
-            
-            int index = comboBox1.SelectedIndex;
-            if (index < 0)
-            {
-                index = 0;
-            }
-
-            newfeed.Category = (string) comboBox1.Items[index];
-
-
-            AddRssToXMLConfig(newfeed.Title, newfeed.Url, newfeed.PauseDownload, newfeed.Category);
-
-            LoadConfig();
-        }
-
         private void button4_Click_1(object sender, EventArgs e)
         {
             if (listView1.Items.Count == 0)
@@ -834,9 +798,19 @@ namespace tvu
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //AddFeedDialog dialog = new AddFeedDialog();
-            AddFeedDialog dialog = new AddFeedDialog("prova","cazzo",true);
+            AddFeedDialog dialog = new AddFeedDialog(ServiceUrl,Password);
             dialog.ShowDialog();
+
+            if (dialog.DialogResult == DialogResult.OK)
+            {
+                RssFeed feed = dialog.Feed;
+                AddRssToXMLConfig(feed.Title, feed.Url, feed.PauseDownload, feed.Category);
+                LoadConfig();
+                return;
+            }
+
+            dialog.Dispose();
+            return;
         }
 
 
