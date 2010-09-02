@@ -48,33 +48,37 @@
             this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
             this.button4 = new System.Windows.Forms.Button();
             this.Config = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.checkBoxStartMinimized = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.checkBoxCloseWhenAllDone = new System.Windows.Forms.CheckBox();
-            this.checkBoxAutoStartEmule = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.checkBoxAutoStartEmule = new System.Windows.Forms.CheckBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.PasswordTextBox = new System.Windows.Forms.TextBox();
             this.ServiceUrlTextBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.button3 = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.label4 = new System.Windows.Forms.Label();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.tabControl1.SuspendLayout();
             this.Log.SuspendLayout();
             this.Main.SuspendLayout();
             this.Config.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(25, 85);
+            this.button2.Location = new System.Drawing.Point(431, 61);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(95, 36);
             this.button2.TabIndex = 4;
@@ -84,7 +88,7 @@
             // 
             // ButtonSaveConfig
             // 
-            this.ButtonSaveConfig.Location = new System.Drawing.Point(126, 85);
+            this.ButtonSaveConfig.Location = new System.Drawing.Point(436, 413);
             this.ButtonSaveConfig.Name = "ButtonSaveConfig";
             this.ButtonSaveConfig.Size = new System.Drawing.Size(100, 36);
             this.ButtonSaveConfig.TabIndex = 14;
@@ -237,20 +241,9 @@
             // 
             // Config
             // 
-            this.Config.Controls.Add(this.checkBoxStartMinimized);
-            this.Config.Controls.Add(this.checkBox4);
-            this.Config.Controls.Add(this.checkBoxCloseWhenAllDone);
-            this.Config.Controls.Add(this.checkBoxAutoStartEmule);
-            this.Config.Controls.Add(this.label6);
-            this.Config.Controls.Add(this.textBox1);
-            this.Config.Controls.Add(this.label3);
-            this.Config.Controls.Add(this.label2);
+            this.Config.Controls.Add(this.groupBox2);
+            this.Config.Controls.Add(this.groupBox1);
             this.Config.Controls.Add(this.ButtonSaveConfig);
-            this.Config.Controls.Add(this.label1);
-            this.Config.Controls.Add(this.numericUpDown1);
-            this.Config.Controls.Add(this.PasswordTextBox);
-            this.Config.Controls.Add(this.ServiceUrlTextBox);
-            this.Config.Controls.Add(this.button2);
             this.Config.Location = new System.Drawing.Point(4, 22);
             this.Config.Name = "Config";
             this.Config.Size = new System.Drawing.Size(539, 452);
@@ -258,96 +251,72 @@
             this.Config.Text = "Config";
             this.Config.UseVisualStyleBackColor = true;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.checkBoxStartMinimized);
+            this.groupBox2.Controls.Add(this.checkBoxCloseWhenAllDone);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.checkBoxAutoStartEmule);
+            this.groupBox2.Controls.Add(this.textBox1);
+            this.groupBox2.Controls.Add(this.numericUpDown1);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Location = new System.Drawing.Point(5, 113);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(531, 115);
+            this.groupBox2.TabIndex = 33;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "General";
+            // 
             // checkBoxStartMinimized
             // 
             this.checkBoxStartMinimized.AutoSize = true;
-            this.checkBoxStartMinimized.Location = new System.Drawing.Point(25, 397);
+            this.checkBoxStartMinimized.Location = new System.Drawing.Point(9, 19);
             this.checkBoxStartMinimized.Name = "checkBoxStartMinimized";
             this.checkBoxStartMinimized.Size = new System.Drawing.Size(97, 17);
             this.checkBoxStartMinimized.TabIndex = 31;
             this.checkBoxStartMinimized.Text = "Start Minimized";
             this.checkBoxStartMinimized.UseVisualStyleBackColor = true;
             // 
-            // checkBox4
-            // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(19, 253);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(186, 17);
-            this.checkBox4.TabIndex = 30;
-            this.checkBox4.Text = "Close eMule if file added are done";
-            this.checkBox4.UseVisualStyleBackColor = true;
-            this.checkBox4.Visible = false;
-            // 
             // checkBoxCloseWhenAllDone
             // 
             this.checkBoxCloseWhenAllDone.AutoSize = true;
-            this.checkBoxCloseWhenAllDone.Location = new System.Drawing.Point(25, 420);
+            this.checkBoxCloseWhenAllDone.Location = new System.Drawing.Point(9, 42);
             this.checkBoxCloseWhenAllDone.Name = "checkBoxCloseWhenAllDone";
             this.checkBoxCloseWhenAllDone.Size = new System.Drawing.Size(142, 17);
             this.checkBoxCloseWhenAllDone.TabIndex = 29;
             this.checkBoxCloseWhenAllDone.Text = "Close eMule if all is done";
             this.checkBoxCloseWhenAllDone.UseVisualStyleBackColor = true;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 91);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(79, 13);
+            this.label6.TabIndex = 27;
+            this.label6.Text = "eMule Exeguile";
+            // 
             // checkBoxAutoStartEmule
             // 
             this.checkBoxAutoStartEmule.AutoSize = true;
-            this.checkBoxAutoStartEmule.Location = new System.Drawing.Point(19, 207);
+            this.checkBoxAutoStartEmule.Location = new System.Drawing.Point(9, 65);
             this.checkBoxAutoStartEmule.Name = "checkBoxAutoStartEmule";
             this.checkBoxAutoStartEmule.Size = new System.Drawing.Size(116, 17);
             this.checkBoxAutoStartEmule.TabIndex = 28;
             this.checkBoxAutoStartEmule.Text = "Start Emule if close";
             this.checkBoxAutoStartEmule.UseVisualStyleBackColor = true;
-            this.checkBoxAutoStartEmule.Visible = false;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(16, 184);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(79, 13);
-            this.label6.TabIndex = 27;
-            this.label6.Text = "eMule Exeguile";
-            this.label6.Visible = false;
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(101, 181);
+            this.textBox1.Location = new System.Drawing.Point(90, 88);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(435, 20);
             this.textBox1.TabIndex = 26;
-            this.textBox1.Visible = false;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(22, 59);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(93, 13);
-            this.label3.TabIndex = 25;
-            this.label3.Text = "Interval Time [min]";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(22, 36);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 13);
-            this.label2.TabIndex = 24;
-            this.label2.Text = "Password";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(22, 14);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(91, 13);
-            this.label1.TabIndex = 23;
-            this.label1.Text = "Emule Service Url";
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(119, 59);
+            this.numericUpDown1.Location = new System.Drawing.Point(405, 17);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             720,
             0,
@@ -367,9 +336,32 @@
             0,
             0});
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(303, 19);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(93, 13);
+            this.label3.TabIndex = 25;
+            this.label3.Text = "Interval Time [min]";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.PasswordTextBox);
+            this.groupBox1.Controls.Add(this.ServiceUrlTextBox);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.button2);
+            this.groupBox1.Location = new System.Drawing.Point(5, 3);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(531, 104);
+            this.groupBox1.TabIndex = 32;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Network";
+            // 
             // PasswordTextBox
             // 
-            this.PasswordTextBox.Location = new System.Drawing.Point(119, 33);
+            this.PasswordTextBox.Location = new System.Drawing.Point(108, 35);
             this.PasswordTextBox.Name = "PasswordTextBox";
             this.PasswordTextBox.Size = new System.Drawing.Size(417, 20);
             this.PasswordTextBox.TabIndex = 21;
@@ -377,32 +369,41 @@
             // 
             // ServiceUrlTextBox
             // 
-            this.ServiceUrlTextBox.Location = new System.Drawing.Point(119, 11);
+            this.ServiceUrlTextBox.Location = new System.Drawing.Point(108, 9);
             this.ServiceUrlTextBox.Name = "ServiceUrlTextBox";
             this.ServiceUrlTextBox.Size = new System.Drawing.Size(417, 20);
             this.ServiceUrlTextBox.TabIndex = 20;
             this.ServiceUrlTextBox.TextChanged += new System.EventHandler(this.ServiceUrlTextBox_TextChanged);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(91, 13);
+            this.label1.TabIndex = 23;
+            this.label1.Text = "Emule Service Url";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 39);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(53, 13);
+            this.label2.TabIndex = 24;
+            this.label2.Text = "Password";
+            // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.button3);
+            this.tabPage1.Controls.Add(this.linkLabel1);
+            this.tabPage1.Controls.Add(this.label4);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(539, 452);
             this.tabPage1.TabIndex = 3;
-            this.tabPage1.Text = "Test Area";
+            this.tabPage1.Text = "About";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(6, 6);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 20;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
             // backgroundWorker1
             // 
@@ -414,6 +415,25 @@
             this.timer2.Enabled = true;
             this.timer2.Interval = 1000;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(123, 16);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(166, 13);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "TvUnderground Downloader 0.03";
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(123, 42);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(38, 13);
+            this.linkLabel1.TabIndex = 1;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "http://";
             // 
             // Form1
             // 
@@ -430,9 +450,13 @@
             this.Log.PerformLayout();
             this.Main.ResumeLayout(false);
             this.Config.ResumeLayout(false);
-            this.Config.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -468,14 +492,16 @@
         private System.Windows.Forms.CheckBox checkBoxAutoStartEmule;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.CheckBox checkBoxCloseWhenAllDone;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox checkBoxStartMinimized;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }
 

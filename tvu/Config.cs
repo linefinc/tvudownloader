@@ -15,6 +15,7 @@ namespace tvu
         public bool CloseWhenAllDone { get; set; }
         public bool AutoStartEmule { get; set; }
         public List<RssFeed> RssFeedList { get; set; }
+        public string eMuleExe { get; set; }
 
         public Config()
         {
@@ -61,6 +62,10 @@ namespace tvu
             textWritter.WriteString(CloseWhenAllDone.ToString());
             textWritter.WriteEndElement();
 
+            textWritter.WriteStartElement("eMuleExe");
+            textWritter.WriteString(eMuleExe);
+            textWritter.WriteEndElement();
+            
             textWritter.WriteStartElement("RSSChannel");
         
 
@@ -118,6 +123,8 @@ namespace tvu
 
             AutoStartEmule = (bool)Convert.ToBoolean(ReadString(xDoc, "AutoStartEmule", "false"));
 
+            Password = ReadString(xDoc, "eMuleExe", "");
+            
             //
             //  Load Channel
             //

@@ -392,63 +392,12 @@ namespace tvu
 
         private void ButtonSaveConfig_Click(object sender, EventArgs e)
         {
+            MainConfig.AutoStartEmule = checkBoxAutoStartEmule.Checked;
             MainConfig.StartMinimized = checkBoxStartMinimized.Checked;
             MainConfig.CloseWhenAllDone = checkBoxCloseWhenAllDone.Checked;
             MainConfig.Save();
         }
 
-
-        private void SaveConfiguration(string ServiceUrl, string ServicePassword, int IntervalTime)
-        {
-            XmlDocument xmlDoc = new XmlDocument();
-
-            xmlDoc.Load("Config.xml");
-
-            XmlNodeList temp = xmlDoc.GetElementsByTagName("Password");
-            temp[0].FirstChild.Value = ServicePassword;
-
-            temp = xmlDoc.GetElementsByTagName("ServiceUrl");
-            temp[0].FirstChild.Value = ServiceUrl;
-
-            temp = xmlDoc.GetElementsByTagName("IntervalTime");
-            temp[0].FirstChild.Value = IntervalTime.ToString();
-
-            temp = xmlDoc.GetElementsByTagName("StartMinimized");
-            if (checkBoxStartMinimized.Checked == true)
-            {
-                temp[0].FirstChild.Value = "true";
-            }
-            else
-            {
-                temp[0].FirstChild.Value = "false";
-            }
-
-            temp = xmlDoc.GetElementsByTagName("CloseWhenAllDone");
-            if (checkBoxCloseWhenAllDone.Checked == true)
-            {
-                temp[0].FirstChild.Value = "true";
-            }
-            else
-            {
-                temp[0].FirstChild.Value = "false";
-            }
-
-            temp = xmlDoc.GetElementsByTagName("AutoStartEmule");
-            if (checkBoxAutoStartEmule.Checked == true)
-            {
-                temp[0].FirstChild.Value = "true";
-            }
-            else
-            {
-                temp[0].FirstChild.Value = "false";
-            }
-
-            xmlDoc.Save("Config.xml");
-
-            
-
-
-        }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
@@ -488,17 +437,16 @@ namespace tvu
             }
             
             // from msdn guide http://msdn.microsoft.com/en-us/library/ms171728%28VS.90%29.aspx
-            if (this.textBox1.InvokeRequired)
+            if (this.LogTextBox.InvokeRequired)
             {
                 // It's on a different thread, so use Invoke.
                 SetTextCallback d = new SetTextCallback(AppendText);
-                this.Invoke
-                    (d, new object[] { text });
+                this.Invoke(d, new object[] { text });
             }
             else
             {
                 // It's on the same thread, no need for Invoke
-                this.textBox1.Text = text;
+                this.LogTextBox.Text += text;
             }
         }
 
@@ -549,7 +497,7 @@ namespace tvu
 
             }
 
-            if ((myList.Count == 0)^(checkBoxCloseWhenAllDone.Checked == false))
+            if ((myList.Count == 0)&(MainConfig.CloseWhenAllDone == false))
             {
                 // nothing to download
                 return;
@@ -563,22 +511,25 @@ namespace tvu
             eMuleWebManager Service = new eMuleWebManager(sUrl, sPass);
             bool? rc = Service.LogIn();
 
-
-            if (rc == null) 
+            // try to start emule
+            // the if work only if rc == null
+            for (int i = 0; (i < 5) & (rc == null); i++)
             {
-                //if (checkBoxAutoStartEmule.Checked == true)
-                //{
-                //    Process.Start(textBox1.Text);
-                //    AppendLogMessage(string.Format("Found new file {0} \n", parser.GetFileName()));
-                //    return;
-                //}
-                //else
-                //{
-                    AppendLogMessage("Unable to connect to eMule web server" );
-                    return;
-                //}
+                AppendLogMessage(string.Format("start eMule Now (try {0}/5)", i));
+                AppendLogMessage("Wait 60 sec");
                 
+                //Process.Start(textBox1.Text);
+                Thread.Sleep(5000);
+                rc = Service.LogIn();
+
             }
+
+            if(rc==null)
+            {
+                  AppendLogMessage("Unable to connect to eMule web server" );
+                  return;
+            }
+
 
             //
             // Auto close
@@ -875,6 +826,11 @@ namespace tvu
             
 
 
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            MainConfig.eMuleExe = textBox1.Text;
         }
 
 
