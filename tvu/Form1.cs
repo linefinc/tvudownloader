@@ -24,6 +24,9 @@ namespace tvu
         public int IntervalTime;
         private bool StartMinimized;
 
+        private bool mVisible; 
+        private bool mAllowClose;
+
         private Icon IconUp;
         private Icon IconDown;
 
@@ -59,10 +62,15 @@ namespace tvu
             InitializeComponent();
             InitConfig();
             LoadConfig();
-
             SetupNotify();
 
             DateTime2 = DateTime.Now;
+
+            mVisible = true;
+            if (StartMinimized == true)
+            {
+                mVisible = false;
+            }
 
         }
 
@@ -98,6 +106,7 @@ namespace tvu
 
             // Create the NotifyIcon.
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            notifyIcon1.MouseDown += notifyIcon1_MouseDown; // add event
 
             // The Icon property sets the icon that will appear
             // in the systray for this application.
@@ -120,14 +129,13 @@ namespace tvu
         {
             if (this.Visible == true)
             {
-                this.Hide();
-                this.contextMenu1.MenuItems[1].Text = "Show";
-                
+                mVisible = false;
+                this.Visible = false;
             }
             else
             {
-                this.Show();
-                this.contextMenu1.MenuItems[1].Text = "Hide";
+                mVisible = true;
+                this.Visible = true;
             }
 
         }
@@ -151,8 +159,11 @@ namespace tvu
 
         private void menu_Exit(object Sender, EventArgs e)
         {
-            // Close the form, which closes the application.
+            mVisible = true;
+            this.Visible = true;
+            mAllowClose = true;
             this.Close();
+            
         }
 
         private void LoadConfig()
@@ -238,27 +249,9 @@ namespace tvu
 
                 listView1.Items.Add(item1);
 
-
-
-
             }
         
         }
-
-
-  
-
-        static void DoWork(object Url, object pass, object DataIn)
-        {
-           
-
-
-
-
-
-        }
-
-
 
         private string findEd2kLink(string text)
         {
@@ -847,24 +840,6 @@ namespace tvu
             return;
         }
 
-
-        void Form1_VisibleChanged(object sender, System.EventArgs e)
-        {
-
-            //if (HideWindows == true)
-            //{
-            //    notifyIcon1.Icon = IconDown;
-            //    this.contextMenu1.MenuItems[1].Text = "Show";
-            //    Visible = false; // inhibit the minimizing animation
-            //}
-            //else
-            //{
-            //    notifyIcon1.Icon = IconUp;
-            //    this.contextMenu1.MenuItems[1].Text = "Hide";
-            //    Visible = true; // inhibit the minimizing animation
-            //}
-        }
-
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             DownloadNow();
@@ -879,13 +854,61 @@ namespace tvu
             CheckButton.Enabled = true;
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            DownloadNow();
+        }
 
+        
 
+        protected override void SetVisibleCore(bool value)
+        {
+            // MSDN http://social.msdn.microsoft.com/forums/en-US/csharpgeneral/thread/eab563c3-37d0-4ebd-a086-b9ea7bb03fed
+            if (!mVisible) 
+                value = false;         // Prevent form getting visible
+            base.SetVisibleCore(value);
+        }
 
+        void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // MSDN http://social.msdn.microsoft.com/forums/en-US/csharpgeneral/thread/eab563c3-37d0-4ebd-a086-b9ea7bb03fed
+            if (!mAllowClose)
+            {                   // Hide when user clicks X
+                mVisible = false;
+                this.Visible = false;
+                e.Cancel = true;
+            }
+            else
+            {
+                notifyIcon1.Visible = false;      // Avoid ghost
+            }
+        }
 
+        void notifyIcon1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (this.Visible == true)
+            {
+                this.contextMenu1.MenuItems[1].Text = "Hide";
+            }
+            else
+            {
+                this.contextMenu1.MenuItems[1].Text = "Show";
+            }
 
-   
-
+            if ((e.Clicks == 2) & (e.Button == MouseButtons.Left))
+            {
+                if (this.Visible == true)
+                {
+                    mVisible = false;
+                    this.Visible = false;
+                }
+                else
+                {
+                    mVisible = true;
+                    this.Visible = true;
+                }
+            }
+        }
 
     }
 

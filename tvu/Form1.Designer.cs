@@ -393,7 +393,8 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "TvUnderground Downloader 0.02";
-            this.VisibleChanged += new System.EventHandler(this.Form1_VisibleChanged);
+            this.Load += new System.EventHandler(this.Form1_Load);
+            this.FormClosing += Form1_FormClosing;
             this.tabControl1.ResumeLayout(false);
             this.Log.ResumeLayout(false);
             this.Log.PerformLayout();
