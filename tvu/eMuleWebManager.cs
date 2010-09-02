@@ -21,6 +21,29 @@ namespace tvu
             this.CategoryCache = new List<string>();
         }
 
+        public List<string> GetActualDownloads()
+        {
+            List<string> ListDownloads = new List<string>();
+
+            string temp = string.Format("{0}/?ses={1}&w=transfer", Host, SesID);
+            temp = DownloadPage(temp);
+
+            int p = temp.IndexOf("ed2k://");
+            int m = temp.IndexOf("'", p + 5);
+            while(p != -1)
+            {
+
+                string link = temp.Substring(p, m - p);
+                ListDownloads.Add(link);
+                p = temp.IndexOf("ed2k://", m + 1);
+                m = temp.IndexOf("'", p + 5);
+            }
+            
+            return ListDownloads;
+        }
+
+        
+
         public List<string> GetCategory(bool forceUpdate)
         {
             if ((this.CategoryCache.Count > 0) ^ (forceUpdate == false))
@@ -101,6 +124,12 @@ namespace tvu
         public void LogOut()
         {
             string temp = string.Format("{0}/?ses={1}&w=logout", Host, SesID);
+            DownloadPage(temp);
+        }
+
+        public void Close()
+        {
+            string temp = string.Format("{0}/?ses={1}&w=close", Host, SesID);
             DownloadPage(temp);
         }
 

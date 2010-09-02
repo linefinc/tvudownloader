@@ -50,8 +50,8 @@
             this.Config = new System.Windows.Forms.TabPage();
             this.checkBoxStartMinimized = new System.Windows.Forms.CheckBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBoxCloseWhenAllDone = new System.Windows.Forms.CheckBox();
+            this.checkBoxAutoStartEmule = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -60,6 +60,8 @@
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.PasswordTextBox = new System.Windows.Forms.TextBox();
             this.ServiceUrlTextBox = new System.Windows.Forms.TextBox();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.button3 = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.tabControl1.SuspendLayout();
@@ -67,6 +69,7 @@
             this.Main.SuspendLayout();
             this.Config.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // button2
@@ -100,6 +103,7 @@
             this.tabControl1.Controls.Add(this.Log);
             this.tabControl1.Controls.Add(this.Main);
             this.tabControl1.Controls.Add(this.Config);
+            this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -235,8 +239,8 @@
             // 
             this.Config.Controls.Add(this.checkBoxStartMinimized);
             this.Config.Controls.Add(this.checkBox4);
-            this.Config.Controls.Add(this.checkBox3);
-            this.Config.Controls.Add(this.checkBox2);
+            this.Config.Controls.Add(this.checkBoxCloseWhenAllDone);
+            this.Config.Controls.Add(this.checkBoxAutoStartEmule);
             this.Config.Controls.Add(this.label6);
             this.Config.Controls.Add(this.textBox1);
             this.Config.Controls.Add(this.label3);
@@ -275,27 +279,26 @@
             this.checkBox4.UseVisualStyleBackColor = true;
             this.checkBox4.Visible = false;
             // 
-            // checkBox3
+            // checkBoxCloseWhenAllDone
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(19, 230);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(142, 17);
-            this.checkBox3.TabIndex = 29;
-            this.checkBox3.Text = "Close eMule if all is done";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            this.checkBox3.Visible = false;
+            this.checkBoxCloseWhenAllDone.AutoSize = true;
+            this.checkBoxCloseWhenAllDone.Location = new System.Drawing.Point(19, 230);
+            this.checkBoxCloseWhenAllDone.Name = "checkBoxCloseWhenAllDone";
+            this.checkBoxCloseWhenAllDone.Size = new System.Drawing.Size(142, 17);
+            this.checkBoxCloseWhenAllDone.TabIndex = 29;
+            this.checkBoxCloseWhenAllDone.Text = "Close eMule if all is done";
+            this.checkBoxCloseWhenAllDone.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // checkBoxAutoStartEmule
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(19, 207);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(116, 17);
-            this.checkBox2.TabIndex = 28;
-            this.checkBox2.Text = "Start Emule if close";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            this.checkBox2.Visible = false;
+            this.checkBoxAutoStartEmule.AutoSize = true;
+            this.checkBoxAutoStartEmule.Location = new System.Drawing.Point(19, 207);
+            this.checkBoxAutoStartEmule.Name = "checkBoxAutoStartEmule";
+            this.checkBoxAutoStartEmule.Size = new System.Drawing.Size(116, 17);
+            this.checkBoxAutoStartEmule.TabIndex = 28;
+            this.checkBoxAutoStartEmule.Text = "Start Emule if close";
+            this.checkBoxAutoStartEmule.UseVisualStyleBackColor = true;
+            this.checkBoxAutoStartEmule.Visible = false;
             // 
             // label6
             // 
@@ -380,6 +383,27 @@
             this.ServiceUrlTextBox.TabIndex = 20;
             this.ServiceUrlTextBox.TextChanged += new System.EventHandler(this.ServiceUrlTextBox_TextChanged);
             // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.button3);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(539, 452);
+            this.tabPage1.TabIndex = 3;
+            this.tabPage1.Text = "Test Area";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(6, 6);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 20;
+            this.button3.Text = "button3";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click_1);
+            // 
             // backgroundWorker1
             // 
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
@@ -408,6 +432,7 @@
             this.Config.ResumeLayout(false);
             this.Config.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            this.tabPage1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -440,15 +465,17 @@
         private System.Windows.Forms.Button CheckButton;
         private System.Windows.Forms.ListView listView2;
         private System.Windows.Forms.ColumnHeader columnHeader5;
-        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox checkBoxAutoStartEmule;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox checkBoxCloseWhenAllDone;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox checkBoxStartMinimized;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.Button button3;
     }
 }
 

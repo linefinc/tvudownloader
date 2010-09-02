@@ -188,7 +188,15 @@ namespace tvu
             XmlNodeList StartMinimizedNode = xDoc.GetElementsByTagName("StartMinimized");
             StartMinimized = (bool)Convert.ToBoolean(StartMinimizedNode[0].InnerText);
             checkBoxStartMinimized.Checked = StartMinimized;
-            
+
+            XmlNodeList CloseWhenAllDoneNode = xDoc.GetElementsByTagName("CloseWhenAllDone");
+            bool CloseWhenAllDone = (bool)Convert.ToBoolean(StartMinimizedNode[0].InnerText);
+            checkBoxCloseWhenAllDone.Checked = CloseWhenAllDone;
+
+            XmlNodeList AutoStartEmuleNode = xDoc.GetElementsByTagName("AutoStartEmule");
+            bool AutoStartEmule = (bool)Convert.ToBoolean(StartMinimizedNode[0].InnerText);
+            //checkBoxCloseWhenAllDone.Checked = CloseWhenAllDone;
+
             numericUpDown1.Value = IntervalTime;           
 
             XmlNodeList Channels = xDoc.GetElementsByTagName("Channel");
@@ -426,6 +434,15 @@ namespace tvu
                 textWritter.WriteStartElement("StartMinimized");
                 textWritter.WriteString("false");
                 textWritter.WriteEndElement();
+
+                textWritter.WriteStartElement("AutoStartEmule");
+                textWritter.WriteString("false");
+                textWritter.WriteEndElement();
+
+                textWritter.WriteStartElement("CloseWhenAllDone");
+                textWritter.WriteString("false");
+                textWritter.WriteEndElement();
+                
                 textWritter.WriteStartElement("RSSChannel");
                 textWritter.WriteEndElement();
 
@@ -522,6 +539,26 @@ namespace tvu
 
             temp = xmlDoc.GetElementsByTagName("StartMinimized");
             if (checkBoxStartMinimized.Checked == true)
+            {
+                temp[0].FirstChild.Value = "true";
+            }
+            else
+            {
+                temp[0].FirstChild.Value = "false";
+            }
+
+            temp = xmlDoc.GetElementsByTagName("CloseWhenAllDone");
+            if (checkBoxCloseWhenAllDone.Checked == true)
+            {
+                temp[0].FirstChild.Value = "true";
+            }
+            else
+            {
+                temp[0].FirstChild.Value = "false";
+            }
+
+            temp = xmlDoc.GetElementsByTagName("AutoStartEmule");
+            if (checkBoxAutoStartEmule.Checked == true)
             {
                 temp[0].FirstChild.Value = "true";
             }
@@ -636,7 +673,7 @@ namespace tvu
 
             }
 
-            if (myList.Count == 0)
+            if ((myList.Count == 0)^(checkBoxCloseWhenAllDone.Checked == false))
             {
                 // nothing to download
                 return;
@@ -653,7 +690,7 @@ namespace tvu
 
             if (rc == null) 
             {
-                if (checkBox2.Checked == true)
+                if (checkBoxAutoStartEmule.Checked == true)
                 {
                     Process.Start(textBox1.Text);
                     LogTextBox.AppendText("Start eMule app" + Environment.NewLine);
@@ -667,6 +704,21 @@ namespace tvu
                 
             }
 
+            //
+            // Auto close
+            //
+            if ((myList.Count == 0) ^ (checkBoxCloseWhenAllDone.Checked == false))
+            {
+                List<string> ActualDownloads = Service.GetActualDownloads();
+                if (ActualDownloads.Count == 0)
+                {
+                    Service.Close();
+                }
+                return;
+            }
+            //
+            //  Download file 
+            // 
 
             Service.GetCategory(true);  // force upgrade category list 
 
@@ -792,7 +844,7 @@ namespace tvu
         {
             CheckButton.Enabled = false;
             menuItemCheckNow.Enabled = false;
-            backgroundWorker1.RunWorkerAsync(LogTextBox);
+            backgroundWorker1.RunWorkerAsync();
   
         }
 
@@ -916,6 +968,30 @@ namespace tvu
                 this.Visible = false;
             }
             CheckNow();
+
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            // for future separation in thread
+            string sUrl = ServiceUrlTextBox.Text;
+            string sPass = PasswordTextBox.Text;
+
+
+            eMuleWebManager Service = new eMuleWebManager(sUrl, sPass);
+            bool? rc = Service.LogIn();
+
+
+            if (rc == null)
+            {
+                return;
+            }
+
+            List<string> temp = Service.GetActualDownloads();
+            if (temp.Count < 10)
+            {
+                Service.Close();
+            }
 
         }
 
