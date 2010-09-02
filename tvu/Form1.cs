@@ -23,7 +23,6 @@ namespace tvu
         private string ServiceUrl;
         public int IntervalTime;
         private bool StartMinimized;
-        
 
         private Icon IconUp;
         private Icon IconDown;
@@ -33,6 +32,8 @@ namespace tvu
         private System.Windows.Forms.MenuItem menuItemCheckNow;
         private System.Windows.Forms.MenuItem menuItemHide;
         private System.Windows.Forms.MenuItem menuItemExit;
+
+        delegate void SetTextCallback(string text);
 
         private DateTime DateTime2;
 
@@ -62,7 +63,6 @@ namespace tvu
             SetupNotify();
 
             DateTime2 = DateTime.Now;
-
 
         }
 
@@ -363,30 +363,6 @@ namespace tvu
             xmlDoc.Save("History.xml");
         }
 
-        public static int CompareEd2k(string linkA, string linkB)
-        {
-            // if the link is not a ed2k file link return
-            int i,j;
-
-            string HashA, HashB, SizeA, SizeB;
-            i = linkA.IndexOf("|", "ed2k://|file|".Length + 1);
-            j = linkA.IndexOf("|", i + 1);
-            SizeA = linkA.Substring(i + 1, j - i -1);
-            HashA = linkA.Substring(j + 1, 32);// 32 is the size of md4
-
-            i = linkB.IndexOf("|", "ed2k://|file|".Length + 1);
-            j = linkB.IndexOf("|", i + 1);
-            SizeB = linkB.Substring(i + 1, j - i - 1);
-            HashB = linkB.Substring(j + 1, 32);// 32 is the size of md4
-
-            if (SizeA != SizeB)
-                return -1;
-
-            if (HashA != HashB)
-                return -1;
-
-            return 0;
-        }
 
         public static bool ExistInHistoryByEd2k(string ed2k)
         {
@@ -601,38 +577,63 @@ namespace tvu
 
         }
 
-        private void  DownloadNow()
+
+
+
+        private void AppendText(string text)
+        {
+            this.LogTextBox.Text += text;
+        }
+
+        private void AppendLogMessage(string text)
+        {
+            // from msdn guide http://msdn.microsoft.com/en-us/library/ms171728%28VS.90%29.aspx
+            
+            if (this.textBox1.InvokeRequired)
+            {
+                // It's on a different thread, so use Invoke.
+                SetTextCallback d = new SetTextCallback(AppendText);
+                this.Invoke
+                    (d, new object[] { text });
+            }
+            else
+            {
+                // It's on the same thread, no need for Invoke
+                this.textBox1.Text = text;
+            }
+        }
+
+        private void DownloadNow()
         {
             
             List<sDonwloadFile> myList = new List<sDonwloadFile>();
 
-            LogTextBox.Clear();
+                
             foreach (RssFeed feed in RssFeedList)
             {
-                LogTextBox.AppendText("Read RSS " + feed.Url + Environment.NewLine);
                 
+                AppendLogMessage("Read RSS " + feed.Url + Environment.NewLine );
+    
                 XmlDocument doc = new XmlDocument();
                 doc.Load(feed.Url);
 
                 XmlNodeList elemList = doc.GetElementsByTagName("guid");
-
-                
-
                 
                 for (int i = 0; i < elemList.Count; i++)
                 {
                     string FeedLink = elemList[i].InnerXml;
 
                     FeedLink = FeedLink.Replace("&amp;", "&");
+                    //AppendLogMessage(string.Format("Process feed {0} \n", FeedLink));
 
                     if (ExistInHistoryByFeedLink(FeedLink) == false)
                     {
-
-                        LogTextBox.AppendText(string.Format("Process feed {0} \n", FeedLink));
                         string page = eMuleWebManager.DownloadPage(elemList[i].InnerXml);
                         string sEd2k = findEd2kLink(page);
 
-                        LogTextBox.AppendText(string.Format("Found new file {0} \n", sEd2k));
+                        Ed2kParser parser = new Ed2kParser(sEd2k);
+                        AppendLogMessage(string.Format("Found new file {0} \n", parser.GetFileName()) + Environment.NewLine);
+
                         sDonwloadFile DL = new sDonwloadFile();
                         DL.FeedSource = feed.Url;
                         DL.FeedLink = FeedLink;
@@ -651,13 +652,12 @@ namespace tvu
             {
                 // nothing to download
                 return;
-
             }
 
             // for future separation in thread
             string sUrl = ServiceUrlTextBox.Text;
             string sPass = PasswordTextBox.Text;
-            //List<string> sList = lEd2kList;
+            
 
             eMuleWebManager Service = new eMuleWebManager(sUrl, sPass);
             bool? rc = Service.LogIn();
@@ -698,6 +698,8 @@ namespace tvu
                         Service.StartDownload(ed2klink);
                     }
                     AddToXmlHostory(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);
+                    Ed2kParser parser = new Ed2kParser(DownloadFile.Ed2kLink);
+                    AppendLogMessage(string.Format("Add file to emule {0} \n", parser.GetFileName()) + Environment.NewLine);
                 }
              }
             Service.LogOut();
@@ -791,8 +793,6 @@ namespace tvu
         private void ClearButton_Click(object sender, EventArgs e)
         {
             LogTextBox.Clear();
-         
-
         }
 
         private void CheckButton_Click(object sender, EventArgs e)
@@ -804,9 +804,8 @@ namespace tvu
         {
             CheckButton.Enabled = false;
             menuItemCheckNow.Enabled = false;
-            DownloadNow();
-            menuItemCheckNow.Enabled = true;
-            CheckButton.Enabled = true;
+            backgroundWorker1.RunWorkerAsync(LogTextBox);
+  
         }
 
         public static string GetUserAppDataPath()
@@ -866,7 +865,19 @@ namespace tvu
             //}
         }
 
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            DownloadNow();
+        }
 
+        /// <summary>
+        /// This is on the main thread, so we can update a TextBox or anything.
+        /// </summary>
+        private void backgroundWorker1_RunWorkerCompleted(object sender,RunWorkerCompletedEventArgs e)
+        {
+            menuItemCheckNow.Enabled = true;
+            CheckButton.Enabled = true;
+        }
 
 
 
