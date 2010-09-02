@@ -6,10 +6,10 @@ namespace tvu
 {
     public class RssFeed
     {
-        public string Title;
-        public string Url;
-        public string Category;
-        public bool PauseDownload;
-        public string LastUpgradeData;
+        public string Title = "";
+        public string Url = "";
+        public string Category = "";
+        public bool PauseDownload = false;
+        public string LastUpgradeData = "";
     }
 }

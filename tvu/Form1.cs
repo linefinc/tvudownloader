@@ -19,13 +19,8 @@ namespace tvu
 {
     public partial class Form1 : Form
     {
-        private string Password;
-        private string ServiceUrl;
-        public int IntervalTime;
-        private bool StartMinimized;
-
         private bool mVisible = true; 
-        private bool mAllowClose;
+        private bool mAllowClose = false;
 
         private Icon IconUp;
         private Icon IconDown;
@@ -35,6 +30,8 @@ namespace tvu
         private System.Windows.Forms.MenuItem menuItemCheckNow;
         private System.Windows.Forms.MenuItem menuItemHide;
         private System.Windows.Forms.MenuItem menuItemExit;
+
+        public Config MainConfig;
 
         delegate void SetTextCallback(string text);
 
@@ -51,13 +48,14 @@ namespace tvu
         };
 
 
-        public List<RssFeed> RssFeedList;
+
         
         public Form1()
         {
 
-
-            RssFeedList = new List<RssFeed>();
+            MainConfig = new Config();
+            MainConfig.Load();
+            
             
             InitializeComponent();
             InitConfig();
@@ -67,6 +65,8 @@ namespace tvu
             DateTime2 = DateTime.Now;
 
         }
+
+        
 
 
         private void SetupNotify()
@@ -168,89 +168,21 @@ namespace tvu
                 listView1.Items.Remove(listView1.Items[0]);
             }
 
-            RssFeedList.Clear();
-        
-            XmlDocument xDoc = new XmlDocument(); 
-            xDoc.Load("config.xml");
+            MainConfig.Load();     
 
-            XmlNodeList ServiceUrlNode = xDoc.GetElementsByTagName("ServiceUrl");
-            ServiceUrl = ServiceUrlNode[0].InnerText;
-            ServiceUrlTextBox.Text = ServiceUrl;
+            ServiceUrlTextBox.Text = MainConfig.ServiceUrl;
+            PasswordTextBox.Text = MainConfig.Password;
+            numericUpDown1.Value = MainConfig.IntervalTime;
+            checkBoxStartMinimized.Checked = MainConfig.StartMinimized;
+            checkBoxCloseWhenAllDone.Checked = MainConfig.CloseWhenAllDone;
 
-            XmlNodeList PasswordNode = xDoc.GetElementsByTagName("Password");
-            Password = PasswordNode[0].InnerText;
-            PasswordTextBox.Text = Password;
-
-            XmlNodeList IntervalTimeNode = xDoc.GetElementsByTagName("IntervalTime");
-            IntervalTime = (int)Convert.ToInt32(IntervalTimeNode[0].InnerText);
-            numericUpDown1.Value = IntervalTime;
-
-            XmlNodeList StartMinimizedNode = xDoc.GetElementsByTagName("StartMinimized");
-            StartMinimized = (bool)Convert.ToBoolean(StartMinimizedNode[0].InnerText);
-            checkBoxStartMinimized.Checked = StartMinimized;
-
-            XmlNodeList CloseWhenAllDoneNode = xDoc.GetElementsByTagName("CloseWhenAllDone");
-            bool CloseWhenAllDone = (bool)Convert.ToBoolean(StartMinimizedNode[0].InnerText);
-            checkBoxCloseWhenAllDone.Checked = CloseWhenAllDone;
-
-            XmlNodeList AutoStartEmuleNode = xDoc.GetElementsByTagName("AutoStartEmule");
-            bool AutoStartEmule = (bool)Convert.ToBoolean(StartMinimizedNode[0].InnerText);
-            //checkBoxCloseWhenAllDone.Checked = CloseWhenAllDone;
-
-            numericUpDown1.Value = IntervalTime;           
-
-            XmlNodeList Channels = xDoc.GetElementsByTagName("Channel");
-
-
-
-            for (int i = 0; i < Channels.Count; i++)
-            {
-
-
-                XmlNodeList child = Channels[i].ChildNodes;
-                RssFeed newfeed = new RssFeed();
-                foreach (XmlNode t in child)
-                {
-
-
-                    if (t.Name == "Title")
-                    {
-                        newfeed.Title = t.FirstChild.Value;
-                    }
-
-                    if(t.Name=="Url")
-                    {
-                            newfeed.Url = t.FirstChild.Value;
-                    }
-
-                    if (t.Name == "Pause")
-                    {
-                        newfeed.PauseDownload = Convert.ToBoolean(t.FirstChild.Value);
-                    }
-
-                    if (t.Name == "Category")
-                    {
-                        newfeed.Category = t.FirstChild.Value;
-                    }
-
-                    
-                }
-
-                RssFeedList.Add(newfeed);
-                
-                
-
-            }
-
-            foreach (RssFeed t in RssFeedList)
+            foreach (RssFeed t in MainConfig.RssFeedList)
             {
                 ListViewItem item1 = new ListViewItem(t.Title);
                 item1.SubItems.Add(t.Category.ToString());
                 item1.SubItems.Add(t.PauseDownload.ToString());
                 item1.SubItems.Add(t.Url);
-
                 listView1.Items.Add(item1);
-
             }
         
         }
@@ -299,7 +231,7 @@ namespace tvu
 
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
-            ServiceUrl = ServiceUrlTextBox.Text;
+            MainConfig.ServiceUrl = ServiceUrlTextBox.Text;
         }
 
 
@@ -451,74 +383,18 @@ namespace tvu
 
         }
 
-        public void AddRssToXMLConfig(string Title, string url, bool DonwloadInPause, string Category)
-        {
-            XmlDocument xmlDoc = new XmlDocument();
-
-            xmlDoc.Load("Config.xml");
-
-            //Item
-            XmlElement ChannelElementItem = xmlDoc.CreateElement("Channel");
-            XmlElement TitleElementItem = xmlDoc.CreateElement("Title");
-            XmlElement UrlElementItem = xmlDoc.CreateElement("Url");
-            XmlElement PauseElementItem = xmlDoc.CreateElement("Pause");
-            XmlElement CategoryElementItem = xmlDoc.CreateElement("Category");
-
-            XmlText TitleXmlText = xmlDoc.CreateTextNode(Title);
-            XmlText UrlXmlText = xmlDoc.CreateTextNode(url);
-            XmlText PauseXmlText = xmlDoc.CreateTextNode(DonwloadInPause.ToString());
-            XmlText CategoryXmlText = xmlDoc.CreateTextNode(Category);
-
-            TitleElementItem.AppendChild(TitleXmlText);
-            UrlElementItem.AppendChild(UrlXmlText);
-            PauseElementItem.AppendChild(PauseXmlText);
-            CategoryElementItem.AppendChild(CategoryXmlText);
-
-            ChannelElementItem.AppendChild(TitleElementItem);
-            ChannelElementItem.AppendChild(UrlElementItem);
-            ChannelElementItem.AppendChild(PauseElementItem);
-            ChannelElementItem.AppendChild(CategoryElementItem);
-
-            XmlNodeList temp = xmlDoc.GetElementsByTagName("RSSChannel");
-
-            temp[0].AppendChild(ChannelElementItem);
-
-            xmlDoc.Save("Config.xml");
-
-        }
-
-        public void DeleteFromXMLConfig(string url)
-        {
-            XmlDocument xmlDoc = new XmlDocument();
-
-            xmlDoc.Load("Config.xml");
-
-            XmlNodeList temp = xmlDoc.GetElementsByTagName("Url");
-            foreach (XmlNode node in temp)
-            {
-                if (node.FirstChild.Value == url)
-                {
-                    XmlNode ParentChannel = node.ParentNode; // url -> channel
-                    XmlNode RSSChannel = ParentChannel.ParentNode; // url -> RSSChannel
-                    RSSChannel.RemoveChild(ParentChannel);
-                    xmlDoc.Save("Config.xml");
-                    return;
-
-                }
-
-            }
-            return;
-        }
-
-
+        
+    
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
-            Password = PasswordTextBox.Text;
+            MainConfig.Password = PasswordTextBox.Text;
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private void ButtonSaveConfig_Click(object sender, EventArgs e)
         {
-            SaveConfiguration(this.ServiceUrl, this.Password, (int) numericUpDown1.Value );
+            MainConfig.StartMinimized = checkBoxStartMinimized.Checked;
+            MainConfig.CloseWhenAllDone = checkBoxCloseWhenAllDone.Checked;
+            MainConfig.Save();
         }
 
 
@@ -634,10 +510,10 @@ namespace tvu
             List<sDonwloadFile> myList = new List<sDonwloadFile>();
 
                 
-            foreach (RssFeed feed in RssFeedList)
+            foreach (RssFeed feed in MainConfig.RssFeedList)
             {
                 
-                AppendLogMessage("Read RSS " + feed.Url + Environment.NewLine );
+                AppendLogMessage("Read RSS " + feed.Url);
     
                 XmlDocument doc = new XmlDocument();
                 doc.Load(feed.Url);
@@ -657,7 +533,7 @@ namespace tvu
                         string sEd2k = findEd2kLink(page);
 
                         Ed2kParser parser = new Ed2kParser(sEd2k);
-                        AppendLogMessage(string.Format("Found new file {0} \n", parser.GetFileName()) + Environment.NewLine);
+                        AppendLogMessage(string.Format("Found new file {0} \n", parser.GetFileName()));
 
                         sDonwloadFile DL = new sDonwloadFile();
                         DL.FeedSource = feed.Url;
@@ -690,17 +566,17 @@ namespace tvu
 
             if (rc == null) 
             {
-                if (checkBoxAutoStartEmule.Checked == true)
-                {
-                    Process.Start(textBox1.Text);
-                    LogTextBox.AppendText("Start eMule app" + Environment.NewLine);
+                //if (checkBoxAutoStartEmule.Checked == true)
+                //{
+                //    Process.Start(textBox1.Text);
+                //    AppendLogMessage(string.Format("Found new file {0} \n", parser.GetFileName()));
+                //    return;
+                //}
+                //else
+                //{
+                    AppendLogMessage("Unable to connect to eMule web server" );
                     return;
-                }
-                else
-                {
-                    LogTextBox.AppendText("Unable to connect to eMule web server" + Environment.NewLine);
-                    return;
-                }
+                //}
                 
             }
 
@@ -762,7 +638,7 @@ namespace tvu
 
             ListViewItem temp = listView1.SelectedItems[0];
             int i = listView1.Items.IndexOf(temp);
-            string feedUrl = RssFeedList[i].Url;
+            string feedUrl = MainConfig.RssFeedList[i].Url;
             
             XmlDocument doc = new XmlDocument();
             doc.Load("history.xml");
@@ -799,17 +675,26 @@ namespace tvu
 
             ListViewItem temp = listView1.SelectedItems[0];
             int i = listView1.Items.IndexOf(temp);
-            RssFeed feed = RssFeedList[i];
+            RssFeed feed = MainConfig.RssFeedList[i];
 
 
-            AddFeedDialog dialog = new AddFeedDialog(ServiceUrl, Password, feed);
+            AddFeedDialog dialog = new AddFeedDialog(MainConfig.ServiceUrl, MainConfig.Password, feed);
             dialog.ShowDialog();
 
             if (dialog.DialogResult == DialogResult.OK)
             {
                 feed = dialog.Feed;
-                DeleteFromXMLConfig(feed.Url);
-                AddRssToXMLConfig(feed.Title, feed.Url, feed.PauseDownload, feed.Category);
+
+                for (int j = 0; j < MainConfig.RssFeedList.Count; j++)
+                {
+                    if (MainConfig.RssFeedList[j].Url == feed.Url)
+                    {
+                        MainConfig.RssFeedList.Remove(MainConfig.RssFeedList[j]);
+                        break;
+                    }
+                }
+
+                MainConfig.RssFeedList.Add(feed);
                 LoadConfig();
                 dialog.Dispose();
                 return;
@@ -822,12 +707,12 @@ namespace tvu
 
         private void ServiceUrlTextBox_TextChanged(object sender, EventArgs e)
         {
-            ServiceUrl = ServiceUrlTextBox.Text;
+            MainConfig.ServiceUrl = ServiceUrlTextBox.Text;
         }
 
         private void PasswordTextBox_TextChanged(object sender, EventArgs e)
         {
-            Password = PasswordTextBox.Text;
+            MainConfig.Password = PasswordTextBox.Text;
         }
 
         private void ClearButton_Click(object sender, EventArgs e)
@@ -865,25 +750,29 @@ namespace tvu
 
             ListViewItem temp = listView1.SelectedItems[0];
             int i = listView1.Items.IndexOf(temp);
-            DeleteFromXMLConfig(RssFeedList[i].Url);
-            LoadConfig();
+
+            MainConfig.RssFeedList.Remove(MainConfig.RssFeedList[i]);
+            MainConfig.Save();
+            LoadConfig(); ///upgrade gui
+
+            
 
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AddFeedDialog dialog = new AddFeedDialog(ServiceUrl,Password);
+            AddFeedDialog dialog = new AddFeedDialog(MainConfig.ServiceUrl, MainConfig.Password);
             dialog.ShowDialog();
 
             if (dialog.DialogResult == DialogResult.OK)
             {
                 RssFeed feed = dialog.Feed;
-                AddRssToXMLConfig(feed.Title, feed.Url, feed.PauseDownload, feed.Category);
-                LoadConfig();
-                return;
+                MainConfig.RssFeedList.Add(feed);
+                MainConfig.Save();
             }
 
             dialog.Dispose();
+            LoadConfig();
             return;
         }
 
@@ -961,8 +850,8 @@ namespace tvu
         {
             timer2.Enabled = false;
 
-            
-            if (StartMinimized == true)
+
+            if (MainConfig.StartMinimized == true)
             {
                 mVisible = false;
                 this.Visible = false;
@@ -973,27 +862,22 @@ namespace tvu
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-            // for future separation in thread
-            string sUrl = ServiceUrlTextBox.Text;
-            string sPass = PasswordTextBox.Text;
+            Config myConfig = new Config();
+            myConfig.Load();
+            RssFeed t = new RssFeed();
+            t.Title ="prova";
+            t.Url ="http";
 
+            myConfig.RssFeedList.Add(t);
+            myConfig.Save();
+            
 
-            eMuleWebManager Service = new eMuleWebManager(sUrl, sPass);
-            bool? rc = Service.LogIn();
+            
 
-
-            if (rc == null)
-            {
-                return;
-            }
-
-            List<string> temp = Service.GetActualDownloads();
-            if (temp.Count < 10)
-            {
-                Service.Close();
-            }
 
         }
+
+
 
     }
 

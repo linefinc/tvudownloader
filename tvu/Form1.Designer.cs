@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.button2 = new System.Windows.Forms.Button();
-            this.SaveConfigButton = new System.Windows.Forms.Button();
+            this.ButtonSaveConfig = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Log = new System.Windows.Forms.TabPage();
@@ -74,7 +74,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(25, 123);
+            this.button2.Location = new System.Drawing.Point(25, 85);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(95, 36);
             this.button2.TabIndex = 4;
@@ -82,15 +82,15 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // SaveConfigButton
+            // ButtonSaveConfig
             // 
-            this.SaveConfigButton.Location = new System.Drawing.Point(126, 123);
-            this.SaveConfigButton.Name = "SaveConfigButton";
-            this.SaveConfigButton.Size = new System.Drawing.Size(100, 36);
-            this.SaveConfigButton.TabIndex = 14;
-            this.SaveConfigButton.Text = "Save config";
-            this.SaveConfigButton.UseVisualStyleBackColor = true;
-            this.SaveConfigButton.Click += new System.EventHandler(this.button6_Click);
+            this.ButtonSaveConfig.Location = new System.Drawing.Point(126, 85);
+            this.ButtonSaveConfig.Name = "ButtonSaveConfig";
+            this.ButtonSaveConfig.Size = new System.Drawing.Size(100, 36);
+            this.ButtonSaveConfig.TabIndex = 14;
+            this.ButtonSaveConfig.Text = "Save config";
+            this.ButtonSaveConfig.UseVisualStyleBackColor = true;
+            this.ButtonSaveConfig.Click += new System.EventHandler(this.ButtonSaveConfig_Click);
             // 
             // timer1
             // 
@@ -245,7 +245,7 @@
             this.Config.Controls.Add(this.textBox1);
             this.Config.Controls.Add(this.label3);
             this.Config.Controls.Add(this.label2);
-            this.Config.Controls.Add(this.SaveConfigButton);
+            this.Config.Controls.Add(this.ButtonSaveConfig);
             this.Config.Controls.Add(this.label1);
             this.Config.Controls.Add(this.numericUpDown1);
             this.Config.Controls.Add(this.PasswordTextBox);
@@ -261,7 +261,7 @@
             // checkBoxStartMinimized
             // 
             this.checkBoxStartMinimized.AutoSize = true;
-            this.checkBoxStartMinimized.Location = new System.Drawing.Point(25, 100);
+            this.checkBoxStartMinimized.Location = new System.Drawing.Point(25, 397);
             this.checkBoxStartMinimized.Name = "checkBoxStartMinimized";
             this.checkBoxStartMinimized.Size = new System.Drawing.Size(97, 17);
             this.checkBoxStartMinimized.TabIndex = 31;
@@ -282,7 +282,7 @@
             // checkBoxCloseWhenAllDone
             // 
             this.checkBoxCloseWhenAllDone.AutoSize = true;
-            this.checkBoxCloseWhenAllDone.Location = new System.Drawing.Point(19, 230);
+            this.checkBoxCloseWhenAllDone.Location = new System.Drawing.Point(25, 420);
             this.checkBoxCloseWhenAllDone.Name = "checkBoxCloseWhenAllDone";
             this.checkBoxCloseWhenAllDone.Size = new System.Drawing.Size(142, 17);
             this.checkBoxCloseWhenAllDone.TabIndex = 29;
@@ -442,7 +442,7 @@
         #endregion
 
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button SaveConfigButton;
+        private System.Windows.Forms.Button ButtonSaveConfig;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage Main;
