@@ -61,6 +61,7 @@
             this.PasswordTextBox = new System.Windows.Forms.TextBox();
             this.ServiceUrlTextBox = new System.Windows.Forms.TextBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.tabControl1.SuspendLayout();
             this.Log.SuspendLayout();
             this.Main.SuspendLayout();
@@ -384,6 +385,12 @@
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
+            // timer2
+            // 
+            this.timer2.Enabled = true;
+            this.timer2.Interval = 1000;
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -394,7 +401,6 @@
             this.Name = "Form1";
             this.Text = "TvUnderground Downloader 0.02";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.FormClosing += Form1_FormClosing;
             this.tabControl1.ResumeLayout(false);
             this.Log.ResumeLayout(false);
             this.Log.PerformLayout();
@@ -442,6 +448,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox checkBoxStartMinimized;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.Timer timer2;
     }
 }
 

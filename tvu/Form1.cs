@@ -24,7 +24,7 @@ namespace tvu
         public int IntervalTime;
         private bool StartMinimized;
 
-        private bool mVisible; 
+        private bool mVisible = true; 
         private bool mAllowClose;
 
         private Icon IconUp;
@@ -65,12 +65,6 @@ namespace tvu
             SetupNotify();
 
             DateTime2 = DateTime.Now;
-
-            mVisible = true;
-            if (StartMinimized == true)
-            {
-                mVisible = false;
-            }
 
         }
 
@@ -545,7 +539,6 @@ namespace tvu
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            
             DateTime DateTime1 = DateTime.Now;
             TimeSpan diff = DateTime1.Subtract(DateTime2);
             if (diff.Minutes > numericUpDown1.Value)
@@ -553,13 +546,7 @@ namespace tvu
                 DateTime2 = DateTime.Now;
                 DownloadNow();
             }
-
-            
-
-
         }
-
-
 
         public static string ApplicationConfigPath()
         {
@@ -580,8 +567,14 @@ namespace tvu
 
         private void AppendLogMessage(string text)
         {
-            // from msdn guide http://msdn.microsoft.com/en-us/library/ms171728%28VS.90%29.aspx
+            text = "[" + DateTime.Now.ToString() + "]" + text;
+
+            if (text.IndexOf(Environment.NewLine) == -1)
+            {
+                text += Environment.NewLine;
+            }
             
+            // from msdn guide http://msdn.microsoft.com/en-us/library/ms171728%28VS.90%29.aspx
             if (this.textBox1.InvokeRequired)
             {
                 // It's on a different thread, so use Invoke.
@@ -599,6 +592,8 @@ namespace tvu
         private void DownloadNow()
         {
             
+            AppendLogMessage("Start check");
+
             List<sDonwloadFile> myList = new List<sDonwloadFile>();
 
                 
@@ -908,6 +903,20 @@ namespace tvu
                     this.Visible = true;
                 }
             }
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            timer2.Enabled = false;
+
+            
+            if (StartMinimized == true)
+            {
+                mVisible = false;
+                this.Visible = false;
+            }
+            CheckNow();
+
         }
 
     }
