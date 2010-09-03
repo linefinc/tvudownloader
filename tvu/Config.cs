@@ -123,7 +123,7 @@ namespace tvu
 
             AutoStartEmule = (bool)Convert.ToBoolean(ReadString(xDoc, "AutoStartEmule", "false"));
 
-            Password = ReadString(xDoc, "eMuleExe", "");
+            eMuleExe = ReadString(xDoc, "eMuleExe", "");
             
             //
             //  Load Channel

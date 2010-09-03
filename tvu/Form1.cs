@@ -172,6 +172,7 @@ namespace tvu
 
             ServiceUrlTextBox.Text = MainConfig.ServiceUrl;
             PasswordTextBox.Text = MainConfig.Password;
+            textBoxEmuleExec.Text = MainConfig.eMuleExe;
             numericUpDown1.Value = MainConfig.IntervalTime;
             checkBoxStartMinimized.Checked = MainConfig.StartMinimized;
             checkBoxCloseWhenAllDone.Checked = MainConfig.CloseWhenAllDone;
@@ -222,11 +223,6 @@ namespace tvu
 
 
         }
-
-
-
-
-
 
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -518,7 +514,7 @@ namespace tvu
                 AppendLogMessage(string.Format("start eMule Now (try {0}/5)", i));
                 AppendLogMessage("Wait 60 sec");
                 
-                //Process.Start(textBox1.Text);
+                Process.Start(MainConfig.eMuleExe);
                 Thread.Sleep(5000);
                 rc = Service.LogIn();
 
@@ -830,7 +826,7 @@ namespace tvu
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            MainConfig.eMuleExe = textBox1.Text;
+            MainConfig.eMuleExe = textBoxEmuleExec.Text;
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
@@ -839,6 +835,8 @@ namespace tvu
         }
 
 
+
+  
 
     }
 

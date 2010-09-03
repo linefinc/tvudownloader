@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.button2 = new System.Windows.Forms.Button();
             this.ButtonSaveConfig = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
@@ -53,7 +54,7 @@
             this.checkBoxCloseWhenAllDone = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
             this.checkBoxAutoStartEmule = new System.Windows.Forms.CheckBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxEmuleExec = new System.Windows.Forms.TextBox();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -62,6 +63,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label4 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
@@ -74,6 +77,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // button2
@@ -257,7 +261,7 @@
             this.groupBox2.Controls.Add(this.checkBoxCloseWhenAllDone);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.checkBoxAutoStartEmule);
-            this.groupBox2.Controls.Add(this.textBox1);
+            this.groupBox2.Controls.Add(this.textBoxEmuleExec);
             this.groupBox2.Controls.Add(this.numericUpDown1);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Location = new System.Drawing.Point(5, 113);
@@ -306,13 +310,13 @@
             this.checkBoxAutoStartEmule.Text = "Start Emule if close";
             this.checkBoxAutoStartEmule.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // textBoxEmuleExec
             // 
-            this.textBox1.Location = new System.Drawing.Point(90, 88);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(435, 20);
-            this.textBox1.TabIndex = 26;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.textBoxEmuleExec.Location = new System.Drawing.Point(90, 88);
+            this.textBoxEmuleExec.Name = "textBoxEmuleExec";
+            this.textBoxEmuleExec.Size = new System.Drawing.Size(435, 20);
+            this.textBoxEmuleExec.TabIndex = 26;
+            this.textBoxEmuleExec.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // numericUpDown1
             // 
@@ -396,6 +400,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.pictureBox1);
+            this.tabPage1.Controls.Add(this.label5);
             this.tabPage1.Controls.Add(this.linkLabel1);
             this.tabPage1.Controls.Add(this.label4);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
@@ -406,24 +412,43 @@
             this.tabPage1.Text = "About";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.InitialImage = null;
+            this.pictureBox1.Location = new System.Drawing.Point(6, 6);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(295, 307);
+            this.pictureBox1.TabIndex = 3;
+            this.pictureBox1.TabStop = false;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(307, 30);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(66, 13);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "Version 0.03";
+            // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(123, 42);
+            this.linkLabel1.Location = new System.Drawing.Point(307, 56);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(38, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(137, 13);
             this.linkLabel1.TabIndex = 1;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "http://";
+            this.linkLabel1.Text = "http://linefinc.blogspot.com";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(123, 16);
+            this.label4.Location = new System.Drawing.Point(307, 6);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(166, 13);
+            this.label4.Size = new System.Drawing.Size(142, 13);
             this.label4.TabIndex = 0;
-            this.label4.Text = "TvUnderground Downloader 0.03";
+            this.label4.Text = "TvUnderground Downloader";
             // 
             // backgroundWorker1
             // 
@@ -444,7 +469,8 @@
             this.Controls.Add(this.tabControl1);
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "TvUnderground Downloader 0.02";
+            this.Text = "TvUnderground Downloader";
+            this.FormClosing += Form1_FormClosing;
             this.tabControl1.ResumeLayout(false);
             this.Log.ResumeLayout(false);
             this.Log.PerformLayout();
@@ -457,6 +483,7 @@
             this.groupBox1.PerformLayout();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -491,7 +518,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.CheckBox checkBoxAutoStartEmule;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBoxEmuleExec;
         private System.Windows.Forms.CheckBox checkBoxCloseWhenAllDone;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox checkBoxStartMinimized;
@@ -502,6 +529,8 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 
