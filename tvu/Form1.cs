@@ -35,7 +35,7 @@ namespace tvu
 
         delegate void SetTextCallback(string text);
 
-        private DateTime DateTime2;
+        private DateTime DateTimeLastDownload;
 
         public class sDonwloadFile
         {
@@ -62,7 +62,7 @@ namespace tvu
             LoadConfig();
             SetupNotify();
 
-            DateTime2 = DateTime.Now;
+            DateTimeLastDownload = DateTime.Now;
 
         }
 
@@ -136,7 +136,7 @@ namespace tvu
 
         private void menu_CheckNow(object Sender, EventArgs e)
         {
-            CheckNow();
+            StartDownloadThread();
         }
 
         private void notifyIcon1_DoubleClick(object Sender, EventArgs e)
@@ -402,11 +402,11 @@ namespace tvu
         private void timer1_Tick(object sender, EventArgs e)
         {
             DateTime DateTime1 = DateTime.Now;
-            TimeSpan diff = DateTime1.Subtract(DateTime2);
-            if (diff.Minutes > numericUpDown1.Value)
+            TimeSpan diff = DateTime1.Subtract(DateTimeLastDownload);
+            if (diff.Minutes > MainConfig.IntervalTime)
             {
-                DateTime2 = DateTime.Now;
-                DownloadNow();
+                DateTimeLastDownload = DateTime.Now;
+                StartDownloadThread();
             }
         }
 
@@ -513,7 +513,7 @@ namespace tvu
 
             // try to start emule
             // the if work only if rc == null
-            for (int i = 0; (i < 5) & (rc == null); i++)
+            for (int i = 1; (i <= 5) & (rc == null); i++)
             {
                 AppendLogMessage(string.Format("start eMule Now (try {0}/5)", i));
                 AppendLogMessage("Wait 60 sec");
@@ -673,15 +673,20 @@ namespace tvu
 
         private void CheckButton_Click(object sender, EventArgs e)
         {
-            CheckNow();
+            StartDownloadThread();
         }
 
-        private void CheckNow()
+        private void StartDownloadThread()
         {
+            if (backgroundWorker1.IsBusy == true)
+            {
+                AppendLogMessage("Thread is busy");
+                return;
+            }
             CheckButton.Enabled = false;
             menuItemCheckNow.Enabled = false;
             backgroundWorker1.RunWorkerAsync();
-  
+
         }
 
         public static string GetUserAppDataPath()
@@ -739,11 +744,6 @@ namespace tvu
         {
             menuItemCheckNow.Enabled = true;
             CheckButton.Enabled = true;
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            DownloadNow();
         }
 
         
@@ -807,7 +807,7 @@ namespace tvu
                 mVisible = false;
                 this.Visible = false;
             }
-            CheckNow();
+            StartDownloadThread();
 
         }
 
@@ -831,6 +831,11 @@ namespace tvu
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             MainConfig.eMuleExe = textBox1.Text;
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            MainConfig.IntervalTime = Convert.ToInt32(numericUpDown1.Value.ToString());
         }
 
 
