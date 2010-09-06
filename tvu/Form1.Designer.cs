@@ -103,7 +103,7 @@
             // timer1
             // 
             this.timer1.Enabled = true;
-            this.timer1.Interval = 10000;
+            this.timer1.Interval = 60000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // tabControl1
@@ -470,7 +470,6 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "TvUnderground Downloader";
-            this.FormClosing += Form1_FormClosing;
             this.tabControl1.ResumeLayout(false);
             this.Log.ResumeLayout(false);
             this.Log.PerformLayout();

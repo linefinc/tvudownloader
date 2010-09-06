@@ -35,7 +35,7 @@ namespace tvu
 
         delegate void SetTextCallback(string text);
 
-        private DateTime DateTimeLastDownload;
+        private DateTime DownloadDataTime;
 
         public class sDonwloadFile
         {
@@ -62,8 +62,9 @@ namespace tvu
             LoadConfig();
             SetupNotify();
 
-            DateTimeLastDownload = DateTime.Now;
-
+            DownloadDataTime = DateTime.Now.AddSeconds(30);
+            //DownloadDataTime.AddHours(MainConfig.IntervalTime / 60);
+            //DownloadDataTime.AddMinutes(MainConfig.IntervalTime % 60);
         }
 
         
@@ -397,13 +398,18 @@ namespace tvu
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            DateTime DateTime1 = DateTime.Now;
-            TimeSpan diff = DateTime1.Subtract(DateTimeLastDownload);
-            if (diff.Minutes > MainConfig.IntervalTime)
+            
+            
+
+            if ( DateTime.Now > DownloadDataTime)
             {
-                DateTimeLastDownload = DateTime.Now;
+                DownloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
+
+                AppendLogMessage("Now : " + DateTime.Now.ToString());
+                AppendLogMessage("next tick : " + DownloadDataTime.ToString());
                 StartDownloadThread();
             }
+
         }
 
         public static string ApplicationConfigPath()
@@ -457,40 +463,47 @@ namespace tvu
             foreach (RssFeed feed in MainConfig.RssFeedList)
             {
                 
-                AppendLogMessage("Read RSS " + feed.Url);
-    
-                XmlDocument doc = new XmlDocument();
-                doc.Load(feed.Url);
-
-                XmlNodeList elemList = doc.GetElementsByTagName("guid");
                 
-                for (int i = 0; i < elemList.Count; i++)
+                AppendLogMessage("Read RSS " + feed.Url);
+
+                try
                 {
-                    string FeedLink = elemList[i].InnerXml;
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load(feed.Url);
 
-                    FeedLink = FeedLink.Replace("&amp;", "&");
-                    //AppendLogMessage(string.Format("Process feed {0} \n", FeedLink));
+                    XmlNodeList elemList = doc.GetElementsByTagName("guid");
 
-                    if (ExistInHistoryByFeedLink(FeedLink) == false)
+                    for (int i = 0; i < elemList.Count; i++)
                     {
-                        string page = eMuleWebManager.DownloadPage(elemList[i].InnerXml);
-                        string sEd2k = findEd2kLink(page);
+                        string FeedLink = elemList[i].InnerXml;
 
-                        Ed2kParser parser = new Ed2kParser(sEd2k);
-                        AppendLogMessage(string.Format("Found new file {0} \n", parser.GetFileName()));
+                        FeedLink = FeedLink.Replace("&amp;", "&");
+                        //AppendLogMessage(string.Format("Process feed {0} \n", FeedLink));
 
-                        sDonwloadFile DL = new sDonwloadFile();
-                        DL.FeedSource = feed.Url;
-                        DL.FeedLink = FeedLink;
-                        DL.Ed2kLink = sEd2k;
-                        DL.PauseDownload = feed.PauseDownload;
-                        DL.Category = feed.Category;
+                        if (ExistInHistoryByFeedLink(FeedLink) == false)
+                        {
+                            string page = eMuleWebManager.DownloadPage(elemList[i].InnerXml);
+                            string sEd2k = findEd2kLink(page);
 
-                        myList.Add(DL);
+                            Ed2kParser parser = new Ed2kParser(sEd2k);
+                            AppendLogMessage(string.Format("Found new file {0} \n", parser.GetFileName()));
+
+                            sDonwloadFile DL = new sDonwloadFile();
+                            DL.FeedSource = feed.Url;
+                            DL.FeedLink = FeedLink;
+                            DL.Ed2kLink = sEd2k;
+                            DL.PauseDownload = feed.PauseDownload;
+                            DL.Category = feed.Category;
+
+                            myList.Add(DL);
+                        }
                     }
 
                 }
-
+                catch
+                {
+                    AppendLogMessage("Unable to load rss");
+                }
             }
 
             if ((myList.Count == 0)&(MainConfig.CloseWhenAllDone == false))

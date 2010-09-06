@@ -4,7 +4,7 @@ using System.Text;
 
 namespace tvu
 {
-    class Ed2kParser
+    public class Ed2kParser
     {
         private string _Link;
         private uint _Size;

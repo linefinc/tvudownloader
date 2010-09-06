@@ -16,6 +16,7 @@ namespace tvu
         public bool AutoStartEmule { get; set; }
         public List<RssFeed> RssFeedList { get; set; }
         public string eMuleExe { get; set; }
+        public bool debug {get; set;}
 
         public Config()
         {
@@ -124,6 +125,8 @@ namespace tvu
             AutoStartEmule = (bool)Convert.ToBoolean(ReadString(xDoc, "AutoStartEmule", "false"));
 
             eMuleExe = ReadString(xDoc, "eMuleExe", "");
+
+            debug = (bool)Convert.ToBoolean(ReadString(xDoc, "Debug", "false"));
             
             //
             //  Load Channel
