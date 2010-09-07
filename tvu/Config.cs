@@ -66,10 +66,15 @@ using System.Windows.Forms;namespace tvu
             }
         }
 
-        public Config(string FileName)
+        public Config()
         {
-            this.FileName = FileName;
-
+            //
+            // get Local USer App data Path, remove version direcorty and add config.xml
+            //
+            FileName = Application.LocalUserAppDataPath;
+            int rc = FileName.LastIndexOf("\\");
+            FileName = FileName.Substring(0, rc) + "\\config.xml";
+            
             RssFeedList = new List<RssFeed>();
             if (!File.Exists(this.FileName))
             {

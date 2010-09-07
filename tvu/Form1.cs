@@ -52,15 +52,8 @@ namespace tvu
         {
 
             this.FormClosing += Form1_FormClosing;
-            //
-            // get Local USer App data Path, remove version direcorty and add config.xml
-            //
-            string FileName = Application.LocalUserAppDataPath;
-            int rc = FileName.LastIndexOf("\\");
-            FileName = FileName.Substring(0, rc) + "\\config.xml";
-
-
-            MainConfig = new Config(FileName);
+           
+            MainConfig = new Config();
             MainConfig.Load();
 
             InitializeComponent();
@@ -253,10 +246,14 @@ namespace tvu
 
         public static void AddToXmlHostory(string ed2k, string FeedLink, string FeedSource)
         {
-            if (!File.Exists("History.xml"))
+            string HistoryFileName = Application.LocalUserAppDataPath;
+            int rc = HistoryFileName.LastIndexOf("\\");
+            HistoryFileName = HistoryFileName.Substring(0, rc) + "\\History.xml";
+
+            if (!File.Exists(HistoryFileName))
             {
 
-                XmlTextWriter textWritter = new XmlTextWriter("History.xml", null);
+                XmlTextWriter textWritter = new XmlTextWriter(HistoryFileName, null);
                 textWritter.WriteStartDocument();
                 textWritter.WriteStartElement("History");
                 textWritter.WriteEndElement();
@@ -268,7 +265,7 @@ namespace tvu
 
             XmlDocument xmlDoc = new XmlDocument();
 
-            xmlDoc.Load("History.xml");
+            xmlDoc.Load(HistoryFileName);
 
             //Item
             {
@@ -287,21 +284,25 @@ namespace tvu
 
                 xmlDoc.DocumentElement.AppendChild(Element1);
             }
-            
 
-            xmlDoc.Save("History.xml");
+
+            xmlDoc.Save(HistoryFileName);
         }
 
 
         public static bool ExistInHistoryByEd2k(string ed2k)
         {
-            if (!File.Exists("History.xml"))
+            string HistoryFileName = Application.LocalUserAppDataPath;
+            int rc = HistoryFileName.LastIndexOf("\\");
+            HistoryFileName = HistoryFileName.Substring(0, rc) + "\\History.xml";
+            
+            if (!File.Exists(HistoryFileName))
             {
                 return false;
             }
 
             XmlDocument doc = new XmlDocument();
-            doc.Load("history.xml");
+            doc.Load(HistoryFileName);
 
             XmlNodeList elemList = doc.GetElementsByTagName("Ed2k");
 
@@ -322,13 +323,16 @@ namespace tvu
 
         public static bool ExistInHistoryByFeedLink(string link)
         {
-            if (!File.Exists("History.xml"))
+            string HistoryFileName = Application.LocalUserAppDataPath;
+            int rc = HistoryFileName.LastIndexOf("\\");
+            HistoryFileName = HistoryFileName.Substring(0, rc) + "\\History.xml";
+            if (!File.Exists(HistoryFileName))
             {
                 return false;
             }
 
             XmlDocument doc = new XmlDocument();
-            doc.Load("history.xml");
+            doc.Load(HistoryFileName);
 
             XmlNodeList elemList = doc.GetElementsByTagName("FeedLink");
 
@@ -555,7 +559,11 @@ namespace tvu
             if (listView1.SelectedItems.Count == 0)
                 return;
 
-            if (!File.Exists("History.xml"))
+            string HistoryFileName = Application.LocalUserAppDataPath;
+            int rc = HistoryFileName.LastIndexOf("\\");
+            HistoryFileName = HistoryFileName.Substring(0, rc) + "\\History.xml";
+
+            if (!File.Exists(HistoryFileName))
             {
                 return ;
             }
@@ -567,7 +575,7 @@ namespace tvu
             string feedUrl = MainConfig.RssFeedList[i].Url;
             
             XmlDocument doc = new XmlDocument();
-            doc.Load("history.xml");
+            doc.Load(HistoryFileName);
 
             XmlNodeList FeedLinkList = doc.GetElementsByTagName("FeedLink");
             XmlNodeList Ed2kList = doc.GetElementsByTagName("Ed2k");
@@ -594,7 +602,11 @@ namespace tvu
             if (listView1.SelectedItems.Count == 0)
                 return;
 
-            if (!File.Exists("History.xml"))
+            string HistoryFileName = Application.LocalUserAppDataPath;
+            int rc = HistoryFileName.LastIndexOf("\\");
+            HistoryFileName = HistoryFileName.Substring(0, rc) + "\\History.xml";
+
+            if (!File.Exists(HistoryFileName))
             {
                 return ;
             }
