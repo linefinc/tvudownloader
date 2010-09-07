@@ -1,18 +1,20 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Resources;
 
 // Le informazioni generali relative a un assembly sono controllate dal seguente 
 // insieme di attributi. Per modificare le informazioni associate a un assembly
 // occorre quindi modificare i valori di questi attributi.
-[assembly: AssemblyTitle("tvu")]
+[assembly: AssemblyTitle("TvUnderground Downloader")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("*")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("tvu")]
 [assembly: AssemblyCopyright("Copyright © * 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+
 
 // Se si imposta ComVisible su false, i tipi in questo assembly non saranno visibili 
 // ai componenti COM. Se è necessario accedere a un tipo in questo assembly da 
@@ -32,5 +34,6 @@ using System.Runtime.InteropServices;
 // È possibile specificare tutti i valori oppure impostare valori predefiniti per i numeri relativi alla revisione e alla build 
 // utilizzando l'asterisco (*) come descritto di seguito:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("0.3")]
+[assembly: AssemblyFileVersion("0.3")]
+[assembly: NeutralResourcesLanguageAttribute("en")]

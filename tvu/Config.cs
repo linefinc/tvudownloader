@@ -17,14 +17,17 @@ namespace tvu
         public List<RssFeed> RssFeedList { get; set; }
         public string eMuleExe { get; set; }
         public bool debug {get; set;}
+        public string FileName { get; set; }
 
-        public Config()
+        public Config(string FileName)
         {
+            this.FileName = FileName;
+
             RssFeedList = new List<RssFeed>();
-            if (!File.Exists("Config.xml"))
+            if (!File.Exists(this.FileName))
             {
                 // empty config file
-                XmlTextWriter textWritter = new XmlTextWriter("Config.xml", null);
+                XmlTextWriter textWritter = new XmlTextWriter(this.FileName, null);
                 textWritter.WriteStartDocument();
                 textWritter.WriteStartElement("Config");
                 textWritter.WriteEndElement();
@@ -35,7 +38,7 @@ namespace tvu
 
         public void Save()
         {
-            XmlTextWriter textWritter = new XmlTextWriter("Config.xml", null);
+            XmlTextWriter textWritter = new XmlTextWriter(this.FileName, null);
             textWritter.WriteStartDocument();
             textWritter.WriteStartElement("Config");
             
@@ -110,7 +113,7 @@ namespace tvu
             RssFeedList.Clear();
 
             XmlDocument xDoc = new XmlDocument();
-            xDoc.Load("config.xml");
+            xDoc.Load(this.FileName);
 
             ServiceUrl = ReadString(xDoc, "ServiceUrl", "http://localhost:4000");
 

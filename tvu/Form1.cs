@@ -47,24 +47,26 @@ namespace tvu
             public string Category;
         };
 
-
-
-        
         public Form1()
         {
 
-            MainConfig = new Config();
+            //
+            // get Local USer App data Path, remove version direcorty and add config.xml
+            //
+            string FileName = Application.LocalUserAppDataPath;
+            int rc = FileName.LastIndexOf("\\");
+            FileName = FileName.Substring(0, rc) + "\\config.xml";
+
+
+            MainConfig = new Config(FileName);
             MainConfig.Load();
-            
-            
+
             InitializeComponent();
             InitConfig();
             LoadConfig();
             SetupNotify();
 
-            DownloadDataTime = DateTime.Now.AddSeconds(30);
-            //DownloadDataTime.AddHours(MainConfig.IntervalTime / 60);
-            //DownloadDataTime.AddMinutes(MainConfig.IntervalTime % 60);
+            DownloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
         }
 
         
@@ -817,23 +819,6 @@ namespace tvu
                 this.Visible = false;
             }
             StartDownloadThread();
-
-        }
-
-        private void button3_Click_1(object sender, EventArgs e)
-        {
-            Config myConfig = new Config();
-            myConfig.Load();
-            RssFeed t = new RssFeed();
-            t.Title ="prova";
-            t.Url ="http";
-
-            myConfig.RssFeedList.Add(t);
-            myConfig.Save();
-            
-
-            
-
 
         }
 

@@ -19,7 +19,8 @@
     <SignManifests>true</SignManifests>
     <TargetFrameworkSubset>
     </TargetFrameworkSubset>
-    <PublishUrl>C:\Documents and Settings\User\Documenti\Visual Studio 2008\Projects\tvu\tvu\publish\</PublishUrl>
+    <ApplicationIcon>Resources\appicon1.ico</ApplicationIcon>
+    <PublishUrl>.\publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -30,8 +31,8 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>3</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>7</ApplicationRevision>
+    <ApplicationVersion>0.3.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
