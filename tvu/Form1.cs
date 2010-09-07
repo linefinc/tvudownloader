@@ -51,6 +51,7 @@ namespace tvu
         public Form1()
         {
 
+            this.FormClosing += Form1_FormClosing;
             //
             // get Local USer App data Path, remove version direcorty and add config.xml
             //
@@ -63,8 +64,8 @@ namespace tvu
             MainConfig.Load();
 
             InitializeComponent();
-            InitConfig();
-            LoadConfig();
+            
+            LoadConfigToGUI();
             SetupNotify();
 
             DownloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
@@ -116,7 +117,7 @@ namespace tvu
 
             // The Text property sets the text that will be displayed,
             // in a tooltip, when the mouse hovers over the systray icon.
-            notifyIcon1.Text = "Form1 (NotifyIcon example)";
+            notifyIcon1.Text = "TV Underground Downloader";
             notifyIcon1.Visible = true;
 
             // Handle the DoubleClick event to activate the form.
@@ -164,7 +165,7 @@ namespace tvu
             
         }
 
-        private void LoadConfig()
+        private void LoadConfigToGUI()
         {
 
             while (listView1.Items.Count > 0)
@@ -344,45 +345,6 @@ namespace tvu
             return false;
         }
 
-
-        public void InitConfig()
-        {
-            if (!File.Exists("Config.xml"))
-            {
-
-                XmlTextWriter textWritter = new XmlTextWriter("Config.xml", null);
-                textWritter.WriteStartDocument();
-                textWritter.WriteStartElement("Config");
-                textWritter.WriteStartElement("ServiceUrl");
-                
-                textWritter.WriteString("http://localhost:4000");
-                                
-                textWritter.WriteEndElement();
-                textWritter.WriteStartElement("Password");
-                textWritter.WriteString("password");
-                textWritter.WriteEndElement();
-                textWritter.WriteStartElement("IntervalTime");
-                textWritter.WriteString("30");
-                textWritter.WriteEndElement();
-                textWritter.WriteStartElement("StartMinimized");
-                textWritter.WriteString("false");
-                textWritter.WriteEndElement();
-
-                textWritter.WriteStartElement("AutoStartEmule");
-                textWritter.WriteString("false");
-                textWritter.WriteEndElement();
-
-                textWritter.WriteStartElement("CloseWhenAllDone");
-                textWritter.WriteString("false");
-                textWritter.WriteEndElement();
-                
-                textWritter.WriteStartElement("RSSChannel");
-                textWritter.WriteEndElement();
-
-                textWritter.Close();
-            }
-
-        }
 
         
     
@@ -659,7 +621,7 @@ namespace tvu
                 }
 
                 MainConfig.RssFeedList.Add(feed);
-                LoadConfig();
+                LoadConfigToGUI();
                 dialog.Dispose();
                 return;
             }
@@ -722,7 +684,7 @@ namespace tvu
 
             MainConfig.RssFeedList.Remove(MainConfig.RssFeedList[i]);
             MainConfig.Save();
-            LoadConfig(); ///upgrade gui
+            LoadConfigToGUI(); ///upgrade gui
 
             
 
@@ -741,7 +703,7 @@ namespace tvu
             }
 
             dialog.Dispose();
-            LoadConfig();
+            LoadConfigToGUI();
             return;
         }
 
@@ -812,7 +774,7 @@ namespace tvu
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            
+            AppendLogMessage("Config loaded " + MainConfig.FileName);
             timer2.Enabled = false;
 
 

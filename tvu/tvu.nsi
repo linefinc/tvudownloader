@@ -64,7 +64,7 @@ Section "Start Menu Shortcuts"
 
   CreateDirectory "$SMPROGRAMS\TVUnderground Downloader"
   CreateShortCut "$SMPROGRAMS\TVUnderground Downloader\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-  CreateShortCut "$SMPROGRAMS\TVUnderground Downloader\TVUndergroundDownloader (MakeNSISW).lnk" "$INSTDIR\tvu.exe" "" "$INSTDIR\tvu.exe" 0
+  CreateShortCut "$SMPROGRAMS\TVUnderground Downloader\TVUndergroundDownloader.lnk" "$INSTDIR\tvu.exe" "" "$INSTDIR\tvu.exe" 0
   
 SectionEnd
 
