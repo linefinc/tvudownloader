@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using System.IO;
+using Microsoft.Win32;
+using System;
 
-namespace tvu
+
+using System.Windows.Forms;namespace tvu
 {
     public class Config
     {
@@ -18,6 +21,50 @@ namespace tvu
         public string eMuleExe { get; set; }
         public bool debug {get; set;}
         public string FileName { get; set; }
+        public bool StartWithWindows
+        {
+            get
+            {
+                RegistryKey hkcu = Registry.CurrentUser;
+                hkcu = hkcu.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", RegistryKeyPermissionCheck.ReadWriteSubTree);
+                
+                List<string> RegValueNames = new List<string>();
+                foreach (string valueName in hkcu.GetValueNames())
+                {
+                    RegValueNames.Add(valueName);
+                }
+
+                if (RegValueNames.IndexOf(Application.ProductName) == -1)
+                {
+                    return false;
+                }
+                return true;
+
+            }
+            set
+            {
+                RegistryKey hkcu = Registry.CurrentUser;
+                hkcu = hkcu.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", RegistryKeyPermissionCheck.ReadWriteSubTree);
+
+                if (value == true)
+                {
+                    hkcu.SetValue(Application.ProductName, Environment.CommandLine, RegistryValueKind.String);
+                    return;
+                }
+                
+                List<string> RegValueNames = new List<string>();
+                foreach (string valueName in hkcu.GetValueNames())
+                {
+                    RegValueNames.Add(valueName);
+                }
+
+                if (RegValueNames.IndexOf(Application.ProductName) == -1)
+                {
+                    return;
+                }
+                hkcu.DeleteValue(Application.ProductName);
+            }
+        }
 
         public Config(string FileName)
         {
@@ -181,5 +228,7 @@ namespace tvu
                 return t[0].InnerText;
             }
         }
+
+
     }
 }

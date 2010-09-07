@@ -49,6 +49,7 @@
             this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
             this.button4 = new System.Windows.Forms.Button();
             this.Config = new System.Windows.Forms.TabPage();
+            this.checkBoxStartWithWindows = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.checkBoxStartMinimized = new System.Windows.Forms.CheckBox();
             this.checkBoxCloseWhenAllDone = new System.Windows.Forms.CheckBox();
@@ -255,18 +256,30 @@
             this.Config.Text = "Config";
             this.Config.UseVisualStyleBackColor = true;
             // 
+            // checkBoxStartWithWindows
+            // 
+            this.checkBoxStartWithWindows.AutoSize = true;
+            this.checkBoxStartWithWindows.Location = new System.Drawing.Point(9, 42);
+            this.checkBoxStartWithWindows.Name = "checkBoxStartWithWindows";
+            this.checkBoxStartWithWindows.Size = new System.Drawing.Size(117, 17);
+            this.checkBoxStartWithWindows.TabIndex = 34;
+            this.checkBoxStartWithWindows.Text = "Start with Windows";
+            this.checkBoxStartWithWindows.UseVisualStyleBackColor = true;
+            this.checkBoxStartWithWindows.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.checkBoxStartWithWindows);
             this.groupBox2.Controls.Add(this.checkBoxStartMinimized);
             this.groupBox2.Controls.Add(this.checkBoxCloseWhenAllDone);
+            this.groupBox2.Controls.Add(this.textBoxEmuleExec);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.checkBoxAutoStartEmule);
-            this.groupBox2.Controls.Add(this.textBoxEmuleExec);
             this.groupBox2.Controls.Add(this.numericUpDown1);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Location = new System.Drawing.Point(5, 113);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(531, 115);
+            this.groupBox2.Size = new System.Drawing.Size(531, 148);
             this.groupBox2.TabIndex = 33;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "General";
@@ -284,7 +297,7 @@
             // checkBoxCloseWhenAllDone
             // 
             this.checkBoxCloseWhenAllDone.AutoSize = true;
-            this.checkBoxCloseWhenAllDone.Location = new System.Drawing.Point(9, 42);
+            this.checkBoxCloseWhenAllDone.Location = new System.Drawing.Point(9, 65);
             this.checkBoxCloseWhenAllDone.Name = "checkBoxCloseWhenAllDone";
             this.checkBoxCloseWhenAllDone.Size = new System.Drawing.Size(142, 17);
             this.checkBoxCloseWhenAllDone.TabIndex = 29;
@@ -294,7 +307,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 91);
+            this.label6.Location = new System.Drawing.Point(6, 118);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(79, 13);
             this.label6.TabIndex = 27;
@@ -303,7 +316,7 @@
             // checkBoxAutoStartEmule
             // 
             this.checkBoxAutoStartEmule.AutoSize = true;
-            this.checkBoxAutoStartEmule.Location = new System.Drawing.Point(9, 65);
+            this.checkBoxAutoStartEmule.Location = new System.Drawing.Point(9, 88);
             this.checkBoxAutoStartEmule.Name = "checkBoxAutoStartEmule";
             this.checkBoxAutoStartEmule.Size = new System.Drawing.Size(116, 17);
             this.checkBoxAutoStartEmule.TabIndex = 28;
@@ -312,7 +325,7 @@
             // 
             // textBoxEmuleExec
             // 
-            this.textBoxEmuleExec.Location = new System.Drawing.Point(90, 88);
+            this.textBoxEmuleExec.Location = new System.Drawing.Point(90, 115);
             this.textBoxEmuleExec.Name = "textBoxEmuleExec";
             this.textBoxEmuleExec.Size = new System.Drawing.Size(435, 20);
             this.textBoxEmuleExec.TabIndex = 26;
@@ -327,7 +340,7 @@
             0,
             0});
             this.numericUpDown1.Minimum = new decimal(new int[] {
-            1,
+            30,
             0,
             0,
             0});
@@ -335,7 +348,7 @@
             this.numericUpDown1.Size = new System.Drawing.Size(86, 20);
             this.numericUpDown1.TabIndex = 22;
             this.numericUpDown1.Value = new decimal(new int[] {
-            30,
+            180,
             0,
             0,
             0});
@@ -440,6 +453,7 @@
             this.linkLabel1.TabIndex = 1;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "http://linefinc.blogspot.com";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // label4
             // 
@@ -530,6 +544,7 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.CheckBox checkBoxStartWithWindows;
     }
 }
 

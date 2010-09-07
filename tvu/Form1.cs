@@ -12,6 +12,7 @@ using System.Xml.Schema;
 using System.Threading;
 using System.Configuration;
 using System.Diagnostics;
+using Microsoft.Win32;
 
 using tvu;
 
@@ -179,6 +180,7 @@ namespace tvu
             numericUpDown1.Value = MainConfig.IntervalTime;
             checkBoxStartMinimized.Checked = MainConfig.StartMinimized;
             checkBoxCloseWhenAllDone.Checked = MainConfig.CloseWhenAllDone;
+            checkBoxStartWithWindows.Checked = MainConfig.StartWithWindows;
 
             foreach (RssFeed t in MainConfig.RssFeedList)
             {
@@ -810,6 +812,7 @@ namespace tvu
 
         private void timer2_Tick(object sender, EventArgs e)
         {
+            
             timer2.Enabled = false;
 
 
@@ -830,6 +833,23 @@ namespace tvu
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
             MainConfig.IntervalTime = Convert.ToInt32(numericUpDown1.Value.ToString());
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxStartWithWindows.Checked == true)
+            {
+                MainConfig.StartWithWindows = true;
+                return;
+            }
+            MainConfig.StartWithWindows = false;
+            
+
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://linefinc.blogspot.com"); 
         }
 
 
