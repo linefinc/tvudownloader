@@ -382,18 +382,6 @@ namespace tvu
 
         }
 
-        public static string ApplicationConfigPath()
-        {
-            string appPath;
-            appPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-
-            return appPath;
-
-        }
-
-
-
-
         private void AppendText(string text)
         {
             this.LogTextBox.Text += text;
@@ -448,15 +436,14 @@ namespace tvu
                         string FeedLink = elemList[i].InnerXml;
 
                         FeedLink = FeedLink.Replace("&amp;", "&");
-                        //AppendLogMessage(string.Format("Process feed {0} \n", FeedLink));
-
+                        
                         if (ExistInHistoryByFeedLink(FeedLink) == false)
                         {
                             string page = eMuleWebManager.DownloadPage(elemList[i].InnerXml);
                             string sEd2k = findEd2kLink(page);
 
                             Ed2kParser parser = new Ed2kParser(sEd2k);
-                            AppendLogMessage(string.Format("Found new file {0} \n", parser.GetFileName()));
+                            AppendLogMessage(string.Format("Found new file {0}", parser.GetFileName()));
 
                             sDonwloadFile DL = new sDonwloadFile();
                             DL.FeedSource = feed.Url;
@@ -492,15 +479,25 @@ namespace tvu
 
             // try to start emule
             // the if work only if rc == null
-            for (int i = 1; (i <= 5) & (rc == null); i++)
+            if (MainConfig.AutoStartEmule == true)
             {
-                AppendLogMessage(string.Format("start eMule Now (try {0}/5)", i));
-                AppendLogMessage("Wait 60 sec");
-                
-                Process.Start(MainConfig.eMuleExe);
-                Thread.Sleep(5000);
-                rc = Service.LogIn();
+                for (int i = 1; (i <= 5) & (rc == null); i++)
+                {
+                    AppendLogMessage(string.Format("start eMule Now (try {0}/5)", i));
+                    AppendLogMessage("Wait 60 sec");
+                    try
+                    {
 
+                        Process.Start(MainConfig.eMuleExe);
+                    }
+                    catch
+                    {
+                        AppendLogMessage("Unable start application");
+                    }
+                    Thread.Sleep(5000);
+                    rc = Service.LogIn();
+
+                }
             }
 
             if(rc==null)
@@ -513,7 +510,7 @@ namespace tvu
             //
             // Auto close
             //
-            if ((myList.Count == 0) ^ (checkBoxCloseWhenAllDone.Checked == false))
+            if ((myList.Count == 0) & (checkBoxCloseWhenAllDone.Checked == false))
             {
                 List<string> ActualDownloads = Service.GetActualDownloads();
                 if (ActualDownloads.Count == 0)

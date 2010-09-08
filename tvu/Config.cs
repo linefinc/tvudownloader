@@ -4,10 +4,9 @@ using System.Text;
 using System.Xml;
 using System.IO;
 using Microsoft.Win32;
-using System;
+using System.Windows.Forms;
 
-
-using System.Windows.Forms;namespace tvu
+namespace tvu
 {
     public class Config
     {
