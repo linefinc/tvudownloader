@@ -75,7 +75,8 @@ namespace tvu
             // load History
             MainHistory = new History();
             MainHistory.Read();
-            
+
+            UpdateRecentActivity();
 
 
         }
@@ -418,18 +419,7 @@ namespace tvu
             }
 
 
-            //
-            // Auto close
-            //
-            if ((myList.Count == 0) & (checkBoxCloseWhenAllDone.Checked == false))
-            {
-                List<string> ActualDownloads = Service.GetActualDownloads();
-                if (ActualDownloads.Count == 0)
-                {
-                    Service.Close();
-                }
-                return;
-            }
+
             //
             //  Download file 
             // 
@@ -456,6 +446,20 @@ namespace tvu
                     AppendLogMessage(string.Format("Add file to emule {0} \n", parser.GetFileName()) + Environment.NewLine);
                 }
              }
+
+            //
+            // Auto close
+            //
+            if ((myList.Count == 0) & (checkBoxCloseWhenAllDone.Checked == true))
+            {
+                List<string> ActualDownloads = Service.GetActualDownloads();
+                if (ActualDownloads.Count == 0)
+                {
+                    Service.Close();
+                }
+                return;
+            }
+
             Service.LogOut();
         }
 
@@ -728,7 +732,15 @@ namespace tvu
         }
 
 
+        public void UpdateRecentActivity()
+        {
+            listBox1.Items.Clear();
 
+            //MainHistory.GetRecentActivity();
+
+
+
+        }
 
 
 

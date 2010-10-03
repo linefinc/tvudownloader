@@ -175,5 +175,28 @@ namespace tvu
             return date;
 
         }
+
+
+        public List<fileHistory> GetRecentActivity()
+        {
+            List<fileHistory> myFileHistoryList = new List<fileHistory>();
+
+            for (int i = 0; i < (myFileHistoryList.Count-1); i++)
+            {
+                string str1 = myFileHistoryList[i].Date;
+                string str2 = myFileHistoryList[i + 1].Date;
+
+                if (str1.CompareTo(str2) == -1)
+                {
+                    string t = str2;
+                    str2 = str1;
+                    str1 = t;
+                    i = 0;
+                }
+
+            }
+
+            return myFileHistoryList;
+        }
     }
 }
