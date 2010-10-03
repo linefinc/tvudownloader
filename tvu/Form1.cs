@@ -33,10 +33,12 @@ namespace tvu
         private System.Windows.Forms.MenuItem menuItemExit;
 
         public Config MainConfig;
+        public History MainHistory;
 
         delegate void SetTextCallback(string text);
 
         private DateTime DownloadDataTime;
+
 
         public class sDonwloadFile
         {
@@ -62,6 +64,12 @@ namespace tvu
             SetupNotify();
 
             DownloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
+            
+            // load History
+            MainHistory = new History();
+            MainHistory.Read();
+
+
         }
 
         
@@ -244,51 +252,7 @@ namespace tvu
         }
 
 
-        public static void AddToXmlHostory(string ed2k, string FeedLink, string FeedSource)
-        {
-            string HistoryFileName = Application.LocalUserAppDataPath;
-            int rc = HistoryFileName.LastIndexOf("\\");
-            HistoryFileName = HistoryFileName.Substring(0, rc) + "\\History.xml";
-
-            if (!File.Exists(HistoryFileName))
-            {
-
-                XmlTextWriter textWritter = new XmlTextWriter(HistoryFileName, null);
-                textWritter.WriteStartDocument();
-                textWritter.WriteStartElement("History");
-                textWritter.WriteEndElement();
-
-                textWritter.Close();
-            }
-
-
-
-            XmlDocument xmlDoc = new XmlDocument();
-
-            xmlDoc.Load(HistoryFileName);
-
-            //Item
-            {
-                XmlElement Element1 = xmlDoc.CreateElement("Item");
-                XmlElement Element2 = xmlDoc.CreateElement("Ed2k");
-                XmlElement Element3 = xmlDoc.CreateElement("FeedLink");
-                XmlElement Element4 = xmlDoc.CreateElement("FeedSource");
-
-                Element2.AppendChild(xmlDoc.CreateTextNode(ed2k));
-                Element3.AppendChild(xmlDoc.CreateTextNode(FeedLink));
-                Element4.AppendChild(xmlDoc.CreateTextNode(FeedSource));
-
-                Element1.AppendChild(Element2);
-                Element1.AppendChild(Element3);
-                Element1.AppendChild(Element4);
-
-                xmlDoc.DocumentElement.AppendChild(Element1);
-            }
-
-
-            xmlDoc.Save(HistoryFileName);
-        }
-
+       
 
         public static bool ExistInHistoryByEd2k(string ed2k)
         {
@@ -321,33 +285,7 @@ namespace tvu
             return false;
         }
 
-        public static bool ExistInHistoryByFeedLink(string link)
-        {
-            string HistoryFileName = Application.LocalUserAppDataPath;
-            int rc = HistoryFileName.LastIndexOf("\\");
-            HistoryFileName = HistoryFileName.Substring(0, rc) + "\\History.xml";
-            if (!File.Exists(HistoryFileName))
-            {
-                return false;
-            }
-
-            XmlDocument doc = new XmlDocument();
-            doc.Load(HistoryFileName);
-
-            XmlNodeList elemList = doc.GetElementsByTagName("FeedLink");
-
-
-            for (int i = 0; i < elemList.Count; i++)
-            {
-                string temp = elemList[i].InnerXml;
-                temp = temp.Replace("&amp;","&");
-                if (temp == link)
-                    return true;
-                
-                
-            }
-            return false;
-        }
+        
 
 
         
@@ -436,8 +374,8 @@ namespace tvu
                         string FeedLink = elemList[i].InnerXml;
 
                         FeedLink = FeedLink.Replace("&amp;", "&");
-                        
-                        if (ExistInHistoryByFeedLink(FeedLink) == false)
+
+                        if (MainHistory.FileExistByFeedLink(FeedLink) == false)
                         {
                             string page = eMuleWebManager.DownloadPage(elemList[i].InnerXml);
                             string sEd2k = findEd2kLink(page);
@@ -540,7 +478,7 @@ namespace tvu
                     {
                         Service.StartDownload(ed2klink);
                     }
-                    AddToXmlHostory(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);
+                    MainHistory.Add(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);
                     Ed2kParser parser = new Ed2kParser(DownloadFile.Ed2kLink);
                     AppendLogMessage(string.Format("Add file to emule {0} \n", parser.GetFileName()) + Environment.NewLine);
                 }
@@ -822,6 +760,11 @@ namespace tvu
         {
             System.Diagnostics.Process.Start("http://linefinc.blogspot.com"); 
         }
+
+
+
+
+
 
 
 
