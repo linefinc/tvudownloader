@@ -54,9 +54,6 @@
             this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
             this.button4 = new System.Windows.Forms.Button();
             this.Config = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -80,6 +77,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.tabControl1.SuspendLayout();
             this.Log.SuspendLayout();
             this.Main.SuspendLayout();
@@ -197,7 +195,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(106, 345);
+            this.label16.Location = new System.Drawing.Point(106, 300);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(41, 13);
             this.label16.TabIndex = 35;
@@ -206,7 +204,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(6, 345);
+            this.label15.Location = new System.Drawing.Point(6, 300);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(51, 13);
             this.label15.TabIndex = 34;
@@ -215,7 +213,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(106, 329);
+            this.label14.Location = new System.Drawing.Point(106, 289);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(41, 13);
             this.label14.TabIndex = 33;
@@ -224,7 +222,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(6, 327);
+            this.label13.Location = new System.Drawing.Point(6, 287);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(78, 13);
             this.label13.TabIndex = 32;
@@ -233,7 +231,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(106, 316);
+            this.label12.Location = new System.Drawing.Point(106, 276);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(41, 13);
             this.label12.TabIndex = 31;
@@ -242,7 +240,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 314);
+            this.label11.Location = new System.Drawing.Point(6, 274);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(48, 13);
             this.label11.TabIndex = 30;
@@ -251,7 +249,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(106, 303);
+            this.label10.Location = new System.Drawing.Point(106, 263);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(41, 13);
             this.label10.TabIndex = 29;
@@ -260,7 +258,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 301);
+            this.label9.Location = new System.Drawing.Point(6, 261);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(37, 13);
             this.label9.TabIndex = 28;
@@ -269,7 +267,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(106, 288);
+            this.label8.Location = new System.Drawing.Point(106, 248);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(35, 13);
             this.label8.TabIndex = 27;
@@ -278,7 +276,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 288);
+            this.label7.Location = new System.Drawing.Point(6, 248);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(49, 13);
             this.label7.TabIndex = 26;
@@ -286,7 +284,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(6, 248);
+            this.button1.Location = new System.Drawing.Point(433, 287);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 37);
             this.button1.TabIndex = 25;
@@ -298,9 +296,9 @@
             // 
             this.listView2.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader5});
-            this.listView2.Location = new System.Drawing.Point(6, 395);
+            this.listView2.Location = new System.Drawing.Point(6, 330);
             this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(527, 51);
+            this.listView2.Size = new System.Drawing.Size(527, 116);
             this.listView2.TabIndex = 24;
             this.listView2.UseCompatibleStateImageBehavior = false;
             this.listView2.View = System.Windows.Forms.View.Details;
@@ -314,9 +312,7 @@
             // 
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4});
+            this.columnHeader2});
             this.listView1.Location = new System.Drawing.Point(6, 6);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(527, 236);
@@ -329,20 +325,7 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "Name";
-            this.columnHeader1.Width = 180;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Category";
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Pause";
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.Text = "RSS link";
-            this.columnHeader4.Width = 300;
+            this.columnHeader1.Width = 200;
             // 
             // button4
             // 
@@ -585,6 +568,10 @@
             this.timer2.Interval = 1000;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Active";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -632,9 +619,6 @@
         private System.Windows.Forms.TextBox ServiceUrlTextBox;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button ClearButton;
         private System.Windows.Forms.Button CheckButton;
@@ -666,6 +650,7 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
     }
 }
 

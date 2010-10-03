@@ -46,7 +46,7 @@ namespace tvu
             for (int i = 0; i < ItemList.Count; i++)
             {
                 fileHistory fh = new fileHistory();
-                fh.Date = DateTime.Now.ToString(); // to avoid compatibility with old history file
+                fh.Date = DateTime.Now.ToString("s"); // to avoid compatibility with old history file
 
                 XmlNode node = ItemList[i];
                 foreach (XmlNode t in node.ChildNodes)
@@ -106,6 +106,7 @@ namespace tvu
             fh.Ed2kLink = ed2k;
             fh.FeedLink = FeedLink;
             fh.FeedSource = FeedSource;
+            fh.Date = DateTime.Now.ToString("s");
             fileHistoryList.Add(fh);
 
             this.Save();
@@ -123,17 +124,55 @@ namespace tvu
             return false;
         }
 
+        public bool ExistInHistoryByEd2k(string Ed2kLink)
+        {
+            Ed2kParser A = new Ed2kParser(Ed2kLink);
+
+            foreach (fileHistory fh in fileHistoryList)
+            {
+                Ed2kParser B = new Ed2kParser(fh.Ed2kLink);
+
+                if (A == B)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public int LinkCountByFeedSource(string FeedSource)
         {
             int count = 0;
             foreach (fileHistory fh in fileHistoryList)
             {
-                if (fh.FeedLink == FeedSource)
+                if (fh.FeedSource == FeedSource)
                 {
                     count++;
                 }
             }
             return count;
+
+        }
+
+        public string LastDownloadByFeedSource(string FeedSource)
+        {
+            string date = "";
+            foreach (fileHistory fh in fileHistoryList)
+            {
+                if (fh.FeedSource == FeedSource)
+                {
+                    if (date.Length == 0)
+                    {
+                        date = fh.Date;
+                    }
+                    
+                    if (date.CompareTo(fh.Date) == -1)
+                    { 
+                        date = fh.Date; 
+                    }
+                }
+            }
+            return date;
 
         }
     }

@@ -63,11 +63,19 @@ namespace tvu
             LoadConfigToGUI();
             SetupNotify();
 
+            label8.Text = "";
+            label10.Text = "";
+            label12.Text = "";
+            label14.Text = "";
+            label16.Text = "";
+
+
             DownloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
             
             // load History
             MainHistory = new History();
             MainHistory.Read();
+            
 
 
         }
@@ -187,9 +195,9 @@ namespace tvu
             foreach (RssFeed t in MainConfig.RssFeedList)
             {
                 ListViewItem item1 = new ListViewItem(t.Title);
-                item1.SubItems.Add(t.Category.ToString());
-                item1.SubItems.Add(t.PauseDownload.ToString());
-                item1.SubItems.Add(t.Url);
+  //              item1.SubItems.Add(t.Category.ToString());
+//                item1.SubItems.Add(t.PauseDownload.ToString());
+                //item1.SubItems.Add(t.Url)
                 listView1.Items.Add(item1);
             }
         
@@ -246,44 +254,9 @@ namespace tvu
             swFromFile.WriteLine(ora + ": " + textToAdd);
             swFromFile.Flush();
             swFromFile.Close();
-
-
-
         }
-
-
-       
-
-        public static bool ExistInHistoryByEd2k(string ed2k)
-        {
-            string HistoryFileName = Application.LocalUserAppDataPath;
-            int rc = HistoryFileName.LastIndexOf("\\");
-            HistoryFileName = HistoryFileName.Substring(0, rc) + "\\History.xml";
-            
-            if (!File.Exists(HistoryFileName))
-            {
-                return false;
-            }
-
-            XmlDocument doc = new XmlDocument();
-            doc.Load(HistoryFileName);
-
-            XmlNodeList elemList = doc.GetElementsByTagName("Ed2k");
 
         
-            for (int i = 0; i < elemList.Count; i++)
-            {
-
-                Ed2kParser A = new Ed2kParser(elemList[i].InnerXml);
-                Ed2kParser B = new Ed2kParser(ed2k);
-
-                if (A == B)
-                    return true;
-                
-
-            }
-            return false;
-        }
 
         
 
@@ -465,7 +438,7 @@ namespace tvu
 
             foreach (sDonwloadFile DownloadFile in myList)
             {
-                if (ExistInHistoryByEd2k(DownloadFile.Ed2kLink) == false) // if file is not dwnl
+                if (MainHistory.ExistInHistoryByEd2k(DownloadFile.Ed2kLink) == false) // if file is not dwnl
                 {
                     Ed2kParser ed2klink = new Ed2kParser(DownloadFile.Ed2kLink);
                     Service.AddToDownload(ed2klink, DownloadFile.Category);
@@ -494,36 +467,29 @@ namespace tvu
             if (listView1.SelectedItems.Count == 0)
                 return;
 
-            string HistoryFileName = Application.LocalUserAppDataPath;
-            int rc = HistoryFileName.LastIndexOf("\\");
-            HistoryFileName = HistoryFileName.Substring(0, rc) + "\\History.xml";
 
-            if (!File.Exists(HistoryFileName))
-            {
-                return ;
-            }
-
-            listView2.Items.Clear();
 
             ListViewItem temp = listView1.SelectedItems[0];
             int i = listView1.Items.IndexOf(temp);
             string feedUrl = MainConfig.RssFeedList[i].Url;
-            
-            XmlDocument doc = new XmlDocument();
-            doc.Load(HistoryFileName);
 
-            XmlNodeList FeedLinkList = doc.GetElementsByTagName("FeedLink");
-            XmlNodeList Ed2kList = doc.GetElementsByTagName("Ed2k");
-            XmlNodeList FeedSourceList = doc.GetElementsByTagName("FeedSource");
 
-            for (i = 0; i < FeedSourceList.Count; i++)
+            label8.Text = MainConfig.RssFeedList[i].Category;
+            label10.Text = MainConfig.RssFeedList[i].PauseDownload.ToString();
+            label12.Text = MainConfig.RssFeedList[i].Url;
+
+            label14.Text = MainHistory.LastDownloadByFeedSource(feedUrl);
+            label16.Text = MainHistory.LinkCountByFeedSource(feedUrl).ToString();
+   
+
+            // update list history
+            listView2.Items.Clear();
+            foreach (fileHistory fh in MainHistory.fileHistoryList)
             {
-                if (FeedSourceList[i].FirstChild.InnerText == feedUrl)
+                if (fh.FeedSource == feedUrl)
                 {
-                    string str = Ed2kList[i].FirstChild.InnerText;
-                    Ed2kParser parser = new Ed2kParser (str);
-
-                    ListViewItem item1 = new ListViewItem(parser.GetFileName());
+                    Ed2kParser ed2k = new Ed2kParser(fh.Ed2kLink);
+                    ListViewItem item1 = new ListViewItem(ed2k.GetFileName());
                     listView2.Items.Add(item1);
                 }
             }
@@ -760,6 +726,10 @@ namespace tvu
         {
             System.Diagnostics.Process.Start("http://linefinc.blogspot.com"); 
         }
+
+
+
+
 
 
 
