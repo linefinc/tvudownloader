@@ -563,10 +563,7 @@ namespace tvu
             LogTextBox.Clear();
         }
 
-        private void CheckButton_Click(object sender, EventArgs e)
-        {
-            StartDownloadThread();
-        }
+
 
         private void StartDownloadThread()
         {
@@ -738,8 +735,11 @@ namespace tvu
 
             //MainHistory.GetRecentActivity();
 
+        }
 
-
+        private void CheckButton_Click(object sender, EventArgs e)
+        {
+            StartDownloadThread();
         }
 
 
