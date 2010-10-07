@@ -606,7 +606,7 @@ namespace tvu
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AddFeedDialog dialog = new AddFeedDialog(MainConfig.ServiceUrl, MainConfig.Password);
+            AddFeedDialog dialog = new AddFeedDialog(MainConfig.ServiceUrl, MainConfig.Password,MainConfig.DefaultCategory);
             dialog.ShowDialog();
 
             if (dialog.DialogResult == DialogResult.OK)
@@ -699,6 +699,7 @@ namespace tvu
             }
             StartDownloadThread();
 
+
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -732,14 +733,26 @@ namespace tvu
         public void UpdateRecentActivity()
         {
             listBox1.Items.Clear();
+            List<fileHistory> myFileHistoryList = MainHistory.GetRecentActivity();
 
-            //MainHistory.GetRecentActivity();
+            foreach (fileHistory fh in myFileHistoryList)
+            {
+                Ed2kParser parser = new Ed2kParser(fh.Ed2kLink);
+                fh.Date = fh.Date.Replace('T', ' ');
+                string t = string.Format("{0}:{1}", fh.Date, parser.GetFileName());
+                listBox1.Items.Add(t);
+            }
 
         }
 
         private void CheckButton_Click(object sender, EventArgs e)
         {
             StartDownloadThread();
+        }
+
+        private void DafeultCategoryTextBox_TextChanged(object sender, EventArgs e)
+        {
+            MainConfig.DefaultCategory = DafeultCategoryTextBox.Text;
         }
 
 

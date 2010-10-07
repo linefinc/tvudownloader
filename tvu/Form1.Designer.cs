@@ -80,6 +80,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.label17 = new System.Windows.Forms.Label();
+            this.DafeultCategoryTextBox = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabActivity.SuspendLayout();
             this.tabMain.SuspendLayout();
@@ -347,6 +349,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.DafeultCategoryTextBox);
+            this.groupBox2.Controls.Add(this.label17);
             this.groupBox2.Controls.Add(this.checkBoxStartWithWindows);
             this.groupBox2.Controls.Add(this.checkBoxStartMinimized);
             this.groupBox2.Controls.Add(this.checkBoxCloseWhenAllDone);
@@ -357,7 +361,7 @@
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Location = new System.Drawing.Point(5, 113);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(531, 148);
+            this.groupBox2.Size = new System.Drawing.Size(531, 256);
             this.groupBox2.TabIndex = 33;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "General";
@@ -594,6 +598,23 @@
             this.timer2.Interval = 1000;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(6, 160);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(86, 13);
+            this.label17.TabIndex = 35;
+            this.label17.Text = "Default Category";
+            // 
+            // DafeultCategoryTextBox
+            // 
+            this.DafeultCategoryTextBox.Location = new System.Drawing.Point(126, 157);
+            this.DafeultCategoryTextBox.Name = "DafeultCategoryTextBox";
+            this.DafeultCategoryTextBox.Size = new System.Drawing.Size(399, 20);
+            this.DafeultCategoryTextBox.TabIndex = 36;
+            this.DafeultCategoryTextBox.TextChanged += new System.EventHandler(this.DafeultCategoryTextBox_TextChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -676,6 +697,8 @@
         private System.Windows.Forms.TabPage tabActivity;
         private System.Windows.Forms.Button CheckButton;
         private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.TextBox DafeultCategoryTextBox;
+        private System.Windows.Forms.Label label17;
     }
 }
 

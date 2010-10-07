@@ -20,6 +20,7 @@ namespace tvu
         public string eMuleExe { get; set; }
         public bool debug {get; set;}
         public string FileName { get; set; }
+        public string DefaultCategory { get; set; }
         public bool StartWithWindows
         {
             get
@@ -120,7 +121,11 @@ namespace tvu
             textWritter.WriteStartElement("eMuleExe");
             textWritter.WriteString(eMuleExe);
             textWritter.WriteEndElement();
-            
+
+            textWritter.WriteStartElement("DefaultCategory");
+            textWritter.WriteString(DefaultCategory);
+            textWritter.WriteEndElement();
+
             textWritter.WriteStartElement("RSSChannel");
         
 
@@ -180,7 +185,11 @@ namespace tvu
 
             eMuleExe = ReadString(xDoc, "eMuleExe", "");
 
+            DefaultCategory = ReadString(xDoc, "DefaultCategory", "");
+
             debug = (bool)Convert.ToBoolean(ReadString(xDoc, "Debug", "false"));
+
+            
             
             //
             //  Load Channel

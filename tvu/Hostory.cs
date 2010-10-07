@@ -181,20 +181,32 @@ namespace tvu
         {
             List<fileHistory> myFileHistoryList = new List<fileHistory>();
 
-            for (int i = 0; i < (myFileHistoryList.Count-1); i++)
+            myFileHistoryList.AddRange(fileHistoryList);
+
+
+
+            int index = 0;
+            while (index < myFileHistoryList.Count - 1)
             {
-                string str1 = myFileHistoryList[i].Date;
-                string str2 = myFileHistoryList[i + 1].Date;
+
+                string str1 = myFileHistoryList[index].Date;
+                string str2 = myFileHistoryList[index + 1].Date;
 
                 if (str1.CompareTo(str2) == -1)
                 {
-                    string t = str2;
-                    str2 = str1;
-                    str1 = t;
-                    i = 0;
+                    fileHistory t = myFileHistoryList[index];
+                    myFileHistoryList[index] = myFileHistoryList[index + 1];
+                    myFileHistoryList[index + 1] = t;
+                    index = 0;
+                }
+                else
+                {
+                    index++;
                 }
 
             }
+
+            myFileHistoryList.RemoveRange(30, myFileHistoryList.Count - 30);
 
             return myFileHistoryList;
         }
