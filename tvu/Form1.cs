@@ -631,6 +631,7 @@ namespace tvu
         /// </summary>
         private void backgroundWorker1_RunWorkerCompleted(object sender,RunWorkerCompletedEventArgs e)
         {
+            UpdateRecentActivity();
             menuItemCheckNow.Enabled = true;
             CheckButton.Enabled = true;
         }
@@ -753,6 +754,12 @@ namespace tvu
         private void DafeultCategoryTextBox_TextChanged(object sender, EventArgs e)
         {
             MainConfig.DefaultCategory = DafeultCategoryTextBox.Text;
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            OptionsDialog OptDialog = new OptionsDialog();
+            OptDialog.Show();
         }
 
 

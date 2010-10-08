@@ -206,8 +206,10 @@ namespace tvu
 
             }
 
-            myFileHistoryList.RemoveRange(30, myFileHistoryList.Count - 30);
-
+            if (myFileHistoryList.Count > 30)
+            {
+                myFileHistoryList.RemoveRange(30, myFileHistoryList.Count - 30);
+            }
             return myFileHistoryList;
         }
     }

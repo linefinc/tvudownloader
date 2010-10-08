@@ -57,6 +57,8 @@
             this.button4 = new System.Windows.Forms.Button();
             this.tabConfig = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.DafeultCategoryTextBox = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
             this.checkBoxStartWithWindows = new System.Windows.Forms.CheckBox();
             this.checkBoxStartMinimized = new System.Windows.Forms.CheckBox();
             this.checkBoxCloseWhenAllDone = new System.Windows.Forms.CheckBox();
@@ -80,8 +82,19 @@
             this.label4 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.label17 = new System.Windows.Forms.Label();
-            this.DafeultCategoryTextBox = new System.Windows.Forms.TextBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.label20 = new System.Windows.Forms.Label();
+            this.button5 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabActivity.SuspendLayout();
             this.tabMain.SuspendLayout();
@@ -92,6 +105,8 @@
             this.tabLog.SuspendLayout();
             this.tabAbout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
             // 
             // button2
@@ -337,6 +352,7 @@
             // 
             // tabConfig
             // 
+            this.tabConfig.Controls.Add(this.button5);
             this.tabConfig.Controls.Add(this.groupBox2);
             this.tabConfig.Controls.Add(this.groupBox1);
             this.tabConfig.Controls.Add(this.ButtonSaveConfig);
@@ -365,6 +381,23 @@
             this.groupBox2.TabIndex = 33;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "General";
+            // 
+            // DafeultCategoryTextBox
+            // 
+            this.DafeultCategoryTextBox.Location = new System.Drawing.Point(126, 157);
+            this.DafeultCategoryTextBox.Name = "DafeultCategoryTextBox";
+            this.DafeultCategoryTextBox.Size = new System.Drawing.Size(399, 20);
+            this.DafeultCategoryTextBox.TabIndex = 36;
+            this.DafeultCategoryTextBox.TextChanged += new System.EventHandler(this.DafeultCategoryTextBox_TextChanged);
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(6, 160);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(86, 13);
+            this.label17.TabIndex = 35;
+            this.label17.Text = "Default Category";
             // 
             // checkBoxStartWithWindows
             // 
@@ -458,7 +491,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.groupBox3);
             this.groupBox1.Controls.Add(this.PasswordTextBox);
+            this.groupBox1.Controls.Add(this.button3);
             this.groupBox1.Controls.Add(this.ServiceUrlTextBox);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.label2);
@@ -598,22 +633,151 @@
             this.timer2.Interval = 1000;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
-            // label17
+            // button3
             // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(6, 160);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(86, 13);
-            this.label17.TabIndex = 35;
-            this.label17.Text = "Default Category";
+            this.button3.Location = new System.Drawing.Point(431, 410);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(100, 36);
+            this.button3.TabIndex = 14;
+            this.button3.Text = "Save config";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.ButtonSaveConfig_Click);
             // 
-            // DafeultCategoryTextBox
+            // groupBox3
             // 
-            this.DafeultCategoryTextBox.Location = new System.Drawing.Point(126, 157);
-            this.DafeultCategoryTextBox.Name = "DafeultCategoryTextBox";
-            this.DafeultCategoryTextBox.Size = new System.Drawing.Size(399, 20);
-            this.DafeultCategoryTextBox.TabIndex = 36;
-            this.DafeultCategoryTextBox.TextChanged += new System.EventHandler(this.DafeultCategoryTextBox_TextChanged);
+            this.groupBox3.Controls.Add(this.textBox1);
+            this.groupBox3.Controls.Add(this.label18);
+            this.groupBox3.Controls.Add(this.checkBox1);
+            this.groupBox3.Controls.Add(this.checkBox2);
+            this.groupBox3.Controls.Add(this.checkBox3);
+            this.groupBox3.Controls.Add(this.textBox2);
+            this.groupBox3.Controls.Add(this.label19);
+            this.groupBox3.Controls.Add(this.checkBox4);
+            this.groupBox3.Controls.Add(this.numericUpDown2);
+            this.groupBox3.Controls.Add(this.label20);
+            this.groupBox3.Location = new System.Drawing.Point(0, 110);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(531, 256);
+            this.groupBox3.TabIndex = 33;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "General";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(126, 157);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(399, 20);
+            this.textBox1.TabIndex = 36;
+            this.textBox1.TextChanged += new System.EventHandler(this.DafeultCategoryTextBox_TextChanged);
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(6, 160);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(86, 13);
+            this.label18.TabIndex = 35;
+            this.label18.Text = "Default Category";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(9, 42);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(117, 17);
+            this.checkBox1.TabIndex = 34;
+            this.checkBox1.Text = "Start with Windows";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(9, 19);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(97, 17);
+            this.checkBox2.TabIndex = 31;
+            this.checkBox2.Text = "Start Minimized";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(9, 65);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(142, 17);
+            this.checkBox3.TabIndex = 29;
+            this.checkBox3.Text = "Close eMule if all is done";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(90, 115);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(435, 20);
+            this.textBox2.TabIndex = 26;
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(6, 118);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(79, 13);
+            this.label19.TabIndex = 27;
+            this.label19.Text = "eMule Exeguile";
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Location = new System.Drawing.Point(9, 88);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(116, 17);
+            this.checkBox4.TabIndex = 28;
+            this.checkBox4.Text = "Start Emule if close";
+            this.checkBox4.UseVisualStyleBackColor = true;
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Location = new System.Drawing.Point(405, 17);
+            this.numericUpDown2.Maximum = new decimal(new int[] {
+            720,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Minimum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(86, 20);
+            this.numericUpDown2.TabIndex = 22;
+            this.numericUpDown2.Value = new decimal(new int[] {
+            180,
+            0,
+            0,
+            0});
+            this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(303, 19);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(93, 13);
+            this.label20.TabIndex = 25;
+            this.label20.Text = "Interval Time [min]";
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(252, 416);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(75, 23);
+            this.button5.TabIndex = 34;
+            this.button5.Text = "button5";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // Form1
             // 
@@ -639,6 +803,9 @@
             this.tabAbout.ResumeLayout(false);
             this.tabAbout.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -699,6 +866,19 @@
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.TextBox DafeultCategoryTextBox;
         private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button5;
     }
 }
 

@@ -15,11 +15,12 @@ namespace tvu
         private string ServiceUrl;
         private string Password;
         
-        public AddFeedDialog(string ServiceUrl, string Password)
+        public AddFeedDialog(string ServiceUrl, string Password, string DefaultCategory)
         {
             InitializeComponent();
             this.ServiceUrl = ServiceUrl;
             this.Password = Password;
+            this.comboBoxCategory.Text = DefaultCategory;
         }
 
         public AddFeedDialog(string ServiceUrl, string Password, RssFeed feed)
