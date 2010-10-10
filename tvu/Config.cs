@@ -14,8 +14,8 @@ namespace tvu
         public string Password { get; set; }
         public int IntervalTime { get; set; }
         public bool StartMinimized { get; set; }
-        public bool CloseWhenAllDone { get; set; }
-        public bool AutoStartEmule { get; set; }
+        public bool CloseEmuleIfAllIsDone { get; set; }
+        public bool StartEmuleIfClose { get; set; }
         public List<RssFeed> RssFeedList { get; set; }
         public string eMuleExe { get; set; }
         public bool debug {get; set;}
@@ -111,11 +111,11 @@ namespace tvu
             textWritter.WriteEndElement();
 
             textWritter.WriteStartElement("AutoStartEmule");
-            textWritter.WriteString(AutoStartEmule.ToString());
+            textWritter.WriteString(StartEmuleIfClose.ToString());
             textWritter.WriteEndElement();
 
             textWritter.WriteStartElement("CloseWhenAllDone");
-            textWritter.WriteString(CloseWhenAllDone.ToString());
+            textWritter.WriteString(CloseEmuleIfAllIsDone.ToString());
             textWritter.WriteEndElement();
 
             textWritter.WriteStartElement("eMuleExe");
@@ -179,9 +179,9 @@ namespace tvu
 
             StartMinimized = (bool)Convert.ToBoolean(ReadString(xDoc, "StartMinimized", "false"));
 
-            CloseWhenAllDone = (bool)Convert.ToBoolean(ReadString(xDoc, "CloseWhenAllDone", "false"));
+            CloseEmuleIfAllIsDone = (bool)Convert.ToBoolean(ReadString(xDoc, "CloseWhenAllDone", "false"));
 
-            AutoStartEmule = (bool)Convert.ToBoolean(ReadString(xDoc, "AutoStartEmule", "false"));
+            StartEmuleIfClose = (bool)Convert.ToBoolean(ReadString(xDoc, "AutoStartEmule", "false"));
 
             eMuleExe = ReadString(xDoc, "eMuleExe", "");
 

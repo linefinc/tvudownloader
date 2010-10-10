@@ -38,6 +38,7 @@ namespace tvu
         delegate void SetTextCallback(string text);
 
         private DateTime DownloadDataTime;
+        private DateTime AutoCloseDataTime;
 
 
         public class sDonwloadFile
@@ -71,7 +72,8 @@ namespace tvu
 
 
             DownloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
-            
+            AutoCloseDataTime = DateTime.Now.AddMinutes(30);
+
             // load History
             MainHistory = new History();
             MainHistory.Read();
@@ -185,20 +187,11 @@ namespace tvu
 
             MainConfig.Load();     
 
-            ServiceUrlTextBox.Text = MainConfig.ServiceUrl;
-            PasswordTextBox.Text = MainConfig.Password;
-            textBoxEmuleExec.Text = MainConfig.eMuleExe;
-            numericUpDown1.Value = MainConfig.IntervalTime;
-            checkBoxStartMinimized.Checked = MainConfig.StartMinimized;
-            checkBoxCloseWhenAllDone.Checked = MainConfig.CloseWhenAllDone;
-            checkBoxStartWithWindows.Checked = MainConfig.StartWithWindows;
+ 
 
             foreach (RssFeed t in MainConfig.RssFeedList)
             {
                 ListViewItem item1 = new ListViewItem(t.Title);
-  //              item1.SubItems.Add(t.Category.ToString());
-//                item1.SubItems.Add(t.PauseDownload.ToString());
-                //item1.SubItems.Add(t.Url)
                 listView1.Items.Add(item1);
             }
         
@@ -214,39 +207,8 @@ namespace tvu
             return text;
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-            eMuleWebManager service = new eMuleWebManager(ServiceUrlTextBox.Text, PasswordTextBox.Text);
-            bool? rc = service.LogIn();
-
-            if (rc == null)
-            {
-                MessageBox.Show("Unable conncet with target URL");
-                return;
-            }
-            
-            if(rc == false)
-            {
-                MessageBox.Show("Password error ");
-                return;
-            }
-
-            MessageBox.Show("OK service is correctly configured");
-            
-            return;
-            
-
-
-        }
-
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-            MainConfig.ServiceUrl = ServiceUrlTextBox.Text;
-        }
-
-
+        
+      
         public static void CreateDumpFile( string textToAdd)
         {
             string ora = DateTime.Now.ToString();
@@ -257,33 +219,10 @@ namespace tvu
             swFromFile.Close();
         }
 
-        
-
-        
-
-
-        
-    
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-            MainConfig.Password = PasswordTextBox.Text;
-        }
-
-        private void ButtonSaveConfig_Click(object sender, EventArgs e)
-        {
-            MainConfig.AutoStartEmule = checkBoxAutoStartEmule.Checked;
-            MainConfig.StartMinimized = checkBoxStartMinimized.Checked;
-            MainConfig.CloseWhenAllDone = checkBoxCloseWhenAllDone.Checked;
-            MainConfig.Save();
-        }
-
-
         private void timer1_Tick(object sender, EventArgs e)
         {
-            
-            
 
-            if ( DateTime.Now > DownloadDataTime)
+            if (DateTime.Now > DownloadDataTime)
             {
                 DownloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
 
@@ -292,6 +231,29 @@ namespace tvu
                 StartDownloadThread();
             }
 
+            //
+            // Auto close
+            //
+            if ((MainConfig.CloseEmuleIfAllIsDone == true) & (AutoCloseDataTime > DateTime.Now))
+            {
+                // set next time 
+                AutoCloseDataTime = DateTime.Now.AddMinutes(30);
+               
+                eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl,MainConfig.Password);
+                bool? rc = Service.LogIn();
+
+                if (rc == null)
+                {
+                    return;
+                }
+
+                if (Service.GetActualDownloads().Count == 0)
+                {
+                    Service.Close();
+                }
+
+                Service.LogOut();
+            }
         }
 
         private void AppendText(string text)
@@ -375,23 +337,18 @@ namespace tvu
                 }
             }
 
-            if ((myList.Count == 0)&(MainConfig.CloseWhenAllDone == false))
+            if ((myList.Count == 0)&(MainConfig.CloseEmuleIfAllIsDone == false))
             {
                 // nothing to download
                 return;
             }
 
-            // for future separation in thread
-            string sUrl = ServiceUrlTextBox.Text;
-            string sPass = PasswordTextBox.Text;
-            
-
-            eMuleWebManager Service = new eMuleWebManager(sUrl, sPass);
+            eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
             bool? rc = Service.LogIn();
 
             // try to start emule
             // the if work only if rc == null
-            if (MainConfig.AutoStartEmule == true)
+            if (MainConfig.StartEmuleIfClose == true)
             {
                 for (int i = 1; (i <= 5) & (rc == null); i++)
                 {
@@ -447,20 +404,7 @@ namespace tvu
                 }
              }
 
-            //
-            // Auto close
-            //
-            if ((myList.Count == 0) & (checkBoxCloseWhenAllDone.Checked == true))
-            {
-                List<string> ActualDownloads = Service.GetActualDownloads();
-                if (ActualDownloads.Count == 0)
-                {
-                    Service.Close();
-                }
-                return;
-            }
-
-            Service.LogOut();
+             Service.LogOut();
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -547,16 +491,6 @@ namespace tvu
             return;
         }
 
-
-        private void ServiceUrlTextBox_TextChanged(object sender, EventArgs e)
-        {
-            MainConfig.ServiceUrl = ServiceUrlTextBox.Text;
-        }
-
-        private void PasswordTextBox_TextChanged(object sender, EventArgs e)
-        {
-            MainConfig.Password = PasswordTextBox.Text;
-        }
 
         private void ClearButton_Click(object sender, EventArgs e)
         {
@@ -703,27 +637,9 @@ namespace tvu
 
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            MainConfig.eMuleExe = textBoxEmuleExec.Text;
-        }
+       
 
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
-        {
-            MainConfig.IntervalTime = Convert.ToInt32(numericUpDown1.Value.ToString());
-        }
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxStartWithWindows.Checked == true)
-            {
-                MainConfig.StartWithWindows = true;
-                return;
-            }
-            MainConfig.StartWithWindows = false;
-            
-
-        }
+       
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -751,16 +667,35 @@ namespace tvu
             StartDownloadThread();
         }
 
-        private void DafeultCategoryTextBox_TextChanged(object sender, EventArgs e)
+        private void buttonOption_Click(object sender, EventArgs e)
         {
-            MainConfig.DefaultCategory = DafeultCategoryTextBox.Text;
+            OptionsDialog OptDialog = new OptionsDialog(MainConfig);
+            OptDialog.ShowDialog();
+
+
+            if (OptDialog.DialogResult == DialogResult.OK)
+            {
+                MainConfig.IntervalTime = OptDialog.LocalConfig.IntervalTime;
+                MainConfig.StartMinimized = OptDialog.LocalConfig.StartMinimized;
+                MainConfig.StartWithWindows = OptDialog.LocalConfig.StartWithWindows;
+                MainConfig.StartEmuleIfClose = OptDialog.LocalConfig.StartEmuleIfClose;
+                MainConfig.CloseEmuleIfAllIsDone = OptDialog.LocalConfig.CloseEmuleIfAllIsDone;
+                MainConfig.ServiceUrl = OptDialog.LocalConfig.ServiceUrl;
+                MainConfig.Password = OptDialog.LocalConfig.Password;
+                MainConfig.DefaultCategory = OptDialog.LocalConfig.DefaultCategory;
+                MainConfig.eMuleExe = OptDialog.LocalConfig.eMuleExe;
+                MainConfig.IntervalTime = OptDialog.LocalConfig.IntervalTime;
+
+                MainConfig.Save();
+            }
+
+            OptDialog.Dispose();
+            return;
         }
 
-        private void button5_Click(object sender, EventArgs e)
-        {
-            OptionsDialog OptDialog = new OptionsDialog();
-            OptDialog.Show();
-        }
+
+  
+
 
 
 
