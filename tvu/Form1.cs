@@ -31,6 +31,9 @@ namespace tvu
         private System.Windows.Forms.MenuItem menuItemCheckNow;
         private System.Windows.Forms.MenuItem menuItemHide;
         private System.Windows.Forms.MenuItem menuItemExit;
+        private System.Windows.Forms.MenuItem menuItemAutoStartEmule;
+        private System.Windows.Forms.MenuItem menuItemAutoCloseEmule;
+
 
         public Config MainConfig;
         public History MainHistory;
@@ -98,19 +101,52 @@ namespace tvu
             this.menuItemCheckNow = new System.Windows.Forms.MenuItem();
             this.menuItemHide = new System.Windows.Forms.MenuItem();
             this.menuItemExit = new System.Windows.Forms.MenuItem();
+            this.menuItemAutoStartEmule = new System.Windows.Forms.MenuItem(); 
+            this.menuItemAutoCloseEmule = new System.Windows.Forms.MenuItem(); 
+
+
 
             // Initialize menuItem1
-            this.menuItemCheckNow.Index = 0;
+            this.menuItemAutoStartEmule.Index = 0;
+            this.menuItemAutoStartEmule.Text = "Auto Start eMule";
+
+            if (MainConfig.StartEmuleIfClose == true)
+            {
+                this.menuItemAutoStartEmule.Checked = true;
+            }
+            else
+            {
+                this.menuItemAutoStartEmule.Checked = false;
+            }
+
+            this.menuItemAutoStartEmule.Click += new System.EventHandler(this.menu_AutoStartEmule);
+            this.contextMenu1.MenuItems.Add(menuItemAutoStartEmule);
+
+            this.menuItemAutoCloseEmule.Index = 1;
+            this.menuItemAutoCloseEmule.Text = "Auto Close eMule";
+            
+            if (MainConfig.CloseEmuleIfAllIsDone == true)
+            {
+                this.menuItemAutoCloseEmule.Checked = true;
+            }
+            else
+            {
+                this.menuItemAutoCloseEmule.Checked = false;
+            }
+            this.menuItemAutoCloseEmule.Click += new System.EventHandler(this.menu_AutoCloseEmule);
+            this.contextMenu1.MenuItems.Add(menuItemAutoCloseEmule);
+
+            this.menuItemCheckNow.Index = 2;
             this.menuItemCheckNow.Text = "Check Now";
             this.menuItemCheckNow.Click += new System.EventHandler(this.menu_CheckNow);
             this.contextMenu1.MenuItems.Add(menuItemCheckNow);
 
-            this.menuItemHide.Index = 1;
+            this.menuItemHide.Index = 3;
             this.menuItemHide.Text = "Hide";
             this.menuItemHide.Click += new System.EventHandler(this.menu_Hide);
             this.contextMenu1.MenuItems.Add(menuItemHide);
 
-            this.menuItemExit.Index = 0;
+            this.menuItemExit.Index = 4;
             this.menuItemExit.Text = "E&xit";
             this.menuItemExit.Click += new System.EventHandler(this.menu_Exit);
             this.contextMenu1.MenuItems.Add(menuItemExit);
@@ -154,6 +190,36 @@ namespace tvu
         private void menu_CheckNow(object Sender, EventArgs e)
         {
             StartDownloadThread();
+        }
+
+        private void menu_AutoStartEmule(object Sender, EventArgs e)
+        {
+            //AppendLogMessage("Auto Start Emule");
+            if (MainConfig.StartEmuleIfClose == true)
+            {
+                this.menuItemAutoStartEmule.Checked = false;
+                this.MainConfig.CloseEmuleIfAllIsDone = false;
+            }
+            else
+            {
+                this.menuItemAutoStartEmule.Checked = true;
+                this.MainConfig.CloseEmuleIfAllIsDone = true;
+            }
+        }
+
+        private void menu_AutoCloseEmule(object Sender, EventArgs e)
+        {
+            //AppendLogMessage("Auto Close Emule");
+            if (MainConfig.CloseEmuleIfAllIsDone == true)
+            {
+                this.menuItemAutoCloseEmule.Checked = false;
+                this.MainConfig.CloseEmuleIfAllIsDone = false;
+            }
+            else
+            {
+                this.menuItemAutoCloseEmule.Checked = true;
+                this.MainConfig.CloseEmuleIfAllIsDone = true;
+            }
         }
 
         private void notifyIcon1_DoubleClick(object Sender, EventArgs e)
@@ -599,11 +665,11 @@ namespace tvu
         {
             if (this.Visible == true)
             {
-                this.contextMenu1.MenuItems[1].Text = "Hide";
+                this.menuItemHide.Text = "Hide";
             }
             else
             {
-                this.contextMenu1.MenuItems[1].Text = "Show";
+                this.menuItemHide.Text = "Show";
             }
 
             if ((e.Clicks == 2) & (e.Button == MouseButtons.Left))
