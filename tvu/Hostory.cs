@@ -176,6 +176,20 @@ namespace tvu
 
         }
 
+        public void DeleteFile(string FileName)
+        {
+            for(int i =0;i < fileHistoryList.Count; i++)
+            {
+                string fh_Ed2kLink = fileHistoryList[i].Ed2kLink;
+                int rc = fh_Ed2kLink.IndexOf(FileName);
+                if (rc > 0)
+                {
+                    //delete me
+                    fileHistoryList.Remove(fileHistoryList[i]);
+                    return;
+                }
+            }
+        }
 
         public List<fileHistory> GetRecentActivity()
         {
