@@ -46,7 +46,7 @@ namespace tvu
 
         private void butAdd_Click(object sender, EventArgs e)
         {
-            if (textUrl.Text.IndexOf("http://tvunderground.org.ru/rss.php") < 0)
+            if (checkLink(textUrl.Text) == false)
             {
                 MessageBox.Show("Only tvunderground.org.ru service supported");
                 return;
@@ -102,8 +102,21 @@ namespace tvu
             butUpdateCategory.Enabled = true;
         }
 
-        
 
+        public bool checkLink(string url)
+        {
+            if (url.IndexOf("http://tvunderground.org.ru/rss.php") >= 0)
+            {
+                return true;
+            }
+
+            if (url.IndexOf("http://www.tvunderground.org.ru/rss.php") >= 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
 
 
 

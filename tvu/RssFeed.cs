@@ -11,5 +11,8 @@ namespace tvu
         public string Category = "";
         public bool PauseDownload = false;
         public string LastUpgradeData = "";
+        public bool error = false;
+        public bool warning = false;
+        
     }
 }

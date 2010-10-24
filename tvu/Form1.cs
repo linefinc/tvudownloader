@@ -251,14 +251,36 @@ namespace tvu
                 listView1.Items.Remove(listView1.Items[0]);
             }
 
-            MainConfig.Load();     
+            MainConfig.Load();
 
- 
 
-            foreach (RssFeed t in MainConfig.RssFeedList)
+            List<RssFeed> myRssFeedList = new List<RssFeed>();
+            myRssFeedList.AddRange(MainConfig.RssFeedList);
+            //
+            //people.Sort((x, y) => string.Compare(x.LastName, y.LastName));
+            //
+            myRssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title));
+
+            foreach (RssFeed t in myRssFeedList)
             {
-                ListViewItem item1 = new ListViewItem(t.Title);
-                listView1.Items.Add(item1);
+                ListViewItem item = new ListViewItem(t.Title);
+                
+                if ((t.error == true) & (t.warning == false))
+                {
+                    item.SubItems.Add("Error");
+                }
+
+                if ((t.error == false) & (t.warning == true))
+                {
+                    item.SubItems.Add("Warning");
+                }
+
+                if ((t.error == false) & (t.warning == false))
+                {
+                    item.SubItems.Add("OK");
+                }
+
+                listView1.Items.Add(item);
             }
         
         }
@@ -295,6 +317,7 @@ namespace tvu
                 AppendLogMessage("Now : " + DateTime.Now.ToString());
                 AppendLogMessage("next tick : " + DownloadDataTime.ToString());
                 StartDownloadThread();
+                LoadConfigToGUI();
             }
 
             //
@@ -400,6 +423,7 @@ namespace tvu
                 catch
                 {
                     AppendLogMessage("Unable to load rss");
+                    feed.error = true;
                 }
             }
 
@@ -481,26 +505,34 @@ namespace tvu
             if (listView1.SelectedItems.Count == 0)
                 return;
 
-
-
             ListViewItem temp = listView1.SelectedItems[0];
             int i = listView1.Items.IndexOf(temp);
-            string feedUrl = MainConfig.RssFeedList[i].Url;
+            string feedTitle = listView1.Items[i].Text;
+
+            RssFeed Feed = MainConfig.RssFeedList[0]; ;
+
+            for (i = 0; i < listView1.Items.Count; i++)
+            {
+                if (MainConfig.RssFeedList[i].Title == feedTitle)
+                {
+                    Feed = MainConfig.RssFeedList[i];
+                }
+            }
 
 
-            label8.Text = MainConfig.RssFeedList[i].Category;
-            label10.Text = MainConfig.RssFeedList[i].PauseDownload.ToString();
-            label12.Text = MainConfig.RssFeedList[i].Url;
+            label8.Text = Feed.Category;
+            label10.Text = Feed.PauseDownload.ToString();
+            label12.Text = Feed.Url;
 
-            label14.Text = MainHistory.LastDownloadByFeedSource(feedUrl);
-            label16.Text = MainHistory.LinkCountByFeedSource(feedUrl).ToString();
+            label14.Text = MainHistory.LastDownloadByFeedSource(Feed.Url);
+            label16.Text = MainHistory.LinkCountByFeedSource(Feed.Url).ToString();
    
 
             // update list history
             listView2.Items.Clear();
             foreach (fileHistory fh in MainHistory.fileHistoryList)
             {
-                if (fh.FeedSource == feedUrl)
+                if (fh.FeedSource == Feed.Url)
                 {
                     Ed2kParser ed2k = new Ed2kParser(fh.Ed2kLink);
                     ListViewItem item1 = new ListViewItem(ed2k.GetFileName());
