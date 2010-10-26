@@ -530,14 +530,25 @@ namespace tvu
 
             // update list history
             listView2.Items.Clear();
+
+            List<string> ListHistory = new List<string>();
+
             foreach (fileHistory fh in MainHistory.fileHistoryList)
             {
                 if (fh.FeedSource == Feed.Url)
                 {
                     Ed2kParser ed2k = new Ed2kParser(fh.Ed2kLink);
-                    ListViewItem item1 = new ListViewItem(ed2k.GetFileName());
-                    listView2.Items.Add(item1);
+                    ListHistory.Add(ed2k.GetFileName());
+                
                 }
+            }
+
+            ListHistory.Sort((x, y) => (y.CompareTo(x)));
+
+            foreach (string t in ListHistory)
+            {
+                ListViewItem item1 = new ListViewItem(t);
+                listView2.Items.Add(item1);
             }
         }
 
