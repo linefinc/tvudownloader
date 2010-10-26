@@ -64,7 +64,7 @@ namespace tvu
 
             InitializeComponent();
             
-            LoadConfigToGUI();
+            UpdateRssFeedGUI();
             SetupNotify();
 
             label8.Text = "";
@@ -82,6 +82,7 @@ namespace tvu
             MainHistory.Read();
 
             UpdateRecentActivity();
+            UpdateRssFeedGUI();
 
 
         }
@@ -243,16 +244,13 @@ namespace tvu
             
         }
 
-        private void LoadConfigToGUI()
+        private void UpdateRssFeedGUI()
         {
 
             while (listView1.Items.Count > 0)
             {
                 listView1.Items.Remove(listView1.Items[0]);
             }
-
-            MainConfig.Load();
-
 
             List<RssFeed> myRssFeedList = new List<RssFeed>();
             myRssFeedList.AddRange(MainConfig.RssFeedList);
@@ -264,22 +262,22 @@ namespace tvu
             foreach (RssFeed t in myRssFeedList)
             {
                 ListViewItem item = new ListViewItem(t.Title);
-                
-                if ((t.error == true) & (t.warning == false))
-                {
-                    item.SubItems.Add("Error");
-                }
 
-                if ((t.error == false) & (t.warning == true))
+                switch (t.status)
                 {
-                    item.SubItems.Add("Warning");
-                }
+                    case enumStatus.Ok:
+                        item.SubItems.Add("Ok");
+                        break;
 
-                if ((t.error == false) & (t.warning == false))
-                {
-                    item.SubItems.Add("OK");
-                }
+                    case enumStatus.Idle:
+                        item.SubItems.Add("Idle");
+                        break;
 
+                    case enumStatus.Error:
+                        item.SubItems.Add("Error");
+                        break;
+
+                }
                 listView1.Items.Add(item);
             }
         
@@ -317,7 +315,7 @@ namespace tvu
                 AppendLogMessage("Now : " + DateTime.Now.ToString());
                 AppendLogMessage("next tick : " + DownloadDataTime.ToString());
                 StartDownloadThread();
-                LoadConfigToGUI();
+                UpdateRssFeedGUI();
             }
 
             //
@@ -423,7 +421,10 @@ namespace tvu
                 catch
                 {
                     AppendLogMessage("Unable to load rss");
-                    feed.error = true;
+
+                    //feed.status = enumStatus.Error;
+                    int index = MainConfig.RssFeedList.IndexOf(feed);
+                    MainConfig.RssFeedList[index].status = enumStatus.Error;
                 }
             }
 
@@ -554,44 +555,45 @@ namespace tvu
 
         private void listView1_DoubleClick(object sender, EventArgs e)
         {
+
             if (listView1.Items.Count == 0)
                 return;
 
             if (listView1.SelectedItems.Count == 0)
                 return;
 
-            string HistoryFileName = Application.LocalUserAppDataPath;
-            int rc = HistoryFileName.LastIndexOf("\\");
-            HistoryFileName = HistoryFileName.Substring(0, rc) + "\\History.xml";
-
-            if (!File.Exists(HistoryFileName))
-            {
-                return ;
-            }
-
             ListViewItem temp = listView1.SelectedItems[0];
             int i = listView1.Items.IndexOf(temp);
-            RssFeed feed = MainConfig.RssFeedList[i];
+            string feedTitle = listView1.Items[i].Text;
 
+            RssFeed Feed = MainConfig.RssFeedList[0]; ;
 
-            AddFeedDialog dialog = new AddFeedDialog(MainConfig.ServiceUrl, MainConfig.Password, feed);
+            for (i = 0; i < listView1.Items.Count; i++)
+            {
+                if (MainConfig.RssFeedList[i].Title == feedTitle)
+                {
+                    Feed = MainConfig.RssFeedList[i];
+                }
+            }
+            
+            AddFeedDialog dialog = new AddFeedDialog(MainConfig.ServiceUrl, MainConfig.Password, Feed);
             dialog.ShowDialog();
 
             if (dialog.DialogResult == DialogResult.OK)
             {
-                feed = dialog.Feed;
+                Feed = dialog.Feed;
 
                 for (int j = 0; j < MainConfig.RssFeedList.Count; j++)
                 {
-                    if (MainConfig.RssFeedList[j].Url == feed.Url)
+                    if (MainConfig.RssFeedList[j].Url == Feed.Url)
                     {
                         MainConfig.RssFeedList.Remove(MainConfig.RssFeedList[j]);
                         break;
                     }
                 }
 
-                MainConfig.RssFeedList.Add(feed);
-                LoadConfigToGUI();
+                MainConfig.RssFeedList.Add(Feed);
+                UpdateRssFeedGUI();
                 dialog.Dispose();
                 return;
             }
@@ -641,7 +643,7 @@ namespace tvu
 
             MainConfig.RssFeedList.Remove(MainConfig.RssFeedList[i]);
             MainConfig.Save();
-            LoadConfigToGUI(); ///upgrade gui
+            UpdateRssFeedGUI(); ///upgrade gui
 
             
 
@@ -660,7 +662,7 @@ namespace tvu
             }
 
             dialog.Dispose();
-            LoadConfigToGUI();
+            UpdateRssFeedGUI();
             return;
         }
 
@@ -675,6 +677,7 @@ namespace tvu
         private void backgroundWorker1_RunWorkerCompleted(object sender,RunWorkerCompletedEventArgs e)
         {
             UpdateRecentActivity();
+            UpdateRssFeedGUI();
             menuItemCheckNow.Enabled = true;
             CheckButton.Enabled = true;
         }

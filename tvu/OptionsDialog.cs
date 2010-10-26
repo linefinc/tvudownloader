@@ -21,11 +21,13 @@ namespace tvu
             textBoxServiceUrl.Text = inConfig.ServiceUrl;
             textBoxPassword.Text = inConfig.Password;
             textBoxEmuleExe.Text = inConfig.eMuleExe;
+            textBoxDefaultCategory.Text = LocalConfig.DefaultCategory;
             numericUpDownIntervalTime.Value = inConfig.IntervalTime;
             checkBoxStartMinimized.Checked = inConfig.StartMinimized;
             checkBoxStartEmuleIfClose.Checked = inConfig.StartEmuleIfClose;
             checkBoxCloseEmuleIfAllIsDone.Checked = inConfig.CloseEmuleIfAllIsDone;
             checkBoxStartWithWindows.Checked = inConfig.StartWithWindows;
+
 
 
         }
@@ -115,6 +117,6 @@ namespace tvu
             this.Close();
         }
 
-
+  
     }
 }

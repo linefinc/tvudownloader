@@ -4,6 +4,14 @@ using System.Text;
 
 namespace tvu
 {
+    public enum enumStatus
+    {
+        Ok,
+        Error,
+        Idle
+    }
+
+    
     public class RssFeed
     {
         public string Title = "";
@@ -11,8 +19,7 @@ namespace tvu
         public string Category = "";
         public bool PauseDownload = false;
         public string LastUpgradeData = "";
-        public bool error = false;
-        public bool warning = false;
+        public enumStatus status = enumStatus.Ok;
         
     }
 }

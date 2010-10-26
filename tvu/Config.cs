@@ -21,6 +21,8 @@ namespace tvu
         public bool debug {get; set;}
         public string FileName { get; set; }
         public string DefaultCategory { get; set; }
+        public enumStatus Status { get; set; }
+
         public bool StartWithWindows
         {
             get
