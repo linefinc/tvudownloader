@@ -381,8 +381,8 @@ namespace tvu
                 
             foreach (RssFeed feed in MainConfig.RssFeedList)
             {
-                
-                
+
+                feed.status = enumStatus.Ok;
                 AppendLogMessage("Read RSS " + feed.Url);
 
                 try
@@ -422,9 +422,9 @@ namespace tvu
                 {
                     AppendLogMessage("Unable to load rss");
 
-                    //feed.status = enumStatus.Error;
-                    int index = MainConfig.RssFeedList.IndexOf(feed);
-                    MainConfig.RssFeedList[index].status = enumStatus.Error;
+                    feed.status = enumStatus.Error;
+                    //int index = MainConfig.RssFeedList.IndexOf(feed);
+                    //MainConfig.RssFeedList[index].status = enumStatus.Error;
                 }
             }
 
