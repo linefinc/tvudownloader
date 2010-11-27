@@ -33,6 +33,7 @@ namespace tvu
         private System.Windows.Forms.MenuItem menuItemExit;
         private System.Windows.Forms.MenuItem menuItemAutoStartEmule;
         private System.Windows.Forms.MenuItem menuItemAutoCloseEmule;
+        private System.Windows.Forms.MenuItem menuItemEnable;
 
 
         public Config MainConfig;
@@ -103,8 +104,8 @@ namespace tvu
             this.menuItemHide = new System.Windows.Forms.MenuItem();
             this.menuItemExit = new System.Windows.Forms.MenuItem();
             this.menuItemAutoStartEmule = new System.Windows.Forms.MenuItem(); 
-            this.menuItemAutoCloseEmule = new System.Windows.Forms.MenuItem(); 
-
+            this.menuItemAutoCloseEmule = new System.Windows.Forms.MenuItem();
+            this.menuItemEnable = new System.Windows.Forms.MenuItem();
 
 
             // Initialize menuItem1
@@ -151,6 +152,12 @@ namespace tvu
             this.menuItemExit.Text = "E&xit";
             this.menuItemExit.Click += new System.EventHandler(this.menu_Exit);
             this.contextMenu1.MenuItems.Add(menuItemExit);
+
+            this.menuItemEnable.Index = 5;
+            this.menuItemEnable.Text = "Enable";
+            this.menuItemEnable.Checked = true;
+            this.menuItemEnable.Click += new System.EventHandler(this.menu_Enable);
+            this.contextMenu1.MenuItems.Add(menuItemEnable);
 
             // Create the NotifyIcon.
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
@@ -221,6 +228,23 @@ namespace tvu
                 this.menuItemAutoCloseEmule.Checked = true;
                 this.MainConfig.CloseEmuleIfAllIsDone = true;
                 AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
+            }
+        }
+
+
+        private void menu_Enable(object Sender, EventArgs e)
+        {
+            if (MainConfig.Enebled == true)
+            {
+                this.menuItemEnable.Checked = false;
+                MainConfig.Enebled = false;
+                timer1.Enabled = false;
+            }
+            else
+            {
+                this.menuItemEnable.Checked = true;
+                MainConfig.Enebled = true;
+                timer1.Enabled = true;
             }
         }
 
@@ -848,9 +872,6 @@ namespace tvu
             AppendLogMessage(p);
 
             MainHistory.DeleteFile(str);
-
-   
-
         }
 
   

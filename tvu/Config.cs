@@ -22,7 +22,7 @@ namespace tvu
         public string FileName { get; set; }
         public string DefaultCategory { get; set; }
         public enumStatus Status { get; set; }
-
+        public bool Enebled { get; set; }
         public bool StartWithWindows
         {
             get
