@@ -476,6 +476,19 @@ namespace tvu
                     //int index = MainConfig.RssFeedList.IndexOf(feed);
                     //MainConfig.RssFeedList[index].status = enumStatus.Error;
                 }
+
+                if (feed.status == enumStatus.Ok)
+                {
+                    string strDate = MainHistory.LastDownloadDateByFeedSource(feed.Url);
+                    DateTime t = DateTime.Parse(strDate);
+                    TimeSpan span = DateTime.Now.Subtract(t);
+                    if (span.TotalDays > 15)
+                    {
+                        feed.status = enumStatus.Idle;
+                    }
+                }
+
+                
             }
 
             if (myList.Count == 0)
@@ -575,7 +588,7 @@ namespace tvu
             label10.Text = Feed.PauseDownload.ToString();
             label12.Text = Feed.Url;
 
-            label14.Text = MainHistory.LastDownloadByFeedSource(Feed.Url);
+            label14.Text = MainHistory.LastDownloadDateByFeedSource(Feed.Url);
             label16.Text = MainHistory.LinkCountByFeedSource(Feed.Url).ToString();
    
 

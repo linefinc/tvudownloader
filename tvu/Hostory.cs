@@ -154,7 +154,7 @@ namespace tvu
 
         }
 
-        public string LastDownloadByFeedSource(string FeedSource)
+        public string LastDownloadDateByFeedSource(string FeedSource)
         {
             string date = "";
             foreach (fileHistory fh in fileHistoryList)
