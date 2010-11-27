@@ -78,6 +78,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormAlerteMuleClose.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAlerteMuleClose.Designer.cs">
+      <DependentUpon>FormAlerteMuleClose.cs</DependentUpon>
+    </Compile>
     <Compile Include="Hostory.cs" />
     <Compile Include="OptionsDialog.cs">
       <SubType>Form</SubType>
@@ -92,6 +98,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAlerteMuleClose.resx">
+      <DependentUpon>FormAlerteMuleClose.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OptionsDialog.resx">
       <DependentUpon>OptionsDialog.cs</DependentUpon>

@@ -199,12 +199,12 @@ namespace tvu
             if (MainConfig.StartEmuleIfClose == true)
             {
                 this.menuItemAutoStartEmule.Checked = false;
-                this.MainConfig.CloseEmuleIfAllIsDone = false;
+                this.MainConfig.StartEmuleIfClose = false;
             }
             else
             {
                 this.menuItemAutoStartEmule.Checked = true;
-                this.MainConfig.CloseEmuleIfAllIsDone = true;
+                this.MainConfig.StartEmuleIfClose = true;
             }
         }
 
@@ -220,6 +220,7 @@ namespace tvu
             {
                 this.menuItemAutoCloseEmule.Checked = true;
                 this.MainConfig.CloseEmuleIfAllIsDone = true;
+                AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
             }
         }
 
@@ -324,7 +325,7 @@ namespace tvu
             if ((MainConfig.CloseEmuleIfAllIsDone == true) & (AutoCloseDataTime > DateTime.Now))
             {
                 // set next time 
-                AutoCloseDataTime = DateTime.Now.AddMinutes(30);
+                AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
                
                 eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl,MainConfig.Password);
                 bool? rc = Service.LogIn();
@@ -336,7 +337,32 @@ namespace tvu
 
                 if (Service.GetActualDownloads().Count == 0)
                 {
-                    Service.Close();
+                    // pop up form to advise
+                    FormAlerteMuleClose Dialog = new FormAlerteMuleClose();
+                    Dialog.ShowDialog();
+
+                    if (Dialog.DialogResult == DialogResult.Cancel)
+                    {
+                        //skeep event
+                        Dialog.Dispose();
+                        Service.LogOut();
+                        return;
+                    }
+
+                    switch (Dialog.AlertChoice)
+                    {
+                        case AlertChoiceEnum.Close:// Close
+                            Service.Close();
+                            break;
+                        case AlertChoiceEnum.Skip: // SKIP
+                            break;
+                        case AlertChoiceEnum.Disable:    // disable autoclose
+                            this.menuItemAutoCloseEmule.Checked = false; // disable context menu
+                            this.MainConfig.CloseEmuleIfAllIsDone = false; // disable function
+                            break;
+                    }
+    
+                    Dialog.Dispose();
                 }
 
                 Service.LogOut();
@@ -797,10 +823,11 @@ namespace tvu
                 MainConfig.DefaultCategory = OptDialog.LocalConfig.DefaultCategory;
                 MainConfig.eMuleExe = OptDialog.LocalConfig.eMuleExe;
                 MainConfig.IntervalTime = OptDialog.LocalConfig.IntervalTime;
-
                 MainConfig.Save();
             }
-
+            // reset counter to avoid error
+            AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
+            
             OptDialog.Dispose();
             return;
         }
@@ -825,7 +852,6 @@ namespace tvu
    
 
         }
-
 
   
 
