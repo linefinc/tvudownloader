@@ -379,6 +379,7 @@ namespace tvu
                             Service.Close();
                             break;
                         case AlertChoiceEnum.Skip: // SKIP
+                            AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
                             break;
                         case AlertChoiceEnum.Disable:    // disable autoclose
                             this.menuItemAutoCloseEmule.Checked = false; // disable context menu
