@@ -73,10 +73,13 @@ namespace tvu
             //
             // get Local USer App data Path, remove version direcorty and add config.xml
             //
+#if DEBUG
+            FileName = "config.xml";
+#else
             FileName = Application.LocalUserAppDataPath;
             int rc = FileName.LastIndexOf("\\");
             FileName = FileName.Substring(0, rc) + "\\config.xml";
-            
+#endif
             RssFeedList = new List<RssFeed>();
             if (!File.Exists(this.FileName))
             {

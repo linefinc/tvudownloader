@@ -202,7 +202,7 @@ namespace tvu
 
         private void menu_AutoStartEmule(object Sender, EventArgs e)
         {
-            //AppendLogMessage("Auto Start Emule");
+            AppendLogMessage("Auto Start Emule");
             if (MainConfig.StartEmuleIfClose == true)
             {
                 this.menuItemAutoStartEmule.Checked = false;
@@ -682,6 +682,8 @@ namespace tvu
                 return;
             }
             CheckButton.Enabled = false;
+            button4.Enabled = false;
+            button1.Enabled = false;
             menuItemCheckNow.Enabled = false;
             backgroundWorker1.RunWorkerAsync();
 
@@ -744,6 +746,8 @@ namespace tvu
             UpdateRssFeedGUI();
             menuItemCheckNow.Enabled = true;
             CheckButton.Enabled = true;
+            button4.Enabled = true;
+            button1.Enabled = true;
         }
 
         
