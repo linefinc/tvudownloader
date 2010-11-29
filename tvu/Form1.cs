@@ -234,7 +234,7 @@ namespace tvu
 
         private void menu_Enable(object Sender, EventArgs e)
         {
-            if (MainConfig.Enebled == true)
+            if (MainConfig.Enebled == false)
             {
                 this.menuItemEnable.Checked = false;
                 MainConfig.Enebled = false;
@@ -698,6 +698,18 @@ namespace tvu
 
         private void button4_Click_1(object sender, EventArgs e)
         {
+            //if (listView1.Items.Count == 0)
+            //    return;
+
+            //if (listView1.SelectedItems.Count == 0)
+            //    return;
+
+            //ListViewItem temp = listView1.SelectedItems[0];
+            //int i = listView1.Items.IndexOf(temp);
+
+            //MainConfig.RssFeedList.Remove(MainConfig.RssFeedList[i]);
+            //MainConfig.Save();
+            //UpdateRssFeedGUI(); ///upgrade gui
             if (listView1.Items.Count == 0)
                 return;
 
@@ -706,10 +718,31 @@ namespace tvu
 
             ListViewItem temp = listView1.SelectedItems[0];
             int i = listView1.Items.IndexOf(temp);
+            string feedTitle = listView1.Items[i].Text;
 
-            MainConfig.RssFeedList.Remove(MainConfig.RssFeedList[i]);
+            RssFeed Feed = MainConfig.RssFeedList[0];
+            bool found = false;
+            for (i = 0; i < listView1.Items.Count; i++)
+            {
+                if (MainConfig.RssFeedList[i].Title == feedTitle)
+                {
+                    Feed = MainConfig.RssFeedList[i];
+                    break;
+                }
+            }
+
+            if (found == false)
+            {
+                return;
+            }
+            
+            MainConfig.RssFeedList.Remove(Feed);
             MainConfig.Save();
             UpdateRssFeedGUI(); ///upgrade gui
+
+
+            
+            
 
             
 

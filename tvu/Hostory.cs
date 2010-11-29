@@ -26,13 +26,13 @@ namespace tvu
         {
             fileHistoryList = new List<fileHistory>();
             
-#if DEBUG
-            FileName = "History.xml";
-#else
+//#if DEBUG
+            //FileName = "History.xml";
+//#else
             FileName = Application.LocalUserAppDataPath;
             int rc = FileName.LastIndexOf("\\");
             FileName = FileName.Substring(0, rc) + "\\History.xml";
-#endif
+//#endif
         }
 
         public void Read()
