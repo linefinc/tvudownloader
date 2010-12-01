@@ -486,6 +486,10 @@ namespace tvu
                 if (feed.status == enumStatus.Ok)
                 {
                     string strDate = MainHistory.LastDownloadDateByFeedSource(feed.Url);
+                    if (strDate == "")
+                    {
+                        strDate = DateTime.Now.ToString();
+                    }
                     DateTime t = DateTime.Parse(strDate);
                     TimeSpan span = DateTime.Now.Subtract(t);
                     if (span.TotalDays > 15)
