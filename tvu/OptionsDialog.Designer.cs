@@ -67,6 +67,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.checkBoxAutoClear = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.tabPageGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIntervalTime)).BeginInit();
@@ -162,6 +163,7 @@
             // 
             // tabPageGeneral
             // 
+            this.tabPageGeneral.Controls.Add(this.checkBoxAutoClear);
             this.tabPageGeneral.Controls.Add(this.checkBoxCloseEmuleIfAllIsDone);
             this.tabPageGeneral.Controls.Add(this.textBoxEmuleExe);
             this.tabPageGeneral.Controls.Add(this.textBoxDefaultCategory);
@@ -493,6 +495,16 @@
             this.tabControl1.Size = new System.Drawing.Size(365, 274);
             this.tabControl1.TabIndex = 0;
             // 
+            // checkBoxAutoClear
+            // 
+            this.checkBoxAutoClear.AutoSize = true;
+            this.checkBoxAutoClear.Location = new System.Drawing.Point(6, 174);
+            this.checkBoxAutoClear.Name = "checkBoxAutoClear";
+            this.checkBoxAutoClear.Size = new System.Drawing.Size(96, 17);
+            this.checkBoxAutoClear.TabIndex = 51;
+            this.checkBoxAutoClear.Text = "Auto Clear Log";
+            this.checkBoxAutoClear.UseVisualStyleBackColor = true;
+            // 
             // OptionsDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -563,5 +575,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.CheckBox checkBoxAutoClear;
     }
 }

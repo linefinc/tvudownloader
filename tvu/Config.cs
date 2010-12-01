@@ -16,6 +16,7 @@ namespace tvu
         public bool StartMinimized { get; set; }
         public bool CloseEmuleIfAllIsDone { get; set; }
         public bool StartEmuleIfClose { get; set; }
+        public bool AutoClearLog { get; set; }
         public List<RssFeed> RssFeedList { get; set; }
         public string eMuleExe { get; set; }
         public bool debug {get; set;}
@@ -123,6 +124,10 @@ namespace tvu
             textWritter.WriteString(CloseEmuleIfAllIsDone.ToString());
             textWritter.WriteEndElement();
 
+            textWritter.WriteStartElement("AutoClearLog");
+            textWritter.WriteString(AutoClearLog.ToString());
+            textWritter.WriteEndElement();
+
             textWritter.WriteStartElement("eMuleExe");
             textWritter.WriteString(eMuleExe);
             textWritter.WriteEndElement();
@@ -188,14 +193,16 @@ namespace tvu
 
             StartEmuleIfClose = (bool)Convert.ToBoolean(ReadString(xDoc, "AutoStartEmule", "false"));
 
+            AutoClearLog = (bool)Convert.ToBoolean(ReadString(xDoc, "AutoClearLog", "false"));
+
             eMuleExe = ReadString(xDoc, "eMuleExe", "");
 
             DefaultCategory = ReadString(xDoc, "DefaultCategory", "");
 
             debug = (bool)Convert.ToBoolean(ReadString(xDoc, "Debug", "false"));
 
-            
-            
+
+
             //
             //  Load Channel
             //
@@ -222,7 +229,7 @@ namespace tvu
                         newfeed.PauseDownload = Convert.ToBoolean(t.FirstChild.Value);
                     }
 
-                    if( (t.Name == "Category")& (t.FirstChild != null))
+                    if ((t.Name == "Category") & (t.FirstChild != null))
                     {
                         newfeed.Category = t.FirstChild.Value;
                     }
@@ -230,8 +237,8 @@ namespace tvu
 
                 RssFeedList.Add(newfeed);
             }
-                
-        
+
+
         }
 
         private string ReadString(XmlDocument xDoc, string NodeName, string defaultValue)

@@ -335,6 +335,11 @@ namespace tvu
 
             if (DateTime.Now > DownloadDataTime)
             {
+                if (MainConfig.AutoClearLog == true)
+                {
+                    LogTextBox.Clear();
+                }
+                
                 DownloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
 
                 AppendLogMessage("Now : " + DateTime.Now.ToString());

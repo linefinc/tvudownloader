@@ -27,6 +27,7 @@ namespace tvu
             checkBoxStartEmuleIfClose.Checked = inConfig.StartEmuleIfClose;
             checkBoxCloseEmuleIfAllIsDone.Checked = inConfig.CloseEmuleIfAllIsDone;
             checkBoxStartWithWindows.Checked = inConfig.StartWithWindows;
+            checkBoxAutoClear.Checked = inConfig.AutoClearLog;
 
 
 
@@ -65,6 +66,12 @@ namespace tvu
             if (checkBoxCloseEmuleIfAllIsDone.Checked == true)
             {
                 LocalConfig.CloseEmuleIfAllIsDone = true;
+            }
+
+            LocalConfig.AutoClearLog = false;
+            if (checkBoxAutoClear.Checked == true)
+            {
+                LocalConfig.AutoClearLog = true;
             }
             //
             //  Service Url
