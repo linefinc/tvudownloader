@@ -137,10 +137,12 @@ namespace tvu
             textWritter.WriteEndElement();
 
             textWritter.WriteStartElement("RSSChannel");
-        
 
+            List<RssFeed> myRssFeedList = new List<RssFeed>();
+            myRssFeedList.AddRange(this.RssFeedList);
+            myRssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title));
 
-            foreach (RssFeed feed in RssFeedList)
+            foreach (RssFeed feed in myRssFeedList)
             {
                 //<Channel>
                 //<Title>[ed2k] tvunderground.org.ru: Lie To Me - Season 2 (HDTV) italian</Title>
