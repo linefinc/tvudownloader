@@ -736,6 +736,7 @@ namespace tvu
                 if (MainConfig.RssFeedList[i].Title == feedTitle)
                 {
                     Feed = MainConfig.RssFeedList[i];
+                    found = true;
                     break;
                 }
             }
