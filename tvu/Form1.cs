@@ -443,20 +443,25 @@ namespace tvu
 
                 try
                 {
-                    XmlDocument doc = new XmlDocument();
-                    doc.Load(feed.Url);
+                    string WebPage = WebFetch.Fetch(feed.Url);
 
-                    XmlNodeList elemList = doc.GetElementsByTagName("guid");
+                    List<string> elemList = new List<string>();
 
-                    for (int i = 0; i < elemList.Count; i++)
+                    while (WebPage.IndexOf("</guid>") > 0)
                     {
-                        string FeedLink = elemList[i].InnerXml;
+                        string strleft = WebPage.Substring(0, WebPage.IndexOf("</guid>"));
+                        string guid = strleft.Substring(strleft.IndexOf("<guid>") + ("<guid>").Length);
 
-                        FeedLink = FeedLink.Replace("&amp;", "&");
+                        WebPage = WebPage.Substring(WebPage.IndexOf("</guid>") + ("</guid>").Length);
+                        guid = guid.Replace("&amp;", "&");
+                        elemList.Add(guid);
+                    }
 
+                    foreach( string FeedLink in elemList)
+                    {
                         if (MainHistory.FileExistByFeedLink(FeedLink) == false)
                         {
-                            string page = eMuleWebManager.DownloadPage(elemList[i].InnerXml);
+                            string page = eMuleWebManager.DownloadPage(FeedLink);
                             string sEd2k = findEd2kLink(page);
 
                             Ed2kParser parser = new Ed2kParser(sEd2k);
@@ -533,10 +538,10 @@ namespace tvu
                 }
             }
 
-            if(rc==null)
+            if (rc == null)
             {
-                  AppendLogMessage("Unable to connect to eMule web server" );
-                  return;
+                AppendLogMessage("Unable to connect to eMule web server");
+                return;
             }
 
 
