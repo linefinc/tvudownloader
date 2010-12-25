@@ -40,7 +40,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.tabLog = new System.Windows.Forms.TabPage();
             this.ClearButton = new System.Windows.Forms.Button();
-            this.LogTextBox = new System.Windows.Forms.TextBox();
+            this.TextBoxLog = new System.Windows.Forms.TextBox();
             this.tabMain = new System.Windows.Forms.TabPage();
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -64,6 +64,7 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.CheckButton = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.checkBoxAutoClear = new System.Windows.Forms.CheckBox();
             this.tabAbout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabLog.SuspendLayout();
@@ -120,17 +121,17 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(66, 13);
             this.label5.TabIndex = 2;
-            this.label5.Text = "Version 0.03";
+            this.label5.Text = "Version 0.04";
             // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(307, 56);
+            this.linkLabel1.Location = new System.Drawing.Point(302, 56);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(137, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(234, 13);
             this.linkLabel1.TabIndex = 1;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "http://linefinc.blogspot.com";
+            this.linkLabel1.Text = "http://sourceforge.net/projects/tvudownloader/";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // label4
@@ -144,8 +145,9 @@
             // 
             // tabLog
             // 
+            this.tabLog.Controls.Add(this.checkBoxAutoClear);
             this.tabLog.Controls.Add(this.ClearButton);
-            this.tabLog.Controls.Add(this.LogTextBox);
+            this.tabLog.Controls.Add(this.TextBoxLog);
             this.tabLog.Location = new System.Drawing.Point(4, 22);
             this.tabLog.Name = "tabLog";
             this.tabLog.Padding = new System.Windows.Forms.Padding(3);
@@ -156,9 +158,9 @@
             // 
             // ClearButton
             // 
-            this.ClearButton.Location = new System.Drawing.Point(6, 410);
+            this.ClearButton.Location = new System.Drawing.Point(6, 423);
             this.ClearButton.Name = "ClearButton";
-            this.ClearButton.Size = new System.Drawing.Size(100, 36);
+            this.ClearButton.Size = new System.Drawing.Size(75, 23);
             this.ClearButton.TabIndex = 18;
             this.ClearButton.Text = "Clear";
             this.ClearButton.UseVisualStyleBackColor = true;
@@ -166,11 +168,11 @@
             // 
             // LogTextBox
             // 
-            this.LogTextBox.Location = new System.Drawing.Point(6, 6);
-            this.LogTextBox.Multiline = true;
-            this.LogTextBox.Name = "LogTextBox";
-            this.LogTextBox.Size = new System.Drawing.Size(527, 398);
-            this.LogTextBox.TabIndex = 3;
+            this.TextBoxLog.Location = new System.Drawing.Point(6, 6);
+            this.TextBoxLog.Multiline = true;
+            this.TextBoxLog.Name = "LogTextBox";
+            this.TextBoxLog.Size = new System.Drawing.Size(527, 411);
+            this.TextBoxLog.TabIndex = 3;
             // 
             // tabMain
             // 
@@ -288,9 +290,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(433, 287);
+            this.button1.Location = new System.Drawing.Point(377, 248);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 37);
+            this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 25;
             this.button1.Text = "Add ";
             this.button1.UseVisualStyleBackColor = true;
@@ -338,9 +340,9 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(433, 248);
+            this.button4.Location = new System.Drawing.Point(458, 248);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(100, 36);
+            this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 19;
             this.button4.Text = "Delete feed";
             this.button4.UseVisualStyleBackColor = true;
@@ -360,7 +362,7 @@
             // 
             // buttonOption
             // 
-            this.buttonOption.Location = new System.Drawing.Point(461, 407);
+            this.buttonOption.Location = new System.Drawing.Point(461, 426);
             this.buttonOption.Name = "buttonOption";
             this.buttonOption.Size = new System.Drawing.Size(75, 23);
             this.buttonOption.TabIndex = 35;
@@ -373,14 +375,14 @@
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(4, 3);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(532, 394);
+            this.listBox1.Size = new System.Drawing.Size(532, 420);
             this.listBox1.TabIndex = 19;
             // 
             // CheckButton
             // 
-            this.CheckButton.Location = new System.Drawing.Point(4, 407);
+            this.CheckButton.Location = new System.Drawing.Point(4, 426);
             this.CheckButton.Name = "CheckButton";
-            this.CheckButton.Size = new System.Drawing.Size(100, 36);
+            this.CheckButton.Size = new System.Drawing.Size(75, 23);
             this.CheckButton.TabIndex = 18;
             this.CheckButton.Text = "Check Now";
             this.CheckButton.UseVisualStyleBackColor = true;
@@ -397,6 +399,16 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(547, 478);
             this.tabControl1.TabIndex = 21;
+            // 
+            // checkBoxAutoClear
+            // 
+            this.checkBoxAutoClear.AutoSize = true;
+            this.checkBoxAutoClear.Location = new System.Drawing.Point(87, 429);
+            this.checkBoxAutoClear.Name = "checkBoxAutoClear";
+            this.checkBoxAutoClear.Size = new System.Drawing.Size(75, 17);
+            this.checkBoxAutoClear.TabIndex = 19;
+            this.checkBoxAutoClear.Text = "Auto Clear";
+            this.checkBoxAutoClear.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -434,7 +446,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TabPage tabLog;
         private System.Windows.Forms.Button ClearButton;
-        private System.Windows.Forms.TextBox LogTextBox;
+        private System.Windows.Forms.TextBox TextBoxLog;
         private System.Windows.Forms.TabPage tabMain;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label15;
@@ -458,6 +470,7 @@
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Button CheckButton;
         private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.CheckBox checkBoxAutoClear;
     }
 }
 

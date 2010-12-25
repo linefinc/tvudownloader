@@ -138,26 +138,28 @@ namespace tvu
             this.menuItemAutoCloseEmule.Click += new System.EventHandler(this.menu_AutoCloseEmule);
             this.contextMenu1.MenuItems.Add(menuItemAutoCloseEmule);
 
+            this.menuItemExit.Index = 5;
+            this.menuItemExit.Text = "E&xit";
+            this.menuItemExit.Click += new System.EventHandler(this.menu_Exit);
+            this.contextMenu1.MenuItems.Add(menuItemExit);
+
+            this.menuItemEnable.Index = 3;
+            this.menuItemEnable.Text = "Enable";
+            this.menuItemEnable.Checked = true;
+            this.menuItemEnable.Click += new System.EventHandler(this.menu_Enable);
+            this.contextMenu1.MenuItems.Add(menuItemEnable);
+
             this.menuItemCheckNow.Index = 2;
             this.menuItemCheckNow.Text = "Check Now";
             this.menuItemCheckNow.Click += new System.EventHandler(this.menu_CheckNow);
             this.contextMenu1.MenuItems.Add(menuItemCheckNow);
 
-            this.menuItemHide.Index = 3;
+            this.menuItemHide.Index = 4;
             this.menuItemHide.Text = "Hide";
             this.menuItemHide.Click += new System.EventHandler(this.menu_Hide);
             this.contextMenu1.MenuItems.Add(menuItemHide);
 
-            this.menuItemExit.Index = 4;
-            this.menuItemExit.Text = "E&xit";
-            this.menuItemExit.Click += new System.EventHandler(this.menu_Exit);
-            this.contextMenu1.MenuItems.Add(menuItemExit);
-
-            this.menuItemEnable.Index = 5;
-            this.menuItemEnable.Text = "Enable";
-            this.menuItemEnable.Checked = true;
-            this.menuItemEnable.Click += new System.EventHandler(this.menu_Enable);
-            this.contextMenu1.MenuItems.Add(menuItemEnable);
+            
 
             // Create the NotifyIcon.
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
@@ -337,7 +339,7 @@ namespace tvu
             {
                 if (MainConfig.AutoClearLog == true)
                 {
-                    LogTextBox.Clear();
+                    TextBoxLog.Clear();
                 }
                 
                 DownloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
@@ -401,7 +403,7 @@ namespace tvu
 
         private void AppendText(string text)
         {
-            this.LogTextBox.Text += text;
+            this.TextBoxLog.Text += text;
         }
 
         private void AppendLogMessage(string text)
@@ -414,7 +416,7 @@ namespace tvu
             }
             
             // from msdn guide http://msdn.microsoft.com/en-us/library/ms171728%28VS.90%29.aspx
-            if (this.LogTextBox.InvokeRequired)
+            if (this.TextBoxLog.InvokeRequired)
             {
                 // It's on a different thread, so use Invoke.
                 SetTextCallback d = new SetTextCallback(AppendText);
@@ -423,17 +425,24 @@ namespace tvu
             else
             {
                 // It's on the same thread, no need for Invoke
-                this.LogTextBox.Text += text;
+                this.TextBoxLog.Text += text;
             }
         }
 
         private void DownloadNow()
         {
             
+            
+            
+            
             AppendLogMessage("Start check");
 
             List<sDonwloadFile> myList = new List<sDonwloadFile>();
 
+            if (checkBoxAutoClear.Checked == true)
+            {
+                TextBoxLog.Clear();
+            }
                 
             foreach (RssFeed feed in MainConfig.RssFeedList)
             {
@@ -683,7 +692,7 @@ namespace tvu
 
         private void ClearButton_Click(object sender, EventArgs e)
         {
-            LogTextBox.Clear();
+            TextBoxLog.Clear();
         }
 
 
@@ -871,7 +880,7 @@ namespace tvu
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("http://linefinc.blogspot.com"); 
+            System.Diagnostics.Process.Start("http://sourceforge.net/projects/tvudownloader/"); 
         }
 
 
