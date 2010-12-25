@@ -18,7 +18,8 @@ namespace tvu
         public string Url = "";
         public string Category = "";
         public bool PauseDownload = false;
-        public string LastUpgradeData = "";
+        public string LastUpgradeDate = "";
+        public int TotalDownloads;
         public enumStatus status = enumStatus.Ok;
         
     }

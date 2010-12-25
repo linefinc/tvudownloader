@@ -156,17 +156,26 @@ namespace tvu
                     textWritter.WriteString(feed.Title);
                     textWritter.WriteEndElement();
 
-                    textWritter.WriteStartElement("Url");//Title
+                    textWritter.WriteStartElement("Url");//Url
                     textWritter.WriteString(feed.Url);
                     textWritter.WriteEndElement();
 
-                    textWritter.WriteStartElement("Pause");//Title
+                    textWritter.WriteStartElement("Pause");//Category
                     textWritter.WriteString(feed.PauseDownload.ToString());
                     textWritter.WriteEndElement();
 
-                    textWritter.WriteStartElement("Category");//Title
+                    textWritter.WriteStartElement("Category");//Category
                     textWritter.WriteString(feed.Category);
                     textWritter.WriteEndElement();
+
+                    textWritter.WriteStartElement("TotalDownloads");//Total Downloads
+                    textWritter.WriteString(feed.TotalDownloads.ToString());
+                    textWritter.WriteEndElement();
+
+                    textWritter.WriteStartElement("LastUpgradeDate");//Last Upgrade Date
+                    textWritter.WriteString(feed.LastUpgradeDate);
+                    textWritter.WriteEndElement();
+                    
                 }
                 textWritter.WriteEndElement();// end channel
 
@@ -235,6 +244,17 @@ namespace tvu
                     {
                         newfeed.Category = t.FirstChild.Value;
                     }
+
+                    if ((t.Name == "TotalDownloads") & (t.FirstChild != null))
+                    {
+                        newfeed.TotalDownloads = (int) Convert.ToInt32( t.FirstChild.Value);
+                    }
+
+                    if ((t.Name == "LastUpgradeDate") & (t.FirstChild != null))
+                    {
+                        newfeed.LastUpgradeDate = t.FirstChild.Value;
+                    }
+
                 }
 
                 RssFeedList.Add(newfeed);

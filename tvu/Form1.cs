@@ -305,6 +305,24 @@ namespace tvu
                         break;
 
                 }
+                // total downloads
+                item.SubItems.Add(t.TotalDownloads.ToString());
+
+                // last upgrade
+                uint days = 0;
+                if (t.LastUpgradeDate.Equals("") == false)
+                {
+                    DateTime LastDownloadTime = Convert.ToDateTime(t.LastUpgradeDate);
+
+                    TimeSpan diff = DateTime.Now.Subtract(LastDownloadTime);
+                    days = (uint)diff.TotalDays;
+                    item.SubItems.Add(days.ToString() + " days");
+                }
+                else
+                {
+                    item.SubItems.Add("");
+                }
+
                 listView1.Items.Add(item);
             }
         
@@ -511,10 +529,15 @@ namespace tvu
                         feed.status = enumStatus.Idle;
                     }
                 }
-
+                
+                //update rss feed
+                feed.LastUpgradeDate = MainHistory.LastDownloadDateByFeedSource(feed.Url);
+                feed.TotalDownloads = MainHistory.LinkCountByFeedSource(feed.Url);
                 
             }
 
+            
+            
             if (myList.Count == 0)
             {
                 // nothing to download

@@ -39,6 +39,7 @@
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label4 = new System.Windows.Forms.Label();
             this.tabLog = new System.Windows.Forms.TabPage();
+            this.checkBoxAutoClear = new System.Windows.Forms.CheckBox();
             this.ClearButton = new System.Windows.Forms.Button();
             this.TextBoxLog = new System.Windows.Forms.TextBox();
             this.tabMain = new System.Windows.Forms.TabPage();
@@ -64,7 +65,8 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.CheckButton = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.checkBoxAutoClear = new System.Windows.Forms.CheckBox();
+            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
             this.tabAbout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabLog.SuspendLayout();
@@ -156,6 +158,16 @@
             this.tabLog.Text = "Log";
             this.tabLog.UseVisualStyleBackColor = true;
             // 
+            // checkBoxAutoClear
+            // 
+            this.checkBoxAutoClear.AutoSize = true;
+            this.checkBoxAutoClear.Location = new System.Drawing.Point(87, 429);
+            this.checkBoxAutoClear.Name = "checkBoxAutoClear";
+            this.checkBoxAutoClear.Size = new System.Drawing.Size(75, 17);
+            this.checkBoxAutoClear.TabIndex = 19;
+            this.checkBoxAutoClear.Text = "Auto Clear";
+            this.checkBoxAutoClear.UseVisualStyleBackColor = true;
+            // 
             // ClearButton
             // 
             this.ClearButton.Location = new System.Drawing.Point(6, 423);
@@ -166,11 +178,11 @@
             this.ClearButton.UseVisualStyleBackColor = true;
             this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
             // 
-            // LogTextBox
+            // TextBoxLog
             // 
             this.TextBoxLog.Location = new System.Drawing.Point(6, 6);
             this.TextBoxLog.Multiline = true;
-            this.TextBoxLog.Name = "LogTextBox";
+            this.TextBoxLog.Name = "TextBoxLog";
             this.TextBoxLog.Size = new System.Drawing.Size(527, 411);
             this.TextBoxLog.TabIndex = 3;
             // 
@@ -319,7 +331,9 @@
             // 
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
-            this.columnHeader2});
+            this.columnHeader2,
+            this.columnHeader3,
+            this.columnHeader4});
             this.listView1.Location = new System.Drawing.Point(6, 6);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(527, 236);
@@ -400,15 +414,13 @@
             this.tabControl1.Size = new System.Drawing.Size(547, 478);
             this.tabControl1.TabIndex = 21;
             // 
-            // checkBoxAutoClear
+            // columnHeader3
             // 
-            this.checkBoxAutoClear.AutoSize = true;
-            this.checkBoxAutoClear.Location = new System.Drawing.Point(87, 429);
-            this.checkBoxAutoClear.Name = "checkBoxAutoClear";
-            this.checkBoxAutoClear.Size = new System.Drawing.Size(75, 17);
-            this.checkBoxAutoClear.TabIndex = 19;
-            this.checkBoxAutoClear.Text = "Auto Clear";
-            this.checkBoxAutoClear.UseVisualStyleBackColor = true;
+            this.columnHeader3.Text = "Episode";
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Last Download";
             // 
             // Form1
             // 
@@ -471,6 +483,8 @@
         private System.Windows.Forms.Button CheckButton;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.CheckBox checkBoxAutoClear;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
     }
 }
 
