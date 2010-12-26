@@ -85,7 +85,6 @@
       <DependentUpon>FormAlerteMuleClose.cs</DependentUpon>
     </Compile>
     <Compile Include="Hostory.cs" />
-    <Compile Include="IFeedSurce.cs" />
     <Compile Include="OptionsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,7 +127,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="RssFeed.cs" />
-    <Compile Include="TvUHTMLparser.cs" />
     <Compile Include="WebFetch.cs" />
   </ItemGroup>
   <ItemGroup>
