@@ -59,14 +59,14 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
             this.button4 = new System.Windows.Forms.Button();
             this.tabActivity = new System.Windows.Forms.TabPage();
             this.buttonOption = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.CheckButton = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
             this.tabAbout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabLog.SuspendLayout();
@@ -183,6 +183,7 @@
             this.TextBoxLog.Location = new System.Drawing.Point(6, 6);
             this.TextBoxLog.Multiline = true;
             this.TextBoxLog.Name = "TextBoxLog";
+            this.TextBoxLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.TextBoxLog.Size = new System.Drawing.Size(527, 411);
             this.TextBoxLog.TabIndex = 3;
             // 
@@ -352,6 +353,14 @@
             // 
             this.columnHeader2.Text = "Active";
             // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Episode";
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Last Download";
+            // 
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(458, 248);
@@ -413,14 +422,6 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(547, 478);
             this.tabControl1.TabIndex = 21;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Episode";
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.Text = "Last Download";
             // 
             // Form1
             // 

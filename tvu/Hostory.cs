@@ -195,7 +195,7 @@ namespace tvu
             }
         }
 
-        public List<fileHistory> GetRecentActivity()
+        public List<fileHistory> GetRecentActivity(int size)
         {
             List<fileHistory> myFileHistoryList = new List<fileHistory>();
 
@@ -224,9 +224,9 @@ namespace tvu
 
             }
 
-            if (myFileHistoryList.Count > 30)
+            if (myFileHistoryList.Count > size)
             {
-                myFileHistoryList.RemoveRange(30, myFileHistoryList.Count - 30);
+                myFileHistoryList.RemoveRange(size, myFileHistoryList.Count - size);
             }
             return myFileHistoryList;
         }

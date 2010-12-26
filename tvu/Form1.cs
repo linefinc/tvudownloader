@@ -422,6 +422,9 @@ namespace tvu
         private void AppendText(string text)
         {
             this.TextBoxLog.Text += text;
+            this.TextBoxLog.SelectionStart = this.TextBoxLog.Text.Length;
+            this.TextBoxLog.ScrollToCaret();
+            this.TextBoxLog.Refresh();
         }
 
         private void AppendLogMessage(string text)
@@ -443,7 +446,7 @@ namespace tvu
             else
             {
                 // It's on the same thread, no need for Invoke
-                this.TextBoxLog.Text += text;
+                AppendText(text);
             }
         }
 
@@ -910,7 +913,7 @@ namespace tvu
         public void UpdateRecentActivity()
         {
             listBox1.Items.Clear();
-            List<fileHistory> myFileHistoryList = MainHistory.GetRecentActivity();
+            List<fileHistory> myFileHistoryList = MainHistory.GetRecentActivity(32);
 
             foreach (fileHistory fh in myFileHistoryList)
             {
