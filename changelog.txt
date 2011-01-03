@@ -1,0 +1,38 @@
+Version 0.4 03/01/2011
+
++Add new parser (more strong)
++Add autoscroll to log text
++Add Idle and error status for RSS feed
++Add Idle status for RSS feed after 15 days of inactivity
++RSS list are alphabetical sort
++Add Enable/Disable function in try bar
++Add alert panel to advise emule will close
++Add function to delete file from history (double click on history list)
+*Fix bug in delete RSS feed
+*Fix Auto close status bar
+*Fix Check now sometime not work
+
+
+Version 0.3 03/08/2010
+
++Add support for Windows 7, windows Vista config (No UAC need)
++Add Installer
++Add Start With Windows
++Add support configuration file in local user path
++Add Auto start emule ( now not work)
++Redesign Config
++Add Close eMule when all as done
++Add About panel
+
+*Fix If http://tvunderground.org.ru/are not available can cause crash
+*Fix Fix delay interval > 60 min not work
+*Fix close X button. Now sand application in tray bar
+*Fix auto start emule. Sometime can crash
+*Fix The log information not be correct store when application start minimized
+*Fix error in start up minimized
+*Fix tray bar bug. Now show correct menu indication "Show" or "Hide"
+*Fix frieze windows when Download. Add background thread for manage network activity
+
+Version 0.2 01/08/2010
+
+First public release
