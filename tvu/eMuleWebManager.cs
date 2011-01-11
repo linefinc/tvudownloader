@@ -57,10 +57,16 @@ namespace tvu
 
             temp = string.Format("{0}/?ses={1}&w=search", Host, SesID);
             temp = DownloadPage(temp);
+
             //
             //  Parse html to find category
             //
             i = temp.IndexOf("<select name=\"cat\" size=\"1\">");
+            if (i < 0)
+            {
+                return myList;
+            }
+            
             temp = temp.Substring(i);
             i = temp.IndexOf("</select>");
             temp = temp.Substring(0, i);
@@ -104,19 +110,18 @@ namespace tvu
                 return false;
             }
 
-            {
-                string temp = page;
-                i = temp.IndexOf("&amp;w=logout");
-                //temp = temp.Substring(0, i);
-                j = temp.LastIndexOf("ses=", i) + ("ses=").Length;
-                SesID = temp.Substring(j, i - j);
-            }
+
+            string temp = page;
+            i = temp.IndexOf("&amp;w=logout");
+            //temp = temp.Substring(0, i);
+            j = temp.LastIndexOf("ses=", i) + ("ses=").Length;
+            SesID = temp.Substring(j, i - j);
 
             if (SesID.Length == 0)
             {
                 return false;
             }
-            
+
 
             return true;
         }

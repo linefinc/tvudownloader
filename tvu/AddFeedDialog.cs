@@ -89,6 +89,15 @@ namespace tvu
             List<string> category = new List<string>();
             category.AddRange(Service.GetCategory(true));
 
+            if (category.Count == 0)
+            {
+                comboBoxCategory.Items.Clear();
+                Service.LogOut();
+                comboBoxCategory.Enabled = true;
+                butUpdateCategory.Enabled = true;                
+                return;
+            }
+
             foreach (string t in category)
             {
                 comboBoxCategory.Items.Add(t);
