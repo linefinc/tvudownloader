@@ -17,7 +17,7 @@ namespace tvu
         public bool CloseEmuleIfAllIsDone { get; set; }
         public bool StartEmuleIfClose { get; set; }
         public bool AutoClearLog { get; set; }
-        public List<RssFeed> RssFeedList { get; set; }
+        public List<RssSubscrission> RssFeedList { get; set; }
         public string eMuleExe { get; set; }
         public bool debug {get; set;}
         public string FileName { get; set; }
@@ -81,7 +81,7 @@ namespace tvu
             int rc = FileName.LastIndexOf("\\");
             FileName = FileName.Substring(0, rc) + "\\config.xml";
 //#endif
-            RssFeedList = new List<RssFeed>();
+            RssFeedList = new List<RssSubscrission>();
             if (!File.Exists(this.FileName))
             {
                 // empty config file
@@ -138,11 +138,11 @@ namespace tvu
 
             textWritter.WriteStartElement("RSSChannel");
 
-            List<RssFeed> myRssFeedList = new List<RssFeed>();
+            List<RssSubscrission> myRssFeedList = new List<RssSubscrission>();
             myRssFeedList.AddRange(this.RssFeedList);
             myRssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title));
 
-            foreach (RssFeed feed in myRssFeedList)
+            foreach (RssSubscrission feed in myRssFeedList)
             {
                 //<Channel>
                 //<Title>[ed2k] tvunderground.org.ru: Lie To Me - Season 2 (HDTV) italian</Title>
@@ -222,7 +222,7 @@ namespace tvu
             for (int i = 0; i < Channels.Count; i++)
             {
                 XmlNodeList child = Channels[i].ChildNodes;
-                RssFeed newfeed = new RssFeed();
+                RssSubscrission newfeed = new RssSubscrission();
                 foreach (XmlNode t in child)
                 {
                     if (t.Name == "Title")

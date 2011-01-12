@@ -11,9 +11,12 @@ namespace tvu
         Idle
     }
 
-    
-    public class RssFeed
+    /// <summary>
+    /// Rss Subsciission container 
+    /// </summary>
+    public class RssSubscrission
     {
+        
         public string Title = "";
         public string Url = "";
         public string Category = "";

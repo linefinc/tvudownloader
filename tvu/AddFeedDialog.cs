@@ -11,32 +11,39 @@ namespace tvu
 {
     public partial class AddFeedDialog : Form
     {
-        public RssFeed Feed {get;private set;}
+        public RssSubscrission NewFeed {get;private set;}
+        public History NewHistory { get; private set; }
         private string ServiceUrl;
         private string Password;
-        
+        private Rss RssChannel;
+
+
+
         public AddFeedDialog(string ServiceUrl, string Password, string DefaultCategory)
         {
             InitializeComponent();
             this.ServiceUrl = ServiceUrl;
             this.Password = Password;
             this.comboBoxCategory.Text = DefaultCategory;
-        }
-
-        public AddFeedDialog(string ServiceUrl, string Password, RssFeed feed)
-        {
-            InitializeComponent();
-
-            this.ServiceUrl = ServiceUrl;
-            this.Password = Password;
-
-            textUrl.Text = feed.Url;
-            this.comboBoxCategory.Items.Add(feed.Category);
-            checkBoxPause.Checked = feed.PauseDownload;
-            this.Text = feed.Title;
-            butAdd.Text = "Save";
+            this.NewHistory = new History();
+            this.NewFeed = new RssSubscrission();
 
         }
+
+        //public AddFeedDialog(string ServiceUrl, string Password, RssSubscrission feed)
+        //{
+        //    InitializeComponent();
+
+        //    this.ServiceUrl = ServiceUrl;
+        //    this.Password = Password;
+
+        //    textUrl.Text = feed.Url;
+        //    this.comboBoxCategory.Items.Add(feed.Category);
+        //    checkBoxPause.Checked = feed.PauseDownload;
+        //    this.Text = feed.Title;
+        //    butAdd.Text = "Save";
+
+        //}
 
         private void ButClose_Click(object sender, EventArgs e)
         {
@@ -46,28 +53,17 @@ namespace tvu
 
         private void butAdd_Click(object sender, EventArgs e)
         {
-            if (checkLink(textUrl.Text) == false)
+            if (backgroundWorker1.IsBusy == true)
             {
-                MessageBox.Show("Only tvunderground.org.ru service supported");
                 return;
             }
+            buttonGetFeed.Enabled = false;
+            butAdd.Enabled = false;
+            ButClose.Enabled = false;
+            backgroundWorker1.RunWorkerAsync();
 
-            RssFeed newfeed = new RssFeed();
-
-            XmlDocument doc = new XmlDocument();
-            doc.Load(textUrl.Text);
-
-            XmlNodeList elemList = doc.GetElementsByTagName("title");
-            newfeed.Title = elemList[0].FirstChild.Value;
-            newfeed.Url = textUrl.Text;
-
-            newfeed.PauseDownload = checkBoxPause.Checked;
-
-            newfeed.Category = comboBoxCategory.Text;
-
-            this.Feed = newfeed;
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+           
+        
             
         }
 
@@ -129,19 +125,110 @@ namespace tvu
 
         private void buttonGetFeed_Click(object sender, EventArgs e)
         {
-            if (checkLink(textUrl.Text) == false)
+            try
             {
-                MessageBox.Show("Only tvunderground.org.ru service supported");
-                return;
+                if (checkLink(textUrl.Text) == false)
+                {
+                    MessageBox.Show("Only tvunderground.org.ru service supported");
+                    return;
+                }
+
+                string WebPage = WebFetch.Fetch(textUrl.Text);
+
+                RssChannel = RssParserTVU.Parse(WebPage);
+
+                checkedListBox1.Items.Clear();
+                foreach (RssItem Item in RssChannel.ListItem)
+                {
+                    checkedListBox1.Items.Add(Item.Title);
+                }
+
+                butAdd.Enabled = true;
+                
+            }
+            catch
+            {
+                MessageBox.Show("Error to read or parse RSS feed");
             }
 
-            string WebPage = WebFetch.Fetch(textUrl.Text);
+            
+        }
 
-            RssParserTVU.Parse(WebPage);
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            int i = 0;
+            
+            foreach (RssItem Item in RssChannel.ListItem)
+            {
+                try
+                {
+                    // download page
+                    string page = eMuleWebManager.DownloadPage(Item.Guid);
+                    // find ed2k
+                    string sEd2k = RssParserTVU.FindEd2kLink(page);
+
+                    bool rc = checkedListBox1.CheckedItems.Contains(Item.Title);
+                    if (rc == false)
+                    {
+                        // add to history to avoid redonwload
+                        NewHistory.Add(sEd2k, Item.Link, RssChannel.Link);
+                    }
+
+                    backgroundWorker1.ReportProgress((int)(++i * 100.0f / RssChannel.ListItem.Count));
+
+                }
+                catch
+                {
+
+                }
+            }
+       
+       
+    }
+
+        /// <summary>
+        /// This is on the main thread, so we can update a TextBox or anything.
+        /// </summary>
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            buttonGetFeed.Enabled = true;
+            butAdd.Enabled = true;
+            ButClose.Enabled = true;
+
+            this.NewFeed = new RssSubscrission();
+
+            this.NewFeed.Title = RssChannel.Title;
+            this.NewFeed.Url = RssChannel.Link;
+            this.NewFeed.PauseDownload = checkBoxPause.Checked;
+            this.NewFeed.Category = comboBoxCategory.Text;
+
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
+
+        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            progressBar1.Value = e.ProgressPercentage;
 
         }
 
+        private void textUrl_TextChanged(object sender, EventArgs e)
+        {
+            butAdd.Enabled = false;
+        }
 
+        private void buttonSelectAll_Click(object sender, EventArgs e)
+        {
+            for (int index = 0; index < checkedListBox1.Items.Count; index++)
+                checkedListBox1.SetItemChecked(index, true);
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            for (int index = 0; index < checkedListBox1.Items.Count; index++)
+                checkedListBox1.SetItemChecked(index, false);
+        }
 
 
 

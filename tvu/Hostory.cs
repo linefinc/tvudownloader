@@ -20,19 +20,16 @@ namespace tvu
 
         public string FileName { get; private set; }
 
-        public List<fileHistory> fileHistoryList;
+        public List<fileHistory> fileHistoryList { get; private set; }
 
         public History()
         {
             fileHistoryList = new List<fileHistory>();
             
-//#if DEBUG
-            //FileName = "History.xml";
-//#else
             FileName = Application.LocalUserAppDataPath;
             int rc = FileName.LastIndexOf("\\");
             FileName = FileName.Substring(0, rc) + "\\History.xml";
-//#endif
+
         }
 
         public void Read()
@@ -101,9 +98,12 @@ namespace tvu
            
         }
 
-
-
-
+        ///
+        /// <summary>Add a element to list </summary>
+        /// <param name='ed2k'>ED2K Link</param>
+        /// <param name='FeedLink'>Link in Feed</param>
+        /// <param name='FeedSource'>Rss Feed Link</param>
+        ///
         public void Add(string ed2k, string FeedLink, string FeedSource)
         {
             fileHistory fh = new fileHistory();
@@ -112,8 +112,6 @@ namespace tvu
             fh.FeedSource = FeedSource;
             fh.Date = DateTime.Now.ToString("s");
             fileHistoryList.Add(fh);
-
-            this.Save();
         }
 
         public bool FileExistByFeedLink(string link)

@@ -279,14 +279,14 @@ namespace tvu
                 listView1.Items.Remove(listView1.Items[0]);
             }
 
-            List<RssFeed> myRssFeedList = new List<RssFeed>();
+            List<RssSubscrission> myRssFeedList = new List<RssSubscrission>();
             myRssFeedList.AddRange(MainConfig.RssFeedList);
             //
             //people.Sort((x, y) => string.Compare(x.LastName, y.LastName));
             //
             myRssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title));
 
-            foreach (RssFeed t in myRssFeedList)
+            foreach (RssSubscrission t in myRssFeedList)
             {
                 ListViewItem item = new ListViewItem(t.Title);
 
@@ -328,17 +328,7 @@ namespace tvu
         
         }
 
-        private string findEd2kLink(string text)
-        {
-            //
-            int i = text.IndexOf("ed2k://|file|");
-            text = text.Substring(i);
-            i = text.IndexOf("|/");
-            text = text.Substring(0, i + "|/".Length);
-            return text;
-        }
-
-        
+       
       
         public static void CreateDumpFile( string textToAdd)
         {
@@ -452,10 +442,10 @@ namespace tvu
 
         private void DownloadNow()
         {
-            
-            
-            
-            
+
+
+
+
             AppendLogMessage("Start check");
 
             List<sDonwloadFile> myList = new List<sDonwloadFile>();
@@ -464,8 +454,8 @@ namespace tvu
             {
                 TextBoxLog.Clear();
             }
-                
-            foreach (RssFeed feed in MainConfig.RssFeedList)
+
+            foreach (RssSubscrission feed in MainConfig.RssFeedList)
             {
 
                 feed.status = enumStatus.Ok;
@@ -487,12 +477,14 @@ namespace tvu
                         elemList.Add(guid);
                     }
 
-                    foreach( string FeedLink in elemList)
+                    foreach (string FeedLink in elemList)
                     {
                         if (MainHistory.FileExistByFeedLink(FeedLink) == false)
                         {
+                            // download the page in FeedLink
                             string page = eMuleWebManager.DownloadPage(FeedLink);
-                            string sEd2k = findEd2kLink(page);
+                            // find ed2k
+                            string sEd2k = RssParserTVU.FindEd2kLink(page);
 
                             Ed2kParser parser = new Ed2kParser(sEd2k);
                             AppendLogMessage(string.Format("Found new file {0}", parser.GetFileName()));
@@ -532,15 +524,15 @@ namespace tvu
                         feed.status = enumStatus.Idle;
                     }
                 }
-                
+
                 //update rss feed
                 feed.LastUpgradeDate = MainHistory.LastDownloadDateByFeedSource(feed.Url);
                 feed.TotalDownloads = MainHistory.LinkCountByFeedSource(feed.Url);
-                
+
             }
 
-            
-            
+
+
             if (myList.Count == 0)
             {
                 // nothing to download
@@ -593,7 +585,7 @@ namespace tvu
                 {
                     Ed2kParser ed2klink = new Ed2kParser(DownloadFile.Ed2kLink);
                     Service.AddToDownload(ed2klink, DownloadFile.Category);
-                    
+
                     if (DownloadFile.PauseDownload == true)
                     {
                         Service.StopDownload(ed2klink);
@@ -606,9 +598,9 @@ namespace tvu
                     Ed2kParser parser = new Ed2kParser(DownloadFile.Ed2kLink);
                     AppendLogMessage(string.Format("Add file to emule {0} \n", parser.GetFileName()) + Environment.NewLine);
                 }
-             }
-
-             Service.LogOut();
+            }
+            MainHistory.Save();
+            Service.LogOut();
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -623,7 +615,7 @@ namespace tvu
             int i = listView1.Items.IndexOf(temp);
             string feedTitle = listView1.Items[i].Text;
 
-            RssFeed Feed = MainConfig.RssFeedList[0]; ;
+            RssSubscrission Feed = MainConfig.RssFeedList[0]; ;
 
             for (i = 0; i < listView1.Items.Count; i++)
             {
@@ -669,50 +661,50 @@ namespace tvu
         private void listView1_DoubleClick(object sender, EventArgs e)
         {
 
-            if (listView1.Items.Count == 0)
-                return;
+        //    if (listView1.Items.Count == 0)
+        //        return;
 
-            if (listView1.SelectedItems.Count == 0)
-                return;
+        //    if (listView1.SelectedItems.Count == 0)
+        //        return;
 
-            ListViewItem temp = listView1.SelectedItems[0];
-            int i = listView1.Items.IndexOf(temp);
-            string feedTitle = listView1.Items[i].Text;
+        //    ListViewItem temp = listView1.SelectedItems[0];
+        //    int i = listView1.Items.IndexOf(temp);
+        //    string feedTitle = listView1.Items[i].Text;
 
-            RssFeed Feed = MainConfig.RssFeedList[0]; ;
+        //    RssSubscrission Feed = MainConfig.RssFeedList[0]; ;
 
-            for (i = 0; i < listView1.Items.Count; i++)
-            {
-                if (MainConfig.RssFeedList[i].Title == feedTitle)
-                {
-                    Feed = MainConfig.RssFeedList[i];
-                }
-            }
+        //    for (i = 0; i < listView1.Items.Count; i++)
+        //    {
+        //        if (MainConfig.RssFeedList[i].Title == feedTitle)
+        //        {
+        //            Feed = MainConfig.RssFeedList[i];
+        //        }
+        //    }
             
-            AddFeedDialog dialog = new AddFeedDialog(MainConfig.ServiceUrl, MainConfig.Password, Feed);
-            dialog.ShowDialog();
+        //    AddFeedDialog dialog = new AddFeedDialog(MainConfig.ServiceUrl, MainConfig.Password, Feed);
+        //    dialog.ShowDialog();
 
-            if (dialog.DialogResult == DialogResult.OK)
-            {
-                Feed = dialog.Feed;
+        //    if (dialog.DialogResult == DialogResult.OK)
+        //    {
+        //        Feed = dialog.NewFeed;
+                
+        //        for (int j = 0; j < MainConfig.RssFeedList.Count; j++)
+        //        {
+        //            if (MainConfig.RssFeedList[j].Url == Feed.Url)
+        //            {
+        //                MainConfig.RssFeedList.Remove(MainConfig.RssFeedList[j]);
+        //                break;
+        //            }
+        //        }
 
-                for (int j = 0; j < MainConfig.RssFeedList.Count; j++)
-                {
-                    if (MainConfig.RssFeedList[j].Url == Feed.Url)
-                    {
-                        MainConfig.RssFeedList.Remove(MainConfig.RssFeedList[j]);
-                        break;
-                    }
-                }
+        //        MainConfig.RssFeedList.Add(Feed);
+        //        UpdateRssFeedGUI();
+        //        dialog.Dispose();
+        //        return;
+        //    }
 
-                MainConfig.RssFeedList.Add(Feed);
-                UpdateRssFeedGUI();
-                dialog.Dispose();
-                return;
-            }
-
-            dialog.Dispose();
-            return;
+        //    dialog.Dispose();
+        //    return;
         }
 
 
@@ -769,7 +761,7 @@ namespace tvu
             int i = listView1.Items.IndexOf(temp);
             string feedTitle = listView1.Items[i].Text;
 
-            RssFeed Feed = MainConfig.RssFeedList[0];
+            RssSubscrission Feed = MainConfig.RssFeedList[0];
             bool found = false;
             for (i = 0; i < listView1.Items.Count; i++)
             {
@@ -800,19 +792,31 @@ namespace tvu
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AddFeedDialog dialog = new AddFeedDialog(MainConfig.ServiceUrl, MainConfig.Password,MainConfig.DefaultCategory);
+            AddFeedDialog dialog = new AddFeedDialog(MainConfig.ServiceUrl, MainConfig.Password, MainConfig.DefaultCategory);
             dialog.ShowDialog();
 
-            if (dialog.DialogResult == DialogResult.OK)
+            if (dialog.DialogResult != DialogResult.OK)
             {
-                RssFeed feed = dialog.Feed;
-                MainConfig.RssFeedList.Add(feed);
-                MainConfig.Save();
+                dialog.Dispose();
+                return;
             }
 
-            dialog.Dispose();
+            // find rss duplicate
+            foreach (RssSubscrission temp in MainConfig.RssFeedList)
+            {
+                if (dialog.NewFeed.Url == dialog.NewFeed.Url)
+                {
+                    dialog.Dispose();
+                    return;
+                }
+            }
+
+            MainConfig.RssFeedList.Add(dialog.NewFeed);
+            MainConfig.Save();
+            MainHistory.fileHistoryList.AddRange(dialog.NewHistory.fileHistoryList);
+            MainHistory.Save();
             UpdateRssFeedGUI();
-            return;
+            dialog.Dispose();
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)

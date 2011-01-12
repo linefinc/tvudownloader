@@ -50,7 +50,7 @@ namespace tvu
 
             int index = -1;
 
-            while ((index = page.IndexOf("<item>")) > 0)
+            while ((index = page.IndexOf("<item>", index + 1)) > 0)
             {
                 string temp = GetStringByDelimiter(page, "<item>", "</item>", index);
 
@@ -61,8 +61,11 @@ namespace tvu
                 p.Guid = GetStringByDelimiter(page, "<guid>", "</guid>", index);
                 p.PubDate = GetStringByDelimiter(page, "<pubDate>", "</pubDate>", index);
 
+                // fix isus Replace "&amp;"  -> "&"
+                p.Guid = p.Guid.Replace("&amp;", "&");
+
                 RssChannel.ListItem.Add(p);
-                index = page.IndexOf("<item>", index + 1);
+
             }
 
             return RssChannel;
@@ -75,7 +78,17 @@ namespace tvu
             int pos1 = Source.IndexOf(startDelimiter, startIndex);
             int pos2 = Source.IndexOf(stopDelimiter, startIndex);
             return Source.Substring(pos1 + startDelimiter.Length, pos2 - pos1 - startDelimiter.Length);
-
         }
+
+        public static string FindEd2kLink(string text)
+        {
+            //
+            int i = text.IndexOf("ed2k://|file|");
+            text = text.Substring(i);
+            i = text.IndexOf("|/");
+            text = text.Substring(0, i + "|/".Length);
+            return text;
+        }
+        
     }
 }
