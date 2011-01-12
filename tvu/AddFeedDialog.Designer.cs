@@ -36,13 +36,15 @@
             this.comboBoxCategory = new System.Windows.Forms.ComboBox();
             this.checkBoxPause = new System.Windows.Forms.CheckBox();
             this.textUrl = new System.Windows.Forms.TextBox();
+            this.buttonGetFeed = new System.Windows.Forms.Button();
+            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.SuspendLayout();
             // 
             // butUpdateCategory
             // 
-            this.butUpdateCategory.Location = new System.Drawing.Point(12, 176);
+            this.butUpdateCategory.Location = new System.Drawing.Point(249, 126);
             this.butUpdateCategory.Name = "butUpdateCategory";
-            this.butUpdateCategory.Size = new System.Drawing.Size(100, 41);
+            this.butUpdateCategory.Size = new System.Drawing.Size(75, 23);
             this.butUpdateCategory.TabIndex = 0;
             this.butUpdateCategory.Text = "Update Category";
             this.butUpdateCategory.UseVisualStyleBackColor = true;
@@ -50,9 +52,9 @@
             // 
             // butAdd
             // 
-            this.butAdd.Location = new System.Drawing.Point(118, 176);
+            this.butAdd.Location = new System.Drawing.Point(168, 441);
             this.butAdd.Name = "butAdd";
-            this.butAdd.Size = new System.Drawing.Size(100, 41);
+            this.butAdd.Size = new System.Drawing.Size(75, 23);
             this.butAdd.TabIndex = 1;
             this.butAdd.Text = "Add";
             this.butAdd.UseVisualStyleBackColor = true;
@@ -60,9 +62,9 @@
             // 
             // ButClose
             // 
-            this.ButClose.Location = new System.Drawing.Point(224, 176);
+            this.ButClose.Location = new System.Drawing.Point(249, 441);
             this.ButClose.Name = "ButClose";
-            this.ButClose.Size = new System.Drawing.Size(100, 41);
+            this.ButClose.Size = new System.Drawing.Size(75, 23);
             this.ButClose.TabIndex = 2;
             this.ButClose.Text = "Close";
             this.ButClose.UseVisualStyleBackColor = true;
@@ -91,14 +93,14 @@
             this.comboBoxCategory.FormattingEnabled = true;
             this.comboBoxCategory.Location = new System.Drawing.Point(12, 126);
             this.comboBoxCategory.Name = "comboBoxCategory";
-            this.comboBoxCategory.Size = new System.Drawing.Size(312, 21);
+            this.comboBoxCategory.Size = new System.Drawing.Size(231, 21);
             this.comboBoxCategory.TabIndex = 33;
             // 
             // checkBoxPause
             // 
             this.checkBoxPause.AutoSize = true;
             this.checkBoxPause.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBoxPause.Location = new System.Drawing.Point(12, 153);
+            this.checkBoxPause.Location = new System.Drawing.Point(12, 418);
             this.checkBoxPause.Name = "checkBoxPause";
             this.checkBoxPause.Size = new System.Drawing.Size(118, 17);
             this.checkBoxPause.TabIndex = 32;
@@ -113,12 +115,32 @@
             this.textUrl.Size = new System.Drawing.Size(312, 108);
             this.textUrl.TabIndex = 30;
             // 
+            // buttonGetFeed
+            // 
+            this.buttonGetFeed.Location = new System.Drawing.Point(87, 441);
+            this.buttonGetFeed.Name = "buttonGetFeed";
+            this.buttonGetFeed.Size = new System.Drawing.Size(75, 23);
+            this.buttonGetFeed.TabIndex = 37;
+            this.buttonGetFeed.Text = "Get Feed";
+            this.buttonGetFeed.UseVisualStyleBackColor = true;
+            this.buttonGetFeed.Click += new System.EventHandler(this.buttonGetFeed_Click);
+            // 
+            // checkedListBox1
+            // 
+            this.checkedListBox1.FormattingEnabled = true;
+            this.checkedListBox1.Location = new System.Drawing.Point(12, 153);
+            this.checkedListBox1.Name = "checkedListBox1";
+            this.checkedListBox1.Size = new System.Drawing.Size(312, 259);
+            this.checkedListBox1.TabIndex = 38;
+            // 
             // AddFeedDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(339, 231);
+            this.ClientSize = new System.Drawing.Size(339, 471);
             this.ControlBox = false;
+            this.Controls.Add(this.checkedListBox1);
+            this.Controls.Add(this.buttonGetFeed);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.comboBoxCategory);
@@ -147,5 +169,7 @@
         private System.Windows.Forms.ComboBox comboBoxCategory;
         private System.Windows.Forms.CheckBox checkBoxPause;
         private System.Windows.Forms.TextBox textUrl;
+        private System.Windows.Forms.Button buttonGetFeed;
+        private System.Windows.Forms.CheckedListBox checkedListBox1;
     }
 }

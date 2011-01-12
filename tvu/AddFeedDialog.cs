@@ -127,6 +127,20 @@ namespace tvu
             return false;
         }
 
+        private void buttonGetFeed_Click(object sender, EventArgs e)
+        {
+            if (checkLink(textUrl.Text) == false)
+            {
+                MessageBox.Show("Only tvunderground.org.ru service supported");
+                return;
+            }
+
+            string WebPage = WebFetch.Fetch(textUrl.Text);
+
+            RssParserTVU.Parse(WebPage);
+
+        }
+
 
 
 
