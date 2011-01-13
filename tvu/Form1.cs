@@ -893,7 +893,6 @@ namespace tvu
             AppendLogMessage("Config loaded " + MainConfig.FileName);
             timer2.Enabled = false;
 
-
             if (MainConfig.StartMinimized == true)
             {
                 mVisible = false;
@@ -901,9 +900,42 @@ namespace tvu
             }
             StartDownloadThread();
 
+            if (CheckNewVersion() == true)
+            {
+                MessageBox.Show("New Version is available at http://tvudownloader.sourceforge.net/");
+            }
 
         }
 
+        /// <summary>check if a new version is avable on web</summary>
+        /// <returns>true if new version is available or false in other case</returns>
+        private bool CheckNewVersion()
+        {
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load("http://tvudownloader.sourceforge.net/version.xml");
+
+                string lastVersion = "";
+                
+                foreach( XmlNode t in doc.GetElementsByTagName("last"))
+                {
+                    lastVersion = t.InnerText;
+                }
+
+                if (String.Compare(lastVersion, Config.Version) == 1)
+                {
+                    return true;
+                }
+
+
+            }
+            catch 
+            { 
+                return false; 
+            }
+            return false;
+        }
        
 
        
@@ -977,6 +1009,12 @@ namespace tvu
             AppendLogMessage(p);
 
             MainHistory.DeleteFile(str);
+        }
+
+
+        private void label5_Paint(object sender, PaintEventArgs e)
+        {
+            label5.Text = "Version " + Config.Version;
         }
 
   

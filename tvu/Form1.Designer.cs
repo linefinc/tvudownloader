@@ -121,9 +121,10 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(307, 30);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(66, 13);
+            this.label5.Size = new System.Drawing.Size(113, 13);
             this.label5.TabIndex = 2;
-            this.label5.Text = "Version 0.04";
+            this.label5.Text = "Version Config.Version";
+            this.label5.Paint += new System.Windows.Forms.PaintEventHandler(this.label5_Paint);
             // 
             // linkLabel1
             // 

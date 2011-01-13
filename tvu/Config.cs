@@ -10,6 +10,7 @@ namespace tvu
 {
     public class Config
     {
+        public const string Version = "0.04.1";
         public string ServiceUrl { get; set; }
         public string Password { get; set; }
         public int IntervalTime { get; set; }
@@ -263,7 +264,7 @@ namespace tvu
 
         }
 
-        private string ReadString(XmlDocument xDoc, string NodeName, string defaultValue)
+        private static string ReadString(XmlDocument xDoc, string NodeName, string defaultValue)
         {
             XmlNodeList t = xDoc.GetElementsByTagName(NodeName);
             if (t.Count == 0)

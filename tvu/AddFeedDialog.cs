@@ -230,7 +230,6 @@ namespace tvu
                 checkedListBox1.SetItemChecked(index, false);
         }
 
-
-
+   
     }
 }
