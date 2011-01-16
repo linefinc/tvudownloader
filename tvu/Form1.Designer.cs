@@ -63,6 +63,7 @@
             this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
             this.button4 = new System.Windows.Forms.Button();
             this.tabActivity = new System.Windows.Forms.TabPage();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.buttonOption = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.CheckButton = new System.Windows.Forms.Button();
@@ -85,6 +86,7 @@
             // 
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
             // 
             // timer2
             // 
@@ -374,6 +376,7 @@
             // 
             // tabActivity
             // 
+            this.tabActivity.Controls.Add(this.progressBar1);
             this.tabActivity.Controls.Add(this.buttonOption);
             this.tabActivity.Controls.Add(this.listBox1);
             this.tabActivity.Controls.Add(this.CheckButton);
@@ -383,6 +386,13 @@
             this.tabActivity.TabIndex = 4;
             this.tabActivity.Text = "Activity";
             this.tabActivity.UseVisualStyleBackColor = true;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(4, 397);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(535, 23);
+            this.progressBar1.TabIndex = 36;
             // 
             // buttonOption
             // 
@@ -399,7 +409,7 @@
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(4, 3);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(532, 420);
+            this.listBox1.Size = new System.Drawing.Size(532, 394);
             this.listBox1.TabIndex = 19;
             // 
             // CheckButton
@@ -487,6 +497,7 @@
         private System.Windows.Forms.CheckBox checkBoxAutoClear;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
 

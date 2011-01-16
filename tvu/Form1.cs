@@ -443,7 +443,7 @@ namespace tvu
         private void DownloadNow()
         {
 
-
+            int counter = 0;
 
 
             AppendLogMessage("Start check");
@@ -500,6 +500,8 @@ namespace tvu
                         }
                     }
 
+
+
                 }
                 catch
                 {
@@ -528,6 +530,9 @@ namespace tvu
                 //update rss feed
                 feed.LastUpgradeDate = MainHistory.LastDownloadDateByFeedSource(feed.Url);
                 feed.TotalDownloads = MainHistory.LinkCountByFeedSource(feed.Url);
+
+                backgroundWorker1.ReportProgress((int)(++counter * 100.0f / MainConfig.RssFeedList.Count));
+                
 
             }
 
@@ -578,7 +583,9 @@ namespace tvu
             // 
 
             Service.GetCategory(true);  // force upgrade category list 
-
+            
+            //reset counter 
+            counter = 0;
             foreach (sDonwloadFile DownloadFile in myList)
             {
                 if (MainHistory.ExistInHistoryByEd2k(DownloadFile.Ed2kLink) == false) // if file is not dwnl
@@ -598,6 +605,7 @@ namespace tvu
                     Ed2kParser parser = new Ed2kParser(DownloadFile.Ed2kLink);
                     AppendLogMessage(string.Format("Add file to emule {0} \n", parser.GetFileName()) + Environment.NewLine);
                 }
+                backgroundWorker1.ReportProgress((int)(++counter * 100.0f / myList.Count));
             }
             MainHistory.Save();
             Service.LogOut();
@@ -1017,8 +1025,10 @@ namespace tvu
             label5.Text = "Version " + Config.Version;
         }
 
-  
-
+        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            progressBar1.Value = e.ProgressPercentage;
+        }
 
 
 
