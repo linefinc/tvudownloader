@@ -10,15 +10,24 @@ namespace tvu
         {
             ListItem = new List<RssItem>();
         }
-        
+
+        /// <summary>
+        /// Url (Download the xml rss from here)
+        /// </summary>
+        public string Url; 
+
         public List<RssItem> ListItem;
         public string Title;
         public string Description;
+        /// <summary>
+        ///URL (Link of page were is located the rss)
+        /// </summary>
         public string Link;
     }
-
+    
     class RssItem
     {
+        
         public string PubDate;
         public string Title;
         public string Description;
@@ -63,6 +72,7 @@ namespace tvu
 
                 // fix isus Replace "&amp;"  -> "&"
                 p.Guid = p.Guid.Replace("&amp;", "&");
+                p.Link = p.Link.Replace("&amp;", "&");
 
                 RssChannel.ListItem.Add(p);
 

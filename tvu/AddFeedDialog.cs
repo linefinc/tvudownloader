@@ -136,6 +136,7 @@ namespace tvu
                 string WebPage = WebFetch.Fetch(textUrl.Text);
 
                 RssChannel = RssParserTVU.Parse(WebPage);
+                RssChannel.Url = textUrl.Text;
 
                 checkedListBox1.Items.Clear();
                 foreach (RssItem Item in RssChannel.ListItem)
@@ -198,7 +199,7 @@ namespace tvu
             this.NewFeed = new RssSubscrission();
 
             this.NewFeed.Title = RssChannel.Title;
-            this.NewFeed.Url = RssChannel.Link;
+            this.NewFeed.Url = RssChannel.Url;
             this.NewFeed.PauseDownload = checkBoxPause.Checked;
             this.NewFeed.Category = comboBoxCategory.Text;
 
@@ -206,10 +207,14 @@ namespace tvu
             this.Close();
         }
 
+        /// <summary>
+        /// show progres on Progress bar
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             progressBar1.Value = e.ProgressPercentage;
-
         }
 
         private void textUrl_TextChanged(object sender, EventArgs e)

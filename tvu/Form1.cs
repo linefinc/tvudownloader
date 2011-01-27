@@ -140,7 +140,7 @@ namespace tvu
 
             this.menuItemExit.Index = 5;
             this.menuItemExit.Text = "E&xit";
-            this.menuItemExit.Click += new System.EventHandler(this.menu_Exit);
+            this.menuItemExit.Click += new System.EventHandler(this.exitNotifyIconMenuItem_Click);
             this.contextMenu1.MenuItems.Add(menuItemExit);
 
             this.menuItemEnable.Index = 3;
@@ -260,15 +260,6 @@ namespace tvu
 
             // Activate the form.
             this.Activate();
-        }
-
-        private void menu_Exit(object Sender, EventArgs e)
-        {
-            mVisible = true;
-            this.Visible = true;
-            mAllowClose = true;
-            this.Close();
-            
         }
 
         private void UpdateRssFeedGUI()
@@ -1014,7 +1005,27 @@ namespace tvu
             progressBar1.Value = e.ProgressPercentage;
         }
 
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ApplicationExit();
+        }
 
+        private void exitNotifyIconMenuItem_Click(object Sender, EventArgs e)
+        {
+            
+            ApplicationExit();
+        }
+
+        /// <summary>
+        /// Close the application
+        /// </summary>
+        private void ApplicationExit()
+        {
+            mVisible = true;
+            this.Visible = true;
+            mAllowClose = true;
+            this.Close();
+        }
 
 
 
