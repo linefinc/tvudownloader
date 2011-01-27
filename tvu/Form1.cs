@@ -29,7 +29,6 @@ namespace tvu
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.ContextMenu contextMenu1;
         private System.Windows.Forms.MenuItem menuItemCheckNow;
-        private System.Windows.Forms.MenuItem menuItemHide;
         private System.Windows.Forms.MenuItem menuItemExit;
         private System.Windows.Forms.MenuItem menuItemAutoStartEmule;
         private System.Windows.Forms.MenuItem menuItemAutoCloseEmule;
@@ -101,7 +100,6 @@ namespace tvu
             this.components = new System.ComponentModel.Container();
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
             this.menuItemCheckNow = new System.Windows.Forms.MenuItem();
-            this.menuItemHide = new System.Windows.Forms.MenuItem();
             this.menuItemExit = new System.Windows.Forms.MenuItem();
             this.menuItemAutoStartEmule = new System.Windows.Forms.MenuItem(); 
             this.menuItemAutoCloseEmule = new System.Windows.Forms.MenuItem();
@@ -154,13 +152,6 @@ namespace tvu
             this.menuItemCheckNow.Click += new System.EventHandler(this.menu_CheckNow);
             this.contextMenu1.MenuItems.Add(menuItemCheckNow);
 
-            this.menuItemHide.Index = 4;
-            this.menuItemHide.Text = "Hide";
-            this.menuItemHide.Click += new System.EventHandler(this.menu_Hide);
-            this.contextMenu1.MenuItems.Add(menuItemHide);
-
-            
-
             // Create the NotifyIcon.
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             notifyIcon1.MouseDown += notifyIcon1_MouseDown; // add event
@@ -182,20 +173,7 @@ namespace tvu
             notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
 
         }
-        private void menu_Hide(object Sender, EventArgs e)
-        {
-            if (this.Visible == true)
-            {
-                mVisible = false;
-                this.Visible = false;
-            }
-            else
-            {
-                mVisible = true;
-                this.Visible = true;
-            }
-
-        }
+      
 
         private void menu_CheckNow(object Sender, EventArgs e)
         {
@@ -544,7 +522,7 @@ namespace tvu
 
         private void ClearButton_Click(object sender, EventArgs e)
         {
-            TextBoxLog.Clear();
+            
         }
 
 
@@ -556,9 +534,9 @@ namespace tvu
                 AppendLogMessage("Thread is busy");
                 return;
             }
-            CheckButton.Enabled = false;
-            button4.Enabled = false;
-            button1.Enabled = false;
+            checkNowToolStripMenuItem.Enabled = false;
+            deleteToolStripMenuItem.Enabled = false;
+            addToolStripMenuItem.Enabled = false;
             menuItemCheckNow.Enabled = false;
             backgroundWorker1.RunWorkerAsync();
 
@@ -574,67 +552,11 @@ namespace tvu
         private void button4_Click_1(object sender, EventArgs e)
         {
             
-            if (listView1.Items.Count == 0)
-                return;
-
-            if (listView1.SelectedItems.Count == 0)
-                return;
-
-            ListViewItem temp = listView1.SelectedItems[0];
-            int i = listView1.Items.IndexOf(temp);
-            string feedTitle = listView1.Items[i].Text;
-
-            RssSubscrission Feed = MainConfig.RssFeedList[0];
-            bool found = false;
-            for (i = 0; i < listView1.Items.Count; i++)
-            {
-                if (MainConfig.RssFeedList[i].Title == feedTitle)
-                {
-                    Feed = MainConfig.RssFeedList[i];
-                    found = true;
-                    break;
-                }
-            }
-
-            if (found == false)
-            {
-                return;
-            }
-            
-            MainConfig.RssFeedList.Remove(Feed);
-            MainConfig.Save();
-            UpdateRssFeedGUI(); ///upgrade gui
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AddFeedDialog dialog = new AddFeedDialog(MainConfig.ServiceUrl, MainConfig.Password, MainConfig.DefaultCategory);
-            dialog.ShowDialog();
-
-            if (dialog.DialogResult != DialogResult.OK)
-            {
-                dialog.Dispose();
-                return;
-            }
-
-            // find rss duplicate
-            foreach (RssSubscrission temp in MainConfig.RssFeedList)
-            {
-                if (temp.Url == dialog.NewFeed.Url)
-                {
-                    dialog.Dispose();
-                    return;
-                }
-
-            }
-
-            MainConfig.RssFeedList.Add(dialog.NewFeed);
-            MainConfig.Save();
-            MainHistory.fileHistoryList.AddRange(dialog.NewHistory.fileHistoryList);
-            MainHistory.Save();
-            UpdateRssFeedGUI();
-            dialog.Dispose();
-            StartDownloadThread();
+            
             
 
         }
@@ -648,7 +570,7 @@ namespace tvu
 
             List<sDonwloadFile> myList = new List<sDonwloadFile>();
 
-            if (checkBoxAutoClear.Checked == true)
+            if (autoClearToolStripMenuItem.Checked == true)
             {
                 TextBoxLog.Clear();
             }
@@ -815,9 +737,9 @@ namespace tvu
             UpdateRecentActivity();
             UpdateRssFeedGUI();
             menuItemCheckNow.Enabled = true;
-            CheckButton.Enabled = true;
-            button4.Enabled = true;
-            button1.Enabled = true;
+            checkNowToolStripMenuItem.Enabled = true;
+            deleteToolStripMenuItem.Enabled = true;
+            addToolStripMenuItem.Enabled = true;
         }
 
         
@@ -847,14 +769,7 @@ namespace tvu
 
         void notifyIcon1_MouseDown(object sender, MouseEventArgs e)
         {
-            if (this.Visible == true)
-            {
-                this.menuItemHide.Text = "Hide";
-            }
-            else
-            {
-                this.menuItemHide.Text = "Show";
-            }
+           
 
             if ((e.Clicks == 2) & (e.Button == MouseButtons.Left))
             {
@@ -946,34 +861,12 @@ namespace tvu
 
         private void CheckButton_Click(object sender, EventArgs e)
         {
-            StartDownloadThread();
+            
         }
 
         private void buttonOption_Click(object sender, EventArgs e)
         {
-            OptionsDialog OptDialog = new OptionsDialog(MainConfig);
-            OptDialog.ShowDialog();
-
-
-            if (OptDialog.DialogResult == DialogResult.OK)
-            {
-                MainConfig.IntervalTime = OptDialog.LocalConfig.IntervalTime;
-                MainConfig.StartMinimized = OptDialog.LocalConfig.StartMinimized;
-                MainConfig.StartWithWindows = OptDialog.LocalConfig.StartWithWindows;
-                MainConfig.StartEmuleIfClose = OptDialog.LocalConfig.StartEmuleIfClose;
-                MainConfig.CloseEmuleIfAllIsDone = OptDialog.LocalConfig.CloseEmuleIfAllIsDone;
-                MainConfig.ServiceUrl = OptDialog.LocalConfig.ServiceUrl;
-                MainConfig.Password = OptDialog.LocalConfig.Password;
-                MainConfig.DefaultCategory = OptDialog.LocalConfig.DefaultCategory;
-                MainConfig.eMuleExe = OptDialog.LocalConfig.eMuleExe;
-                MainConfig.IntervalTime = OptDialog.LocalConfig.IntervalTime;
-                MainConfig.Save();
-            }
-            // reset counter to avoid error
-            AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
             
-            OptDialog.Dispose();
-            return;
         }
 
         private void listView2_SelectedIndexChanged(object sender, EventArgs e)
@@ -1026,7 +919,164 @@ namespace tvu
             mAllowClose = true;
             this.Close();
         }
+        /// <summary>
+        /// Show Option dialog
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void optionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+        }
+        /// <summary>
+        /// Check Now menu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void checkNowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StartDownloadThread();
+        }
 
+
+        private void hideToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ApplicationShowHide();
+        }
+
+        private void showHideNotifyIconMenuItem_Click(object Sender, EventArgs e)
+        {
+            ApplicationShowHide();
+        }
+        /// <summary>
+        /// Show or Hide application form
+        /// </summary>
+        public void ApplicationShowHide()
+        {
+            if (this.Visible == true)
+            {
+                mVisible = false;
+                this.Visible = false;
+            }
+            else
+            {
+                mVisible = true;
+                this.Visible = true;
+            }
+
+        }
+
+        private void addToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddFeedDialog dialog = new AddFeedDialog(MainConfig.ServiceUrl, MainConfig.Password, MainConfig.DefaultCategory);
+            dialog.ShowDialog();
+
+            if (dialog.DialogResult != DialogResult.OK)
+            {
+                dialog.Dispose();
+                return;
+            }
+
+            // find rss duplicate
+            foreach (RssSubscrission temp in MainConfig.RssFeedList)
+            {
+                if (temp.Url == dialog.NewFeed.Url)
+                {
+                    dialog.Dispose();
+                    return;
+                }
+
+            }
+
+            MainConfig.RssFeedList.Add(dialog.NewFeed);
+            MainConfig.Save();
+            MainHistory.fileHistoryList.AddRange(dialog.NewHistory.fileHistoryList);
+            MainHistory.Save();
+            UpdateRssFeedGUI();
+            dialog.Dispose();
+            StartDownloadThread();
+        }
+
+
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            if (listView1.Items.Count == 0)
+                return;
+
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
+            ListViewItem temp = listView1.SelectedItems[0];
+            int i = listView1.Items.IndexOf(temp);
+            string feedTitle = listView1.Items[i].Text;
+
+            RssSubscrission Feed = MainConfig.RssFeedList[0];
+            bool found = false;
+            for (i = 0; i < listView1.Items.Count; i++)
+            {
+                if (MainConfig.RssFeedList[i].Title == feedTitle)
+                {
+                    Feed = MainConfig.RssFeedList[i];
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found == false)
+            {
+                return;
+            }
+
+            MainConfig.RssFeedList.Remove(Feed);
+            MainConfig.Save();
+            UpdateRssFeedGUI(); ///upgrade gui
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutBox1 dialog = new AboutBox1();
+            dialog.ShowDialog();
+
+        }
+
+        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TextBoxLog.Clear();
+        }
+
+        private void checkBoxAutoClear_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void globalOptionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OptionsDialog OptDialog = new OptionsDialog(MainConfig);
+            OptDialog.ShowDialog();
+
+
+            if (OptDialog.DialogResult == DialogResult.OK)
+            {
+                MainConfig.IntervalTime = OptDialog.LocalConfig.IntervalTime;
+                MainConfig.StartMinimized = OptDialog.LocalConfig.StartMinimized;
+                MainConfig.StartWithWindows = OptDialog.LocalConfig.StartWithWindows;
+                MainConfig.StartEmuleIfClose = OptDialog.LocalConfig.StartEmuleIfClose;
+                MainConfig.CloseEmuleIfAllIsDone = OptDialog.LocalConfig.CloseEmuleIfAllIsDone;
+                MainConfig.ServiceUrl = OptDialog.LocalConfig.ServiceUrl;
+                MainConfig.Password = OptDialog.LocalConfig.Password;
+                MainConfig.DefaultCategory = OptDialog.LocalConfig.DefaultCategory;
+                MainConfig.eMuleExe = OptDialog.LocalConfig.eMuleExe;
+                MainConfig.IntervalTime = OptDialog.LocalConfig.IntervalTime;
+                MainConfig.Save();
+            }
+            // reset counter to avoid error
+            AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
+
+            OptDialog.Dispose();
+            return;
+        }
 
 
 
