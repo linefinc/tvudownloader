@@ -443,172 +443,7 @@ namespace tvu
         private void DownloadNow()
         {
 
-            int counter = 0;
-
-
-            AppendLogMessage("Start check");
-
-            List<sDonwloadFile> myList = new List<sDonwloadFile>();
-
-            if (checkBoxAutoClear.Checked == true)
-            {
-                TextBoxLog.Clear();
-            }
-
-            foreach (RssSubscrission feed in MainConfig.RssFeedList)
-            {
-
-                feed.status = enumStatus.Ok;
-                AppendLogMessage("Read RSS " + feed.Url);
-
-                try
-                {
-                    string WebPage = WebFetch.Fetch(feed.Url);
-
-                    List<string> elemList = new List<string>();
-
-                    while (WebPage.IndexOf("</guid>") > 0)
-                    {
-                        string strleft = WebPage.Substring(0, WebPage.IndexOf("</guid>"));
-                        string guid = strleft.Substring(strleft.IndexOf("<guid>") + ("<guid>").Length);
-
-                        WebPage = WebPage.Substring(WebPage.IndexOf("</guid>") + ("</guid>").Length);
-                        guid = guid.Replace("&amp;", "&");
-                        elemList.Add(guid);
-                    }
-
-                    foreach (string FeedLink in elemList)
-                    {
-                        if (MainHistory.FileExistByFeedLink(FeedLink) == false)
-                        {
-                            // download the page in FeedLink
-                            string page = eMuleWebManager.DownloadPage(FeedLink);
-                            // find ed2k
-                            string sEd2k = RssParserTVU.FindEd2kLink(page);
-
-                            Ed2kParser parser = new Ed2kParser(sEd2k);
-                            AppendLogMessage(string.Format("Found new file {0}", parser.GetFileName()));
-
-                            sDonwloadFile DL = new sDonwloadFile();
-                            DL.FeedSource = feed.Url;
-                            DL.FeedLink = FeedLink;
-                            DL.Ed2kLink = sEd2k;
-                            DL.PauseDownload = feed.PauseDownload;
-                            DL.Category = feed.Category;
-
-                            myList.Add(DL);
-                        }
-                    }
-
-
-
-                }
-                catch
-                {
-                    AppendLogMessage("Unable to load rss");
-
-                    feed.status = enumStatus.Error;
-                    //int index = MainConfig.RssFeedList.IndexOf(feed);
-                    //MainConfig.RssFeedList[index].status = enumStatus.Error;
-                }
-
-                if (feed.status == enumStatus.Ok)
-                {
-                    string strDate = MainHistory.LastDownloadDateByFeedSource(feed.Url);
-                    if (strDate == "")
-                    {
-                        strDate = DateTime.Now.ToString();
-                    }
-                    DateTime t = DateTime.Parse(strDate);
-                    TimeSpan span = DateTime.Now.Subtract(t);
-                    if (span.TotalDays > 15)
-                    {
-                        feed.status = enumStatus.Idle;
-                    }
-                }
-
-                //update rss feed
-                feed.LastUpgradeDate = MainHistory.LastDownloadDateByFeedSource(feed.Url);
-                feed.TotalDownloads = MainHistory.LinkCountByFeedSource(feed.Url);
-                int progress = (int)(++counter * 100.0f / MainConfig.RssFeedList.Count);
-                backgroundWorker1.ReportProgress(progress);
-                
-
-            }
-
-
-
-            if (myList.Count == 0)
-            {
-                // nothing to download
-                return;
-            }
-
-            eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
-            bool? rc = Service.LogIn();
-
-            // try to start emule
-            // the if work only if rc == null
-            if (MainConfig.StartEmuleIfClose == true)
-            {
-                for (int i = 1; (i <= 5) & (rc == null); i++)
-                {
-                    AppendLogMessage(string.Format("start eMule Now (try {0}/5)", i));
-                    AppendLogMessage("Wait 60 sec");
-                    try
-                    {
-
-                        Process.Start(MainConfig.eMuleExe);
-                    }
-                    catch
-                    {
-                        AppendLogMessage("Unable start application");
-                    }
-                    Thread.Sleep(5000);
-                    rc = Service.LogIn();
-
-                }
-            }
-
-            if (rc == null)
-            {
-                AppendLogMessage("Unable to connect to eMule web server");
-                return;
-            }
-
-
-
-            //
-            //  Download file 
-            // 
-
-            Service.GetCategory(true);  // force upgrade category list 
             
-            //reset counter 
-            counter = 0;
-            foreach (sDonwloadFile DownloadFile in myList)
-            {
-                if (MainHistory.ExistInHistoryByEd2k(DownloadFile.Ed2kLink) == false) // if file is not dwnl
-                {
-                    Ed2kParser ed2klink = new Ed2kParser(DownloadFile.Ed2kLink);
-                    Service.AddToDownload(ed2klink, DownloadFile.Category);
-
-                    if (DownloadFile.PauseDownload == true)
-                    {
-                        Service.StopDownload(ed2klink);
-                    }
-                    else
-                    {
-                        Service.StartDownload(ed2klink);
-                    }
-                    MainHistory.Add(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);
-                    Ed2kParser parser = new Ed2kParser(DownloadFile.Ed2kLink);
-                    AppendLogMessage(string.Format("Add file to emule {0} \n", parser.GetFileName()) + Environment.NewLine);
-                }
-                backgroundWorker1.ReportProgress((int)(++counter * 100.0f / myList.Count));
-            }
-            MainHistory.Save();
-            Service.LogOut();
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -747,18 +582,7 @@ namespace tvu
 
         private void button4_Click_1(object sender, EventArgs e)
         {
-            //if (listView1.Items.Count == 0)
-            //    return;
-
-            //if (listView1.SelectedItems.Count == 0)
-            //    return;
-
-            //ListViewItem temp = listView1.SelectedItems[0];
-            //int i = listView1.Items.IndexOf(temp);
-
-            //MainConfig.RssFeedList.Remove(MainConfig.RssFeedList[i]);
-            //MainConfig.Save();
-            //UpdateRssFeedGUI(); ///upgrade gui
+            
             if (listView1.Items.Count == 0)
                 return;
 
@@ -789,13 +613,6 @@ namespace tvu
             MainConfig.RssFeedList.Remove(Feed);
             MainConfig.Save();
             UpdateRssFeedGUI(); ///upgrade gui
-
-
-            
-            
-
-            
-
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -812,11 +629,12 @@ namespace tvu
             // find rss duplicate
             foreach (RssSubscrission temp in MainConfig.RssFeedList)
             {
-                if (dialog.NewFeed.Url == dialog.NewFeed.Url)
+                if (temp.Url == dialog.NewFeed.Url)
                 {
                     dialog.Dispose();
                     return;
                 }
+
             }
 
             MainConfig.RssFeedList.Add(dialog.NewFeed);
@@ -825,11 +643,177 @@ namespace tvu
             MainHistory.Save();
             UpdateRssFeedGUI();
             dialog.Dispose();
+            StartDownloadThread();
+            
+
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            DownloadNow();
+            int counter = 0;
+
+
+            AppendLogMessage("Start check");
+
+            List<sDonwloadFile> myList = new List<sDonwloadFile>();
+
+            if (checkBoxAutoClear.Checked == true)
+            {
+                TextBoxLog.Clear();
+            }
+
+            foreach (RssSubscrission feed in MainConfig.RssFeedList)
+            {
+
+                feed.status = enumStatus.Ok;
+                AppendLogMessage("Read RSS " + feed.Url);
+
+                try
+                {
+                    string WebPage = WebFetch.Fetch(feed.Url);
+
+                    List<string> elemList = new List<string>();
+
+                    while (WebPage.IndexOf("</guid>") > 0)
+                    {
+                        string strleft = WebPage.Substring(0, WebPage.IndexOf("</guid>"));
+                        string guid = strleft.Substring(strleft.IndexOf("<guid>") + ("<guid>").Length);
+
+                        WebPage = WebPage.Substring(WebPage.IndexOf("</guid>") + ("</guid>").Length);
+                        guid = guid.Replace("&amp;", "&");
+                        elemList.Add(guid);
+                    }
+
+                    foreach (string FeedLink in elemList)
+                    {
+                        if (MainHistory.FileExistByFeedLink(FeedLink) == false)
+                        {
+                            // download the page in FeedLink
+                            string page = eMuleWebManager.DownloadPage(FeedLink);
+                            // find ed2k
+                            string sEd2k = RssParserTVU.FindEd2kLink(page);
+
+                            Ed2kParser parser = new Ed2kParser(sEd2k);
+                            AppendLogMessage(string.Format("Found new file {0}", parser.GetFileName()));
+
+                            sDonwloadFile DL = new sDonwloadFile();
+                            DL.FeedSource = feed.Url;
+                            DL.FeedLink = FeedLink;
+                            DL.Ed2kLink = sEd2k;
+                            DL.PauseDownload = feed.PauseDownload;
+                            DL.Category = feed.Category;
+
+                            myList.Add(DL);
+                        }
+                    }
+
+
+
+                }
+                catch
+                {
+                    AppendLogMessage("Unable to load rss");
+
+                    feed.status = enumStatus.Error;
+                    //int index = MainConfig.RssFeedList.IndexOf(feed);
+                    //MainConfig.RssFeedList[index].status = enumStatus.Error;
+                }
+
+                if (feed.status == enumStatus.Ok)
+                {
+                    string strDate = MainHistory.LastDownloadDateByFeedSource(feed.Url);
+                    if (strDate == "")
+                    {
+                        strDate = DateTime.Now.ToString();
+                    }
+                    DateTime t = DateTime.Parse(strDate);
+                    TimeSpan span = DateTime.Now.Subtract(t);
+                    if (span.TotalDays > 15)
+                    {
+                        feed.status = enumStatus.Idle;
+                    }
+                }
+
+                //update rss feed
+                feed.LastUpgradeDate = MainHistory.LastDownloadDateByFeedSource(feed.Url);
+                feed.TotalDownloads = MainHistory.LinkCountByFeedSource(feed.Url);
+                int progress = (int)(++counter * 100.0f / MainConfig.RssFeedList.Count);
+                backgroundWorker1.ReportProgress(progress);
+
+
+            }
+
+
+
+            if (myList.Count == 0)
+            {
+                // nothing to download
+                return;
+            }
+
+            eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
+            bool? rc = Service.LogIn();
+
+            // try to start emule
+            // the if work only if rc == null
+            if (MainConfig.StartEmuleIfClose == true)
+            {
+                for (int i = 1; (i <= 5) & (rc == null); i++)
+                {
+                    AppendLogMessage(string.Format("start eMule Now (try {0}/5)", i));
+                    AppendLogMessage("Wait 60 sec");
+                    try
+                    {
+
+                        Process.Start(MainConfig.eMuleExe);
+                    }
+                    catch
+                    {
+                        AppendLogMessage("Unable start application");
+                    }
+                    Thread.Sleep(5000);
+                    rc = Service.LogIn();
+
+                }
+            }
+
+            if (rc == null)
+            {
+                AppendLogMessage("Unable to connect to eMule web server");
+                return;
+            }
+
+            //
+            //  Download file 
+            // 
+
+            Service.GetCategory(true);  // force upgrade category list 
+
+            //reset counter 
+            counter = 0;
+            foreach (sDonwloadFile DownloadFile in myList)
+            {
+                if (MainHistory.ExistInHistoryByEd2k(DownloadFile.Ed2kLink) == false) // if file is not dwnl
+                {
+                    Ed2kParser ed2klink = new Ed2kParser(DownloadFile.Ed2kLink);
+                    Service.AddToDownload(ed2klink, DownloadFile.Category);
+
+                    if (DownloadFile.PauseDownload == true)
+                    {
+                        Service.StopDownload(ed2klink);
+                    }
+                    else
+                    {
+                        Service.StartDownload(ed2klink);
+                    }
+                    MainHistory.Add(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);
+                    Ed2kParser parser = new Ed2kParser(DownloadFile.Ed2kLink);
+                    AppendLogMessage(string.Format("Add file to emule {0} \n", parser.GetFileName()) + Environment.NewLine);
+                }
+                backgroundWorker1.ReportProgress((int)(++counter * 100.0f / myList.Count));
+            }
+            MainHistory.Save();
+            Service.LogOut();
         }
 
         /// <summary>
