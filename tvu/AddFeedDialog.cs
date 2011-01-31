@@ -158,30 +158,30 @@ namespace tvu
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             int i = 0;
-            
+
             foreach (RssItem Item in RssChannel.ListItem)
             {
-                try
-                {
-                    // download page
-                    string page = eMuleWebManager.DownloadPage(Item.Guid);
-                    // find ed2k
-                    string sEd2k = RssParserTVU.FindEd2kLink(page);
 
-                    bool rc = checkedListBox1.CheckedItems.Contains(Item.Title);
-                    if (rc == false)
+                if (checkedListBox1.CheckedItems.Contains(Item.Title) == false)
+                {
+                    try
                     {
+                        // download page
+                        string page = eMuleWebManager.DownloadPage(Item.Guid);
+                        // find ed2k
+                        string sEd2k = RssParserTVU.FindEd2kLink(page);
                         // add to history to avoid redonwload
-                        NewHistory.Add(sEd2k, Item.Link, RssChannel.Link);
+                        NewHistory.Add(sEd2k, Item.Guid, RssChannel.Link);
                     }
+                    catch
+                    {
 
-                    backgroundWorker1.ReportProgress((int)(++i * 100.0f / RssChannel.ListItem.Count));
-
+                    }
                 }
-                catch
-                {
 
-                }
+                backgroundWorker1.ReportProgress((int)(++i * 100.0f / RssChannel.ListItem.Count));
+
+
             }
        
        
