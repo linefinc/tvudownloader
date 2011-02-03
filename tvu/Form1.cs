@@ -262,7 +262,8 @@ namespace tvu
 
             foreach (RssSubscrission t in myRssFeedList)
             {
-                ListViewItem item = new ListViewItem(t.Title);
+                string title = t.Title.Replace("[ed2k] tvunderground.org.ru:", "");
+                ListViewItem item = new ListViewItem(title);
 
                 switch (t.status)
                 {
@@ -427,16 +428,25 @@ namespace tvu
             int i = listView1.Items.IndexOf(temp);
             string feedTitle = listView1.Items[i].Text;
 
-            RssSubscrission Feed = MainConfig.RssFeedList[0]; ;
+            RssSubscrission Feed = MainConfig.RssFeedList[0]; 
 
+            bool found = false;
             for (i = 0; i < listView1.Items.Count; i++)
             {
-                if (MainConfig.RssFeedList[i].Title == feedTitle)
+                string Title1 = MainConfig.RssFeedList[i].Title.Replace("[ed2k] tvunderground.org.ru:", "");
+                string Title2 = feedTitle.Replace("[ed2k] tvunderground.org.ru:", "");
+                if (Title1 == Title2)
                 {
                     Feed = MainConfig.RssFeedList[i];
+                    found = true;
+                    break;
                 }
             }
 
+            if (found == false)
+            {
+                return;
+            }
 
             label8.Text = Feed.Category;
             label10.Text = Feed.PauseDownload.ToString();
@@ -610,17 +620,27 @@ namespace tvu
                             // find ed2k
                             string sEd2k = RssParserTVU.FindEd2kLink(page);
 
-                            Ed2kParser parser = new Ed2kParser(sEd2k);
-                            AppendLogMessage(string.Format("Found new file {0}", parser.GetFileName()));
 
-                            sDonwloadFile DL = new sDonwloadFile();
-                            DL.FeedSource = feed.Url;
-                            DL.FeedLink = FeedLink;
-                            DL.Ed2kLink = sEd2k;
-                            DL.PauseDownload = feed.PauseDownload;
-                            DL.Category = feed.Category;
+                            if (MainHistory.ExistInHistoryByEd2k(sEd2k) == -1)
+                            {
+                                Ed2kParser parser = new Ed2kParser(sEd2k);
+                                AppendLogMessage(string.Format("Found new file {0}", parser.GetFileName()));
 
-                            myList.Add(DL);
+                                sDonwloadFile DL = new sDonwloadFile();
+                                DL.FeedSource = feed.Url;
+                                DL.FeedLink = FeedLink;
+                                DL.Ed2kLink = sEd2k;
+                                DL.PauseDownload = feed.PauseDownload;
+                                DL.Category = feed.Category;
+
+                                myList.Add(DL);
+                            }
+                            else
+                            {
+                                // link ed2k just download bat not correct registred
+                                // to avoid rendondance of link
+                                MainHistory.Add(sEd2k, FeedLink, feed.Url);
+                            }
                         }
                     }
 
@@ -710,7 +730,7 @@ namespace tvu
             counter = 0;
             foreach (sDonwloadFile DownloadFile in myList)
             {
-                if (MainHistory.ExistInHistoryByEd2k(DownloadFile.Ed2kLink) == false) // if file is not dwnl
+                if (MainHistory.ExistInHistoryByEd2k(DownloadFile.Ed2kLink) == -1) // if file is not dwnl
                 {
                     Ed2kParser ed2klink = new Ed2kParser(DownloadFile.Ed2kLink);
                     Service.AddToDownload(ed2klink, DownloadFile.Category);
@@ -992,9 +1012,13 @@ namespace tvu
 
             }
 
+
             MainConfig.RssFeedList.Add(dialog.NewFeed);
             MainConfig.Save();
-            MainHistory.fileHistoryList.AddRange(dialog.NewHistory.fileHistoryList);
+            foreach (fileHistory file in dialog.NewHistory)
+            {
+                MainHistory.Add(file.Ed2kLink, file.FeedLink, file.FeedSource);
+            }
             MainHistory.Save();
             UpdateRssFeedGUI();
             dialog.Dispose();
@@ -1020,7 +1044,7 @@ namespace tvu
             string message = "Delete " + feedTitle;
             DialogResult rc;
             rc = MessageBox.Show(message, "", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk);
-            if (rc != DialogResult.Yes)
+            if (rc != DialogResult.OK)
             {
                 return;
             }
@@ -1031,7 +1055,9 @@ namespace tvu
             bool found = false;
             for (i = 0; i < listView1.Items.Count; i++)
             {
-                if (MainConfig.RssFeedList[i].Title == feedTitle)
+                string Title1 = MainConfig.RssFeedList[i].Title.Replace("[ed2k] tvunderground.org.ru:", "");
+                string Title2 = feedTitle.Replace("[ed2k] tvunderground.org.ru:", "");
+                if (Title1 == Title2)
                 {
                     Feed = MainConfig.RssFeedList[i];
                     found = true;
@@ -1044,8 +1070,25 @@ namespace tvu
                 return;
             }
 
+
+            List<fileHistory> FileToDelete = new List<fileHistory>();
+
+            foreach (fileHistory fh in MainHistory.fileHistoryList)
+            {
+                if (fh.FeedSource == Feed.Url)
+                {
+                    FileToDelete.Add(fh);                
+                }
+            }
+
+            foreach (fileHistory fh in FileToDelete)
+            {
+                MainHistory.fileHistoryList.Remove(fh);
+            }
+
             MainConfig.RssFeedList.Remove(Feed);
             MainConfig.Save();
+            MainHistory.Save();
             UpdateRssFeedGUI(); ///upgrade gui
         }
 

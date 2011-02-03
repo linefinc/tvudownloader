@@ -53,7 +53,10 @@ namespace tvu
             Rss RssChannel = new Rss();
             RssChannel.Title = GetStringByDelimiter(page, "<title>", "</title>", 0);
             RssChannel.Description = GetStringByDelimiter(page, "<title>", "</title>", 0);
+
             RssChannel.Link = GetStringByDelimiter(page, "<link>", "</link>", 0);
+            // fix isus Replace "&amp;"  -> "&"
+            RssChannel.Link = RssChannel.Link.Replace("&amp;", "&");
 
 
 

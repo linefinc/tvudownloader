@@ -10,8 +10,14 @@ namespace tvu
     public class fileHistory
     {
         public string Ed2kLink;
+        /// <summary>
+        /// link of page than contain ed2k link
+        /// </summary>
         public string FeedLink;
-        public string FeedSource;
+        /// <summary>
+        /// url of feed
+        /// </summary>
+        public string FeedSource; 
         public string Date;
     }
 
@@ -106,6 +112,13 @@ namespace tvu
         ///
         public void Add(string ed2k, string FeedLink, string FeedSource)
         {
+            // delete old file whit same ed2k name
+            int index;
+            while ((index = ExistInHistoryByEd2k(ed2k)) != -1)
+            {
+                fileHistoryList.Remove(fileHistoryList[index]);
+            }
+            
             fileHistory fh = new fileHistory();
             fh.Ed2kLink = ed2k;
             fh.FeedLink = FeedLink;
@@ -122,24 +135,25 @@ namespace tvu
                 {
                     return true;
                 }
+
             }
             return false;
         }
 
-        public bool ExistInHistoryByEd2k(string Ed2kLink)
+        public int ExistInHistoryByEd2k(string Ed2kLink)
         {
             Ed2kParser A = new Ed2kParser(Ed2kLink);
 
-            foreach (fileHistory fh in fileHistoryList)
+            for(int index =0; index < fileHistoryList.Count; index++)
             {
-                Ed2kParser B = new Ed2kParser(fh.Ed2kLink);
+                Ed2kParser B = new Ed2kParser(fileHistoryList[index].Ed2kLink);
 
                 if (A == B)
                 {
-                    return true;
+                    return index;
                 }
             }
-            return false;
+            return -1;
         }
 
         public int LinkCountByFeedSource(string FeedSource)
@@ -178,7 +192,7 @@ namespace tvu
 
         }
 
-        public void DeleteFile(string FileName)
+        public void DeleteFile(string FileNameED2k)
         {
             for(int i =0;i < fileHistoryList.Count; i++)
             {

@@ -12,7 +12,7 @@ namespace tvu
     public partial class AddFeedDialog : Form
     {
         public RssSubscrission NewFeed {get;private set;}
-        public History NewHistory { get; private set; }
+        public List<fileHistory> NewHistory { get; private set; }
         private string ServiceUrl;
         private string Password;
         private Rss RssChannel;
@@ -25,7 +25,7 @@ namespace tvu
             this.ServiceUrl = ServiceUrl;
             this.Password = Password;
             this.comboBoxCategory.Text = DefaultCategory;
-            this.NewHistory = new History();
+            this.NewHistory = new List<fileHistory>();
             this.NewFeed = new RssSubscrission();
 
         }
@@ -171,7 +171,13 @@ namespace tvu
                         // find ed2k
                         string sEd2k = RssParserTVU.FindEd2kLink(page);
                         // add to history to avoid redonwload
-                        NewHistory.Add(sEd2k, Item.Guid, RssChannel.Link);
+                        fileHistory file = new fileHistory();
+
+                        file.FeedSource = RssChannel.Url;
+                        file.Ed2kLink = sEd2k;
+                        file.FeedLink = RssChannel.Link;
+                        NewHistory.Add(file);
+
                     }
                     catch
                     {
