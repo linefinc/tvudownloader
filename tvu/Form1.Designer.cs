@@ -39,7 +39,7 @@
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label4 = new System.Windows.Forms.Label();
             this.tabLog = new System.Windows.Forms.TabPage();
-            this.TextBoxLog = new System.Windows.Forms.TextBox();
+            this.LogTextBox = new System.Windows.Forms.TextBox();
             this.tabMain = new System.Windows.Forms.TabPage();
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -66,6 +66,13 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkNowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.globalOptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.oPMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.autoStartEMuleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoCloseEMuleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -73,17 +80,10 @@
             this.channelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoClearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.autoStartEMuleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.globalOptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.autoCloseEMuleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.oPMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabAbout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabLog.SuspendLayout();
@@ -168,7 +168,7 @@
             // 
             // tabLog
             // 
-            this.tabLog.Controls.Add(this.TextBoxLog);
+            this.tabLog.Controls.Add(this.LogTextBox);
             this.tabLog.Location = new System.Drawing.Point(4, 22);
             this.tabLog.Name = "tabLog";
             this.tabLog.Padding = new System.Windows.Forms.Padding(3);
@@ -179,12 +179,12 @@
             // 
             // TextBoxLog
             // 
-            this.TextBoxLog.Location = new System.Drawing.Point(6, 6);
-            this.TextBoxLog.Multiline = true;
-            this.TextBoxLog.Name = "TextBoxLog";
-            this.TextBoxLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.TextBoxLog.Size = new System.Drawing.Size(527, 439);
-            this.TextBoxLog.TabIndex = 3;
+            this.LogTextBox.Location = new System.Drawing.Point(6, 6);
+            this.LogTextBox.Multiline = true;
+            this.LogTextBox.Name = "TextBoxLog";
+            this.LogTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.LogTextBox.Size = new System.Drawing.Size(527, 439);
+            this.LogTextBox.TabIndex = 3;
             // 
             // tabMain
             // 
@@ -428,8 +428,56 @@
             this.autoStartEMuleToolStripMenuItem,
             this.autoCloseEMuleToolStripMenuItem});
             this.optionToolStripMenuItem.Name = "optionToolStripMenuItem";
-            this.optionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.optionToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.optionToolStripMenuItem.Text = "Options";
+            // 
+            // globalOptionToolStripMenuItem
+            // 
+            this.globalOptionToolStripMenuItem.Name = "globalOptionToolStripMenuItem";
+            this.globalOptionToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.globalOptionToolStripMenuItem.Text = "Global Option";
+            this.globalOptionToolStripMenuItem.Click += new System.EventHandler(this.globalOptionToolStripMenuItem_Click);
+            // 
+            // oPMLToolStripMenuItem
+            // 
+            this.oPMLToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.importToolStripMenuItem,
+            this.exportToolStripMenuItem});
+            this.oPMLToolStripMenuItem.Name = "oPMLToolStripMenuItem";
+            this.oPMLToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.oPMLToolStripMenuItem.Text = "OPML";
+            this.oPMLToolStripMenuItem.Visible = false;
+            // 
+            // importToolStripMenuItem
+            // 
+            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.importToolStripMenuItem.Text = "Import";
+            // 
+            // exportToolStripMenuItem
+            // 
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.exportToolStripMenuItem.Text = "Export";
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(165, 6);
+            // 
+            // autoStartEMuleToolStripMenuItem
+            // 
+            this.autoStartEMuleToolStripMenuItem.Name = "autoStartEMuleToolStripMenuItem";
+            this.autoStartEMuleToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.autoStartEMuleToolStripMenuItem.Text = "Auto Start eMule";
+            this.autoStartEMuleToolStripMenuItem.Visible = false;
+            // 
+            // autoCloseEMuleToolStripMenuItem
+            // 
+            this.autoCloseEMuleToolStripMenuItem.Name = "autoCloseEMuleToolStripMenuItem";
+            this.autoCloseEMuleToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.autoCloseEMuleToolStripMenuItem.Text = "Auto Close eMule";
+            this.autoCloseEMuleToolStripMenuItem.Visible = false;
             // 
             // toolStripSeparator2
             // 
@@ -467,23 +515,16 @@
             // addToolStripMenuItem
             // 
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-            this.addToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.addToolStripMenuItem.Text = "Add";
             this.addToolStripMenuItem.Click += new System.EventHandler(this.addToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
-            this.aboutToolStripMenuItem.Text = "About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // logToolStripMenuItem
             // 
@@ -506,54 +547,14 @@
             this.autoClearToolStripMenuItem.Name = "autoClearToolStripMenuItem";
             this.autoClearToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.autoClearToolStripMenuItem.Text = "AutoClear";
+            this.autoClearToolStripMenuItem.Click += new System.EventHandler(this.autoClearToolStripMenuItem_Click);
             // 
-            // autoStartEMuleToolStripMenuItem
+            // aboutToolStripMenuItem
             // 
-            this.autoStartEMuleToolStripMenuItem.Name = "autoStartEMuleToolStripMenuItem";
-            this.autoStartEMuleToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.autoStartEMuleToolStripMenuItem.Text = "Auto Start eMule";
-            this.autoStartEMuleToolStripMenuItem.Visible = false;
-            // 
-            // globalOptionToolStripMenuItem
-            // 
-            this.globalOptionToolStripMenuItem.Name = "globalOptionToolStripMenuItem";
-            this.globalOptionToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
-            this.globalOptionToolStripMenuItem.Text = "Global Option";
-            this.globalOptionToolStripMenuItem.Click += new System.EventHandler(this.globalOptionToolStripMenuItem_Click);
-            // 
-            // autoCloseEMuleToolStripMenuItem
-            // 
-            this.autoCloseEMuleToolStripMenuItem.Name = "autoCloseEMuleToolStripMenuItem";
-            this.autoCloseEMuleToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.autoCloseEMuleToolStripMenuItem.Text = "Auto Close eMule";
-            this.autoCloseEMuleToolStripMenuItem.Visible = false;
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(165, 6);
-            // 
-            // oPMLToolStripMenuItem
-            // 
-            this.oPMLToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.importToolStripMenuItem,
-            this.exportToolStripMenuItem});
-            this.oPMLToolStripMenuItem.Name = "oPMLToolStripMenuItem";
-            this.oPMLToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.oPMLToolStripMenuItem.Text = "OPML";
-            this.oPMLToolStripMenuItem.Visible = false;
-            // 
-            // importToolStripMenuItem
-            // 
-            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
-            this.importToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.importToolStripMenuItem.Text = "Import";
-            // 
-            // exportToolStripMenuItem
-            // 
-            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.exportToolStripMenuItem.Text = "Export";
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -595,7 +596,7 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TabPage tabLog;
-        private System.Windows.Forms.TextBox TextBoxLog;
+        private System.Windows.Forms.TextBox LogTextBox;
         private System.Windows.Forms.TabPage tabMain;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label15;

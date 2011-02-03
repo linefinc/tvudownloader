@@ -84,6 +84,11 @@ namespace tvu
             UpdateRecentActivity();
             UpdateRssFeedGUI();
 
+            if (MainConfig.AutoClearLog == true)
+            {
+                autoClearToolStripMenuItem.Checked = true;
+            }
+
 
         }
 
@@ -316,7 +321,7 @@ namespace tvu
             {
                 if (MainConfig.AutoClearLog == true)
                 {
-                    TextBoxLog.Clear();
+                    LogTextBox.Clear();
                 }
                 
                 DownloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
@@ -380,10 +385,10 @@ namespace tvu
 
         private void AppendText(string text)
         {
-            this.TextBoxLog.Text += text;
-            this.TextBoxLog.SelectionStart = this.TextBoxLog.Text.Length;
-            this.TextBoxLog.ScrollToCaret();
-            this.TextBoxLog.Refresh();
+            this.LogTextBox.Text += text;
+            this.LogTextBox.SelectionStart = this.LogTextBox.Text.Length;
+            this.LogTextBox.ScrollToCaret();
+            this.LogTextBox.Refresh();
         }
 
         private void AppendLogMessage(string text)
@@ -396,7 +401,7 @@ namespace tvu
             }
             
             // from msdn guide http://msdn.microsoft.com/en-us/library/ms171728%28VS.90%29.aspx
-            if (this.TextBoxLog.InvokeRequired)
+            if (this.LogTextBox.InvokeRequired)
             {
                 // It's on a different thread, so use Invoke.
                 SetTextCallback d = new SetTextCallback(AppendText);
@@ -409,11 +414,6 @@ namespace tvu
             }
         }
 
-        private void DownloadNow()
-        {
-
-            
-        }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -534,6 +534,12 @@ namespace tvu
                 AppendLogMessage("Thread is busy");
                 return;
             }
+
+            if (autoClearToolStripMenuItem.Checked == true)
+            {
+                LogTextBox.Clear();
+            }
+            
             checkNowToolStripMenuItem.Enabled = false;
             deleteToolStripMenuItem.Enabled = false;
             addToolStripMenuItem.Enabled = false;
@@ -563,6 +569,8 @@ namespace tvu
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
+           
+            
             int counter = 0;
 
 
@@ -570,10 +578,6 @@ namespace tvu
 
             List<sDonwloadFile> myList = new List<sDonwloadFile>();
 
-            if (autoClearToolStripMenuItem.Checked == true)
-            {
-                TextBoxLog.Clear();
-            }
 
             foreach (RssSubscrission feed in MainConfig.RssFeedList)
             {
@@ -1012,6 +1016,17 @@ namespace tvu
             int i = listView1.Items.IndexOf(temp);
             string feedTitle = listView1.Items[i].Text;
 
+            // check user 
+            string message = "Delete " + feedTitle;
+            DialogResult rc;
+            rc = MessageBox.Show(message, "", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk);
+            if (rc != DialogResult.Yes)
+            {
+                return;
+            }
+
+
+
             RssSubscrission Feed = MainConfig.RssFeedList[0];
             bool found = false;
             for (i = 0; i < listView1.Items.Count; i++)
@@ -1043,7 +1058,7 @@ namespace tvu
 
         private void clearToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TextBoxLog.Clear();
+            LogTextBox.Clear();
         }
 
         private void checkBoxAutoClear_CheckedChanged(object sender, EventArgs e)
@@ -1076,6 +1091,21 @@ namespace tvu
 
             OptDialog.Dispose();
             return;
+        }
+
+        private void autoClearToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (autoClearToolStripMenuItem.Checked == false)
+            {
+                autoClearToolStripMenuItem.Checked = true;
+                MainConfig.AutoClearLog = true;
+            }
+            else
+            {
+                autoClearToolStripMenuItem.Checked = false;
+                MainConfig.AutoClearLog = false;
+            }
+
         }
 
 
