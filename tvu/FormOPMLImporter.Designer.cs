@@ -30,10 +30,10 @@
         {
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.buttonCancell = new System.Windows.Forms.Button();
             this.buttonAdd = new System.Windows.Forms.Button();
             this.checkedListBox2 = new System.Windows.Forms.CheckedListBox();
+            this.buttonOpen = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // progressBar1
@@ -46,18 +46,10 @@
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(12, 112);
+            this.comboBox1.Location = new System.Drawing.Point(12, 41);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(385, 21);
             this.comboBox1.TabIndex = 3;
-            // 
-            // checkedListBox1
-            // 
-            this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(12, 12);
-            this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(385, 94);
-            this.checkedListBox1.TabIndex = 4;
             // 
             // buttonCancell
             // 
@@ -80,20 +72,30 @@
             // checkedListBox2
             // 
             this.checkedListBox2.FormattingEnabled = true;
-            this.checkedListBox2.Location = new System.Drawing.Point(12, 143);
+            this.checkedListBox2.Location = new System.Drawing.Point(12, 68);
             this.checkedListBox2.Name = "checkedListBox2";
-            this.checkedListBox2.Size = new System.Drawing.Size(385, 154);
+            this.checkedListBox2.Size = new System.Drawing.Size(385, 229);
             this.checkedListBox2.TabIndex = 7;
+            // 
+            // buttonOpen
+            // 
+            this.buttonOpen.Location = new System.Drawing.Point(322, 12);
+            this.buttonOpen.Name = "buttonOpen";
+            this.buttonOpen.Size = new System.Drawing.Size(75, 23);
+            this.buttonOpen.TabIndex = 8;
+            this.buttonOpen.Text = "Open";
+            this.buttonOpen.UseVisualStyleBackColor = true;
+            this.buttonOpen.Click += new System.EventHandler(this.buttonOpen_Click);
             // 
             // FormOPMLImporter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(409, 364);
+            this.Controls.Add(this.buttonOpen);
             this.Controls.Add(this.checkedListBox2);
             this.Controls.Add(this.buttonAdd);
             this.Controls.Add(this.buttonCancell);
-            this.Controls.Add(this.checkedListBox1);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.progressBar1);
             this.Name = "FormOPMLImporter";
@@ -106,9 +108,9 @@
 
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.CheckedListBox checkedListBox1;
         private System.Windows.Forms.Button buttonCancell;
         private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.CheckedListBox checkedListBox2;
+        private System.Windows.Forms.Button buttonOpen;
     }
 }

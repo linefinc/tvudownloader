@@ -1151,6 +1151,12 @@ namespace tvu
 
         }
 
+        private void importToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormOPMLImporter newForm = new FormOPMLImporter();
+            newForm.ShowDialog();
+        }
+
 
 
 
