@@ -94,6 +94,8 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormAlerteMuleClose";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.Text = "Alert";
             this.ResumeLayout(false);
             this.PerformLayout();

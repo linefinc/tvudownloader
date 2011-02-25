@@ -12,12 +12,12 @@ namespace tvu
         public AboutBox1()
         {
             InitializeComponent();
-            this.Text = String.Format("About {0} {0}", AssemblyTitle);
-            this.labelProductName.Text = AssemblyProduct;
-            this.labelVersion.Text = String.Format("Version {0} {0}", AssemblyVersion);
-            this.labelCopyright.Text = AssemblyCopyright;
-            this.labelCompanyName.Text = AssemblyCompany;
-            this.textBoxDescription.Text = AssemblyDescription;
+            
+            this.labelProductName.Text = "TV Underground Downloader";
+            this.labelVersion.Text = "0.4.0";
+            this.labelCopyright.Text = "GNU General Public License 3";
+
+            this.textBoxDescription.Text = "";
         }
 
         #region Assembly Attribute Accessors

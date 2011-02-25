@@ -119,7 +119,7 @@
             this.textUrl.Location = new System.Drawing.Point(12, 27);
             this.textUrl.Multiline = true;
             this.textUrl.Name = "textUrl";
-            this.textUrl.Size = new System.Drawing.Size(788, 62);
+            this.textUrl.Size = new System.Drawing.Size(788, 29);
             this.textUrl.TabIndex = 30;
             this.textUrl.TextChanged += new System.EventHandler(this.textUrl_TextChanged);
             // 
@@ -136,10 +136,10 @@
             // checkedListBox1
             // 
             this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(12, 108);
+            this.checkedListBox1.Location = new System.Drawing.Point(12, 78);
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.ScrollAlwaysVisible = true;
-            this.checkedListBox1.Size = new System.Drawing.Size(788, 274);
+            this.checkedListBox1.Size = new System.Drawing.Size(788, 304);
             this.checkedListBox1.TabIndex = 38;
             // 
             // progressBar1
@@ -159,7 +159,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 92);
+            this.label1.Location = new System.Drawing.Point(12, 59);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(106, 13);
             this.label1.TabIndex = 40;
