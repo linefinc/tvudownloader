@@ -565,17 +565,7 @@ namespace tvu
             return path;
         }
 
-        private void button4_Click_1(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            
-            
-
-        }
+      
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -611,15 +601,20 @@ namespace tvu
                         elemList.Add(guid);
                     }
 
+                    elemList.Reverse();
+
+                    int Feedcounter = 0;
+
                     foreach (string FeedLink in elemList)
                     {
-                        if (MainHistory.FileExistByFeedLink(FeedLink) == false)
+                        if ((MainHistory.FileExistByFeedLink(FeedLink) == false)&(Feedcounter < MainConfig.MaxSimultaneousFeedDownloads))
                         {
                             // download the page in FeedLink
                             string page = eMuleWebManager.DownloadPage(FeedLink);
                             // find ed2k
                             string sEd2k = RssParserTVU.FindEd2kLink(page);
 
+                            Feedcounter++;
 
                             if (MainHistory.ExistInHistoryByEd2k(sEd2k) == -1)
                             {
@@ -641,6 +636,12 @@ namespace tvu
                                 // to avoid rendondance of link
                                 MainHistory.Add(sEd2k, FeedLink, feed.Url);
                             }
+                        }
+
+                        if (Feedcounter >= MainConfig.MaxSimultaneousFeedDownloads)
+                        {
+                            AppendLogMessage("Max Simultaneous Feed Downloads Limit");
+                            break;
                         }
                     }
 
@@ -728,25 +729,54 @@ namespace tvu
 
             //reset counter 
             counter = 0;
+            List<string> ActualDownloads = Service.GetActualDownloads();
+
+            // clean list 
+            List<sDonwloadFile> removeList = new List<sDonwloadFile>();
             foreach (sDonwloadFile DownloadFile in myList)
             {
-                if (MainHistory.ExistInHistoryByEd2k(DownloadFile.Ed2kLink) == -1) // if file is not dwnl
+                if (MainHistory.ExistInHistoryByEd2k(DownloadFile.Ed2kLink) != -1) // if file is not dwnl
                 {
-                    Ed2kParser ed2klink = new Ed2kParser(DownloadFile.Ed2kLink);
-                    Service.AddToDownload(ed2klink, DownloadFile.Category);
-
-                    if (DownloadFile.PauseDownload == true)
-                    {
-                        Service.StopDownload(ed2klink);
-                    }
-                    else
-                    {
-                        Service.StartDownload(ed2klink);
-                    }
-                    MainHistory.Add(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);
-                    Ed2kParser parser = new Ed2kParser(DownloadFile.Ed2kLink);
-                    AppendLogMessage(string.Format("Add file to emule {0} \n", parser.GetFileName()) + Environment.NewLine);
+                    
+                    removeList.Add(DownloadFile);
                 }
+                
+                int count  = MainHistory.GetFeedByDownload(ActualDownloads, DownloadFile.FeedSource);
+                if (count > MainConfig.MaxSimultaneousFeedDownloads)
+                {
+                    removeList.Add(DownloadFile);
+                }
+                
+            }
+
+            foreach (sDonwloadFile p in removeList)
+            {
+                myList.Remove(p);
+            }
+
+            // start download 
+            foreach (sDonwloadFile DownloadFile in myList)
+            {
+             
+
+
+
+
+                Ed2kParser ed2klink = new Ed2kParser(DownloadFile.Ed2kLink);
+                Service.AddToDownload(ed2klink, DownloadFile.Category);
+
+                if (DownloadFile.PauseDownload == true)
+                {
+                    Service.StopDownload(ed2klink);
+                }
+                else
+                {
+                    Service.StartDownload(ed2klink);
+                }
+                MainHistory.Add(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);
+                Ed2kParser parser = new Ed2kParser(DownloadFile.Ed2kLink);
+                AppendLogMessage(string.Format("Add file to emule {0} \n", parser.GetFileName()) + Environment.NewLine);
+
                 backgroundWorker1.ReportProgress((int)(++counter * 100.0f / myList.Count));
             }
             MainHistory.Save();

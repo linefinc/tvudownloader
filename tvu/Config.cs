@@ -25,6 +25,7 @@ namespace tvu
         public string DefaultCategory { get; set; }
         public enumStatus Status { get; set; }
         public bool Enebled { get; set; }
+        public int MaxSimultaneousFeedDownloads { get; set; }
         public bool StartWithWindows
         {
             get
@@ -137,6 +138,11 @@ namespace tvu
             textWritter.WriteString(DefaultCategory);
             textWritter.WriteEndElement();
 
+            textWritter.WriteStartElement("MaxSimultaneousFeedDownloads");
+            textWritter.WriteString(MaxSimultaneousFeedDownloads.ToString());
+            textWritter.WriteEndElement();
+
+
             textWritter.WriteStartElement("RSSChannel");
 
             List<RssSubscrission> myRssFeedList = new List<RssSubscrission>();
@@ -206,6 +212,8 @@ namespace tvu
             StartEmuleIfClose = (bool)Convert.ToBoolean(ReadString(xDoc, "AutoStartEmule", "false"));
 
             AutoClearLog = (bool)Convert.ToBoolean(ReadString(xDoc, "AutoClearLog", "false"));
+
+            MaxSimultaneousFeedDownloads = (int)Convert.ToInt32(ReadString(xDoc, "MaxSimultaneousFeedDownloads", "3"));
 
             eMuleExe = ReadString(xDoc, "eMuleExe", "");
 

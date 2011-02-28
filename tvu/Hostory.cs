@@ -4,6 +4,8 @@ using System.Text;
 using System.Xml;
 using System.IO;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
+
 
 namespace tvu
 {
@@ -241,6 +243,45 @@ namespace tvu
                 myFileHistoryList.RemoveRange(size, myFileHistoryList.Count - size);
             }
             return myFileHistoryList;
+        }
+
+        /// <summary>
+        /// Return the number of active download from FeedSoruce
+        /// </summary>
+        /// <param name="list">List of ed2k in active download from GetActualDownloads()</param>
+        /// <param name="FeedSource">Feed soruce</param>
+        /// <returns></returns>
+        public int GetFeedByDownload(List<string> list,string FeedSource)
+        {
+            int count = 0;
+
+
+            Regex Pattern = new Regex(@"\|\d{1,40}\|\w{1,40}\|");
+
+            foreach (fileHistory p in fileHistoryList)
+            {
+                if (p.FeedSource == FeedSource)
+                {
+                    Match match1 = Pattern.Match(p.Ed2kLink);
+                    if (match1.Success == true)
+                    {
+                        foreach (string t in list)
+                        {
+                            Match match2 = Pattern.Match(t);
+                            if (match2.Success == true)
+                            {
+                                if (match1.ToString() == match2.ToString())
+                                {
+                                    count++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return count;
+
         }
     }
 }
