@@ -23,6 +23,7 @@ namespace tvu
             textBoxEmuleExe.Text = inConfig.eMuleExe;
             textBoxDefaultCategory.Text = LocalConfig.DefaultCategory;
             numericUpDownIntervalTime.Value = inConfig.IntervalTime;
+            numericUpDownMinDownloadToStrarTEmule.Value = inConfig.MinToStartEmule;
             checkBoxStartMinimized.Checked = inConfig.StartMinimized;
             checkBoxStartEmuleIfClose.Checked = inConfig.StartEmuleIfClose;
             checkBoxCloseEmuleIfAllIsDone.Checked = inConfig.CloseEmuleIfAllIsDone;
@@ -93,7 +94,11 @@ namespace tvu
             //  Interval time
             //
             LocalConfig.IntervalTime = Convert.ToInt32(numericUpDownIntervalTime.Value);
-            
+            //
+            //  Min download to start emule
+            //
+            LocalConfig.MinToStartEmule = Convert.ToInt32(numericUpDownMinDownloadToStrarTEmule.Value);
+
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
@@ -123,6 +128,7 @@ namespace tvu
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
+
 
   
     }

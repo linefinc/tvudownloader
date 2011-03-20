@@ -26,6 +26,7 @@ namespace tvu
         public enumStatus Status { get; set; }
         public bool Enebled { get; set; }
         public int MaxSimultaneousFeedDownloads { get; set; }
+        public int MinToStartEmule { get; set; }
         public bool StartWithWindows
         {
             get
@@ -138,6 +139,10 @@ namespace tvu
             textWritter.WriteString(DefaultCategory);
             textWritter.WriteEndElement();
 
+            textWritter.WriteStartElement("MinToStartEmule");
+            textWritter.WriteString(MinToStartEmule.ToString());
+            textWritter.WriteEndElement();
+
             textWritter.WriteStartElement("MaxSimultaneousFeedDownloads");
             textWritter.WriteString(MaxSimultaneousFeedDownloads.ToString());
             textWritter.WriteEndElement();
@@ -215,6 +220,8 @@ namespace tvu
 
             MaxSimultaneousFeedDownloads = (int)Convert.ToInt32(ReadString(xDoc, "MaxSimultaneousFeedDownloads", "3"));
 
+            MinToStartEmule = (int)Convert.ToInt32(ReadString(xDoc, "MinToStartEmule", "0"));
+            
             eMuleExe = ReadString(xDoc, "eMuleExe", "");
 
             DefaultCategory = ReadString(xDoc, "DefaultCategory", "");

@@ -37,6 +37,9 @@
             this.textBoxEmuleExec = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPageGeneral = new System.Windows.Forms.TabPage();
+            this.label8 = new System.Windows.Forms.Label();
+            this.numericUpDownMinDownloadToStrarTEmule = new System.Windows.Forms.NumericUpDown();
+            this.checkBoxAutoClear = new System.Windows.Forms.CheckBox();
             this.checkBoxCloseEmuleIfAllIsDone = new System.Windows.Forms.CheckBox();
             this.textBoxEmuleExe = new System.Windows.Forms.TextBox();
             this.textBoxDefaultCategory = new System.Windows.Forms.TextBox();
@@ -67,9 +70,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.checkBoxAutoClear = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.tabPageGeneral.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinDownloadToStrarTEmule)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIntervalTime)).BeginInit();
             this.tabPageNetwork.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -163,6 +166,8 @@
             // 
             // tabPageGeneral
             // 
+            this.tabPageGeneral.Controls.Add(this.label8);
+            this.tabPageGeneral.Controls.Add(this.numericUpDownMinDownloadToStrarTEmule);
             this.tabPageGeneral.Controls.Add(this.checkBoxAutoClear);
             this.tabPageGeneral.Controls.Add(this.checkBoxCloseEmuleIfAllIsDone);
             this.tabPageGeneral.Controls.Add(this.textBoxEmuleExe);
@@ -182,10 +187,36 @@
             this.tabPageGeneral.Text = "General";
             this.tabPageGeneral.UseVisualStyleBackColor = true;
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 141);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(144, 13);
+            this.label8.TabIndex = 53;
+            this.label8.Text = "Min Donwload to Start eMule";
+            // 
+            // numericUpDownMinDownloadToStrarTEmule
+            // 
+            this.numericUpDownMinDownloadToStrarTEmule.Location = new System.Drawing.Point(167, 139);
+            this.numericUpDownMinDownloadToStrarTEmule.Name = "numericUpDownMinDownloadToStrarTEmule";
+            this.numericUpDownMinDownloadToStrarTEmule.Size = new System.Drawing.Size(47, 20);
+            this.numericUpDownMinDownloadToStrarTEmule.TabIndex = 52;
+            // 
+            // checkBoxAutoClear
+            // 
+            this.checkBoxAutoClear.AutoSize = true;
+            this.checkBoxAutoClear.Location = new System.Drawing.Point(6, 213);
+            this.checkBoxAutoClear.Name = "checkBoxAutoClear";
+            this.checkBoxAutoClear.Size = new System.Drawing.Size(96, 17);
+            this.checkBoxAutoClear.TabIndex = 51;
+            this.checkBoxAutoClear.Text = "Auto Clear Log";
+            this.checkBoxAutoClear.UseVisualStyleBackColor = true;
+            // 
             // checkBoxCloseEmuleIfAllIsDone
             // 
             this.checkBoxCloseEmuleIfAllIsDone.AutoSize = true;
-            this.checkBoxCloseEmuleIfAllIsDone.Location = new System.Drawing.Point(6, 151);
+            this.checkBoxCloseEmuleIfAllIsDone.Location = new System.Drawing.Point(6, 157);
             this.checkBoxCloseEmuleIfAllIsDone.Name = "checkBoxCloseEmuleIfAllIsDone";
             this.checkBoxCloseEmuleIfAllIsDone.Size = new System.Drawing.Size(142, 17);
             this.checkBoxCloseEmuleIfAllIsDone.TabIndex = 50;
@@ -194,7 +225,7 @@
             // 
             // textBoxEmuleExe
             // 
-            this.textBoxEmuleExe.Location = new System.Drawing.Point(98, 124);
+            this.textBoxEmuleExe.Location = new System.Drawing.Point(98, 118);
             this.textBoxEmuleExe.Name = "textBoxEmuleExe";
             this.textBoxEmuleExe.Size = new System.Drawing.Size(244, 20);
             this.textBoxEmuleExe.TabIndex = 47;
@@ -209,7 +240,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 127);
+            this.label5.Location = new System.Drawing.Point(6, 121);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(79, 13);
             this.label5.TabIndex = 48;
@@ -495,16 +526,6 @@
             this.tabControl1.Size = new System.Drawing.Size(365, 274);
             this.tabControl1.TabIndex = 0;
             // 
-            // checkBoxAutoClear
-            // 
-            this.checkBoxAutoClear.AutoSize = true;
-            this.checkBoxAutoClear.Location = new System.Drawing.Point(6, 174);
-            this.checkBoxAutoClear.Name = "checkBoxAutoClear";
-            this.checkBoxAutoClear.Size = new System.Drawing.Size(96, 17);
-            this.checkBoxAutoClear.TabIndex = 51;
-            this.checkBoxAutoClear.Text = "Auto Clear Log";
-            this.checkBoxAutoClear.UseVisualStyleBackColor = true;
-            // 
             // OptionsDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -522,6 +543,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.tabPageGeneral.ResumeLayout(false);
             this.tabPageGeneral.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinDownloadToStrarTEmule)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIntervalTime)).EndInit();
             this.tabPageNetwork.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
@@ -576,5 +598,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.CheckBox checkBoxAutoClear;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.NumericUpDown numericUpDownMinDownloadToStrarTEmule;
     }
 }

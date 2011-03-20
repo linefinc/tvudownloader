@@ -651,10 +651,7 @@ namespace tvu
                 catch
                 {
                     AppendLogMessage("Unable to load rss");
-
                     feed.status = enumStatus.Error;
-                    //int index = MainConfig.RssFeedList.IndexOf(feed);
-                    //MainConfig.RssFeedList[index].status = enumStatus.Error;
                 }
 
                 if (feed.status == enumStatus.Ok)
@@ -694,7 +691,7 @@ namespace tvu
 
             // try to start emule
             // the if work only if rc == null
-            if (MainConfig.StartEmuleIfClose == true)
+            if ((MainConfig.StartEmuleIfClose == true)&(myList.Count > MainConfig.MinToStartEmule))
             {
                 for (int i = 1; (i <= 5) & (rc == null); i++)
                 {
@@ -702,7 +699,6 @@ namespace tvu
                     AppendLogMessage("Wait 60 sec");
                     try
                     {
-
                         Process.Start(MainConfig.eMuleExe);
                     }
                     catch
@@ -717,14 +713,21 @@ namespace tvu
 
             if (rc == null)
             {
+                if (myList.Count < MainConfig.MinToStartEmule)
+                {
+                    AppendLogMessage("Min file download not reached");
+                    return;
+                }
+
                 AppendLogMessage("Unable to connect to eMule web server");
                 return;
+                    
+                
             }
 
             //
             //  Download file 
             // 
-
             Service.GetCategory(true);  // force upgrade category list 
 
             //reset counter 
@@ -737,7 +740,6 @@ namespace tvu
             {
                 if (MainHistory.ExistInHistoryByEd2k(DownloadFile.Ed2kLink) != -1) // if file is not dwnl
                 {
-                    
                     removeList.Add(DownloadFile);
                 }
                 
@@ -757,11 +759,6 @@ namespace tvu
             // start download 
             foreach (sDonwloadFile DownloadFile in myList)
             {
-             
-
-
-
-
                 Ed2kParser ed2klink = new Ed2kParser(DownloadFile.Ed2kLink);
                 Service.AddToDownload(ed2klink, DownloadFile.Category);
 
@@ -1157,6 +1154,7 @@ namespace tvu
                 MainConfig.DefaultCategory = OptDialog.LocalConfig.DefaultCategory;
                 MainConfig.eMuleExe = OptDialog.LocalConfig.eMuleExe;
                 MainConfig.IntervalTime = OptDialog.LocalConfig.IntervalTime;
+                MainConfig.MinToStartEmule = OptDialog.LocalConfig.MinToStartEmule;
                 MainConfig.Save();
             }
             // reset counter to avoid error
