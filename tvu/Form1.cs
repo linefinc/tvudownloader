@@ -38,7 +38,7 @@ namespace tvu
         public Config MainConfig;
         public History MainHistory;
 
-        delegate void SetTextCallback(string text);
+        delegate void SetTextCallback(string text, bool verbose);
 
         private DateTime DownloadDataTime;
         private DateTime AutoCloseDataTime;
@@ -187,7 +187,7 @@ namespace tvu
 
         private void menu_AutoStartEmule(object Sender, EventArgs e)
         {
-            AppendLogMessage("Auto Start Emule");
+            AppendLogMessage("Auto Start Emule",false);
             if (MainConfig.StartEmuleIfClose == true)
             {
                 this.menuItemAutoStartEmule.Checked = false;
@@ -327,8 +327,8 @@ namespace tvu
                 
                 DownloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
 
-                AppendLogMessage("Now : " + DateTime.Now.ToString());
-                AppendLogMessage("next tick : " + DownloadDataTime.ToString());
+                AppendLogMessage("Now : " + DateTime.Now.ToString(),false);
+                AppendLogMessage("next tick : " + DownloadDataTime.ToString(),false);
                 StartDownloadThread();
                 UpdateRssFeedGUI();
             }
@@ -336,15 +336,29 @@ namespace tvu
            
         }
 
-        private void AppendText(string text)
+        private void AppendText(string text, bool verbose)
         {
-            this.LogTextBox.Text += text;
-            this.LogTextBox.SelectionStart = this.LogTextBox.Text.Length;
-            this.LogTextBox.ScrollToCaret();
-            this.LogTextBox.Refresh();
+            if (verbose == false)
+            {
+                this.LogTextBox.Text += text;
+                this.LogTextBox.SelectionStart = this.LogTextBox.Text.Length;
+                this.LogTextBox.ScrollToCaret();
+                this.LogTextBox.Refresh();
+                return;
+            }
+
+            if ((verbose == true) && (MainConfig.Verbose == true))
+            {
+                this.LogTextBox.Text += text;
+                this.LogTextBox.SelectionStart = this.LogTextBox.Text.Length;
+                this.LogTextBox.ScrollToCaret();
+                this.LogTextBox.Refresh();
+                return;
+            }
+            
         }
 
-        private void AppendLogMessage(string text)
+        private void AppendLogMessage(string text, bool verbose)
         {
             text = "[" + DateTime.Now.ToString() + "]" + text;
 
@@ -352,18 +366,18 @@ namespace tvu
             {
                 text += Environment.NewLine;
             }
-            
+
             // from msdn guide http://msdn.microsoft.com/en-us/library/ms171728%28VS.90%29.aspx
             if (this.LogTextBox.InvokeRequired)
             {
                 // It's on a different thread, so use Invoke.
                 SetTextCallback d = new SetTextCallback(AppendText);
-                this.Invoke(d, new object[] { text });
+                this.Invoke(d, new object[] { text, verbose });
             }
             else
             {
                 // It's on the same thread, no need for Invoke
-                AppendText(text);
+                AppendText(text, verbose);
             }
         }
 
@@ -493,7 +507,7 @@ namespace tvu
         {
             if (backgroundWorker1.IsBusy == true)
             {
-                AppendLogMessage("Thread is busy");
+                AppendLogMessage("Thread is busy",false);
                 return;
             }
 
@@ -526,7 +540,7 @@ namespace tvu
             int counter = 0;
 
 
-            AppendLogMessage("Start check");
+            AppendLogMessage("Start check",false);
 
             List<sDonwloadFile> myList = new List<sDonwloadFile>();
 
@@ -535,7 +549,7 @@ namespace tvu
             {
 
                 feed.status = enumStatus.Ok;
-                AppendLogMessage("Read RSS " + feed.Url);
+                AppendLogMessage("Read RSS " + feed.Url,false);
 
                 try
                 {
@@ -571,7 +585,7 @@ namespace tvu
                             if (MainHistory.ExistInHistoryByEd2k(sEd2k) == -1)
                             {
                                 Ed2kParser parser = new Ed2kParser(sEd2k);
-                                AppendLogMessage(string.Format("Found new file {0}", parser.GetFileName()));
+                                AppendLogMessage(string.Format("Found new file {0}", parser.GetFileName()),false);
 
                                 sDonwloadFile DL = new sDonwloadFile();
                                 DL.FeedSource = feed.Url;
@@ -592,7 +606,7 @@ namespace tvu
 
                         if (Feedcounter >= MainConfig.MaxSimultaneousFeedDownloads)
                         {
-                            AppendLogMessage("Max Simultaneous Feed Downloads Limit");
+                            AppendLogMessage("Max Simultaneous Feed Downloads Limit",false);
                             break;
                         }
                     }
@@ -602,7 +616,7 @@ namespace tvu
                 }
                 catch
                 {
-                    AppendLogMessage("Unable to load rss");
+                    AppendLogMessage("Unable to load rss",false);
                     feed.status = enumStatus.Error;
                 }
 
@@ -647,15 +661,15 @@ namespace tvu
             {
                 for (int i = 1; (i <= 5) & (rc == null); i++)
                 {
-                    AppendLogMessage(string.Format("start eMule Now (try {0}/5)", i));
-                    AppendLogMessage("Wait 60 sec");
+                    AppendLogMessage(string.Format("start eMule Now (try {0}/5)", i),false);
+                    AppendLogMessage("Wait 60 sec",false);
                     try
                     {
                         Process.Start(MainConfig.eMuleExe);
                     }
                     catch
                     {
-                        AppendLogMessage("Unable start application");
+                        AppendLogMessage("Unable start application",false);
                     }
                     Thread.Sleep(5000);
                     rc = Service.LogIn();
@@ -667,11 +681,11 @@ namespace tvu
             {
                 if (myList.Count < MainConfig.MinToStartEmule)
                 {
-                    AppendLogMessage("Min file download not reached");
+                    AppendLogMessage("Min file download not reached",false);
                     return;
                 }
 
-                AppendLogMessage("Unable to connect to eMule web server");
+                AppendLogMessage("Unable to connect to eMule web server",false);
                 return;
                     
                 
@@ -724,7 +738,7 @@ namespace tvu
                 }
                 MainHistory.Add(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);
                 Ed2kParser parser = new Ed2kParser(DownloadFile.Ed2kLink);
-                AppendLogMessage(string.Format("Add file to emule {0} \n", parser.GetFileName()) + Environment.NewLine);
+                AppendLogMessage(string.Format("Add file to emule {0} \n", parser.GetFileName()) + Environment.NewLine,false);
 
                 backgroundWorker1.ReportProgress((int)(++counter * 100.0f / myList.Count));
             }
@@ -791,7 +805,7 @@ namespace tvu
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            AppendLogMessage("Config loaded " + MainConfig.FileName);
+            AppendLogMessage("Config loaded " + MainConfig.FileName,false);
             timer2.Enabled = false;
 
             if (MainConfig.StartMinimized == true)
@@ -885,7 +899,7 @@ namespace tvu
             string str = listView2.Items[i].Text;
 
             string p = string.Format("DELETE {0}:{1}", i, str);
-            AppendLogMessage(p);
+            AppendLogMessage(p,false);
 
             MainHistory.DeleteFile(str);
         }

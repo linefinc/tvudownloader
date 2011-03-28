@@ -27,6 +27,7 @@ namespace tvu
         public bool Enebled { get; set; }
         public int MaxSimultaneousFeedDownloads { get; set; }
         public int MinToStartEmule { get; set; }
+        public bool Verbose { get; set; }
         public bool StartWithWindows
         {
             get
@@ -147,6 +148,9 @@ namespace tvu
             textWritter.WriteString(MaxSimultaneousFeedDownloads.ToString());
             textWritter.WriteEndElement();
 
+            textWritter.WriteStartElement("Verbose");
+            textWritter.WriteString(Verbose.ToString());
+            textWritter.WriteEndElement();
 
             textWritter.WriteStartElement("RSSChannel");
 
@@ -228,7 +232,7 @@ namespace tvu
 
             debug = (bool)Convert.ToBoolean(ReadString(xDoc, "Debug", "false"));
 
-
+            Verbose = (bool)Convert.ToBoolean(ReadString(xDoc, "Verbose", "false"));
 
             //
             //  Load Channel
