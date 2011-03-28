@@ -91,6 +91,7 @@
             this.Controls.Add(this.buttonDisable);
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.buttonSkip);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormAlerteMuleClose";

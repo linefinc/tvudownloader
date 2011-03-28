@@ -75,7 +75,7 @@ namespace tvu
 
 
             DownloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
-            AutoCloseDataTime = DateTime.Now.AddMinutes(30);
+            AutoCloseDataTime = DateTime.Now.AddMinutes(1);
 
             // load History
             MainHistory = new History();
@@ -129,14 +129,14 @@ namespace tvu
 
             this.menuItemAutoCloseEmule.Index = 1;
             this.menuItemAutoCloseEmule.Text = "Auto Close eMule";
-            
+
             if (MainConfig.CloseEmuleIfAllIsDone == true)
             {
-                this.menuItemAutoCloseEmule.Checked = true;
+                EnableAutoCloseEmule();
             }
             else
             {
-                this.menuItemAutoCloseEmule.Checked = false;
+                DisableAutoCloseEmule();
             }
             this.menuItemAutoCloseEmule.Click += new System.EventHandler(this.menu_AutoCloseEmule);
             this.contextMenu1.MenuItems.Add(menuItemAutoCloseEmule);
@@ -333,55 +333,7 @@ namespace tvu
                 UpdateRssFeedGUI();
             }
 
-            //
-            // Auto close
-            //
-            if ((MainConfig.CloseEmuleIfAllIsDone == true) & (AutoCloseDataTime > DateTime.Now))
-            {
-                // set next time 
-                AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
-               
-                eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl,MainConfig.Password);
-                bool? rc = Service.LogIn();
-
-                if (rc == null)
-                {
-                    return;
-                }
-
-                if (Service.GetActualDownloads().Count == 0)
-                {
-                    // pop up form to advise
-                    FormAlerteMuleClose Dialog = new FormAlerteMuleClose();
-                    Dialog.ShowDialog();
-
-                    if (Dialog.DialogResult == DialogResult.Cancel)
-                    {
-                        //skeep event
-                        Dialog.Dispose();
-                        Service.LogOut();
-                        return;
-                    }
-
-                    switch (Dialog.AlertChoice)
-                    {
-                        case AlertChoiceEnum.Close:// Close
-                            Service.Close();
-                            break;
-                        case AlertChoiceEnum.Skip: // SKIP
-                            AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
-                            break;
-                        case AlertChoiceEnum.Disable:    // disable autoclose
-                            this.menuItemAutoCloseEmule.Checked = false; // disable context menu
-                            this.MainConfig.CloseEmuleIfAllIsDone = false; // disable function
-                            break;
-                    }
-    
-                    Dialog.Dispose();
-                }
-
-                Service.LogOut();
-            }
+           
         }
 
         private void AppendText(string text)
@@ -1183,6 +1135,135 @@ namespace tvu
         {
             FormOPMLImporter newForm = new FormOPMLImporter();
             newForm.ShowDialog();
+        }
+
+        private void timer3_Tick(object sender, EventArgs e)
+        {
+
+
+            if (MainConfig.CloseEmuleIfAllIsDone == false)
+            {
+                return;
+            }
+
+            // check if Auto Close Data Time is not set
+            if (AutoCloseDataTime == DateTime.MinValue)
+            {
+                AutoCloseDataTime = DateTime.Now.AddMinutes(30);
+            }
+
+            //
+            // Auto close
+            //
+            if (DateTime.Now < AutoCloseDataTime)
+            {
+                return;
+            }
+
+            // suspend event while connect with mule
+            timer3.Enabled = false;
+
+            // conncect to mule
+            eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
+            bool? rc = Service.LogIn();
+
+            // if mule close ... end of game
+            if (rc == null)
+            {
+                AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
+                return;
+            }
+
+            // if donwload > 0 ... there' s some download ... end 
+            if (Service.GetActualDownloads().Count == 0)
+            {
+                AutoCloseDataTime = DateTime.Now.AddMinutes(30);
+                Service.LogOut();
+            }
+
+            // pop up form to advise user
+            FormAlerteMuleClose Dialog = new FormAlerteMuleClose();
+            Dialog.ShowDialog();
+
+            switch (Dialog.AlertChoice)
+            {
+                case AlertChoiceEnum.Close:// Close
+                    Dialog.Dispose();
+                    Service.Close();
+                    timer3.Enabled = true;  // enable timer 
+                    return;
+
+                // to fix here                    
+                case AlertChoiceEnum.Skip: // SKIP
+                    AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
+                    Dialog.Dispose();
+                    Service.LogOut();
+                    timer3.Enabled = true;  // enable timer 
+                    return;
+                case AlertChoiceEnum.Disable:    // disable autoclose
+                    
+                    Dialog.Dispose();
+                    Service.LogOut();
+                    DisableAutoCloseEmule();
+                    return;
+            }
+
+        }
+
+        public void EnableAutoCloseEmule()
+        {
+            this.menuItemAutoCloseEmule.Checked = true;   // Enable Trybar context menu
+            this.autoCloseEMuleToolStripMenuItem.Checked = true; // File -> Menu -> Configure
+            this.MainConfig.CloseEmuleIfAllIsDone = true; // Enable function
+            timer3.Enabled = true;  // enable timer 
+            AutoCloseDataTime = DateTime.Now.AddMinutes(30);
+        }
+
+        public void DisableAutoCloseEmule()
+        {
+            this.menuItemAutoCloseEmule.Checked = false; // disable context menu
+            this.autoCloseEMuleToolStripMenuItem.Checked = false; // File -> Menu -> Configure
+            this.MainConfig.CloseEmuleIfAllIsDone = false; // disable function
+            timer3.Enabled = false;  // enable timer 
+         
+        }
+
+        public void EnableAutoStarteMule()
+        {
+
+        }
+
+
+        public void DisableAutoStarteMule()
+        {
+
+        }
+
+        private void autoCloseEMuleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MainConfig.CloseEmuleIfAllIsDone == false)
+            {
+                EnableAutoCloseEmule();
+            }
+            else
+            {
+                DisableAutoCloseEmule();
+            }
+            MainConfig.Save();
+
+        }
+
+        private void autoStartEMuleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MainConfig.StartEmuleIfClose == false)
+            {
+                
+            }
+            else
+            {
+                
+            }
+            MainConfig.Save();
         }
 
 
