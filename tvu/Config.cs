@@ -191,6 +191,11 @@ namespace tvu
                     textWritter.WriteStartElement("LastUpgradeDate");//Last Upgrade Date
                     textWritter.WriteString(feed.LastUpgradeDate);
                     textWritter.WriteEndElement();
+
+                    textWritter.WriteStartElement("Enabled");//Last Upgrade Date
+                    textWritter.WriteString(feed.Enabled.ToString());
+                    textWritter.WriteEndElement();
+                    
                     
                 }
                 textWritter.WriteEndElement();// end channel
@@ -273,6 +278,11 @@ namespace tvu
                     if ((t.Name == "LastUpgradeDate") & (t.FirstChild != null))
                     {
                         newfeed.LastUpgradeDate = t.FirstChild.Value;
+                    }
+
+                    if ((t.Name == "Enabled") & (t.FirstChild != null))
+                    {
+                        newfeed.Enabled = (bool) Convert.ToBoolean(t.FirstChild.Value);
                     }
 
                 }

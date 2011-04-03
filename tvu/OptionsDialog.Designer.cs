@@ -70,6 +70,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.checkBoxVerbose = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.tabPageGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinDownloadToStrarTEmule)).BeginInit();
@@ -166,6 +167,7 @@
             // 
             // tabPageGeneral
             // 
+            this.tabPageGeneral.Controls.Add(this.checkBoxVerbose);
             this.tabPageGeneral.Controls.Add(this.label8);
             this.tabPageGeneral.Controls.Add(this.numericUpDownMinDownloadToStrarTEmule);
             this.tabPageGeneral.Controls.Add(this.checkBoxAutoClear);
@@ -526,6 +528,16 @@
             this.tabControl1.Size = new System.Drawing.Size(365, 274);
             this.tabControl1.TabIndex = 0;
             // 
+            // checkBoxVerbose
+            // 
+            this.checkBoxVerbose.AutoSize = true;
+            this.checkBoxVerbose.Location = new System.Drawing.Point(6, 190);
+            this.checkBoxVerbose.Name = "checkBoxVerbose";
+            this.checkBoxVerbose.Size = new System.Drawing.Size(86, 17);
+            this.checkBoxVerbose.TabIndex = 54;
+            this.checkBoxVerbose.Text = "Verbose Log";
+            this.checkBoxVerbose.UseVisualStyleBackColor = true;
+            // 
             // OptionsDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -601,5 +613,6 @@
         private System.Windows.Forms.CheckBox checkBoxAutoClear;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.NumericUpDown numericUpDownMinDownloadToStrarTEmule;
+        private System.Windows.Forms.CheckBox checkBoxVerbose;
     }
 }

@@ -89,6 +89,10 @@ namespace tvu
                 autoClearToolStripMenuItem.Checked = true;
             }
 
+            if (MainConfig.Verbose == true)
+            {
+                verboseToolStripMenuItem.Checked = true;
+            }
 
         }
 
@@ -1115,6 +1119,7 @@ namespace tvu
                 MainConfig.StartWithWindows = OptDialog.LocalConfig.StartWithWindows;
                 MainConfig.StartEmuleIfClose = OptDialog.LocalConfig.StartEmuleIfClose;
                 MainConfig.CloseEmuleIfAllIsDone = OptDialog.LocalConfig.CloseEmuleIfAllIsDone;
+                MainConfig.Verbose = OptDialog.LocalConfig.Verbose;
                 MainConfig.ServiceUrl = OptDialog.LocalConfig.ServiceUrl;
                 MainConfig.Password = OptDialog.LocalConfig.Password;
                 MainConfig.DefaultCategory = OptDialog.LocalConfig.DefaultCategory;
@@ -1178,6 +1183,8 @@ namespace tvu
             timer3.Enabled = false;
 
             // conncect to mule
+            
+            AppendLogMessage("AutoClose Mule. Login", true);
             eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
             bool? rc = Service.LogIn();
 
@@ -1185,12 +1192,14 @@ namespace tvu
             if (rc == null)
             {
                 AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
+                AppendLogMessage("AutoClose Mule. Login", true);
                 return;
             }
 
             // if donwload > 0 ... there' s some download ... end 
             if (Service.GetActualDownloads().Count == 0)
             {
+                AppendLogMessage("AutoClose Mule. GetActualDownloads >0", true);
                 AutoCloseDataTime = DateTime.Now.AddMinutes(30);
                 Service.LogOut();
             }
@@ -1258,12 +1267,13 @@ namespace tvu
             if (MainConfig.CloseEmuleIfAllIsDone == false)
             {
                 EnableAutoCloseEmule();
+                
             }
             else
             {
                 DisableAutoCloseEmule();
             }
-            MainConfig.Save();
+           
 
         }
 
@@ -1271,13 +1281,30 @@ namespace tvu
         {
             if (MainConfig.StartEmuleIfClose == false)
             {
-                
+                MainConfig.StartEmuleIfClose = true;
+                autoStartEMuleToolStripMenuItem.Checked = true;
             }
             else
             {
-                
+                MainConfig.StartEmuleIfClose = false;
+                autoStartEMuleToolStripMenuItem.Checked = false;
             }
-            MainConfig.Save();
+           
+        }
+
+        private void verboseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MainConfig.Verbose == true)
+            {
+                verboseToolStripMenuItem.Checked = false;
+                MainConfig.Verbose = false;
+            
+            }
+            else
+            {
+                verboseToolStripMenuItem.Checked = true;
+                MainConfig.Verbose = true;
+            }
         }
 
 
