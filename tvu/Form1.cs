@@ -544,7 +544,7 @@ namespace tvu
             int counter = 0;
 
 
-            AppendLogMessage("Start check",false);
+            AppendLogMessage("Start RSS Check",false);
 
             List<sDonwloadFile> myList = new List<sDonwloadFile>();
 
@@ -608,11 +608,11 @@ namespace tvu
                             }
                         }
 
-                        if (Feedcounter >= MainConfig.MaxSimultaneousFeedDownloads)
-                        {
-                            AppendLogMessage("Max Simultaneous Feed Downloads Limit",false);
-                            break;
-                        }
+                        //if (Feedcounter >= MainConfig.MaxSimultaneousFeedDownloads)
+                        //{
+                        //    AppendLogMessage("Max Simultaneous Feed Downloads Limit",false);
+                        //    break;
+                        //}
                     }
 
 
@@ -648,13 +648,15 @@ namespace tvu
 
             }
 
-
+            
 
             if (myList.Count == 0)
             {
-                // nothing to download
+
+                AppendLogMessage("Nothing to download", true);
                 return;
             }
+
 
             eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
             bool? rc = Service.LogIn();
@@ -681,6 +683,7 @@ namespace tvu
                 }
             }
 
+            AppendLogMessage("Check min download", true);
             if (rc == null)
             {
                 if (myList.Count < MainConfig.MinToStartEmule)
@@ -698,6 +701,7 @@ namespace tvu
             //
             //  Download file 
             // 
+            AppendLogMessage("Retrive list Category)", true);
             Service.GetCategory(true);  // force upgrade category list 
 
             //reset counter 
@@ -705,6 +709,7 @@ namespace tvu
             List<string> ActualDownloads = Service.GetActualDownloads();
 
             // clean list 
+            AppendLogMessage("Clean up list(remove file in history list)", true);
             List<sDonwloadFile> removeList = new List<sDonwloadFile>();
             foreach (sDonwloadFile DownloadFile in myList)
             {
@@ -730,14 +735,17 @@ namespace tvu
             foreach (sDonwloadFile DownloadFile in myList)
             {
                 Ed2kParser ed2klink = new Ed2kParser(DownloadFile.Ed2kLink);
+                AppendLogMessage("Add file to download", true);
                 Service.AddToDownload(ed2klink, DownloadFile.Category);
 
                 if (DownloadFile.PauseDownload == true)
                 {
+                    AppendLogMessage("Start download", true);
                     Service.StopDownload(ed2klink);
                 }
                 else
                 {
+                    AppendLogMessage("Stop download (pause)", true);
                     Service.StartDownload(ed2klink);
                 }
                 MainHistory.Add(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);

@@ -14,7 +14,7 @@ namespace tvu
             InitializeComponent();
             
             this.labelProductName.Text = "TV Underground Downloader";
-            this.labelVersion.Text = "0.4.0";
+            this.labelVersion.Text = Config.Version.ToString();
             this.labelCopyright.Text = "GNU General Public License 3";
 
             this.textBoxDescription.Text = "";
