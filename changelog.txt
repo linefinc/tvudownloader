@@ -1,3 +1,17 @@
+Version 0.5 09/04/2011
+
+This is a bug fix version with some add
++Add verbose log
++It's now possible exclude episodes when add RSS channel
++Add check for new version 
++Add process bar
++Add minimum file to start mule. 
++Stat to implement OPML Import/Exporter (only in SVN version)
+*Fix bug occur when user not use category 
+*Fix RSS parser. A new parser are write to support not standard RSS channel.
+*Fix Url parser to avoid duplicate links
+
+
 Version 0.4 03/01/2011
 
 +Add new parser (more strong)
