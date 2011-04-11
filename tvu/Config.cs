@@ -28,6 +28,10 @@ namespace tvu
         public int MaxSimultaneousFeedDownloads { get; set; }
         public int MinToStartEmule { get; set; }
         public bool Verbose { get; set; }
+        public bool EmailNotification { get; set; }
+        public string ServerSMTP { get; set; }
+        public string MailReceiver { get; set; }
+        public string MailSender { get; set; }
         public bool StartWithWindows
         {
             get
@@ -152,6 +156,25 @@ namespace tvu
             textWritter.WriteString(Verbose.ToString());
             textWritter.WriteEndElement();
 
+            textWritter.WriteStartElement("EmailNotification");
+            textWritter.WriteString(EmailNotification.ToString());
+            textWritter.WriteEndElement();
+
+            textWritter.WriteStartElement("ServerSMTP");
+            textWritter.WriteString(ServerSMTP);
+            textWritter.WriteEndElement();
+
+            textWritter.WriteStartElement("MailReceiver");
+            textWritter.WriteString(MailReceiver.ToString());
+            textWritter.WriteEndElement();
+
+            textWritter.WriteStartElement("MailSender");
+            textWritter.WriteString(MailSender.ToString());
+            textWritter.WriteEndElement();
+
+
+
+
             textWritter.WriteStartElement("RSSChannel");
 
             List<RssSubscrission> myRssFeedList = new List<RssSubscrission>();
@@ -239,6 +262,14 @@ namespace tvu
 
             Verbose = (bool)Convert.ToBoolean(ReadString(xDoc, "Verbose", "false"));
 
+            EmailNotification = (bool)Convert.ToBoolean(ReadString(xDoc, "EmailNotification", "false"));
+
+            ServerSMTP = ReadString(xDoc, "ServerSMTP", "");
+
+            MailReceiver = ReadString(xDoc, "MailReceiver", "");
+
+            MailSender = ReadString(xDoc, "MailSender", "");
+        
             //
             //  Load Channel
             //

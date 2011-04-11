@@ -37,6 +37,7 @@
             this.textBoxEmuleExec = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPageGeneral = new System.Windows.Forms.TabPage();
+            this.checkBoxVerbose = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.numericUpDownMinDownloadToStrarTEmule = new System.Windows.Forms.NumericUpDown();
             this.checkBoxAutoClear = new System.Windows.Forms.CheckBox();
@@ -70,7 +71,15 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.checkBoxVerbose = new System.Windows.Forms.CheckBox();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.checkBoxEmailNotification = new System.Windows.Forms.CheckBox();
+            this.textBoxServerSmtp = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textBoxMailReceiver = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.textBoxMailSender = new System.Windows.Forms.TextBox();
+            this.buttonTestEmailNotification = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.tabPageGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinDownloadToStrarTEmule)).BeginInit();
@@ -80,6 +89,7 @@
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonSave
@@ -188,6 +198,16 @@
             this.tabPageGeneral.TabIndex = 1;
             this.tabPageGeneral.Text = "General";
             this.tabPageGeneral.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxVerbose
+            // 
+            this.checkBoxVerbose.AutoSize = true;
+            this.checkBoxVerbose.Location = new System.Drawing.Point(6, 190);
+            this.checkBoxVerbose.Name = "checkBoxVerbose";
+            this.checkBoxVerbose.Size = new System.Drawing.Size(86, 17);
+            this.checkBoxVerbose.TabIndex = 54;
+            this.checkBoxVerbose.Text = "Verbose Log";
+            this.checkBoxVerbose.UseVisualStyleBackColor = true;
             // 
             // label8
             // 
@@ -522,21 +542,97 @@
             // 
             this.tabControl1.Controls.Add(this.tabPageGeneral);
             this.tabControl1.Controls.Add(this.tabPageNetwork);
+            this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(365, 274);
             this.tabControl1.TabIndex = 0;
             // 
-            // checkBoxVerbose
+            // tabPage1
             // 
-            this.checkBoxVerbose.AutoSize = true;
-            this.checkBoxVerbose.Location = new System.Drawing.Point(6, 190);
-            this.checkBoxVerbose.Name = "checkBoxVerbose";
-            this.checkBoxVerbose.Size = new System.Drawing.Size(86, 17);
-            this.checkBoxVerbose.TabIndex = 54;
-            this.checkBoxVerbose.Text = "Verbose Log";
-            this.checkBoxVerbose.UseVisualStyleBackColor = true;
+            this.tabPage1.Controls.Add(this.buttonTestEmailNotification);
+            this.tabPage1.Controls.Add(this.textBoxMailSender);
+            this.tabPage1.Controls.Add(this.label11);
+            this.tabPage1.Controls.Add(this.textBoxMailReceiver);
+            this.tabPage1.Controls.Add(this.label10);
+            this.tabPage1.Controls.Add(this.label9);
+            this.tabPage1.Controls.Add(this.textBoxServerSmtp);
+            this.tabPage1.Controls.Add(this.checkBoxEmailNotification);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(357, 248);
+            this.tabPage1.TabIndex = 2;
+            this.tabPage1.Text = "Email Notification";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxEmailNotification
+            // 
+            this.checkBoxEmailNotification.AutoSize = true;
+            this.checkBoxEmailNotification.Location = new System.Drawing.Point(15, 11);
+            this.checkBoxEmailNotification.Name = "checkBoxEmailNotification";
+            this.checkBoxEmailNotification.Size = new System.Drawing.Size(107, 17);
+            this.checkBoxEmailNotification.TabIndex = 0;
+            this.checkBoxEmailNotification.Text = "Email Notification";
+            this.checkBoxEmailNotification.UseVisualStyleBackColor = true;
+            // 
+            // textBoxServerSmtp
+            // 
+            this.textBoxServerSmtp.Location = new System.Drawing.Point(186, 39);
+            this.textBoxServerSmtp.Name = "textBoxServerSmtp";
+            this.textBoxServerSmtp.Size = new System.Drawing.Size(156, 20);
+            this.textBoxServerSmtp.TabIndex = 1;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(13, 42);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(71, 13);
+            this.label9.TabIndex = 2;
+            this.label9.Text = "Server SMTP";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(12, 68);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(72, 13);
+            this.label10.TabIndex = 3;
+            this.label10.Text = "Mail Receiver";
+            // 
+            // textBoxMailReceiver
+            // 
+            this.textBoxMailReceiver.Location = new System.Drawing.Point(186, 65);
+            this.textBoxMailReceiver.Name = "textBoxMailReceiver";
+            this.textBoxMailReceiver.Size = new System.Drawing.Size(156, 20);
+            this.textBoxMailReceiver.TabIndex = 4;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(12, 94);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(63, 13);
+            this.label11.TabIndex = 5;
+            this.label11.Text = "Mail Sender";
+            // 
+            // textBoxMailSender
+            // 
+            this.textBoxMailSender.Location = new System.Drawing.Point(186, 91);
+            this.textBoxMailSender.Name = "textBoxMailSender";
+            this.textBoxMailSender.Size = new System.Drawing.Size(156, 20);
+            this.textBoxMailSender.TabIndex = 6;
+            // 
+            // buttonTestEmailNotification
+            // 
+            this.buttonTestEmailNotification.Location = new System.Drawing.Point(267, 117);
+            this.buttonTestEmailNotification.Name = "buttonTestEmailNotification";
+            this.buttonTestEmailNotification.Size = new System.Drawing.Size(75, 23);
+            this.buttonTestEmailNotification.TabIndex = 7;
+            this.buttonTestEmailNotification.Text = "Test Email";
+            this.buttonTestEmailNotification.UseVisualStyleBackColor = true;
             // 
             // OptionsDialog
             // 
@@ -565,6 +661,8 @@
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -614,5 +712,14 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.NumericUpDown numericUpDownMinDownloadToStrarTEmule;
         private System.Windows.Forms.CheckBox checkBoxVerbose;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TextBox textBoxMailReceiver;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox textBoxServerSmtp;
+        private System.Windows.Forms.CheckBox checkBoxEmailNotification;
+        private System.Windows.Forms.TextBox textBoxMailSender;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button buttonTestEmailNotification;
     }
 }

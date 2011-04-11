@@ -148,6 +148,7 @@
     </Compile>
     <Compile Include="RssFeed.cs" />
     <Compile Include="RssParserTVU.cs" />
+    <Compile Include="SmtpClient.cs" />
     <Compile Include="WebFetch.cs" />
   </ItemGroup>
   <ItemGroup>
