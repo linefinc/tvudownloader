@@ -579,15 +579,15 @@
             // 
             // textBoxMailSender
             // 
-            this.textBoxMailSender.Location = new System.Drawing.Point(186, 83);
+            this.textBoxMailSender.Location = new System.Drawing.Point(128, 57);
             this.textBoxMailSender.Name = "textBoxMailSender";
-            this.textBoxMailSender.Size = new System.Drawing.Size(156, 20);
+            this.textBoxMailSender.Size = new System.Drawing.Size(214, 20);
             this.textBoxMailSender.TabIndex = 6;
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(12, 86);
+            this.label11.Location = new System.Drawing.Point(13, 60);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(63, 13);
             this.label11.TabIndex = 5;
@@ -595,15 +595,15 @@
             // 
             // textBoxMailReceiver
             // 
-            this.textBoxMailReceiver.Location = new System.Drawing.Point(186, 57);
+            this.textBoxMailReceiver.Location = new System.Drawing.Point(128, 83);
             this.textBoxMailReceiver.Name = "textBoxMailReceiver";
-            this.textBoxMailReceiver.Size = new System.Drawing.Size(156, 20);
+            this.textBoxMailReceiver.Size = new System.Drawing.Size(214, 20);
             this.textBoxMailReceiver.TabIndex = 4;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(12, 60);
+            this.label10.Location = new System.Drawing.Point(13, 86);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(72, 13);
             this.label10.TabIndex = 3;
@@ -620,9 +620,9 @@
             // 
             // textBoxServerSmtp
             // 
-            this.textBoxServerSmtp.Location = new System.Drawing.Point(186, 31);
+            this.textBoxServerSmtp.Location = new System.Drawing.Point(128, 31);
             this.textBoxServerSmtp.Name = "textBoxServerSmtp";
-            this.textBoxServerSmtp.Size = new System.Drawing.Size(156, 20);
+            this.textBoxServerSmtp.Size = new System.Drawing.Size(214, 20);
             this.textBoxServerSmtp.TabIndex = 1;
             // 
             // checkBoxEmailNotification

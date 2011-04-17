@@ -307,14 +307,18 @@ namespace tvu
                 switch (t.tvuStatus)
                 {
                     default:
-                        item.SubItems.Add("");
+                        item.SubItems.Add("Unknow");
                         break;
                     case tvuStatus.Complete:
                         item.SubItems.Add("Complete");
                         break;
                     case tvuStatus.StillRunning:
-                        item.SubItems.Add("StillRunning");
+                        item.SubItems.Add("Still Running");
                         break;
+                    case tvuStatus.StillIncomplete:
+                        item.SubItems.Add("Still Incomplete");
+                        break;
+
                 }
 
                 listView1.Items.Add(item);
@@ -568,7 +572,7 @@ namespace tvu
             {
 
                 feed.status = enumStatus.Ok;
-                AppendLogMessage("Read RSS " + feed.Url,false);
+                AppendLogMessage("Read RSS " + feed.Url,true);
 
                 try
                 {
@@ -609,6 +613,11 @@ namespace tvu
                         if (WebPage.IndexOf("Complete") > 0)
                         {
                             feed.tvuStatus = tvuStatus.Complete;
+                        }
+
+                        if (WebPage.IndexOf("Still Incomplete") > 0)
+                        {
+                            feed.tvuStatus = tvuStatus.StillIncomplete;
                         }
                     }
                     //
