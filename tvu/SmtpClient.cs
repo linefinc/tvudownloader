@@ -26,8 +26,8 @@ namespace tvu
                     return false;
 
                 int pos = EmailSender.IndexOf('@');
-                p = EmailSender.Substring(pos);
-                string p = "HELO " + p + "\r\n";
+                string p = EmailSender.Substring(pos);
+                p = "HELO " + p + "\r\n";
                 send(s, p);
 
 
