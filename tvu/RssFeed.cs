@@ -32,7 +32,7 @@ namespace tvu
         public int TotalDownloads;
         public enumStatus status = enumStatus.Ok;
         public bool Enabled = true;
-        public tvuStatus tvuStatus;
+        public tvuStatus tvuStatus = tvuStatus.Unknow;
         
     }
 }

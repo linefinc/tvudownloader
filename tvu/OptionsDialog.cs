@@ -22,6 +22,10 @@ namespace tvu
             textBoxPassword.Text = inConfig.Password;
             textBoxEmuleExe.Text = inConfig.eMuleExe;
             textBoxDefaultCategory.Text = LocalConfig.DefaultCategory;
+            textBoxMailReceiver.Text = inConfig.MailReceiver;
+            textBoxMailSender.Text = inConfig.MailSender;
+            textBoxServerSmtp.Text = inConfig.ServerSMTP;
+
             numericUpDownIntervalTime.Value = inConfig.IntervalTime;
             numericUpDownMinDownloadToStrarTEmule.Value = inConfig.MinToStartEmule;
             checkBoxStartMinimized.Checked = inConfig.StartMinimized;
@@ -30,7 +34,7 @@ namespace tvu
             checkBoxStartWithWindows.Checked = inConfig.StartWithWindows;
             checkBoxAutoClear.Checked = inConfig.AutoClearLog;
             checkBoxVerbose.Checked = inConfig.Verbose;
-
+            checkBoxEmailNotification.Checked = inConfig.EmailNotification;
 
 
         }
@@ -104,6 +108,24 @@ namespace tvu
             //  Min download to start emule
             //
             LocalConfig.MinToStartEmule = Convert.ToInt32(numericUpDownMinDownloadToStrarTEmule.Value);
+            //
+            //
+            //
+            LocalConfig.EmailNotification = checkBoxEmailNotification.Checked;
+            //
+            // emeil server
+            //
+            LocalConfig.ServerSMTP = textBoxServerSmtp.Text;
+            //
+            //  email Sender
+            //
+            LocalConfig.MailSender = textBoxMailSender.Text;
+            //
+            //  email receiver
+            //
+            LocalConfig.MailReceiver = textBoxMailReceiver.Text;
+            
+
 
             this.DialogResult = DialogResult.OK;
             this.Close();

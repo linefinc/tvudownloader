@@ -1180,6 +1180,12 @@ namespace tvu
                 MainConfig.eMuleExe = OptDialog.LocalConfig.eMuleExe;
                 MainConfig.IntervalTime = OptDialog.LocalConfig.IntervalTime;
                 MainConfig.MinToStartEmule = OptDialog.LocalConfig.MinToStartEmule;
+                MainConfig.EmailNotification = OptDialog.LocalConfig.EmailNotification;
+                MainConfig.ServerSMTP = OptDialog.LocalConfig.ServerSMTP;
+                MainConfig.MailSender = OptDialog.LocalConfig.MailSender;
+                MainConfig.MailReceiver = OptDialog.LocalConfig.MailReceiver;
+
+
                 MainConfig.Save();
             }
             // reset counter to avoid error

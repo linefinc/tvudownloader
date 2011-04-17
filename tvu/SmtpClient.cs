@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
+using System.Windows.Forms;
 
 
 namespace tvu
@@ -25,28 +26,50 @@ namespace tvu
                 if (s == null)
                     return false;
 
-                int pos = EmailSender.IndexOf('@');
+                int pos = EmailSender.IndexOf('@') + 1;
                 string p = EmailSender.Substring(pos);
                 p = "HELO " + p + "\r\n";
                 send(s, p);
 
 
-                Recive(s);
+
+                p = Recive(s);
+                //if (p.IndexOf("220") == -1)
+                //{
+                //    MessageBox.Show("Stmp Error: " + p, "Smtp Error", MessageBoxButtons.OK);
+                //    return false;
+                //}
+
 
                 p = "MAIL FROM: <" + EmailSender + ">\r\n";
                 send(s, p);
 
-                Recive(s);
+                p = Recive(s);
+                //if (p.IndexOf("250") == -1)
+                //{
+                //    MessageBox.Show("Stmp Error: " + p, "Smtp Error", MessageBoxButtons.OK);
+                //    return false;
+                //}
 
                 p = "RCPT TO: <" + EmailReceiver + ">\r\n";
                 send(s, p);
 
-                Recive(s);
+                p = Recive(s);
+                //if (p.IndexOf("250") == -1)
+                //{
+                //    MessageBox.Show("Stmp Error: " + p, "Smtp Error", MessageBoxButtons.OK);
+                //    return false;
+                //}
 
                 p = "DATA" + "\r\n";
                 send(s, p);
 
                 p = Recive(s);
+                //if (p.IndexOf("354") == -1)
+                //{
+                //    MessageBox.Show("Stmp Error: " + p, "Smtp Error", MessageBoxButtons.OK);
+                //    return false;
+                //}
 
                 p = "Subject: " + Subject + "\r\n";
                 p += "From: " + EmailSender + "\r\n";
@@ -55,15 +78,28 @@ namespace tvu
                 p += "\r\n.\r\n";
                 send(s, p);
 
-                Recive(s);
+                p = Recive(s);
+                //if (p.IndexOf("250") == -1)
+                //{
+                //    MessageBox.Show("Stmp Error: " + p, "Smtp Error", MessageBoxButtons.OK);
+                //    return false;
+                //}
+
                 p = "QUIT\r\n";
                 send(s, p);
-                Recive(s);
+
+                p = Recive(s);
+                //if (p.IndexOf("221") == -1)
+                //{
+                //    MessageBox.Show(p, "Smtp Error", MessageBoxButtons.OK);
+                //    return false;
+                //}
 
                 s.Close();
 
 
                 return true;
+
             }
 
             catch
