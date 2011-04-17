@@ -751,6 +751,7 @@ namespace tvu
                 MainHistory.Add(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);
                 Ed2kParser parser = new Ed2kParser(DownloadFile.Ed2kLink);
                 AppendLogMessage(string.Format("Add file to emule {0} \n", parser.GetFileName()) + Environment.NewLine,false);
+                SendMailDownload(parser.GetFileName(), DownloadFile.Ed2kLink);
 
                 backgroundWorker1.ReportProgress((int)(++counter * 100.0f / myList.Count));
             }
@@ -1269,6 +1270,21 @@ namespace tvu
         {
 
         }
+
+        public void SendMailDownload(string FileName,string Ed2kLink)
+        {
+            if (MainConfig.EmailNotification == true)
+            {
+                string stmpServer = MainConfig.ServerSMTP;
+                string EmailReceiver = MainConfig.MailReceiver;
+                string EmailSender = MainConfig.MailSender;
+                string Subject = "TV Underground Downloader Notification";
+                string message = "Add new File" + FileName + "\r\n" + Ed2kLink;
+                SmtpClient.SendEmail(stmpServer, EmailReceiver, EmailSender, Subject, message);
+            }
+        }
+
+
 
         private void autoCloseEMuleToolStripMenuItem_Click(object sender, EventArgs e)
         {

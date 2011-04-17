@@ -9,43 +9,68 @@ namespace tvu
 {
     class SmtpClient
     {
-        bool SendEmail(string SmtpServer, string EmailReceiver, string EmailSender, string Message)
+        public static bool SendEmail(string SmtpServer, string EmailReceiver, string EmailSender, string Subject, string Message)
         {
-            Byte[] bytesReceived = new Byte[256];
 
-            // Create a socket connection with the specified server and port.
-            Socket s = ConnectSocket(SmtpServer, 25);
+            //Notifica eMule: Viene terminato un Download
+            //
+            //Scaricato:
+            //Band.Of.Brothers.10.Il.Nido.Delle.Aquile.ITA.DVDRip.DivX.[tvu.org.ru].avi
 
-            if (s == null)
-                return false;
-
-            this.send(s, "HELLO");
-            
-
-            // Receive the server home page content.
-            int bytes = 0;
-
-            //send(null);
-            //send("HELO " + hostName);
-            //send("MAIL FROM: " + "my gmail email");
-            //send("RCPT TO: " + "my gmail email");
-            //send("DATA");
-            //send("Happy SMTP Programming!!");
-            //send("Happy SMTP Programming!!");
-            //send(".");
-            //send("QUIT");
-
-
-            // The following will block until te page is transmitted.
-            string page ="";
-            do
+            try
             {
-                bytes = s.Receive(bytesReceived, bytesReceived.Length, 0);
-                page = page + Encoding.ASCII.GetString(bytesReceived, 0, bytes);
-            }
-            while (bytes > 0);
+                // Create a socket connection with the specified server and port.
+                Socket s = ConnectSocket(SmtpServer, 25);
 
-            return true;
+                if (s == null)
+                    return false;
+
+                int pos = EmailSender.IndexOf('@');
+                p = EmailSender.Substring(pos);
+                string p = "HELO " + p + "\r\n";
+                send(s, p);
+
+
+                Recive(s);
+
+                p = "MAIL FROM: <" + EmailSender + ">\r\n";
+                send(s, p);
+
+                Recive(s);
+
+                p = "RCPT TO: <" + EmailReceiver + ">\r\n";
+                send(s, p);
+
+                Recive(s);
+
+                p = "DATA" + "\r\n";
+                send(s, p);
+
+                p = Recive(s);
+
+                p = "Subject: " + Subject + "\r\n";
+                p += "From: " + EmailSender + "\r\n";
+                p += "To: " + EmailReceiver + "\r\n";
+                p += Message + "\r\n";
+                p += "\r\n.\r\n";
+                send(s, p);
+
+                Recive(s);
+                p = "QUIT\r\n";
+                send(s, p);
+                Recive(s);
+
+                s.Close();
+
+
+                return true;
+            }
+
+            catch
+            {
+                return false;
+                // fallito
+            }
         }
 
         // from msdn http://msdn.microsoft.com/it-it/library/system.net.sockets.socket%28v=vs.80%29.aspx#Y1377
@@ -71,17 +96,15 @@ namespace tvu
                 if (tempSocket.Connected)
                 {
                     s = tempSocket;
-                    break;
+                    return s; 
                 }
-                else
-                {
-                    continue;
-                }
+                
+                
             }
             return s;
         }
 
-        private void send(Socket s, String msg)
+        private static void send(Socket s, String msg)
         {
             Byte[] bytesSent = Encoding.ASCII.GetBytes(msg);
             
@@ -89,6 +112,21 @@ namespace tvu
             s.Send(bytesSent, bytesSent.Length, 0);
         }
 
+        private static string Recive(Socket s)
+        {
+            int bytes = 0;
+            Byte[] bytesReceived = new Byte[256];
+            string page = "";
+            bytes = s.Receive(bytesReceived, bytesReceived.Length, 0);
+            //while ((bytes = s.Receive(bytesReceived, bytesReceived.Length, 0)) > 0) 
+            {
+                
+                page = page + Encoding.ASCII.GetString(bytesReceived, 0, bytes);
+            }
+           
+            
+            return page;
+        }
     
     }
 }

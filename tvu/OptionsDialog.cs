@@ -11,7 +11,7 @@ namespace tvu
     public partial class OptionsDialog : Form
     {
         public Config LocalConfig;
-        
+
         public OptionsDialog(Config inConfig)
         {
             InitializeComponent();
@@ -91,7 +91,7 @@ namespace tvu
             //
             // Default Category
             //
-            LocalConfig.DefaultCategory = textBoxDefaultCategory.Text; 
+            LocalConfig.DefaultCategory = textBoxDefaultCategory.Text;
             //
             // Emule Exe
             //
@@ -135,7 +135,18 @@ namespace tvu
             this.Close();
         }
 
+        private void buttonTestEmailNotification_Click(object sender, EventArgs e)
+        {
+            string stmpServer = textBoxServerSmtp.Text;
+            string EmailReceiver = textBoxMailReceiver.Text;
+            string EmailSender = textBoxMailSender.Text;
+            string Subject = "Email Test";
+            string message = "Email Test";
+            SmtpClient.SendEmail(stmpServer, EmailReceiver, EmailSender, Subject, message);
 
-  
+        }
+
+
+
     }
 }

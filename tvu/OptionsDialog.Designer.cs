@@ -72,14 +72,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.checkBoxEmailNotification = new System.Windows.Forms.CheckBox();
-            this.textBoxServerSmtp = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.textBoxMailReceiver = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.textBoxMailSender = new System.Windows.Forms.TextBox();
             this.buttonTestEmailNotification = new System.Windows.Forms.Button();
+            this.textBoxMailSender = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.textBoxMailReceiver = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.textBoxServerSmtp = new System.Windows.Forms.TextBox();
+            this.checkBoxEmailNotification = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.tabPageGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinDownloadToStrarTEmule)).BeginInit();
@@ -567,6 +567,64 @@
             this.tabPage1.Text = "Email Notification";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // buttonTestEmailNotification
+            // 
+            this.buttonTestEmailNotification.Location = new System.Drawing.Point(267, 120);
+            this.buttonTestEmailNotification.Name = "buttonTestEmailNotification";
+            this.buttonTestEmailNotification.Size = new System.Drawing.Size(75, 23);
+            this.buttonTestEmailNotification.TabIndex = 7;
+            this.buttonTestEmailNotification.Text = "Test Email";
+            this.buttonTestEmailNotification.UseVisualStyleBackColor = true;
+            this.buttonTestEmailNotification.Click += new System.EventHandler(this.buttonTestEmailNotification_Click);
+            // 
+            // textBoxMailSender
+            // 
+            this.textBoxMailSender.Location = new System.Drawing.Point(186, 83);
+            this.textBoxMailSender.Name = "textBoxMailSender";
+            this.textBoxMailSender.Size = new System.Drawing.Size(156, 20);
+            this.textBoxMailSender.TabIndex = 6;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(12, 86);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(63, 13);
+            this.label11.TabIndex = 5;
+            this.label11.Text = "Mail Sender";
+            // 
+            // textBoxMailReceiver
+            // 
+            this.textBoxMailReceiver.Location = new System.Drawing.Point(186, 57);
+            this.textBoxMailReceiver.Name = "textBoxMailReceiver";
+            this.textBoxMailReceiver.Size = new System.Drawing.Size(156, 20);
+            this.textBoxMailReceiver.TabIndex = 4;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(12, 60);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(72, 13);
+            this.label10.TabIndex = 3;
+            this.label10.Text = "Mail Receiver";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(13, 34);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(71, 13);
+            this.label9.TabIndex = 2;
+            this.label9.Text = "Server SMTP";
+            // 
+            // textBoxServerSmtp
+            // 
+            this.textBoxServerSmtp.Location = new System.Drawing.Point(186, 31);
+            this.textBoxServerSmtp.Name = "textBoxServerSmtp";
+            this.textBoxServerSmtp.Size = new System.Drawing.Size(156, 20);
+            this.textBoxServerSmtp.TabIndex = 1;
+            // 
             // checkBoxEmailNotification
             // 
             this.checkBoxEmailNotification.AutoSize = true;
@@ -576,63 +634,6 @@
             this.checkBoxEmailNotification.TabIndex = 0;
             this.checkBoxEmailNotification.Text = "Email Notification";
             this.checkBoxEmailNotification.UseVisualStyleBackColor = true;
-            // 
-            // textBoxServerSmtp
-            // 
-            this.textBoxServerSmtp.Location = new System.Drawing.Point(186, 39);
-            this.textBoxServerSmtp.Name = "textBoxServerSmtp";
-            this.textBoxServerSmtp.Size = new System.Drawing.Size(156, 20);
-            this.textBoxServerSmtp.TabIndex = 1;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(13, 42);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(71, 13);
-            this.label9.TabIndex = 2;
-            this.label9.Text = "Server SMTP";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(12, 68);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(72, 13);
-            this.label10.TabIndex = 3;
-            this.label10.Text = "Mail Receiver";
-            // 
-            // textBoxMailReceiver
-            // 
-            this.textBoxMailReceiver.Location = new System.Drawing.Point(186, 65);
-            this.textBoxMailReceiver.Name = "textBoxMailReceiver";
-            this.textBoxMailReceiver.Size = new System.Drawing.Size(156, 20);
-            this.textBoxMailReceiver.TabIndex = 4;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(12, 94);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(63, 13);
-            this.label11.TabIndex = 5;
-            this.label11.Text = "Mail Sender";
-            // 
-            // textBoxMailSender
-            // 
-            this.textBoxMailSender.Location = new System.Drawing.Point(186, 91);
-            this.textBoxMailSender.Name = "textBoxMailSender";
-            this.textBoxMailSender.Size = new System.Drawing.Size(156, 20);
-            this.textBoxMailSender.TabIndex = 6;
-            // 
-            // buttonTestEmailNotification
-            // 
-            this.buttonTestEmailNotification.Location = new System.Drawing.Point(267, 117);
-            this.buttonTestEmailNotification.Name = "buttonTestEmailNotification";
-            this.buttonTestEmailNotification.Size = new System.Drawing.Size(75, 23);
-            this.buttonTestEmailNotification.TabIndex = 7;
-            this.buttonTestEmailNotification.Text = "Test Email";
-            this.buttonTestEmailNotification.UseVisualStyleBackColor = true;
             // 
             // OptionsDialog
             // 
