@@ -11,6 +11,13 @@ namespace tvu
         Idle
     }
 
+    public enum tvuStatus
+    {
+        Complete,
+        StillRunning,
+        Unknow
+    }
+
     /// <summary>
     /// Rss Subsciission container 
     /// </summary>
@@ -25,6 +32,7 @@ namespace tvu
         public int TotalDownloads;
         public enumStatus status = enumStatus.Ok;
         public bool Enabled = true;
+        public tvuStatus tvuStatus;
         
     }
 }

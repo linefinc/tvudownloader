@@ -13,6 +13,7 @@ using System.Threading;
 using System.Configuration;
 using System.Diagnostics;
 using Microsoft.Win32;
+using System.Text.RegularExpressions;
 
 using tvu;
 
@@ -302,6 +303,20 @@ namespace tvu
                     item.SubItems.Add("");
                 }
 
+                // tvunder status
+                switch (t.tvuStatus)
+                {
+                    default:
+                        item.SubItems.Add("");
+                        break;
+                    case tvuStatus.Complete:
+                        item.SubItems.Add("Complete");
+                        break;
+                    case tvuStatus.StillRunning:
+                        item.SubItems.Add("StillRunning");
+                        break;
+                }
+
                 listView1.Items.Add(item);
             }
         
@@ -558,8 +573,9 @@ namespace tvu
                 try
                 {
                     string WebPage = WebFetch.Fetch(feed.Url);
-
+                    string webPageCopy = WebPage;
                     List<string> elemList = new List<string>();
+                    
 
                     while (WebPage.IndexOf("</guid>") > 0)
                     {
@@ -571,6 +587,33 @@ namespace tvu
                         elemList.Add(guid);
                     }
 
+                    // 
+                    //  Start check of complete element 
+                    //                    
+                    {
+                    
+                        //Regex Pattern = new Regex(@"http://tvunderground.org.ru/index.php?show=episodes&amp;sid=\d{1,10}");
+                        Regex Pattern = new Regex(@"http://tvunderground.org.ru/index.php\?show=episodes&amp;sid=\d{1,10}");
+                        Match Match = Pattern.Match(webPageCopy);
+
+                        string url = Match.Value;
+                        WebPage = WebFetch.Fetch(url);
+
+                        feed.tvuStatus = tvuStatus.Unknow;
+
+                        if (WebPage.IndexOf("Still Running") > 0)
+                        {
+                            feed.tvuStatus = tvuStatus.StillRunning;
+                        }
+
+                        if (WebPage.IndexOf("Complete") > 0)
+                        {
+                            feed.tvuStatus = tvuStatus.Complete;
+                        }
+                    }
+                    //
+                    // end check compelte element
+                    //
                     elemList.Reverse();
 
                     int Feedcounter = 0;
@@ -613,6 +656,8 @@ namespace tvu
                         //    AppendLogMessage("Max Simultaneous Feed Downloads Limit",false);
                         //    break;
                         //}
+
+
                     }
 
 
