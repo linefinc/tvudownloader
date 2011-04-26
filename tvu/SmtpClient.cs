@@ -10,13 +10,14 @@ namespace tvu
 {
     class SmtpClient
     {
-        public static bool SendEmail(string SmtpServer, string EmailReceiver, string EmailSender, string Subject, string Message)
+        public static string SendEmail(string SmtpServer, string EmailReceiver, string EmailSender, string Subject, string Message)
         {
 
             //Notifica eMule: Viene terminato un Download
             //
             //Scaricato:
             //Band.Of.Brothers.10.Il.Nido.Delle.Aquile.ITA.DVDRip.DivX.[tvu.org.ru].avi
+            string dump = "";
 
             try
             {
@@ -24,52 +25,39 @@ namespace tvu
                 Socket s = ConnectSocket(SmtpServer, 25);
 
                 if (s == null)
-                    return false;
+                    return "";
 
                 int pos = EmailSender.IndexOf('@') + 1;
                 string p = EmailSender.Substring(pos);
                 p = "HELO " + p + "\r\n";
                 send(s, p);
 
+                dump += "C:"+ p;
 
 
                 p = Recive(s);
-                //if (p.IndexOf("220") == -1)
-                //{
-                //    MessageBox.Show("Stmp Error: " + p, "Smtp Error", MessageBoxButtons.OK);
-                //    return false;
-                //}
-
-
+                dump += "S:" + p + "\r\n";
+                
                 p = "MAIL FROM: <" + EmailSender + ">\r\n";
                 send(s, p);
+                dump += "C:" + p ;
 
                 p = Recive(s);
-                //if (p.IndexOf("250") == -1)
-                //{
-                //    MessageBox.Show("Stmp Error: " + p, "Smtp Error", MessageBoxButtons.OK);
-                //    return false;
-                //}
-
+                dump += "S:"+p + "\r\n";
+                
                 p = "RCPT TO: <" + EmailReceiver + ">\r\n";
                 send(s, p);
+                dump += "C:" + p;
 
                 p = Recive(s);
-                //if (p.IndexOf("250") == -1)
-                //{
-                //    MessageBox.Show("Stmp Error: " + p, "Smtp Error", MessageBoxButtons.OK);
-                //    return false;
-                //}
+                dump += "S:" + p;
 
                 p = "DATA" + "\r\n";
                 send(s, p);
+                dump += "C:" + p;
 
                 p = Recive(s);
-                //if (p.IndexOf("354") == -1)
-                //{
-                //    MessageBox.Show("Stmp Error: " + p, "Smtp Error", MessageBoxButtons.OK);
-                //    return false;
-                //}
+                dump += "S:" + p;
 
                 p = "Subject: " + Subject + "\r\n";
                 p += "From: " + EmailSender + "\r\n";
@@ -77,34 +65,28 @@ namespace tvu
                 p += Message + "\r\n";
                 p += "\r\n.\r\n";
                 send(s, p);
+                dump += "C:" + p;
 
                 p = Recive(s);
-                //if (p.IndexOf("250") == -1)
-                //{
-                //    MessageBox.Show("Stmp Error: " + p, "Smtp Error", MessageBoxButtons.OK);
-                //    return false;
-                //}
+                dump += "S:" + p;
 
                 p = "QUIT\r\n";
                 send(s, p);
+                dump += "C:" + p;
 
                 p = Recive(s);
-                //if (p.IndexOf("221") == -1)
-                //{
-                //    MessageBox.Show(p, "Smtp Error", MessageBoxButtons.OK);
-                //    return false;
-                //}
+                dump += "S:" + p;
 
                 s.Close();
 
 
-                return true;
+                return dump;
 
             }
 
             catch
             {
-                return false;
+                return dump;
                 // fallito
             }
         }

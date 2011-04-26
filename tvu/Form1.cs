@@ -326,18 +326,6 @@ namespace tvu
         
         }
 
-       
-      
-        public static void CreateDumpFile( string textToAdd)
-        {
-            string ora = DateTime.Now.ToString();
-            string fileName = "debug.log";
-            StreamWriter swFromFile = File.AppendText(fileName);
-            swFromFile.WriteLine(ora + ": " + textToAdd);
-            swFromFile.Flush();
-            swFromFile.Close();
-        }
-
         private void timer1_Tick(object sender, EventArgs e)
         {
 
@@ -354,6 +342,15 @@ namespace tvu
                 AppendLogMessage("next tick : " + DownloadDataTime.ToString(),false);
                 StartDownloadThread();
                 UpdateRssFeedGUI();
+
+                if ((MainConfig.EmailNotification == true)&&(sendLogToEmailToolStripMenuItem.Checked))
+                {
+                    string stmpServer = MainConfig.ServerSMTP;
+                    string EmailReceiver = MainConfig.MailReceiver;
+                    string EmailSender = MainConfig.MailSender;
+                    string Subject = "TV Underground Downloader Notification";
+                    string dump = SmtpClient.SendEmail(stmpServer, EmailReceiver, EmailSender, Subject, LogTextBox.Text);
+                }
             }
 
            
@@ -468,63 +465,6 @@ namespace tvu
                 listView2.Items.Add(item1);
             }
         }
-
-        private void listView1_DoubleClick(object sender, EventArgs e)
-        {
-
-        //    if (listView1.Items.Count == 0)
-        //        return;
-
-        //    if (listView1.SelectedItems.Count == 0)
-        //        return;
-
-        //    ListViewItem temp = listView1.SelectedItems[0];
-        //    int i = listView1.Items.IndexOf(temp);
-        //    string feedTitle = listView1.Items[i].Text;
-
-        //    RssSubscrission Feed = MainConfig.RssFeedList[0]; ;
-
-        //    for (i = 0; i < listView1.Items.Count; i++)
-        //    {
-        //        if (MainConfig.RssFeedList[i].Title == feedTitle)
-        //        {
-        //            Feed = MainConfig.RssFeedList[i];
-        //        }
-        //    }
-            
-        //    AddFeedDialog dialog = new AddFeedDialog(MainConfig.ServiceUrl, MainConfig.Password, Feed);
-        //    dialog.ShowDialog();
-
-        //    if (dialog.DialogResult == DialogResult.OK)
-        //    {
-        //        Feed = dialog.NewFeed;
-                
-        //        for (int j = 0; j < MainConfig.RssFeedList.Count; j++)
-        //        {
-        //            if (MainConfig.RssFeedList[j].Url == Feed.Url)
-        //            {
-        //                MainConfig.RssFeedList.Remove(MainConfig.RssFeedList[j]);
-        //                break;
-        //            }
-        //        }
-
-        //        MainConfig.RssFeedList.Add(Feed);
-        //        UpdateRssFeedGUI();
-        //        dialog.Dispose();
-        //        return;
-        //    }
-
-        //    dialog.Dispose();
-        //    return;
-        }
-
-
-        private void ClearButton_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-
 
         private void StartDownloadThread()
         {
@@ -1193,6 +1133,7 @@ namespace tvu
                 MainConfig.ServerSMTP = OptDialog.LocalConfig.ServerSMTP;
                 MainConfig.MailSender = OptDialog.LocalConfig.MailSender;
                 MainConfig.MailReceiver = OptDialog.LocalConfig.MailReceiver;
+                MainConfig.AutoClearLog = OptDialog.LocalConfig.AutoClearLog;
 
 
                 MainConfig.Save();
@@ -1228,7 +1169,14 @@ namespace tvu
         private void timer3_Tick(object sender, EventArgs e)
         {
 
-
+            autoclose();
+        }
+        //
+        //  to insert inside a timer3 
+        //  here for debug
+        //
+        public void autoclose()
+        {
             if (MainConfig.CloseEmuleIfAllIsDone == false)
             {
                 return;
@@ -1252,19 +1200,22 @@ namespace tvu
             timer3.Enabled = false;
 
             // conncect to mule
-            
-            AppendLogMessage("AutoClose Mule. Login", true);
+
+            AppendLogMessage("[AutoClose Mule] Check Login", true);
             eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
             bool? rc = Service.LogIn();
+
 
             // if mule close ... end of game
             if (rc == null)
             {
                 AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
-                AppendLogMessage("AutoClose Mule. Login", true);
+                AppendLogMessage("[AutoClose Mule] Login failed", true);
                 return;
             }
+            AppendLogMessage("[AutoClose Mule] Login ok", true);
 
+            AppendLogMessage("[AutoClose Mule] Actual Downloads " + Service.GetActualDownloads().Count, true);
             // if donwload > 0 ... there' s some download ... end 
             if (Service.GetActualDownloads().Count == 0)
             {
@@ -1273,33 +1224,48 @@ namespace tvu
                 Service.LogOut();
             }
 
+            AppendLogMessage("[AutoClose Mule] Show dialog ", true);
             // pop up form to advise user
             FormAlerteMuleClose Dialog = new FormAlerteMuleClose();
             Dialog.ShowDialog();
 
+            AppendLogMessage("[AutoClose Mule] Dialog return " + Dialog.AlertChoice.ToString(), true);
             switch (Dialog.AlertChoice)
             {
                 case AlertChoiceEnum.Close:// Close
+                    AppendLogMessage("[AutoClose Mule:CLOSE] Close Service", true);
                     Dialog.Dispose();
                     Service.Close();
                     timer3.Enabled = true;  // enable timer 
-                    return;
-
+                //return;
+                    break;
                 // to fix here                    
                 case AlertChoiceEnum.Skip: // SKIP
                     AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
+                    AppendLogMessage("[AutoClose Mule:SKIP] Skip", true);
+                    AppendLogMessage("[AutoClose Mule:SKIP] Next Tock " + AutoCloseDataTime.ToString(), true);
                     Dialog.Dispose();
                     Service.LogOut();
                     timer3.Enabled = true;  // enable timer 
-                    return;
+                    break;
+                //return;
                 case AlertChoiceEnum.Disable:    // disable autoclose
-                    
+                    AppendLogMessage("[AutoClose Mule:DISABLE] Disable", true);
                     Dialog.Dispose();
                     Service.LogOut();
                     DisableAutoCloseEmule();
-                    return;
+                    break;
+                //return;
             }
 
+            if ((MainConfig.EmailNotification == true) && (sendLogToEmailToolStripMenuItem.Checked))
+            {
+                string stmpServer = MainConfig.ServerSMTP;
+                string EmailReceiver = MainConfig.MailReceiver;
+                string EmailSender = MainConfig.MailSender;
+                string Subject = "TV Underground Downloader Notification";
+                string dump = SmtpClient.SendEmail(stmpServer, EmailReceiver, EmailSender, Subject, LogTextBox.Text);
+            }
         }
 
         public void EnableAutoCloseEmule()
@@ -1389,6 +1355,23 @@ namespace tvu
                 verboseToolStripMenuItem.Checked = true;
                 MainConfig.Verbose = true;
             }
+        }
+
+        private void sendLogToEmailToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (sendLogToEmailToolStripMenuItem.Checked == true)
+            {
+                sendLogToEmailToolStripMenuItem.Checked = false;
+            }
+            else
+            {
+                sendLogToEmailToolStripMenuItem.Checked = true;
+            }
+        }
+
+        private void testAutoCloseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            autoclose();
         }
 
 
