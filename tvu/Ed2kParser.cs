@@ -77,7 +77,20 @@ namespace tvu
             return true;
         }
 
+        public  bool Equals(Ed2kParser A)
+        {
+            if (this._Size != A._Size)
+            {
+                return false;
+            }
 
+            if (this._Hash != A._Hash)
+            {
+                return false;
+            }
+
+            return true;
+        }
 
         public static bool operator !=(Ed2kParser A, Ed2kParser B)
         {
