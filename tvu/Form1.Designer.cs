@@ -74,6 +74,7 @@
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.autoStartEMuleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoCloseEMuleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testAutoCloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -89,7 +90,6 @@
             this.sendLogToEmailToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer3 = new System.Windows.Forms.Timer(this.components);
-            this.testAutoCloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabAbout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabLog.SuspendLayout();
@@ -461,15 +461,16 @@
             // importToolStripMenuItem
             // 
             this.importToolStripMenuItem.Name = "importToolStripMenuItem";
-            this.importToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.importToolStripMenuItem.Text = "Import";
             this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
             // 
             // exportToolStripMenuItem
             // 
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exportToolStripMenuItem.Text = "Export";
+            this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
@@ -489,6 +490,13 @@
             this.autoCloseEMuleToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.autoCloseEMuleToolStripMenuItem.Text = "Auto Close eMule";
             this.autoCloseEMuleToolStripMenuItem.Click += new System.EventHandler(this.autoCloseEMuleToolStripMenuItem_Click);
+            // 
+            // testAutoCloseToolStripMenuItem
+            // 
+            this.testAutoCloseToolStripMenuItem.Name = "testAutoCloseToolStripMenuItem";
+            this.testAutoCloseToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.testAutoCloseToolStripMenuItem.Text = "Test Auto Close";
+            this.testAutoCloseToolStripMenuItem.Click += new System.EventHandler(this.testAutoCloseToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
@@ -593,13 +601,6 @@
             // 
             this.timer3.Interval = 60000;
             this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
-            // 
-            // testAutoCloseToolStripMenuItem
-            // 
-            this.testAutoCloseToolStripMenuItem.Name = "testAutoCloseToolStripMenuItem";
-            this.testAutoCloseToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.testAutoCloseToolStripMenuItem.Text = "Test Auto Close";
-            this.testAutoCloseToolStripMenuItem.Click += new System.EventHandler(this.testAutoCloseToolStripMenuItem_Click);
             // 
             // Form1
             // 

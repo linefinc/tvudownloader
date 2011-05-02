@@ -21,7 +21,7 @@ namespace tvu
 {
     public partial class Form1 : Form
     {
-        private bool mVisible = true; 
+        private bool mVisible = true;
         private bool mAllowClose = false;
 
         private Icon IconUp;
@@ -50,7 +50,7 @@ namespace tvu
             public string FeedSource;
             public string FeedLink;
             public string Ed2kLink;
-           
+
             public bool PauseDownload;
             public string Category;
         };
@@ -59,12 +59,12 @@ namespace tvu
         {
 
             this.FormClosing += Form1_FormClosing;
-           
+
             MainConfig = new Config();
             MainConfig.Load();
 
             InitializeComponent();
-            
+
             UpdateRssFeedGUI();
             SetupNotify();
 
@@ -97,21 +97,21 @@ namespace tvu
 
         }
 
-        
+
 
 
         private void SetupNotify()
         {
 
-            IconUp = tvu.Properties.Resources.appicon1; 
-            
-            IconDown = tvu.Properties.Resources.appicon2; 
-            
+            IconUp = tvu.Properties.Resources.appicon1;
+
+            IconDown = tvu.Properties.Resources.appicon2;
+
             this.components = new System.ComponentModel.Container();
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
             this.menuItemCheckNow = new System.Windows.Forms.MenuItem();
             this.menuItemExit = new System.Windows.Forms.MenuItem();
-            this.menuItemAutoStartEmule = new System.Windows.Forms.MenuItem(); 
+            this.menuItemAutoStartEmule = new System.Windows.Forms.MenuItem();
             this.menuItemAutoCloseEmule = new System.Windows.Forms.MenuItem();
             this.menuItemEnable = new System.Windows.Forms.MenuItem();
 
@@ -183,7 +183,7 @@ namespace tvu
             notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
 
         }
-      
+
 
         private void menu_CheckNow(object Sender, EventArgs e)
         {
@@ -192,7 +192,7 @@ namespace tvu
 
         private void menu_AutoStartEmule(object Sender, EventArgs e)
         {
-            AppendLogMessage("Auto Start Emule",false);
+            AppendLogMessage("Auto Start Emule", false);
             if (MainConfig.StartEmuleIfClose == true)
             {
                 this.menuItemAutoStartEmule.Checked = false;
@@ -323,7 +323,7 @@ namespace tvu
 
                 listView1.Items.Add(item);
             }
-        
+
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -335,15 +335,15 @@ namespace tvu
                 {
                     LogTextBox.Clear();
                 }
-                
+
                 DownloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
 
-                AppendLogMessage("Now : " + DateTime.Now.ToString(),false);
-                AppendLogMessage("next tick : " + DownloadDataTime.ToString(),false);
+                AppendLogMessage("Now : " + DateTime.Now.ToString(), false);
+                AppendLogMessage("next tick : " + DownloadDataTime.ToString(), false);
                 StartDownloadThread();
                 UpdateRssFeedGUI();
 
-                if ((MainConfig.EmailNotification == true)&&(sendLogToEmailToolStripMenuItem.Checked))
+                if ((MainConfig.EmailNotification == true) && (sendLogToEmailToolStripMenuItem.Checked))
                 {
                     string stmpServer = MainConfig.ServerSMTP;
                     string EmailReceiver = MainConfig.MailReceiver;
@@ -353,7 +353,7 @@ namespace tvu
                 }
             }
 
-           
+
         }
 
         private void AppendText(string text, bool verbose)
@@ -375,7 +375,7 @@ namespace tvu
                 this.LogTextBox.Refresh();
                 return;
             }
-            
+
         }
 
         private void AppendLogMessage(string text, bool verbose)
@@ -414,7 +414,7 @@ namespace tvu
             int i = listView1.Items.IndexOf(temp);
             string feedTitle = listView1.Items[i].Text;
 
-            RssSubscrission Feed = MainConfig.RssFeedList[0]; 
+            RssSubscrission Feed = MainConfig.RssFeedList[0];
 
             bool found = false;
             for (i = 0; i < listView1.Items.Count; i++)
@@ -440,7 +440,7 @@ namespace tvu
 
             label14.Text = MainHistory.LastDownloadDateByFeedSource(Feed.Url);
             label16.Text = MainHistory.LinkCountByFeedSource(Feed.Url).ToString();
-   
+
 
             // update list history
             listView2.Items.Clear();
@@ -453,7 +453,7 @@ namespace tvu
                 {
                     Ed2kParser ed2k = new Ed2kParser(fh.Ed2kLink);
                     ListHistory.Add(ed2k.GetFileName());
-                
+
                 }
             }
 
@@ -470,7 +470,7 @@ namespace tvu
         {
             if (backgroundWorker1.IsBusy == true)
             {
-                AppendLogMessage("Thread is busy",false);
+                AppendLogMessage("Thread is busy", false);
                 return;
             }
 
@@ -478,7 +478,7 @@ namespace tvu
             {
                 LogTextBox.Clear();
             }
-            
+
             checkNowToolStripMenuItem.Enabled = false;
             deleteToolStripMenuItem.Enabled = false;
             addToolStripMenuItem.Enabled = false;
@@ -494,16 +494,16 @@ namespace tvu
             return path;
         }
 
-      
+
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-           
-            
+
+
             int counter = 0;
 
 
-            AppendLogMessage("Start RSS Check",false);
+            AppendLogMessage("Start RSS Check", false);
 
             List<sDonwloadFile> myList = new List<sDonwloadFile>();
 
@@ -512,14 +512,14 @@ namespace tvu
             {
 
                 feed.status = enumStatus.Ok;
-                AppendLogMessage("Read RSS " + feed.Url,true);
+                AppendLogMessage("Read RSS " + feed.Url, true);
 
                 try
                 {
-                    string WebPage = WebFetch.Fetch(feed.Url,true);
+                    string WebPage = WebFetch.Fetch(feed.Url, true);
                     string webPageCopy = WebPage;
                     List<string> elemList = new List<string>();
-                    
+
 
                     while (WebPage.IndexOf("</guid>") > 0)
                     {
@@ -527,7 +527,7 @@ namespace tvu
                         string guid = strleft.Substring(strleft.IndexOf("<guid>") + ("<guid>").Length);
 
                         WebPage = WebPage.Substring(WebPage.IndexOf("</guid>") + ("</guid>").Length);
-                        
+
                         elemList.Add(guid);
                     }
 
@@ -535,13 +535,13 @@ namespace tvu
                     //  Start check of complete element 
                     //                    
                     {
-                    
+
                         //Regex Pattern = new Regex(@"http://tvunderground.org.ru/index.php?show=episodes&;sid=\d{1,10}");
                         Regex Pattern = new Regex(@"http://tvunderground.org.ru/index.php\?show=episodes&sid=\d{1,10}");
                         Match Match = Pattern.Match(webPageCopy);
 
                         string url = Match.Value;
-                        WebPage = WebFetch.Fetch(url,true);
+                        WebPage = WebFetch.Fetch(url, true);
 
                         feed.tvuStatus = tvuStatus.Unknow;
 
@@ -569,7 +569,7 @@ namespace tvu
 
                     foreach (string FeedLink in elemList)
                     {
-                        if ((MainHistory.FileExistByFeedLink(FeedLink) == false)&(Feedcounter < MainConfig.MaxSimultaneousFeedDownloads))
+                        if ((MainHistory.FileExistByFeedLink(FeedLink) == false) & (Feedcounter < MainConfig.MaxSimultaneousFeedDownloads))
                         {
                             // download the page in FeedLink
                             string page = eMuleWebManager.DownloadPage(FeedLink);
@@ -581,7 +581,7 @@ namespace tvu
                             if (MainHistory.ExistInHistoryByEd2k(sEd2k) == -1)
                             {
                                 Ed2kParser parser = new Ed2kParser(sEd2k);
-                                AppendLogMessage(string.Format("Found new file {0}", parser.GetFileName()),false);
+                                AppendLogMessage(string.Format("Found new file {0}", parser.GetFileName()), false);
 
                                 sDonwloadFile DL = new sDonwloadFile();
                                 DL.FeedSource = feed.Url;
@@ -614,7 +614,7 @@ namespace tvu
                 }
                 catch
                 {
-                    AppendLogMessage("Unable to load rss",false);
+                    AppendLogMessage("Unable to load rss", false);
                     feed.status = enumStatus.Error;
                 }
 
@@ -642,7 +642,7 @@ namespace tvu
 
             }
 
-            
+
 
             if (myList.Count == 0)
             {
@@ -657,19 +657,19 @@ namespace tvu
 
             // try to start emule
             // the if work only if rc == null
-            if ((MainConfig.StartEmuleIfClose == true)&(myList.Count > MainConfig.MinToStartEmule))
+            if ((MainConfig.StartEmuleIfClose == true) & (myList.Count > MainConfig.MinToStartEmule))
             {
                 for (int i = 1; (i <= 5) & (rc == null); i++)
                 {
-                    AppendLogMessage(string.Format("start eMule Now (try {0}/5)", i),false);
-                    AppendLogMessage("Wait 60 sec",false);
+                    AppendLogMessage(string.Format("start eMule Now (try {0}/5)", i), false);
+                    AppendLogMessage("Wait 60 sec", false);
                     try
                     {
                         Process.Start(MainConfig.eMuleExe);
                     }
                     catch
                     {
-                        AppendLogMessage("Unable start application",false);
+                        AppendLogMessage("Unable start application", false);
                     }
                     Thread.Sleep(5000);
                     rc = Service.LogIn();
@@ -682,14 +682,14 @@ namespace tvu
             {
                 if (myList.Count < MainConfig.MinToStartEmule)
                 {
-                    AppendLogMessage("Min file download not reached",false);
+                    AppendLogMessage("Min file download not reached", false);
                     return;
                 }
 
-                AppendLogMessage("Unable to connect to eMule web server",false);
+                AppendLogMessage("Unable to connect to eMule web server", false);
                 return;
-                    
-                
+
+
             }
 
             //
@@ -711,13 +711,13 @@ namespace tvu
                 {
                     removeList.Add(DownloadFile);
                 }
-                
-                int count  = MainHistory.GetFeedByDownload(ActualDownloads, DownloadFile.FeedSource);
+
+                int count = MainHistory.GetFeedByDownload(ActualDownloads, DownloadFile.FeedSource);
                 if (count > MainConfig.MaxSimultaneousFeedDownloads)
                 {
                     removeList.Add(DownloadFile);
                 }
-                
+
             }
 
             foreach (sDonwloadFile p in removeList)
@@ -744,7 +744,7 @@ namespace tvu
                 }
                 MainHistory.Add(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);
                 Ed2kParser parser = new Ed2kParser(DownloadFile.Ed2kLink);
-                AppendLogMessage(string.Format("Add file to emule {0} \n", parser.GetFileName()) + Environment.NewLine,false);
+                AppendLogMessage(string.Format("Add file to emule {0} \n", parser.GetFileName()) + Environment.NewLine, false);
                 SendMailDownload(parser.GetFileName(), DownloadFile.Ed2kLink);
 
                 backgroundWorker1.ReportProgress((int)(++counter * 100.0f / myList.Count));
@@ -756,7 +756,7 @@ namespace tvu
         /// <summary>
         /// This is on the main thread, so we can update a TextBox or anything.
         /// </summary>
-        private void backgroundWorker1_RunWorkerCompleted(object sender,RunWorkerCompletedEventArgs e)
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             UpdateRecentActivity();
             UpdateRssFeedGUI();
@@ -766,12 +766,12 @@ namespace tvu
             addToolStripMenuItem.Enabled = true;
         }
 
-        
+
 
         protected override void SetVisibleCore(bool value)
         {
             // MSDN http://social.msdn.microsoft.com/forums/en-US/csharpgeneral/thread/eab563c3-37d0-4ebd-a086-b9ea7bb03fed
-            if (!mVisible) 
+            if (!mVisible)
                 value = false;         // Prevent form getting visible
             base.SetVisibleCore(value);
         }
@@ -793,7 +793,7 @@ namespace tvu
 
         void notifyIcon1_MouseDown(object sender, MouseEventArgs e)
         {
-           
+
 
             if ((e.Clicks == 2) & (e.Button == MouseButtons.Left))
             {
@@ -812,7 +812,7 @@ namespace tvu
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            AppendLogMessage("Config loaded " + MainConfig.FileName,false);
+            AppendLogMessage("Config loaded " + MainConfig.FileName, false);
             timer2.Enabled = false;
 
             if (MainConfig.StartMinimized == true)
@@ -839,8 +839,8 @@ namespace tvu
                 doc.Load("http://tvudownloader.sourceforge.net/version.xml");
 
                 string lastVersion = "";
-                
-                foreach( XmlNode t in doc.GetElementsByTagName("last"))
+
+                foreach (XmlNode t in doc.GetElementsByTagName("last"))
                 {
                     lastVersion = t.InnerText;
                 }
@@ -852,19 +852,19 @@ namespace tvu
 
 
             }
-            catch 
-            { 
-                return false; 
+            catch
+            {
+                return false;
             }
             return false;
         }
-       
 
-       
+
+
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("http://sourceforge.net/projects/tvudownloader/"); 
+            System.Diagnostics.Process.Start("http://sourceforge.net/projects/tvudownloader/");
         }
 
 
@@ -885,12 +885,12 @@ namespace tvu
 
         private void CheckButton_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void buttonOption_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void listView2_SelectedIndexChanged(object sender, EventArgs e)
@@ -906,7 +906,7 @@ namespace tvu
             string str = listView2.Items[i].Text;
 
             string p = string.Format("DELETE {0}:{1}", i, str);
-            AppendLogMessage(p,false);
+            AppendLogMessage(p, false);
 
             MainHistory.DeleteFile(str);
         }
@@ -929,7 +929,7 @@ namespace tvu
 
         private void exitNotifyIconMenuItem_Click(object Sender, EventArgs e)
         {
-            
+
             ApplicationExit();
         }
 
@@ -950,7 +950,7 @@ namespace tvu
         /// <param name="e"></param>
         private void optionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+
         }
         /// <summary>
         /// Check Now menu
@@ -1077,7 +1077,7 @@ namespace tvu
             {
                 if (fh.FeedSource == Feed.Url)
                 {
-                    FileToDelete.Add(fh);                
+                    FileToDelete.Add(fh);
                 }
             }
 
@@ -1280,7 +1280,7 @@ namespace tvu
             this.autoCloseEMuleToolStripMenuItem.Checked = false; // File -> Menu -> Configure
             this.MainConfig.CloseEmuleIfAllIsDone = false; // disable function
             timer3.Enabled = false;  // enable timer 
-         
+
         }
 
         public void EnableAutoStarteMule()
@@ -1294,7 +1294,7 @@ namespace tvu
 
         }
 
-        public void SendMailDownload(string FileName,string Ed2kLink)
+        public void SendMailDownload(string FileName, string Ed2kLink)
         {
             if (MainConfig.EmailNotification == true)
             {
@@ -1314,13 +1314,13 @@ namespace tvu
             if (MainConfig.CloseEmuleIfAllIsDone == false)
             {
                 EnableAutoCloseEmule();
-                
+
             }
             else
             {
                 DisableAutoCloseEmule();
             }
-           
+
 
         }
 
@@ -1336,7 +1336,7 @@ namespace tvu
                 MainConfig.StartEmuleIfClose = false;
                 autoStartEMuleToolStripMenuItem.Checked = false;
             }
-           
+
         }
 
         private void verboseToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1345,7 +1345,7 @@ namespace tvu
             {
                 verboseToolStripMenuItem.Checked = false;
                 MainConfig.Verbose = false;
-            
+
             }
             else
             {
@@ -1371,13 +1371,65 @@ namespace tvu
             autoclose();
         }
 
+        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog Dialog = new SaveFileDialog();
+            string strOPML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + Environment.NewLine;
+            strOPML += "<opml version=\"1.1\">" + Environment.NewLine;
+            strOPML += "<head>" + Environment.NewLine;
+            strOPML += "<title>Export</title>" + Environment.NewLine;
+            strOPML += "<ownerName></ownerName>" + Environment.NewLine;
+            string dateCreated = DateTime.Now.ToString("ddd, dd MMM yyyy hh:mm:ss") + " GMT";
+            //strOPML += "<dateCreated>Thu, 17 Mar 2011 15:27:55 GMT</dateCreated>" + Environment.NewLine;
+            strOPML += "<dateCreated>" + dateCreated + "</dateCreated>" + Environment.NewLine;
+            strOPML += "<dateModified>" + dateCreated + "</dateModified>" + Environment.NewLine;
+            strOPML += "</head>";
+            strOPML += "<body>" + Environment.NewLine; 
+            
+            strOPML +="<outline text=\"tvunderground.org.ru\" title=\"tvunderground.org.ru\">"+ Environment.NewLine;
+
+            foreach (RssSubscrission sub in MainConfig.RssFeedList)
+            {
+
+                strOPML += "<outline text=\"" + sub.Title + "\" title=\"" + sub.Title + "\" xmlUrl=\"" + sub.Url + "\" type=\"rss\"/>" + Environment.NewLine; 
+            }
+
+            strOPML += "</outline>" + Environment.NewLine; 
+            strOPML += "</body>" + Environment.NewLine;
+            strOPML += "</opml>" + Environment.NewLine; 
+
+            List<string> Feed = new List<string>();
+
+            Dialog.Filter = "OPML (*.opml)|*.opml";
+            Dialog.FilterIndex = 2;
+            Dialog.RestoreDirectory = false;
+
+            if (Dialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    Stream myStream;
+
+                    if ((myStream = Dialog.OpenFile()) != null)
+                    {
 
 
+                        foreach (char c in strOPML)
+                        {
+                            myStream.WriteByte((byte)c);
+                        }
 
+                        myStream.Close();
+                    }
 
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: Could not write file. Original error: " + ex.Message);
+                }
 
-  
-
+            }
+        }
     }
 
    

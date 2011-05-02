@@ -64,15 +64,6 @@ namespace tvu
 
 
                     ShowRssData("");
-                    
-                    
-
-                    
-                    
-
-                    
-                    
-
 
                 }
                 catch (Exception ex)
@@ -98,6 +89,11 @@ namespace tvu
 
                 
             }
+
+        }
+
+        private void buttonAdd_Click(object sender, EventArgs e)
+        {
 
         }
     }
