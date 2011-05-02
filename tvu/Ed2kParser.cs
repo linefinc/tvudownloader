@@ -42,6 +42,11 @@ namespace tvu
 
         }
 
+       
+
+
+
+
         public string GetLink()
         {
             return _Link;
@@ -76,6 +81,24 @@ namespace tvu
 
             return true;
         }
+
+         public override bool Equals(object o)
+         {
+             Ed2kParser A = (Ed2kParser)o;
+
+             if (this._Size != A._Size)
+             {
+                 return false;
+             }
+
+             if (this._Hash != A._Hash)
+             {
+                 return false;
+             }
+
+             return true;
+         }
+
 
         public  bool Equals(Ed2kParser A)
         {
