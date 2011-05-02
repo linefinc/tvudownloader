@@ -57,7 +57,7 @@ namespace tvu
 
                     foreach (string p in Feed)
                     {
-                        string WebPage = WebFetch.Fetch(p);
+                        string WebPage = WebFetch.Fetch(p,true);
                         Rss RssChannel = RssParserTVU.Parse(WebPage);
                         ListRss.Add(RssChannel);
                     }

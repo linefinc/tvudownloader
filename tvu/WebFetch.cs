@@ -9,7 +9,7 @@ using System.Text;
 /// </summary>
 class WebFetch
 {
-    public static string Fetch(string page)
+    public static string Fetch(string page, bool clean)
     {
         // used to build entire input
         StringBuilder sb = new StringBuilder();
@@ -45,6 +45,15 @@ class WebFetch
             }
         }
         while (count > 0); // any more data to read?
+
+        if (clean == true)
+        {
+            sb.Replace("&quot;", "\""); //&quot;
+            sb.Replace("&apos;", "'"); //&quot;
+            sb.Replace("&amp;", "&"); //&amp;
+            sb.Replace("&lt;", "<"); //&quot;
+            sb.Replace("&gt;", ">"); //&quot;
+        }
 
         return sb.ToString();
     }

@@ -516,7 +516,7 @@ namespace tvu
 
                 try
                 {
-                    string WebPage = WebFetch.Fetch(feed.Url);
+                    string WebPage = WebFetch.Fetch(feed.Url,true);
                     string webPageCopy = WebPage;
                     List<string> elemList = new List<string>();
                     
@@ -527,7 +527,7 @@ namespace tvu
                         string guid = strleft.Substring(strleft.IndexOf("<guid>") + ("<guid>").Length);
 
                         WebPage = WebPage.Substring(WebPage.IndexOf("</guid>") + ("</guid>").Length);
-                        guid = guid.Replace("&amp;", "&");
+                        
                         elemList.Add(guid);
                     }
 
@@ -536,12 +536,12 @@ namespace tvu
                     //                    
                     {
                     
-                        //Regex Pattern = new Regex(@"http://tvunderground.org.ru/index.php?show=episodes&amp;sid=\d{1,10}");
-                        Regex Pattern = new Regex(@"http://tvunderground.org.ru/index.php\?show=episodes&amp;sid=\d{1,10}");
+                        //Regex Pattern = new Regex(@"http://tvunderground.org.ru/index.php?show=episodes&;sid=\d{1,10}");
+                        Regex Pattern = new Regex(@"http://tvunderground.org.ru/index.php\?show=episodes&sid=\d{1,10}");
                         Match Match = Pattern.Match(webPageCopy);
 
                         string url = Match.Value;
-                        WebPage = WebFetch.Fetch(url);
+                        WebPage = WebFetch.Fetch(url,true);
 
                         feed.tvuStatus = tvuStatus.Unknow;
 
@@ -1233,29 +1233,26 @@ namespace tvu
             switch (Dialog.AlertChoice)
             {
                 case AlertChoiceEnum.Close:// Close
-                    AppendLogMessage("[AutoClose Mule:CLOSE] Close Service", true);
+                    AppendLogMessage("[AutoClose Mule: CLOSE] Close Service", true);
                     Dialog.Dispose();
                     Service.Close();
                     timer3.Enabled = true;  // enable timer 
-                //return;
                     break;
                 // to fix here                    
                 case AlertChoiceEnum.Skip: // SKIP
                     AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
-                    AppendLogMessage("[AutoClose Mule:SKIP] Skip", true);
-                    AppendLogMessage("[AutoClose Mule:SKIP] Next Tock " + AutoCloseDataTime.ToString(), true);
+                    AppendLogMessage("[AutoClose Mule: SKIP] Skip", true);
+                    AppendLogMessage("[AutoClose Mule: SKIP] Next Tock " + AutoCloseDataTime.ToString(), true);
                     Dialog.Dispose();
                     Service.LogOut();
                     timer3.Enabled = true;  // enable timer 
                     break;
-                //return;
                 case AlertChoiceEnum.Disable:    // disable autoclose
-                    AppendLogMessage("[AutoClose Mule:DISABLE] Disable", true);
+                    AppendLogMessage("[AutoClose Mule: DISABLE] Disable", true);
                     Dialog.Dispose();
                     Service.LogOut();
                     DisableAutoCloseEmule();
                     break;
-                //return;
             }
 
             if ((MainConfig.EmailNotification == true) && (sendLogToEmailToolStripMenuItem.Checked))

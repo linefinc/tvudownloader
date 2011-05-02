@@ -55,10 +55,7 @@ namespace tvu
             RssChannel.Description = GetStringByDelimiter(page, "<title>", "</title>", 0);
 
             RssChannel.Link = GetStringByDelimiter(page, "<link>", "</link>", 0);
-            // fix isus Replace "&amp;"  -> "&"
-            RssChannel.Link = RssChannel.Link.Replace("&amp;", "&");
-
-
+            
 
             int index = -1;
 
@@ -72,10 +69,6 @@ namespace tvu
                 p.Link = GetStringByDelimiter(page, "<link>", "</link>", index);
                 p.Guid = GetStringByDelimiter(page, "<guid>", "</guid>", index);
                 p.PubDate = GetStringByDelimiter(page, "<pubDate>", "</pubDate>", index);
-
-                // fix isus Replace "&amp;"  -> "&"
-                p.Guid = p.Guid.Replace("&amp;", "&");
-                p.Link = p.Link.Replace("&amp;", "&");
 
                 RssChannel.ListItem.Add(p);
 

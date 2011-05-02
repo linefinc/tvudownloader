@@ -112,7 +112,7 @@ namespace tvu
 
 
             string temp = page;
-            i = temp.IndexOf("&amp;w=logout");
+            i = temp.IndexOf("&w=logout");
             //temp = temp.Substring(0, i);
             j = temp.LastIndexOf("ses=", i) + ("ses=").Length;
             SesID = temp.Substring(j, i - j);

@@ -133,7 +133,7 @@ namespace tvu
                     return;
                 }
 
-                string WebPage = WebFetch.Fetch(textUrl.Text);
+                string WebPage = WebFetch.Fetch(textUrl.Text,true);
 
                 RssChannel = RssParserTVU.Parse(WebPage);
                 RssChannel.Url = textUrl.Text;
