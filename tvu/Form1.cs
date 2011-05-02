@@ -1302,7 +1302,7 @@ namespace tvu
                 string EmailReceiver = MainConfig.MailReceiver;
                 string EmailSender = MainConfig.MailSender;
                 string Subject = "TV Underground Downloader Notification";
-                string message = "Add new File" + FileName + "\r\n" + Ed2kLink;
+                string message = "New file add\r\n" + FileName + "\r\n";
                 SmtpClient.SendEmail(stmpServer, EmailReceiver, EmailSender, Subject, message);
             }
         }
