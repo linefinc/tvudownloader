@@ -34,6 +34,8 @@
             this.buttonAdd = new System.Windows.Forms.Button();
             this.checkedListBox2 = new System.Windows.Forms.CheckedListBox();
             this.buttonOpen = new System.Windows.Forms.Button();
+            this.buttonSelectAll = new System.Windows.Forms.Button();
+            this.buttonSelectNone = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // progressBar1
@@ -50,6 +52,7 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(385, 21);
             this.comboBox1.TabIndex = 3;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // buttonCancell
             // 
@@ -77,10 +80,11 @@
             this.checkedListBox2.Name = "checkedListBox2";
             this.checkedListBox2.Size = new System.Drawing.Size(385, 229);
             this.checkedListBox2.TabIndex = 7;
+            this.checkedListBox2.SelectedValueChanged += new System.EventHandler(this.checkedListBox2_SelectedValueChanged);
             // 
             // buttonOpen
             // 
-            this.buttonOpen.Location = new System.Drawing.Point(322, 12);
+            this.buttonOpen.Location = new System.Drawing.Point(12, 12);
             this.buttonOpen.Name = "buttonOpen";
             this.buttonOpen.Size = new System.Drawing.Size(75, 23);
             this.buttonOpen.TabIndex = 8;
@@ -88,11 +92,33 @@
             this.buttonOpen.UseVisualStyleBackColor = true;
             this.buttonOpen.Click += new System.EventHandler(this.buttonOpen_Click);
             // 
+            // buttonSelectAll
+            // 
+            this.buttonSelectAll.Location = new System.Drawing.Point(241, 12);
+            this.buttonSelectAll.Name = "buttonSelectAll";
+            this.buttonSelectAll.Size = new System.Drawing.Size(75, 23);
+            this.buttonSelectAll.TabIndex = 9;
+            this.buttonSelectAll.Text = "Select All";
+            this.buttonSelectAll.UseVisualStyleBackColor = true;
+            this.buttonSelectAll.Click += new System.EventHandler(this.buttonSelectAll_Click);
+            // 
+            // buttonSelectNone
+            // 
+            this.buttonSelectNone.Location = new System.Drawing.Point(322, 12);
+            this.buttonSelectNone.Name = "buttonSelectNone";
+            this.buttonSelectNone.Size = new System.Drawing.Size(75, 23);
+            this.buttonSelectNone.TabIndex = 10;
+            this.buttonSelectNone.Text = "Select None";
+            this.buttonSelectNone.UseVisualStyleBackColor = true;
+            this.buttonSelectNone.Click += new System.EventHandler(this.buttonSelectNone_Click);
+            // 
             // FormOPMLImporter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(409, 364);
+            this.Controls.Add(this.buttonSelectNone);
+            this.Controls.Add(this.buttonSelectAll);
             this.Controls.Add(this.buttonOpen);
             this.Controls.Add(this.checkedListBox2);
             this.Controls.Add(this.buttonAdd);
@@ -113,5 +139,7 @@
         private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.CheckedListBox checkedListBox2;
         private System.Windows.Forms.Button buttonOpen;
+        private System.Windows.Forms.Button buttonSelectAll;
+        private System.Windows.Forms.Button buttonSelectNone;
     }
 }
