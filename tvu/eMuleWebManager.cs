@@ -26,7 +26,7 @@ namespace tvu
             List<string> ListDownloads = new List<string>();
 
             string temp = string.Format("{0}/?ses={1}&w=transfer", Host, SesID);
-            temp = DownloadPage(temp);
+            temp = WebFetch.Fetch(temp,true);
 
             int p = temp.IndexOf("ed2k://");
             int m = temp.IndexOf("'", p + 5);
@@ -56,7 +56,7 @@ namespace tvu
             string temp;
 
             temp = string.Format("{0}/?ses={1}&w=search", Host, SesID);
-            temp = DownloadPage(temp);
+            temp = WebFetch.Fetch(temp,true);
 
             //
             //  Parse html to find category
@@ -97,7 +97,7 @@ namespace tvu
 
             //ex: http://localhost:4000/?w=password&p=PASSWORD
             string request = string.Format("{0}/?w=password&p={1}", Host, Password);
-            string page = DownloadPage(request);
+            string page = WebFetch.Fetch(request,false);
 
             if (page == null)
             {
@@ -112,9 +112,19 @@ namespace tvu
 
 
             string temp = page;
-            i = temp.IndexOf("&w=logout");
+            i = temp.IndexOf("&amp;w=logout");
+            if (i == -1)
+            {
+                return false;
+            }
+
             //temp = temp.Substring(0, i);
             j = temp.LastIndexOf("ses=", i) + ("ses=").Length;
+            if (j == -1)
+            {
+                return false;
+            }
+
             SesID = temp.Substring(j, i - j);
 
             if (SesID.Length == 0)
@@ -122,20 +132,19 @@ namespace tvu
                 return false;
             }
 
-
             return true;
         }
 
         public void LogOut()
         {
             string temp = string.Format("{0}/?ses={1}&w=logout", Host, SesID);
-            DownloadPage(temp);
+            WebFetch.Fetch(temp, true);
         }
 
         public void Close()
         {
             string temp = string.Format("{0}/?ses={1}&w=close", Host, SesID);
-            DownloadPage(temp);
+            WebFetch.Fetch(temp, true);
         }
 
         public void AddToDownload(Ed2kParser Ed2kLink, string Category)
@@ -148,19 +157,19 @@ namespace tvu
             
             string temp;
             temp = string.Format("{0}/?ses={1}&w=transfer&ed2k={2}&cat={3}", Host, SesID, Ed2kLink.GetLink(), CategoryId);
-            DownloadPage(temp);
+            WebFetch.Fetch(temp, true);
         }
 
         public void StartDownload(Ed2kParser Ed2kLink)
         {
             string temp = string.Format("{0}/?ses={1}&w=transfer&op=resume&file={2}", Host, SesID, Ed2kLink.GetHash());
-            DownloadPage(temp);
+            WebFetch.Fetch(temp, true);
         }
 
         public void StopDownload(Ed2kParser Ed2kLink)
         {
             string temp = string.Format("{0}/?ses={1}&w=transfer&op=stop&file={2}", Host, SesID, Ed2kLink.GetHash());
-            DownloadPage(temp);
+            WebFetch.Fetch(temp, true);
 
         }
 
@@ -197,53 +206,6 @@ namespace tvu
 
 
 
-        public static string DownloadPage(string sUrl)
-        {
-            try
-            {
-                // used to build entire input
-                StringBuilder sb = new StringBuilder();
-
-                // used on each read operation
-                byte[] buf = new byte[8192];
-
-                // prepare the web page we will be asking for
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(sUrl);
-
-                // execute the request
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-                // we will read data via the response stream
-                Stream resStream = response.GetResponseStream();
-
-                string tempString = null;
-                int count = 0;
-
-                do
-                {
-                    // fill the buffer with data
-                    count = resStream.Read(buf, 0, buf.Length);
-
-                    // make sure we read some data
-                    if (count != 0)
-                    {
-                        // translate from bytes to ASCII text
-                        tempString = Encoding.ASCII.GetString(buf, 0, count);
-
-                        // continue building the string
-                        sb.Append(tempString);
-                    }
-                }
-                while (count > 0); // any more data to read?
-
-                return sb.ToString();
-            }
-            catch
-            {
-                return null;
-            }
-
-
-        }
+       
     }
 }
