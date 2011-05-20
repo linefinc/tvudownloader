@@ -104,13 +104,16 @@ namespace tvu
                 return null;
             }
 
+
+            // check login 
+            // if we not found logout, there's a password error
             j = page.IndexOf("logout");
             if (j < 0)
             {
                 return false;
             }
 
-
+            // find sesion id
             string temp = page;
             i = temp.IndexOf("&amp;w=logout");
             if (i == -1)

@@ -572,7 +572,7 @@ namespace tvu
                         if ((MainHistory.FileExistByFeedLink(FeedLink) == false) & (Feedcounter < MainConfig.MaxSimultaneousFeedDownloads))
                         {
                             // download the page in FeedLink
-                            string page = eMuleWebManager.DownloadPage(FeedLink);
+                            string page = WebFetch.Fetch(FeedLink,true);
                             // find ed2k
                             string sEd2k = RssParserTVU.FindEd2kLink(page);
 
@@ -1380,7 +1380,6 @@ namespace tvu
             strOPML += "<title>Export</title>" + Environment.NewLine;
             strOPML += "<ownerName></ownerName>" + Environment.NewLine;
             string dateCreated = DateTime.Now.ToString("ddd, dd MMM yyyy hh:mm:ss") + " GMT";
-            //strOPML += "<dateCreated>Thu, 17 Mar 2011 15:27:55 GMT</dateCreated>" + Environment.NewLine;
             strOPML += "<dateCreated>" + dateCreated + "</dateCreated>" + Environment.NewLine;
             strOPML += "<dateModified>" + dateCreated + "</dateModified>" + Environment.NewLine;
             strOPML += "</head>";

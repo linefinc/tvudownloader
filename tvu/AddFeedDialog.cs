@@ -167,7 +167,7 @@ namespace tvu
                     try
                     {
                         // download page
-                        string page = eMuleWebManager.DownloadPage(Item.Guid);
+                        string page = WebFetch.Fetch(Item.Guid,true);
                         // find ed2k
                         string sEd2k = RssParserTVU.FindEd2kLink(page);
                         // add to history to avoid redonwload
