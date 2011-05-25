@@ -646,9 +646,12 @@ namespace tvu
 
             if (myList.Count == 0)
             {
-
                 AppendLogMessage("Nothing to download", true);
                 return;
+            }
+            else
+            {
+                AppendLogMessage("Total File Found " + myList.Count, true);
             }
 
 
