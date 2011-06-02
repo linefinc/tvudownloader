@@ -1,3 +1,30 @@
+TV Undergroud Downloader
+
+Copyright (C) 2011  linefinc[at]users.sourceforge.net
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+---- Change Log ----
+
+Version 0.5.1 02/06/2011
+*IMPORTANT fix to support TV underground site change
++Add send mail function
++Add OMPL exporter
++Add OMPL Importer (bat now not work)
++Add Show TV Underground status (Complete, incomplete...)
+
 Version 0.5 09/04/2011
 
 This is a bug fix version with some add
@@ -6,7 +33,7 @@ This is a bug fix version with some add
 +Add check for new version 
 +Add process bar
 +Add minimum file to start mule. 
-+Stat to implement OPML Import/Exporter (only in SVN version)
++Start to implement OPML Import/Exporter (only in SVN version)
 *Fix bug occur when user not use category 
 *Fix RSS parser. A new parser are write to support not standard RSS channel.
 *Fix Url parser to avoid duplicate links
