@@ -56,6 +56,10 @@ class WebFetch
                 sb.Replace("&amp;", "&"); //&amp;
                 sb.Replace("&lt;", "<"); //&quot;
                 sb.Replace("&gt;", ">"); //&quot;
+                sb.Replace("%5B", "["); // %5D -> [
+                sb.Replace("%5b", "["); // %5D -> [
+                sb.Replace("%5d", "]"); // %5D -> ]
+                sb.Replace("%5D", "]"); // %5D -> ]
             }
 
             return sb.ToString();
@@ -65,4 +69,5 @@ class WebFetch
             return null;
         }
     }
+      
 }

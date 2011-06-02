@@ -265,6 +265,7 @@ namespace tvu
             //
             myRssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title));
 
+
             foreach (RssSubscrission t in myRssFeedList)
             {
                 string title = t.Title.Replace("[ed2k] tvunderground.org.ru:", "");
@@ -274,10 +275,6 @@ namespace tvu
                 {
                     case enumStatus.Ok:
                         item.SubItems.Add("Ok");
-                        break;
-
-                    case enumStatus.Idle:
-                        item.SubItems.Add("Idle");
                         break;
 
                     case enumStatus.Error:
@@ -500,7 +497,7 @@ namespace tvu
         {
 
 
-            int counter = 0;
+            
 
 
             AppendLogMessage("Start RSS Check", false);
@@ -517,66 +514,60 @@ namespace tvu
                 try
                 {
                     string WebPage = WebFetch.Fetch(feed.Url, true);
-                    string webPageCopy = WebPage;
+                   
                     List<string> elemList = new List<string>();
 
-
-                    while (WebPage.IndexOf("</guid>") > 0)
+                    if (WebPage != null)
                     {
-                        string strleft = WebPage.Substring(0, WebPage.IndexOf("</guid>"));
-                        string guid = strleft.Substring(strleft.IndexOf("<guid>") + ("<guid>").Length);
+                        //get GUID page
 
-                        WebPage = WebPage.Substring(WebPage.IndexOf("</guid>") + ("</guid>").Length);
+                        WebPage.Replace("http://www.tvunderground.org.ru/", "http://tvunderground.org.ru/");
 
-                        elemList.Add(guid);
-                    }
+                        Regex Pattern = new Regex(@"http://tvunderground.org.ru/index.php\?show=ed2k&season=\d{1,10}&sid\[\d{1,10}\]=\d{1,10}");
+                        
+                        MatchCollection matchCollection = Pattern.Matches(WebPage);
 
-                    // 
-                    //  Start check of complete element 
-                    //                    
-                    {
+                        int counter = 0;
+                        foreach(Match value in matchCollection)
+                        {
+                            string FeedLink = value.ToString();
+                            if (MainHistory.FileExistByFeedLink(FeedLink) == false)
+                            {
+                                elemList.Add(FeedLink);
+                                counter++;
+                            }
 
-                        //Regex Pattern = new Regex(@"http://tvunderground.org.ru/index.php?show=episodes&;sid=\d{1,10}");
-                        Regex Pattern = new Regex(@"http://tvunderground.org.ru/index.php\?show=episodes&sid=\d{1,10}");
-                        Match Match = Pattern.Match(webPageCopy);
+                            // limit the number of possible download for check
+                            //if (counter > MainConfig.MaxSimultaneousFeedDownloads)
+                            //{
+                            //    AppendLogMessage("Max Simultaneous Feed Downloads Limit", false);
+                            //    break;
+                            //}
+                        
+                        } 
 
+                        // 
+                        //  Start check of complete element 
+                        //             
+
+                        Pattern = new Regex(@"http://tvunderground.org.ru/index.php\?show=episodes&sid=\d{1,10}");
+                        Match Match = Pattern.Match(WebPage);
                         string url = Match.Value;
-                        WebPage = WebFetch.Fetch(url, true);
+                        feed.tvuStatus =  WebManagerTVU.CheckComplete(url);
 
-                        feed.tvuStatus = tvuStatus.Unknow;
-
-                        if (WebPage.IndexOf("Still Running") > 0)
-                        {
-                            feed.tvuStatus = tvuStatus.StillRunning;
-                        }
-
-                        if (WebPage.IndexOf("Complete") > 0)
-                        {
-                            feed.tvuStatus = tvuStatus.Complete;
-                        }
-
-                        if (WebPage.IndexOf("Still Incomplete") > 0)
-                        {
-                            feed.tvuStatus = tvuStatus.StillIncomplete;
-                        }
                     }
                     //
                     // end check compelte element
                     //
-                    elemList.Reverse();
-
-                    int Feedcounter = 0;
-
                     foreach (string FeedLink in elemList)
                     {
-                        if ((MainHistory.FileExistByFeedLink(FeedLink) == false) & (Feedcounter < MainConfig.MaxSimultaneousFeedDownloads))
+
+                        // download the page in FeedLink
+                        string page = WebFetch.Fetch(FeedLink, true);
+                        if (page != null)
                         {
-                            // download the page in FeedLink
-                            string page = WebFetch.Fetch(FeedLink,true);
                             // find ed2k
                             string sEd2k = RssParserTVU.FindEd2kLink(page);
-
-                            Feedcounter++;
 
                             if (MainHistory.ExistInHistoryByEd2k(sEd2k) == -1)
                             {
@@ -598,14 +589,8 @@ namespace tvu
                                 // to avoid rendondance of link
                                 MainHistory.Add(sEd2k, FeedLink, feed.Url);
                             }
+
                         }
-
-                        //if (Feedcounter >= MainConfig.MaxSimultaneousFeedDownloads)
-                        //{
-                        //    AppendLogMessage("Max Simultaneous Feed Downloads Limit",false);
-                        //    break;
-                        //}
-
 
                     }
 
@@ -614,29 +599,15 @@ namespace tvu
                 }
                 catch
                 {
-                    AppendLogMessage("Unable to load rss", false);
+                    AppendLogMessage("Some Error in rss parsing", false);
                     feed.status = enumStatus.Error;
-                }
-
-                if (feed.status == enumStatus.Ok)
-                {
-                    string strDate = MainHistory.LastDownloadDateByFeedSource(feed.Url);
-                    if (strDate == "")
-                    {
-                        strDate = DateTime.Now.ToString();
-                    }
-                    DateTime t = DateTime.Parse(strDate);
-                    TimeSpan span = DateTime.Now.Subtract(t);
-                    if (span.TotalDays > 15)
-                    {
-                        feed.status = enumStatus.Idle;
-                    }
                 }
 
                 //update rss feed
                 feed.LastUpgradeDate = MainHistory.LastDownloadDateByFeedSource(feed.Url);
                 feed.TotalDownloads = MainHistory.LinkCountByFeedSource(feed.Url);
-                int progress = (int)(++counter * 100.0f / MainConfig.RssFeedList.Count);
+                int progress = (MainConfig.RssFeedList.IndexOf(feed) + 1) * 100;
+                progress = progress / MainConfig.RssFeedList.Count;
                 backgroundWorker1.ReportProgress(progress);
 
 
@@ -658,8 +629,13 @@ namespace tvu
             eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
             bool? rc = Service.LogIn();
 
+
+            //
+            //  if emule is close and new file < min to start not do null
+            //
+            //
             // try to start emule
-            // the if work only if rc == null
+            // the if work only if rc == null ad 
             if ((MainConfig.StartEmuleIfClose == true) & (myList.Count > MainConfig.MinToStartEmule))
             {
                 for (int i = 1; (i <= 5) & (rc == null); i++)
@@ -701,8 +677,6 @@ namespace tvu
             AppendLogMessage("Retrive list Category)", true);
             Service.GetCategory(true);  // force upgrade category list 
 
-            //reset counter 
-            counter = 0;
             List<string> ActualDownloads = Service.GetActualDownloads();
 
             // clean list 
@@ -750,7 +724,10 @@ namespace tvu
                 AppendLogMessage(string.Format("Add file to emule {0} \n", parser.GetFileName()) + Environment.NewLine, false);
                 SendMailDownload(parser.GetFileName(), DownloadFile.Ed2kLink);
 
-                backgroundWorker1.ReportProgress((int)(++counter * 100.0f / myList.Count));
+                { // progress bar
+                    int progress = (myList.IndexOf(DownloadFile) + 1) * 100;
+                    backgroundWorker1.ReportProgress(progress / myList.Count);
+                }
             }
             MainHistory.Save();
             Service.LogOut();

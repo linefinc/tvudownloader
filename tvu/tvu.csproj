@@ -150,6 +150,7 @@
     <Compile Include="RssParserTVU.cs" />
     <Compile Include="SmtpClient.cs" />
     <Compile Include="WebFetch.cs" />
+    <Compile Include="WebManagerTVU.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
