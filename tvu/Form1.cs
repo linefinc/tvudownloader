@@ -891,12 +891,6 @@ namespace tvu
             MainHistory.DeleteFile(str);
         }
 
-
-        private void label5_Paint(object sender, PaintEventArgs e)
-        {
-            label5.Text = "Version " + Config.Version;
-        }
-
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             progressBar1.Value = e.ProgressPercentage;
@@ -1197,11 +1191,13 @@ namespace tvu
 
             AppendLogMessage("[AutoClose Mule] Actual Downloads " + Service.GetActualDownloads().Count, true);
             // if donwload > 0 ... there' s some download ... end 
-            if (Service.GetActualDownloads().Count == 0)
+            if (Service.GetActualDownloads().Count > 0)
             {
-                AppendLogMessage("AutoClose Mule. GetActualDownloads >0", true);
+                AppendLogMessage("[AutoClose Mule] GetActualDownloads return >0", true);
                 AutoCloseDataTime = DateTime.Now.AddMinutes(30);
+                AppendLogMessage("[AutoClose Mule] LogOut", true);
                 Service.LogOut();
+                return;
             }
 
             AppendLogMessage("[AutoClose Mule] Show dialog ", true);
@@ -1224,12 +1220,14 @@ namespace tvu
                     AppendLogMessage("[AutoClose Mule: SKIP] Skip", true);
                     AppendLogMessage("[AutoClose Mule: SKIP] Next Tock " + AutoCloseDataTime.ToString(), true);
                     Dialog.Dispose();
+                    AppendLogMessage("[AutoClose Mule] LogOut", true);
                     Service.LogOut();
                     timer3.Enabled = true;  // enable timer 
                     break;
                 case AlertChoiceEnum.Disable:    // disable autoclose
                     AppendLogMessage("[AutoClose Mule: DISABLE] Disable", true);
                     Dialog.Dispose();
+                    AppendLogMessage("[AutoClose Mule] LogOut", true);
                     Service.LogOut();
                     DisableAutoCloseEmule();
                     break;
@@ -1348,6 +1346,9 @@ namespace tvu
 
         private void testAutoCloseToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // remove 1h from AutoClose Data Time to froce function to work
+            TimeSpan delta = new TimeSpan(1, 0, 0);
+            AutoCloseDataTime = DateTime.Now.Subtract(delta);
             autoclose();
         }
 
@@ -1407,6 +1408,18 @@ namespace tvu
                     MessageBox.Show("Error: Could not write file. Original error: " + ex.Message);
                 }
 
+            }
+        }
+
+        private void testAutoStartToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start(MainConfig.eMuleExe);
+            }
+            catch
+            {
+                AppendLogMessage("Unable start application", false);
             }
         }
     }
