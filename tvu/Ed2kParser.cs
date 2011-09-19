@@ -6,10 +6,11 @@ namespace tvu
 {
     public class Ed2kParser
     {
-        private string _Link;
-        private uint _Size;
-        private string _FileName;
-        private string _Hash;
+        private string Ed2kLink;
+        public string FileName;
+        public string HashMD4;
+        public string HashSHA1;
+        public ulong FileSize;
 
         public Ed2kParser()
         {
@@ -18,63 +19,68 @@ namespace tvu
 
         public Ed2kParser(string link)
         {
-            _Link = link;
+            Ed2kLink = link;
             Decode(link);
         }
 
         private void Decode(string link)
         {
+            if (link.Substring(0,13) != "ed2k://|file|")
+            {
+                throw (new System.ApplicationException("Link error (missing ed2k://|file|)"));
+            }
+
 
             string[] temp = link.Split('|');
 
-            if (temp[0] == "")
+            if (temp.Length < 5)
             {
-                // add excemption
-            }
-            if (temp[1] == "")
-            {
-                // add exception
+                throw (new System.ApplicationException("Link error (not valid link)"));
             }
 
-            _FileName = temp[2];
-            _Size = uint.Parse(temp[3]);
-            _Hash = temp[4];
+            FileName = temp[2];
+            FileSize = uint.Parse(temp[3]);
+            HashMD4 = temp[4];
 
         }
 
-       
 
 
+        public void SetLink(string link)
+        {
+
+            this.Decode(link);
+        }
 
 
         public string GetLink()
         {
-            return _Link;
+            return Ed2kLink;
         }
         
         public string GetFileName()
         {
-            return _FileName;
+            return FileName;
         }
 
-        public uint GetSize()
+        public ulong GetFileSize()
         {
-            return _Size;
+            return FileSize;
         }
 
         public string GetHash()
         {
-            return _Hash;
+            return HashMD4;
         }
 
         public static bool operator ==(Ed2kParser A, Ed2kParser B)
         {
-            if (A._Size != B._Size)
+            if (A.FileSize != B.FileSize)
             {
                 return false;
             }
 
-            if (A._Hash != B._Hash)
+            if (A.HashMD4 != B.HashMD4)
             {
                 return false;
             }
@@ -86,12 +92,12 @@ namespace tvu
          {
              Ed2kParser A = (Ed2kParser)o;
 
-             if (this._Size != A._Size)
+             if (this.FileSize != A.FileSize)
              {
                  return false;
              }
 
-             if (this._Hash != A._Hash)
+             if (this.HashMD4 != A.HashMD4)
              {
                  return false;
              }
@@ -102,12 +108,12 @@ namespace tvu
 
         public  bool Equals(Ed2kParser A)
         {
-            if (this._Size != A._Size)
+            if (this.FileSize != A.FileSize)
             {
                 return false;
             }
 
-            if (this._Hash != A._Hash)
+            if (this.HashMD4 != A.HashMD4)
             {
                 return false;
             }
@@ -117,12 +123,12 @@ namespace tvu
 
         public static bool operator !=(Ed2kParser A, Ed2kParser B)
         {
-            if (A._Size == B._Size)
+            if (A.FileSize == B.FileSize)
             {
                 return false;
             }
 
-            if (A._Hash == B._Hash)
+            if (A.HashMD4 == B.HashMD4)
             {
                 return false;
             }

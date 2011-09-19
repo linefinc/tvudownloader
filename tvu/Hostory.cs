@@ -9,9 +9,24 @@ using System.Text.RegularExpressions;
 
 namespace tvu
 {
-    public class fileHistory
+    public class fileHistory : Ed2kParser
     {
-        public string Ed2kLink;
+        public fileHistory()
+            : base()
+        {
+
+        }
+
+
+        public fileHistory(string link)
+            : base(link)
+        {
+
+        }
+
+
+
+
         /// <summary>
         /// link of page than contain ed2k link
         /// </summary>
@@ -19,7 +34,8 @@ namespace tvu
         /// <summary>
         /// url of feed
         /// </summary>
-        public string FeedSource; 
+
+        public string FeedSource;
         public string Date;
     }
 
@@ -62,7 +78,7 @@ namespace tvu
                 {
                     if (t.Name == "Ed2k")
                     {
-                        fh.Ed2kLink= t.InnerText;
+                        fh.SetLink(t.InnerText);
                     }
 
                     if (t.Name == "FeedLink")
@@ -95,7 +111,7 @@ namespace tvu
             foreach (fileHistory fh in fileHistoryList)
             {
                 textWritter.WriteStartElement("Item");// open Item
-                textWritter.WriteElementString("Ed2k", fh.Ed2kLink);
+                textWritter.WriteElementString("Ed2k", fh.GetLink());
                 textWritter.WriteElementString("FeedLink", fh.FeedLink);
                 textWritter.WriteElementString("FeedSource", fh.FeedSource);
                 textWritter.WriteElementString("Date", fh.Date);
@@ -120,9 +136,9 @@ namespace tvu
             {
                 fileHistoryList.Remove(fileHistoryList[index]);
             }
-            
+
             fileHistory fh = new fileHistory();
-            fh.Ed2kLink = ed2k;
+            fh.SetLink(ed2k);
             fh.FeedLink = FeedLink;
             fh.FeedSource = FeedSource;
             fh.Date = DateTime.Now.ToString("s");
@@ -148,7 +164,7 @@ namespace tvu
 
             for(int index =0; index < fileHistoryList.Count; index++)
             {
-                Ed2kParser B = new Ed2kParser(fileHistoryList[index].Ed2kLink);
+                Ed2kParser B = new Ed2kParser(fileHistoryList[index].GetLink());
 
                 if (A == B)
                 {
@@ -198,7 +214,7 @@ namespace tvu
         {
             for(int i =0;i < fileHistoryList.Count; i++)
             {
-                string fh_Ed2kLink = fileHistoryList[i].Ed2kLink;
+                string fh_Ed2kLink = fileHistoryList[i].GetLink();
                 int rc = fh_Ed2kLink.IndexOf(FileName);
                 if (rc > 0)
                 {
@@ -262,7 +278,7 @@ namespace tvu
             {
                 if (p.FeedSource == FeedSource)
                 {
-                    Match match1 = Pattern.Match(p.Ed2kLink);
+                    Match match1 = Pattern.Match(p.GetLink());
                     if (match1.Success == true)
                     {
                         foreach (string t in list)

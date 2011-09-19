@@ -448,9 +448,7 @@ namespace tvu
             {
                 if (fh.FeedSource == Feed.Url)
                 {
-                    Ed2kParser ed2k = new Ed2kParser(fh.Ed2kLink);
-                    ListHistory.Add(ed2k.GetFileName());
-
+                    ListHistory.Add(fh.GetFileName());
                 }
             }
 
@@ -855,9 +853,8 @@ namespace tvu
 
             foreach (fileHistory fh in myFileHistoryList)
             {
-                Ed2kParser parser = new Ed2kParser(fh.Ed2kLink);
-                fh.Date = fh.Date.Replace('T', ' ');
-                string t = string.Format("{0}:{1}", fh.Date, parser.GetFileName());
+                string date = fh.Date.Replace('T', ' ');
+                string t = string.Format("{0}:{1}", date, fh.GetFileName());
                 listBox1.Items.Add(t);
             }
 
@@ -991,7 +988,7 @@ namespace tvu
             MainConfig.Save();
             foreach (fileHistory file in dialog.NewHistory)
             {
-                MainHistory.Add(file.Ed2kLink, file.FeedLink, file.FeedSource);
+                MainHistory.Add(file.GetLink(), file.FeedLink, file.FeedSource);
             }
             MainHistory.Save();
             UpdateRssFeedGUI();
