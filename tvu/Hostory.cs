@@ -11,16 +11,35 @@ namespace tvu
 {
     public class fileHistory : Ed2kParser
     {
-        public fileHistory()
+        /*public fileHistory()
             : base()
         {
 
+        }*/
+
+        
+       /* public fileHistory(string link)
+            : base(link)
+        {
+
+        }*/
+
+        public fileHistory(string link, string FeedLink, string FeedSource)
+            : base(link)
+        {
+            this.FeedLink = FeedLink;
+            this.FeedSource = FeedSource;
+            this.Date = DateTime.Now.ToString("s");
         }
 
 
-        public fileHistory(string link)
+        public fileHistory(string link, string FeedLink, string FeedSource, string Date)
             : base(link)
         {
+            
+            this.FeedLink = FeedLink;
+            this.FeedSource = FeedSource;
+            this.Date= Date;
 
         }
 
@@ -30,13 +49,13 @@ namespace tvu
         /// <summary>
         /// link of page than contain ed2k link
         /// </summary>
-        public string FeedLink;
+        public string FeedLink {  get; private set; }
         /// <summary>
         /// url of feed
         /// </summary>
 
-        public string FeedSource;
-        public string Date;
+        public string FeedSource { get; private set; }
+        public string Date {  get; private set; }
     }
 
     public class History
@@ -70,35 +89,40 @@ namespace tvu
 
             for (int i = 0; i < ItemList.Count; i++)
             {
-                fileHistory fh = new fileHistory();
-                fh.Date = DateTime.Now.ToString("s"); // to avoid compatibility with old history file
+                
+                string strDate = DateTime.Now.ToString("s"); // to avoid compatibility with old history file
+                string strFeedLink = "";
+                string strEd2k = "";
+                string strFeedSource = "";
 
                 XmlNode node = ItemList[i];
                 foreach (XmlNode t in node.ChildNodes)
                 {
+                
                     if (t.Name == "Ed2k")
                     {
-                        fh.SetLink(t.InnerText);
+                        strEd2k = t.InnerText;
                     }
 
                     if (t.Name == "FeedLink")
                     {
-                        fh.FeedLink = t.InnerText;
+                        strFeedLink = t.InnerText;
                     }
 
                     if (t.Name == "FeedSource")
                     {
-                        fh.FeedSource = t.InnerText;
+                        strFeedSource = t.InnerText;
                     }
 
                     if (t.Name == "Date")
                     {
-                        fh.Date = t.InnerText;
+                        strDate = t.InnerText;
                     }
 
 
                 }
-                fileHistoryList.Add(fh);
+
+                fileHistoryList.Add(new fileHistory(strEd2k, strFeedLink, strFeedSource, strDate));
             }
         }
 
@@ -137,11 +161,10 @@ namespace tvu
                 fileHistoryList.Remove(fileHistoryList[index]);
             }
 
-            fileHistory fh = new fileHistory();
-            fh.SetLink(ed2k);
-            fh.FeedLink = FeedLink;
-            fh.FeedSource = FeedSource;
-            fh.Date = DateTime.Now.ToString("s");
+            
+
+            fileHistory fh = new fileHistory(ed2k,FeedLink,FeedSource);
+            
             fileHistoryList.Add(fh);
         }
 

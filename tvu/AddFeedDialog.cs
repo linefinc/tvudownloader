@@ -171,10 +171,8 @@ namespace tvu
                         // find ed2k
                         string sEd2k = RssParserTVU.FindEd2kLink(page);
                         // add to history to avoid redonwload
-                        fileHistory file = new fileHistory(sEd2k);
+                        fileHistory file = new fileHistory(sEd2k, RssChannel.Link, RssChannel.Url);
 
-                        file.FeedSource = RssChannel.Url;
-                        file.FeedLink = RssChannel.Link;
                         NewHistory.Add(file);
 
                     }

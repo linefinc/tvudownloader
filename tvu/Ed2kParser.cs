@@ -46,11 +46,11 @@ namespace tvu
 
 
 
-        public void SetLink(string link)
+    /*    public void SetLink(string link)
         {
 
             this.Decode(link);
-        }
+        }*/
 
 
         public string GetLink()
