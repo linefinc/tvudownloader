@@ -245,6 +245,11 @@ namespace tvu
                     }
                     
                 }
+
+                textWritter.WriteStartElement("LastTvUStatusUpgradeDate");//Last Tv Undergraund Status Upgrade Date
+                textWritter.WriteString(feed.LastTvUStatusUpgradeDate);
+                textWritter.WriteEndElement();
+                
                 textWritter.WriteEndElement();// end channel
 
             }
@@ -354,11 +359,18 @@ namespace tvu
                                 newfeed.tvuStatus = tvuStatus.StillRunning;
                                 break;
                             case "Unknow":
+                            default:
                                 newfeed.tvuStatus = tvuStatus.Unknow;
                                 break;
                         }
 
                     }
+
+                    if ((t.Name == "LastTvUStatusUpgradeDate") & (t.FirstChild != null))
+                    {
+                        newfeed.LastTvUStatusUpgradeDate = t.FirstChild.Value;
+                    }
+
 
                 }
 

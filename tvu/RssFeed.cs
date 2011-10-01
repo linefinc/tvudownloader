@@ -34,6 +34,7 @@ namespace tvu
         public enumStatus status = enumStatus.Ok;
         public bool Enabled = true;
         public tvuStatus tvuStatus = tvuStatus.Unknow;
+        public string LastTvUStatusUpgradeDate = "";
         
     }
 }
