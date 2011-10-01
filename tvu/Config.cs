@@ -218,7 +218,31 @@ namespace tvu
                     textWritter.WriteStartElement("Enabled");//Last Upgrade Date
                     textWritter.WriteString(feed.Enabled.ToString());
                     textWritter.WriteEndElement();
-                    
+
+
+                    switch (feed.tvuStatus)
+                    {
+                        case tvuStatus.Complete:
+                            textWritter.WriteStartElement("tvuStatus");
+                            textWritter.WriteString("Complete");
+                            textWritter.WriteEndElement();
+                            break;
+                        case tvuStatus.StillIncomplete:
+                            textWritter.WriteStartElement("tvuStatus");
+                            textWritter.WriteString("StillIncomplete");
+                            textWritter.WriteEndElement();
+                            break;
+                        case tvuStatus.StillRunning:
+                            textWritter.WriteStartElement("tvuStatus");
+                            textWritter.WriteString("StillRunning");
+                            textWritter.WriteEndElement();
+                            break;
+                        case tvuStatus.Unknow:
+                            textWritter.WriteStartElement("tvuStatus");
+                            textWritter.WriteString("Unknow");
+                            textWritter.WriteEndElement();
+                            break;
+                    }
                     
                 }
                 textWritter.WriteEndElement();// end channel
@@ -314,6 +338,26 @@ namespace tvu
                     if ((t.Name == "Enabled") & (t.FirstChild != null))
                     {
                         newfeed.Enabled = (bool) Convert.ToBoolean(t.FirstChild.Value);
+                    }
+
+                    if((t.Name == "tvuStatus") & (t.FirstChild != null))
+                    {
+                        switch (t.FirstChild.Value)
+                        {
+                            case "Complete":
+                                newfeed.tvuStatus = tvuStatus.Complete;
+                               break;
+                            case "StillIncomplete":
+                                newfeed.tvuStatus = tvuStatus.StillIncomplete;
+                                break;
+                            case "StillRunning":
+                                newfeed.tvuStatus = tvuStatus.StillRunning;
+                                break;
+                            case "Unknow":
+                                newfeed.tvuStatus = tvuStatus.Unknow;
+                                break;
+                        }
+
                     }
 
                 }

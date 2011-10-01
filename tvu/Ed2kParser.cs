@@ -6,16 +6,11 @@ namespace tvu
 {
     public class Ed2kParser
     {
-        private string Ed2kLink;
-        public string FileName;
-        public string HashMD4;
-        public string HashSHA1;
-        public ulong FileSize;
-
-        public Ed2kParser()
-        {
-         
-        }
+        public string Ed2kLink { get; private set; }
+        public string FileName {  get; private set; }
+        public string HashMD4 {  get; private set; }
+        public string HashSHA1 {  get; private set; }
+        public ulong FileSize {  get; private set; }
 
         public Ed2kParser(string link)
         {

@@ -11,18 +11,6 @@ namespace tvu
 {
     public class fileHistory : Ed2kParser
     {
-        /*public fileHistory()
-            : base()
-        {
-
-        }*/
-
-        
-       /* public fileHistory(string link)
-            : base(link)
-        {
-
-        }*/
 
         public fileHistory(string link, string FeedLink, string FeedSource)
             : base(link)
