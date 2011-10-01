@@ -533,6 +533,7 @@ namespace tvu
                             {
                                 elemList.Add(FeedLink);
                                 counter++;
+                                feed.tvuStatus = tvuStatus.Unknow; // force refrash of tv Undergoud status when find a new file
                             }
 
                             // limit the number of possible download for check
@@ -547,12 +548,13 @@ namespace tvu
                         // 
                         //  Start check of complete element 
                         //             
-
-                        Pattern = new Regex(@"http://tvunderground.org.ru/index.php\?show=episodes&sid=\d{1,10}");
-                        Match Match = Pattern.Match(WebPage);
-                        string url = Match.Value;
-                        feed.tvuStatus =  WebManagerTVU.CheckComplete(url);
-
+                        if (feed.tvuStatus == tvuStatus.Unknow)
+                        {
+                            Pattern = new Regex(@"http://tvunderground.org.ru/index.php\?show=episodes&sid=\d{1,10}");
+                            Match Match = Pattern.Match(WebPage);
+                            string url = Match.Value;
+                            feed.tvuStatus = WebManagerTVU.CheckComplete(url);
+                        }
                     }
                     //
                     // end check compelte element
