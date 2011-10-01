@@ -11,12 +11,12 @@ class WebFetch
 {
 
     static DateTime LastFetch ;
-    const int myDelay = 333; //max 3 connection per sec
+    const int myDelay = 1000; //max 3 connection per sec
 
     public static string Fetch(string page, bool clean)
     {
 
-        if (LastFetch == DateTime.MinValue)
+       /* if (LastFetch == DateTime.MinValue)
         {
             LastFetch = DateTime.Now;
         }
@@ -24,8 +24,8 @@ class WebFetch
         if (DateTime.Now < LastFetch.AddMilliseconds(myDelay))
         {
             System.Threading.Thread.Sleep(myDelay);
-        }
-
+        }*/
+        System.Threading.Thread.Sleep(myDelay);
 
 
         try
