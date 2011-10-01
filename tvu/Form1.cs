@@ -47,12 +47,24 @@ namespace tvu
 
         public class sDonwloadFile
         {
-            public string FeedSource;
-            public string FeedLink;
-            public string Ed2kLink;
 
-            public bool PauseDownload;
-            public string Category;
+            public string FeedSource{get; private set;}
+            public string FeedLink{get; private set;}
+            public string Ed2kLink{get; private set;}
+
+            public bool PauseDownload{get; private set;}
+            public string Category {get; private set;}
+            
+            public sDonwloadFile(string Ed2kLink, string FeedLink, string FeedSource, bool PauseDownload, string Category)
+            {
+                this.Ed2kLink = Ed2kLink;
+                this.FeedLink = FeedLink;
+                this.FeedSource = FeedSource;
+                this.PauseDownload = PauseDownload;
+                this.Category = Category;
+            }
+            
+            
         };
 
         public Form1()
@@ -525,14 +537,13 @@ namespace tvu
                         
                         MatchCollection matchCollection = Pattern.Matches(WebPage);
 
-                        int counter = 0;
+                     
                         foreach(Match value in matchCollection)
                         {
                             string FeedLink = value.ToString();
                             if (MainHistory.FileExistByFeedLink(FeedLink) == false)
                             {
                                 elemList.Add(FeedLink);
-                                counter++;
                                 feed.tvuStatus = tvuStatus.Unknow; // force refrash of tv Undergoud status when find a new file
                             }
 
@@ -563,7 +574,15 @@ namespace tvu
                     {
 
                         // download the page in FeedLink
+                        AppendLogMessage(string.Format("try download page {0}", FeedLink), true);
                         string page = WebFetch.Fetch(FeedLink, true);
+
+                        if (page == null)
+                        {
+                            AppendLogMessage(string.Format("page is null"), true);
+                        }
+
+
                         if (page != null)
                         {
                             // find ed2k
@@ -574,13 +593,8 @@ namespace tvu
                                 Ed2kParser parser = new Ed2kParser(sEd2k);
                                 AppendLogMessage(string.Format("Found new file {0}", parser.GetFileName()), false);
 
-                                sDonwloadFile DL = new sDonwloadFile();
-                                DL.FeedSource = feed.Url;
-                                DL.FeedLink = FeedLink;
-                                DL.Ed2kLink = sEd2k;
-                                DL.PauseDownload = feed.PauseDownload;
-                                DL.Category = feed.Category;
-
+                                sDonwloadFile DL = new sDonwloadFile(sEd2k, FeedLink, feed.Url,feed.PauseDownload,feed.Category);
+                                
                                 myList.Add(DL);
                             }
                             else
