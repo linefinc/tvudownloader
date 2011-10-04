@@ -26,25 +26,11 @@ namespace tvu
             this.Password = Password;
             this.comboBoxCategory.Text = DefaultCategory;
             this.NewHistory = new List<fileHistory>();
-            this.NewFeed = new RssSubscrission();
+            this.NewFeed = new RssSubscrission("","");
 
         }
 
-        //public AddFeedDialog(string ServiceUrl, string Password, RssSubscrission feed)
-        //{
-        //    InitializeComponent();
-
-        //    this.ServiceUrl = ServiceUrl;
-        //    this.Password = Password;
-
-        //    textUrl.Text = feed.Url;
-        //    this.comboBoxCategory.Items.Add(feed.Category);
-        //    checkBoxPause.Checked = feed.PauseDownload;
-        //    this.Text = feed.Title;
-        //    butAdd.Text = "Save";
-
-        //}
-
+      
         private void ButClose_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
@@ -199,10 +185,7 @@ namespace tvu
             butAdd.Enabled = true;
             ButClose.Enabled = true;
 
-            this.NewFeed = new RssSubscrission();
-
-            this.NewFeed.Title = RssChannel.Title;
-            this.NewFeed.Url = RssChannel.Url;
+            this.NewFeed = new RssSubscrission(RssChannel.Title,RssChannel.Url);
             this.NewFeed.PauseDownload = checkBoxPause.Checked;
             this.NewFeed.Category = comboBoxCategory.Text;
 

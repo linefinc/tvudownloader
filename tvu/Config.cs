@@ -307,7 +307,7 @@ namespace tvu
             for (int i = 0; i < Channels.Count; i++)
             {
                 XmlNodeList child = Channels[i].ChildNodes;
-                RssSubscrission newfeed = new RssSubscrission();
+                RssSubscrission newfeed = new RssSubscrission("",""); //empty
                 foreach (XmlNode t in child)
                 {
                     if (t.Name == "Title")

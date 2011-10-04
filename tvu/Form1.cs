@@ -155,6 +155,16 @@ namespace tvu
             {
                 DisableAutoCloseEmule();
             }
+
+            if (MainConfig.StartEmuleIfClose == true)
+            {
+                autoStartEMuleToolStripMenuItem.Checked = true;
+            }
+            else
+            {
+                autoStartEMuleToolStripMenuItem.Checked = false;
+            }
+
             this.menuItemAutoCloseEmule.Click += new System.EventHandler(this.menu_AutoCloseEmule);
             this.contextMenu1.MenuItems.Add(menuItemAutoCloseEmule);
 
@@ -1037,9 +1047,26 @@ namespace tvu
 
 
                 MainConfig.Save();
+
+                if (MainConfig.CloseEmuleIfAllIsDone == true)
+                {
+                    EnableAutoCloseEmule();
+                }
+                else
+                {
+                    DisableAutoCloseEmule();
+                }
+
+                if (MainConfig.StartEmuleIfClose == true)
+                {
+                    autoStartEMuleToolStripMenuItem.Checked = true;
+                }
+                else
+                {
+                    autoStartEMuleToolStripMenuItem.Checked = false;
+                }
             }
-            // reset counter to avoid error
-            AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
+            
 
             OptDialog.Dispose();
             return;
@@ -1383,7 +1410,8 @@ namespace tvu
             bool found = false;
             for (i = 0; i < listView1.Items.Count; i++)
             {
-                string Title1 = MainConfig.RssFeedList[i].Title.Replace("[ed2k] tvunderground.org.ru:", "");
+                //string Title1 = MainConfig.RssFeedList[i].Title.Replace("[ed2k] tvunderground.org.ru:", "");
+                string Title1 = MainConfig.RssFeedList[i].TitleCompact;
                 string Title2 = feedTitle.Replace("[ed2k] tvunderground.org.ru:", "");
                 if (Title1 == Title2)
                 {
