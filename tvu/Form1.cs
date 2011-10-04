@@ -454,22 +454,27 @@ namespace tvu
             // update list history
             listView2.Items.Clear();
 
-            List<string> ListHistory = new List<string>();
+
+
+            List<fileHistory> ListHistory = new List<fileHistory>();
+
 
             foreach (fileHistory fh in MainHistory.fileHistoryList)
             {
+                
                 if (fh.FeedSource == Feed.Url)
                 {
-                    ListHistory.Add(fh.GetFileName());
+                    ListHistory.Add(fh);
                 }
             }
 
-            ListHistory.Sort((x, y) => (y.CompareTo(x)));
+            ListHistory.Sort((x, y) => (y.Date.CompareTo(x.Date)));
 
-            foreach (string t in ListHistory)
+            foreach (fileHistory fh in ListHistory)
             {
-                ListViewItem item1 = new ListViewItem(t);
-                listView2.Items.Add(item1);
+                ListViewItem item = new ListViewItem(fh.FileName);
+                item.SubItems.Add(fh.Date);
+                listView2.Items.Add(item);
             }
         }
 
@@ -876,16 +881,7 @@ namespace tvu
 
         }
 
-        private void CheckButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void buttonOption_Click(object sender, EventArgs e)
-        {
-
-        }
-
+      
         private void listView2_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listView2.Items.Count == 0)
