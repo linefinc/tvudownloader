@@ -975,104 +975,21 @@ namespace tvu
 
         private void addToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AddFeedDialog dialog = new AddFeedDialog(MainConfig.ServiceUrl, MainConfig.Password, MainConfig.DefaultCategory);
-            dialog.ShowDialog();
+            AddRssChannel();
+       
+        }
 
-            if (dialog.DialogResult != DialogResult.OK)
-            {
-                dialog.Dispose();
-                return;
-            }
-
-            // find rss duplicate
-            foreach (RssSubscrission temp in MainConfig.RssFeedList)
-            {
-                if (temp.Url == dialog.NewFeed.Url)
-                {
-                    dialog.Dispose();
-                    return;
-                }
-
-            }
-
-
-            MainConfig.RssFeedList.Add(dialog.NewFeed);
-            MainConfig.Save();
-            foreach (fileHistory file in dialog.NewHistory)
-            {
-                MainHistory.Add(file.GetLink(), file.FeedLink, file.FeedSource);
-            }
-            MainHistory.Save();
-            UpdateRssFeedGUI();
-            dialog.Dispose();
-            StartDownloadThread();
+        private void toolStripMenuItemAdd_Click(object sender, EventArgs e)
+        {
+            AddRssChannel();
         }
 
 
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
-            if (listView1.Items.Count == 0)
-                return;
-
-            if (listView1.SelectedItems.Count == 0)
-                return;
-
-            ListViewItem temp = listView1.SelectedItems[0];
-            int i = listView1.Items.IndexOf(temp);
-            string feedTitle = listView1.Items[i].Text;
-
-            // check user 
-            string message = "Delete " + feedTitle;
-            DialogResult rc;
-            rc = MessageBox.Show(message, "", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk);
-            if (rc != DialogResult.OK)
-            {
-                return;
-            }
-
-
-
-            RssSubscrission Feed = MainConfig.RssFeedList[0];
-            bool found = false;
-            for (i = 0; i < listView1.Items.Count; i++)
-            {
-                string Title1 = MainConfig.RssFeedList[i].Title.Replace("[ed2k] tvunderground.org.ru:", "");
-                string Title2 = feedTitle.Replace("[ed2k] tvunderground.org.ru:", "");
-                if (Title1 == Title2)
-                {
-                    Feed = MainConfig.RssFeedList[i];
-                    found = true;
-                    break;
-                }
-            }
-
-            if (found == false)
-            {
-                return;
-            }
-
-
-            List<fileHistory> FileToDelete = new List<fileHistory>();
-
-            foreach (fileHistory fh in MainHistory.fileHistoryList)
-            {
-                if (fh.FeedSource == Feed.Url)
-                {
-                    FileToDelete.Add(fh);
-                }
-            }
-
-            foreach (fileHistory fh in FileToDelete)
-            {
-                MainHistory.fileHistoryList.Remove(fh);
-            }
-
-            MainConfig.RssFeedList.Remove(Feed);
-            MainConfig.Save();
-            MainHistory.Save();
-            UpdateRssFeedGUI(); ///upgrade gui
+            DeleteRssChannel();
+            
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1431,6 +1348,114 @@ namespace tvu
                 AppendLogMessage("Unable start application", false);
             }
         }
+
+        private void toolStripMenuItemDelete_Click(object sender, EventArgs e)
+        {
+
+            DeleteRssChannel();
+            
+        }
+
+        void DeleteRssChannel()
+        {
+            if (listView1.Items.Count == 0)
+                return;
+
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
+            ListViewItem temp = listView1.SelectedItems[0];
+            int i = listView1.Items.IndexOf(temp);
+            string feedTitle = listView1.Items[i].Text;
+
+            // check user 
+            string message = "Delete " + feedTitle;
+            DialogResult rc;
+            rc = MessageBox.Show(message, "", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk);
+            if (rc != DialogResult.OK)
+            {
+                return;
+            }
+
+
+
+            RssSubscrission Feed = MainConfig.RssFeedList[0];
+            bool found = false;
+            for (i = 0; i < listView1.Items.Count; i++)
+            {
+                string Title1 = MainConfig.RssFeedList[i].Title.Replace("[ed2k] tvunderground.org.ru:", "");
+                string Title2 = feedTitle.Replace("[ed2k] tvunderground.org.ru:", "");
+                if (Title1 == Title2)
+                {
+                    Feed = MainConfig.RssFeedList[i];
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found == false)
+            {
+                return;
+            }
+
+
+            List<fileHistory> FileToDelete = new List<fileHistory>();
+
+            foreach (fileHistory fh in MainHistory.fileHistoryList)
+            {
+                if (fh.FeedSource == Feed.Url)
+                {
+                    FileToDelete.Add(fh);
+                }
+            }
+
+            foreach (fileHistory fh in FileToDelete)
+            {
+                MainHistory.fileHistoryList.Remove(fh);
+            }
+
+            MainConfig.RssFeedList.Remove(Feed);
+            MainConfig.Save();
+            MainHistory.Save();
+            UpdateRssFeedGUI(); ///upgrade gui
+        }
+       
+        void AddRssChannel()
+        {
+            AddFeedDialog dialog = new AddFeedDialog(MainConfig.ServiceUrl, MainConfig.Password, MainConfig.DefaultCategory);
+            dialog.ShowDialog();
+
+            if (dialog.DialogResult != DialogResult.OK)
+            {
+                dialog.Dispose();
+                return;
+            }
+
+            // find rss duplicate
+            foreach (RssSubscrission temp in MainConfig.RssFeedList)
+            {
+                if (temp.Url == dialog.NewFeed.Url)
+                {
+                    dialog.Dispose();
+                    return;
+                }
+
+            }
+
+
+            MainConfig.RssFeedList.Add(dialog.NewFeed);
+            MainConfig.Save();
+            foreach (fileHistory file in dialog.NewHistory)
+            {
+                MainHistory.Add(file.GetLink(), file.FeedLink, file.FeedSource);
+            }
+            MainHistory.Save();
+            UpdateRssFeedGUI();
+            dialog.Dispose();
+            StartDownloadThread();
+        }
+     
+    
     }
 
    
