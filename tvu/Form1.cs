@@ -891,25 +891,6 @@ namespace tvu
 
         }
 
-      
-        private void listView2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (listView2.Items.Count == 0)
-                return;
-
-            if (listView2.SelectedItems.Count == 0)
-                return;
-
-            ListViewItem temp = listView2.SelectedItems[0];
-            int i = listView2.Items.IndexOf(temp);
-            string str = listView2.Items[i].Text;
-
-            string p = string.Format("DELETE {0}:{1}", i, str);
-            AppendLogMessage(p, false);
-
-            MainHistory.DeleteFile(str);
-        }
-
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             progressBar1.Value = e.ProgressPercentage;
@@ -1481,6 +1462,24 @@ namespace tvu
             UpdateRssFeedGUI();
             dialog.Dispose();
             StartDownloadThread();
+        }
+
+        private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (listView2.Items.Count == 0)
+                return;
+
+            if (listView2.SelectedItems.Count == 0)
+                return;
+
+            ListViewItem temp = listView2.SelectedItems[0];
+            int i = listView2.Items.IndexOf(temp);
+            string str = listView2.Items[i].Text;
+
+            string p = string.Format("DELETE {0}:{1}", i, str);
+            AppendLogMessage(p, false);
+
+            MainHistory.DeleteFile(str);
         }
      
     
