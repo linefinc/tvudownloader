@@ -1164,11 +1164,13 @@ namespace tvu
                     AppendLogMessage("[AutoClose Mule] LogOut", true);
                     Service.LogOut();
                     DisableAutoCloseEmule();
+                    timer3.Enabled = true;  // enable timer 
                     break;
             }
 
             if ((MainConfig.EmailNotification == true) && (sendLogToEmailToolStripMenuItem.Checked))
             {
+                AppendLogMessage("[AutoClose Mule] Send Mail", true);
                 string stmpServer = MainConfig.ServerSMTP;
                 string EmailReceiver = MainConfig.MailReceiver;
                 string EmailSender = MainConfig.MailSender;
@@ -1182,7 +1184,6 @@ namespace tvu
             this.menuItemAutoCloseEmule.Checked = true;   // Enable Trybar context menu
             this.autoCloseEMuleToolStripMenuItem.Checked = true; // File -> Menu -> Configure
             this.MainConfig.CloseEmuleIfAllIsDone = true; // Enable function
-            timer3.Enabled = true;  // enable timer 
             AutoCloseDataTime = DateTime.Now.AddMinutes(30);
         }
 
@@ -1191,7 +1192,7 @@ namespace tvu
             this.menuItemAutoCloseEmule.Checked = false; // disable context menu
             this.autoCloseEMuleToolStripMenuItem.Checked = false; // File -> Menu -> Configure
             this.MainConfig.CloseEmuleIfAllIsDone = false; // disable function
-            timer3.Enabled = false;  // enable timer 
+            
 
         }
 
@@ -1480,6 +1481,11 @@ namespace tvu
             AppendLogMessage(p, false);
 
             MainHistory.DeleteFile(str);
+        }
+
+        private void deleteCompleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
      
     
