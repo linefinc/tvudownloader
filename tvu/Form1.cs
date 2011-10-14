@@ -845,7 +845,7 @@ namespace tvu
             try
             {
                 XmlDocument doc = new XmlDocument();
-                doc.Load("http://tvudownloader.sourceforge.net/version.xml");
+                doc.Load("http://tvudownloader.sourceforge.net/version.php");
 
                 string lastVersion = "";
 
