@@ -17,15 +17,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
+##### Version 0.5.2 15/10/2011 ##### 
+*IMPORTANT fix to improve bandwidth control
+*IMPORTANT fix to reduce fail socket
+*Improve check for TV status (Complete , Running ...) , now it was check 1 time on 2 weeks
+*Various GUI fix
+*Fix auto close function than in some configuration not always works
+*Add "Auto delete Complete channels" 
 
-Version 0.5.1 02/06/2011
+
+
+##### Version 0.5.1 02/06/2011 ##### 
 *IMPORTANT fix to support TV underground site change
 +Add send mail function
 +Add OMPL exporter
 +Add OMPL Importer (bat now not work)
 +Add Show TV Underground status (Complete, incomplete...)
 
-Version 0.5 09/04/2011
+##### Version 0.5 09/04/2011 #####
 
 This is a bug fix version with some add
 +Add verbose log
@@ -39,7 +48,7 @@ This is a bug fix version with some add
 *Fix Url parser to avoid duplicate links
 
 
-Version 0.4 03/01/2011
+##### Version 0.4 03/01/2011 ##### 
 
 +Add new parser (more strong)
 +Add autoscroll to log text
@@ -54,7 +63,7 @@ Version 0.4 03/01/2011
 *Fix Check now sometime not work
 
 
-Version 0.3 03/08/2010
+##### Version 0.3 03/08/2010 ##### 
 
 +Add support for Windows 7, windows Vista config (No UAC need)
 +Add Installer
@@ -74,6 +83,6 @@ Version 0.3 03/08/2010
 *Fix tray bar bug. Now show correct menu indication "Show" or "Hide"
 *Fix frieze windows when Download. Add background thread for manage network activity
 
-Version 0.2 01/08/2010
+#####  Version 0.2 01/08/2010 ##### 
 
 First public release

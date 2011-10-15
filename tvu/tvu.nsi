@@ -46,6 +46,7 @@ Section "Tvunderground Downloader (required)"
   
   ; Put file there
   File ".\bin\Release\tvu.exe"
+  File "..\README.txt"
   
   ; Write the installation path into the registry
   WriteRegStr HKLM SOFTWARE\TVUndergroundDownloader "Install_Dir" "$INSTDIR"
@@ -80,6 +81,7 @@ Section "Uninstall"
 
   ; Remove files and uninstaller
   Delete $INSTDIR\tvu.exe
+  Delete $INSTDIR\README.txt
   Delete $INSTDIR\uninstall.exe
 
   ; Remove shortcuts, if any
