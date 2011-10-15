@@ -504,6 +504,7 @@ namespace tvu
             checkNowToolStripMenuItem.Enabled = false;
             deleteToolStripMenuItem.Enabled = false;
             addToolStripMenuItem.Enabled = false;
+            deleteCompleteToolStripMenuItem.Enabled = false;
             menuItemCheckNow.Enabled = false;
             backgroundWorker1.RunWorkerAsync();
 
@@ -773,6 +774,7 @@ namespace tvu
             checkNowToolStripMenuItem.Enabled = true;
             deleteToolStripMenuItem.Enabled = true;
             addToolStripMenuItem.Enabled = true;
+            deleteCompleteToolStripMenuItem.Enabled = true;
         }
 
 
@@ -854,18 +856,53 @@ namespace tvu
                     lastVersion = t.InnerText;
                 }
 
-                if (String.Compare(lastVersion, Config.Version) == 1)
+                List<int> lastVersionInt = new List<int>();
+                List<int> currentVersionInt = new List<int>();
+
+                string[] strSplit = lastVersion.Split('.');
+                foreach (string t in strSplit)
                 {
-                    return true;
+                    lastVersionInt.Add(Convert.ToInt16(t));
                 }
 
+                strSplit = Config.Version.Split('.');
+                foreach (string t in strSplit)
+                {
+                    currentVersionInt.Add(Convert.ToInt16(t));
+                }
+
+                while (currentVersionInt.Count != lastVersionInt.Count)
+                {
+
+                    if (currentVersionInt.Count > lastVersionInt.Count)
+                    {
+                        lastVersionInt.Add(0);
+                    }
+                    if (currentVersionInt.Count < lastVersionInt.Count)
+                    {
+                        lastVersionInt.Add(0);
+                    }
+                }
+
+                bool upgrade = false;
+
+                for (int index = 0; index < currentVersionInt.Count; index++)
+                {
+                    if (lastVersionInt[index] > currentVersionInt[index])
+                    {
+                        return true;
+                    }
+
+                }
+
+                return false;
 
             }
             catch
             {
                 return false;
             }
-            return false;
+           
         }
 
 
@@ -1485,7 +1522,26 @@ namespace tvu
 
         private void deleteCompleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            List<RssSubscrission> channelToDelete = new List<RssSubscrission>();
+            
+            foreach (RssSubscrission channel in MainConfig.RssFeedList)
+            {
+                if (channel.tvuStatus == tvuStatus.Complete)
+                {
+                    channelToDelete.Add(channel);
+                }
+            }
 
+            while (channelToDelete.Count > 0)
+            {
+                string channelUrl = channelToDelete[0].Url;
+                MainHistory.DeleteFileByFeedSource(channelUrl);
+                MainConfig.RssFeedList.Remove(channelToDelete[0]);
+                
+            }
+            MainConfig.Save();
+            MainHistory.Save();
+            UpdateRssFeedGUI(); ///upgrade gui
         }
      
     

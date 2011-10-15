@@ -236,6 +236,25 @@ namespace tvu
             }
         }
 
+        public void DeleteFileByFeedSource(string FeedSource)
+        {
+            
+            List<fileHistory> fileToDelete = new List<fileHistory>();
+            
+            foreach (fileHistory fh in fileHistoryList)
+            {
+                if (fh.FeedSource == FeedSource)
+                {
+                    fileToDelete.Add(fh);
+                }
+            }
+
+            foreach (fileHistory fh in fileToDelete)
+            {
+                fileHistoryList.Remove(fh);
+            }
+        }
+
         public List<fileHistory> GetRecentActivity(int size)
         {
             List<fileHistory> myFileHistoryList = new List<fileHistory>();
