@@ -37,6 +37,14 @@ namespace tvu
             FileSize = uint.Parse(temp[3]);
             HashMD4 = temp[4];
 
+            if (temp.Length > 6)
+            {
+                if(temp[5].Substring(0,2) == "h=")
+                {
+                    HashSHA1 = temp[5].Substring(2);
+                }
+            }
+
         }
 
 

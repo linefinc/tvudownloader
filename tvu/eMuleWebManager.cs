@@ -25,18 +25,18 @@ namespace tvu
         {
             List<string> ListDownloads = new List<string>();
 
-            string temp = string.Format("{0}/?ses={1}&w=transfer", Host, SesID);
+            string temp = string.Format("{0}/?ses={1}&w=transfer&cat=0", Host, SesID);
             temp = WebFetch.Fetch(temp,true);
 
-            int p = temp.IndexOf("ed2k://");
-            int m = temp.IndexOf("'", p + 5);
+            int p = temp.IndexOf("ed2k://|file|");
+            int m = temp.IndexOf("|/", p + 5);
             while(p != -1)
             {
 
                 string link = temp.Substring(p, m - p);
                 ListDownloads.Add(link);
-                p = temp.IndexOf("ed2k://", m + 1);
-                m = temp.IndexOf("'", p + 5);
+                p = temp.IndexOf("ed2k://|file|", m + 1);
+                m = temp.IndexOf("/'", p + 5);
             }
             
             return ListDownloads;
