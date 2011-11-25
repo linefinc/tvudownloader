@@ -587,17 +587,21 @@ namespace tvu
                     // end check compelte element
                     //
 
+                    // reverse the list so the laft feed ( first temporal feed) became the first first feed in list
+                    elemList.Reverse();
+
                     int counter = 0;
                     foreach (string FeedLink in elemList)
                     {
 
-                        // download the page in FeedLink
-                        AppendLogMessage(string.Format("try download page {0}", FeedLink), true);
+                        
 
                         string page = null;
 
                         if (counter < 4)
                         {
+                            // download the page in FeedLink
+                            AppendLogMessage(string.Format("try download page {0}", FeedLink), true);
                             page = WebFetch.Fetch(FeedLink, true);
                         }
 
@@ -619,7 +623,9 @@ namespace tvu
                                 AppendLogMessage(string.Format("Found new file {0}", parser.GetFileName()), false);
 
                                 sDonwloadFile DL = new sDonwloadFile(sEd2k, FeedLink, feed.Url,feed.PauseDownload,feed.Category);
-                                counter++;
+                                
+                                // remove the comment:
+                                //counter++;
 
                                 myList.Add(DL);
                             }
@@ -711,9 +717,7 @@ namespace tvu
 
             }
 
-            //
-            //  Download file 
-            // 
+
             AppendLogMessage("Retrive list Category", true);
             Service.GetCategory(true);  // force upgrade category list 
 
@@ -748,36 +752,47 @@ namespace tvu
 
             }
 
-            while (myFeedSoruceLink.Count > 0)
-            {
-                List<string> myFeedList = myFeedSoruceLink.FindAll(delegate(string t) { return t == myFeedSoruceLink[0]; });
+            
 
-                if (myFeedList.Count > 2)
+
+            foreach(RssSubscrission RssFeed in MainConfig.RssFeedList)
+            {
+                string FeedURL = RssFeed.Url;
+            
+    
+                // calcolo il numero di file che ho con quel feed;
+                List<string> myFeedList = myFeedSoruceLink.FindAll(delegate(string t) { return t == FeedURL; });
+
+                // calcolo il numero di file da scaricare:
+                // NumeroMassimoDiFilePerCanale - NumeroDiFileGiàInDownlaod
+                int dif = MainConfig.MaxSimultaneousFeedDownloads - myFeedList.Count;
+
+                
+                // estraggo i file da scaricare del feed
+                List<sDonwloadFile> tempDonwloadFileList = myList.FindAll(delegate(sDonwloadFile file) { return file.FeedSource == FeedURL; });
+
+                List<sDonwloadFile> temp = new List<sDonwloadFile>();
+
+                // copio la lista dei file da scaricare
+                for (; dif > 0; dif--)
                 {
-                    myList.RemoveAll(delegate(sDonwloadFile file) { return file.FeedSource == myFeedSoruceLink[0]; });
+                    temp.Add(tempDonwloadFileList[dif]);
                 }
 
-                myFeedSoruceLink.RemoveAll(delegate(string t) { return t == myFeedSoruceLink[0]; });
+                // rimuovo tutti dalla mian list
+                myList.RemoveAll(delegate(sDonwloadFile file) { return file.FeedSource == FeedURL; });
+
+                // aggiungo i file da scaricare
+                myList.AddRange(temp);
+
+
+                // to remove, not usefull
+                //myFeedSoruceLink.RemoveAll(delegate(string t) { return t == FeedURL; });
             }
       
-            // clean list 
-            // remove duplicate file just downloaded
-            //AppendLogMessage("Clean up list(remove file in history list)", true);
-            //List<sDonwloadFile> removeList = new List<sDonwloadFile>();
-            //foreach (sDonwloadFile DownloadFile in myList)
-            //{
-            //    if (MainHistory.ExistInHistoryByEd2k(DownloadFile.Ed2kLink) != -1) // if file is not dwnl
-            //    {
-            //        removeList.Add(DownloadFile);
-            //    }
-            //}
-
-            //foreach (sDonwloadFile p in removeList)
-            //{
-            //    myList.Remove(p);
-            //}
-
-            // start download 
+            //
+            //  Download file 
+            // 
             foreach (sDonwloadFile DownloadFile in myList)
             {
                 Ed2kParser ed2klink = new Ed2kParser(DownloadFile.Ed2kLink);
