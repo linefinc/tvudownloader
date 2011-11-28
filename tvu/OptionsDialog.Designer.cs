@@ -71,7 +71,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPageEmail = new System.Windows.Forms.TabPage();
             this.buttonTestEmailNotification = new System.Windows.Forms.Button();
             this.textBoxMailSender = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -80,6 +80,9 @@
             this.label9 = new System.Windows.Forms.Label();
             this.textBoxServerSmtp = new System.Windows.Forms.TextBox();
             this.checkBoxEmailNotification = new System.Windows.Forms.CheckBox();
+            this.tabPageUpdate = new System.Windows.Forms.TabPage();
+            this.numericUpDownIntervalCheck = new System.Windows.Forms.NumericUpDown();
+            this.label12 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.tabPageGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinDownloadToStrarTEmule)).BeginInit();
@@ -89,7 +92,9 @@
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.tabPageEmail.SuspendLayout();
+            this.tabPageUpdate.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIntervalCheck)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonSave
@@ -542,30 +547,31 @@
             // 
             this.tabControl1.Controls.Add(this.tabPageGeneral);
             this.tabControl1.Controls.Add(this.tabPageNetwork);
-            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPageEmail);
+            this.tabControl1.Controls.Add(this.tabPageUpdate);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(365, 274);
             this.tabControl1.TabIndex = 0;
             // 
-            // tabPage1
+            // tabPageEmail
             // 
-            this.tabPage1.Controls.Add(this.buttonTestEmailNotification);
-            this.tabPage1.Controls.Add(this.textBoxMailSender);
-            this.tabPage1.Controls.Add(this.label11);
-            this.tabPage1.Controls.Add(this.textBoxMailReceiver);
-            this.tabPage1.Controls.Add(this.label10);
-            this.tabPage1.Controls.Add(this.label9);
-            this.tabPage1.Controls.Add(this.textBoxServerSmtp);
-            this.tabPage1.Controls.Add(this.checkBoxEmailNotification);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(357, 248);
-            this.tabPage1.TabIndex = 2;
-            this.tabPage1.Text = "Email Notification";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabPageEmail.Controls.Add(this.buttonTestEmailNotification);
+            this.tabPageEmail.Controls.Add(this.textBoxMailSender);
+            this.tabPageEmail.Controls.Add(this.label11);
+            this.tabPageEmail.Controls.Add(this.textBoxMailReceiver);
+            this.tabPageEmail.Controls.Add(this.label10);
+            this.tabPageEmail.Controls.Add(this.label9);
+            this.tabPageEmail.Controls.Add(this.textBoxServerSmtp);
+            this.tabPageEmail.Controls.Add(this.checkBoxEmailNotification);
+            this.tabPageEmail.Location = new System.Drawing.Point(4, 22);
+            this.tabPageEmail.Name = "tabPageEmail";
+            this.tabPageEmail.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageEmail.Size = new System.Drawing.Size(357, 248);
+            this.tabPageEmail.TabIndex = 2;
+            this.tabPageEmail.Text = "Email Notification";
+            this.tabPageEmail.UseVisualStyleBackColor = true;
             // 
             // buttonTestEmailNotification
             // 
@@ -635,6 +641,34 @@
             this.checkBoxEmailNotification.Text = "Email Notification";
             this.checkBoxEmailNotification.UseVisualStyleBackColor = true;
             // 
+            // tabPageUpdate
+            // 
+            this.tabPageUpdate.Controls.Add(this.label12);
+            this.tabPageUpdate.Controls.Add(this.numericUpDownIntervalCheck);
+            this.tabPageUpdate.Location = new System.Drawing.Point(4, 22);
+            this.tabPageUpdate.Name = "tabPageUpdate";
+            this.tabPageUpdate.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageUpdate.Size = new System.Drawing.Size(357, 248);
+            this.tabPageUpdate.TabIndex = 3;
+            this.tabPageUpdate.Text = "Update";
+            this.tabPageUpdate.UseVisualStyleBackColor = true;
+            // 
+            // numericUpDownIntervalCheck
+            // 
+            this.numericUpDownIntervalCheck.Location = new System.Drawing.Point(277, 11);
+            this.numericUpDownIntervalCheck.Name = "numericUpDownIntervalCheck";
+            this.numericUpDownIntervalCheck.Size = new System.Drawing.Size(65, 20);
+            this.numericUpDownIntervalCheck.TabIndex = 0;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(6, 13);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(191, 13);
+            this.label12.TabIndex = 1;
+            this.label12.Text = "Update check interval days (0 = never)";
+            // 
             // OptionsDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -662,8 +696,11 @@
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.tabPageEmail.ResumeLayout(false);
+            this.tabPageEmail.PerformLayout();
+            this.tabPageUpdate.ResumeLayout(false);
+            this.tabPageUpdate.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIntervalCheck)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -713,7 +750,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.NumericUpDown numericUpDownMinDownloadToStrarTEmule;
         private System.Windows.Forms.CheckBox checkBoxVerbose;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPageEmail;
         private System.Windows.Forms.TextBox textBoxMailReceiver;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
@@ -722,5 +759,8 @@
         private System.Windows.Forms.TextBox textBoxMailSender;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button buttonTestEmailNotification;
+        private System.Windows.Forms.TabPage tabPageUpdate;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.NumericUpDown numericUpDownIntervalCheck;
     }
 }

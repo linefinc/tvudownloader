@@ -907,7 +907,7 @@ namespace tvu
             try
             {
                 XmlDocument doc = new XmlDocument();
-                doc.Load("http://tvudownloader.sourceforge.net/version.php");
+                doc.Load("http://tvudownloader.sourceforge.net/version.php?tvuid=" + MainConfig.tvudwid);
 
                 string lastVersion = "";
 
@@ -1122,7 +1122,7 @@ namespace tvu
                 MainConfig.MailSender = OptDialog.LocalConfig.MailSender;
                 MainConfig.MailReceiver = OptDialog.LocalConfig.MailReceiver;
                 MainConfig.AutoClearLog = OptDialog.LocalConfig.AutoClearLog;
-
+                MainConfig.intervalBetweenUpgradeCheck = OptDialog.LocalConfig.intervalBetweenUpgradeCheck;
 
                 MainConfig.Save();
 

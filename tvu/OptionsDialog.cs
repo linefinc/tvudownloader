@@ -28,6 +28,7 @@ namespace tvu
 
             numericUpDownIntervalTime.Value = inConfig.IntervalTime;
             numericUpDownMinDownloadToStrarTEmule.Value = inConfig.MinToStartEmule;
+            numericUpDownIntervalCheck.Value = inConfig.intervalBetweenUpgradeCheck;
             checkBoxStartMinimized.Checked = inConfig.StartMinimized;
             checkBoxStartEmuleIfClose.Checked = inConfig.StartEmuleIfClose;
             checkBoxCloseEmuleIfAllIsDone.Checked = inConfig.CloseEmuleIfAllIsDone;
@@ -35,7 +36,6 @@ namespace tvu
             checkBoxAutoClear.Checked = inConfig.AutoClearLog;
             checkBoxVerbose.Checked = inConfig.Verbose;
             checkBoxEmailNotification.Checked = inConfig.EmailNotification;
-
 
         }
 
@@ -124,8 +124,11 @@ namespace tvu
             //  email receiver
             //
             LocalConfig.MailReceiver = textBoxMailReceiver.Text;
+            //
+            //  Interval Check
+            //
+            LocalConfig.intervalBetweenUpgradeCheck = Convert.ToInt32(numericUpDownIntervalCheck.Value);
             
-
 
             this.DialogResult = DialogResult.OK;
             this.Close();

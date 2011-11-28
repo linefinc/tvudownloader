@@ -27,11 +27,13 @@ namespace tvu
         public bool Enebled { get; set; }
         public int MaxSimultaneousFeedDownloads { get; set; }
         public int MinToStartEmule { get; set; }
+        public string tvudwid { get; set; } //Unique id
         public bool Verbose { get; set; }
         public bool EmailNotification { get; set; }
         public string ServerSMTP { get; set; }
         public string MailReceiver { get; set; }
         public string MailSender { get; set; }
+        public int intervalBetweenUpgradeCheck { get; set; }
         public bool StartWithWindows
         {
             get
@@ -82,13 +84,11 @@ namespace tvu
             //
             // get Local USer App data Path, remove version direcorty and add config.xml
             //
-//#if DEBUG
-//            FileName = "config.xml";
-//#else
+
             FileName = Application.LocalUserAppDataPath;
             int rc = FileName.LastIndexOf("\\");
             FileName = FileName.Substring(0, rc) + "\\config.xml";
-//#endif
+
             RssFeedList = new List<RssSubscrission>();
             if (!File.Exists(this.FileName))
             {
@@ -173,6 +173,14 @@ namespace tvu
             textWritter.WriteEndElement();
 
 
+            textWritter.WriteStartElement("tvudwid");
+            textWritter.WriteString(tvudwid);
+            textWritter.WriteEndElement();
+
+            textWritter.WriteStartElement("intervalBetweenUpgradeCheck");
+            textWritter.WriteString(intervalBetweenUpgradeCheck.ToString());
+            textWritter.WriteEndElement();
+            
 
 
             textWritter.WriteStartElement("RSSChannel");
@@ -298,7 +306,11 @@ namespace tvu
             MailReceiver = ReadString(xDoc, "MailReceiver", "");
 
             MailSender = ReadString(xDoc, "MailSender", "");
-        
+
+            tvudwid = ReadString(xDoc, "tvudwid", RandomIDGenerator());
+
+            intervalBetweenUpgradeCheck = (int)Convert.ToInt32(ReadString(xDoc, "intervalBetweenUpgradeCheck", "15"));
+
             //
             //  Load Channel
             //
@@ -393,6 +405,18 @@ namespace tvu
             }
         }
 
+
+        private static string RandomIDGenerator()
+        {
+            string temp = "";
+
+            Random rand = new Random();
+            for (int i = 0; i < 24; i++)
+            {
+                temp += string.Format("{0:X}",rand.Next(0, 15));
+            }
+            return temp;
+        }
 
     }
 }
