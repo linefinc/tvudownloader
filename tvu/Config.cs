@@ -34,6 +34,7 @@ namespace tvu
         public string MailReceiver { get; set; }
         public string MailSender { get; set; }
         public int intervalBetweenUpgradeCheck { get; set; }
+        public string LastUpgradeCheck { get; set; }
         public bool StartWithWindows
         {
             get
@@ -180,7 +181,10 @@ namespace tvu
             textWritter.WriteStartElement("intervalBetweenUpgradeCheck");
             textWritter.WriteString(intervalBetweenUpgradeCheck.ToString());
             textWritter.WriteEndElement();
-            
+
+            textWritter.WriteStartElement("LastUpgradeCheck");
+            textWritter.WriteString(LastUpgradeCheck);
+            textWritter.WriteEndElement();
 
 
             textWritter.WriteStartElement("RSSChannel");
@@ -311,6 +315,7 @@ namespace tvu
 
             intervalBetweenUpgradeCheck = (int)Convert.ToInt32(ReadString(xDoc, "intervalBetweenUpgradeCheck", "15"));
 
+            LastUpgradeCheck = ReadString(xDoc, "LastUpgradeCheck", DateTime.Now.ToString("yyyy-MM-dd"));
             //
             //  Load Channel
             //

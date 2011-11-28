@@ -348,6 +348,8 @@ namespace tvu
         private void timer1_Tick(object sender, EventArgs e)
         {
 
+
+
             if (DateTime.Now > DownloadDataTime)
             {
                 if (MainConfig.AutoClearLog == true)
@@ -370,6 +372,11 @@ namespace tvu
                     string Subject = "TV Underground Downloader Notification";
                     string dump = SmtpClient.SendEmail(stmpServer, EmailReceiver, EmailSender, Subject, LogTextBox.Text);
                 }
+            }
+
+            if (CheckNewVersion() == true)
+            {
+                MessageBox.Show("New Version is available at http://tvudownloader.sourceforge.net/");
             }
 
 
@@ -904,8 +911,30 @@ namespace tvu
         /// <returns>true if new version is available or false in other case</returns>
         private bool CheckNewVersion()
         {
+            if (MainConfig.intervalBetweenUpgradeCheck == 0)
+            {
+                return false;
+            }
+
             try
             {
+                string lastCheck = MainConfig.LastUpgradeCheck;
+                string[] lastCheckSplit = lastCheck.Split('-');
+                
+                int year = Convert.ToInt32(lastCheckSplit[0]);
+                int month = Convert.ToInt32(lastCheckSplit[1]);
+                int day = Convert.ToInt32(lastCheckSplit[2]);
+
+                DateTime lastCheckDateTime = new DateTime(year, month, day);
+                DateTime nextCheck = lastCheckDateTime.AddDays(MainConfig.intervalBetweenUpgradeCheck);
+
+                if (DateTime.Now < nextCheck)
+                {
+                    return false;
+                }
+
+                MainConfig.LastUpgradeCheck = DateTime.Now.ToString("yyyy-MM-dd");
+                
                 XmlDocument doc = new XmlDocument();
                 doc.Load("http://tvudownloader.sourceforge.net/version.php?tvuid=" + MainConfig.tvudwid);
 
