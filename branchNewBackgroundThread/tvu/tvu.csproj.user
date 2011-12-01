@@ -1,0 +1,17 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PublishUrlHistory>.\publish\|C:\Documents and Settings\Ionico\Documenti\Visual Studio 2008\Projects\TVRSSDWN\publish\|C:\Documents and Settings\User\Documenti\Visual Studio 2008\Projects\tvu\publish\|C:\Documents and Settings\User\Documenti\Visual Studio 2008\Projects\tvu\tvu\publish\</PublishUrlHistory>
+    <InstallUrlHistory>
+    </InstallUrlHistory>
+    <SupportUrlHistory>
+    </SupportUrlHistory>
+    <UpdateUrlHistory>
+    </UpdateUrlHistory>
+    <BootstrapperUrlHistory>
+    </BootstrapperUrlHistory>
+    <ErrorReportUrlHistory>
+    </ErrorReportUrlHistory>
+    <FallbackCulture>it-IT</FallbackCulture>
+    <VerifyUploadedFiles>false</VerifyUploadedFiles>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html>
+   <head>
+       <title>TVUnderground Downloader</title>
+       <meta charset="windows-1252" />
+       <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+       <style type="text/css">
+       		#logo
+       		{   		    		
+       			height: 30ex; 
+       			width: auto;  		    		
+       		}
+       </style> 
+       <script type="text/javascript">
+       		function Center()
+   			{
+   				var image=document.getElementById("logo");
+   				var width=GetWidth();
+   				var w=image.width;
+   				image.style.marginLeft =(width-w)/2+"px";
+   			}
+       		function GetWidth()
+			{
+		        var width = 0;
+		        if (self.innerHeight)
+		        {
+		                width = self.innerWidth;
+		        }
+		        else if (document.documentElement && document.documentElement.clientHeight)
+		        {
+		                width = document.documentElement.clientWidth;
+		        }
+		        else if (document.body)
+		        {
+		                width = document.body.clientWidth;
+		        }
+		        return width;
+			}
+       
+	   
+
+       </script>
+   </head>
+   <body >
+   		<img id="logo" src="img/logo_orginal.png" onload="Center()" alt="TVU Downloader logo"/>
+   		<h1 align="center">TVUnderground Downloader</h1>
+   		<h3>An automatic downloader for your TV shows needs</h3>
+   		<p>
+   			TVUnderground downloader is a tool that permits you to download series from TVUnderground automatically.
+   			 It reads the rss feeds to download the ed2k links and  add it to eMule via its web server.
+   		</p>
+   		<h4>Additional features includes:</h4>
+   		<ul>
+   			<li>Custom interval time for refresh</li>
+   			<li>Pairing the ed2k links with categories from eMule</li>
+   			<li>Auto-start eMule when new links are downloaded</li>
+   			<li>Auto-close eMule when all downloads are finished</li>
+   		</ul>
+   		<h4>Download</h4>
+   		<p>
+   		Download the latest version at <a href="http://sourceforge.net/projects/tvudownloader/">SourceForge</a>
+   		</p>
+   		<h4>Requirements</h4>
+   		<p>This program requires Microsoft .Net 3.0<br/> You can find it <a href="http://www.microsoft.com/downloads/en/details.aspx?FamilyID=10cc340b-f857-4a14-83f5-25634c3bf043">here</a>.</p>
+   		<h4>Set up</h4>
+   		<ul>
+   			<li>Click on "File"->"Options"->"Global Option"</li>
+   			<li>Go to the "Network" tab</li>
+   			<li>Set the url of the server you configured in eMule (ex: http://localhost:4000 or http://xxx.homeip.net:4000)</li>
+   			<li>Set the password of the web server</li>
+   			<li>Click on "Verify configuration", if all parameters are correct, you will receive a successful message</li>	
+   		</ul>
+   		<h4>Known Bugs</h4>
+   		<ul>
+   		<!-- i don't know-->
+   		</ul>
+   		<h4>FAQ</h4>
+   		<h5>How to add a rss feed to the program?</h5>
+   		<p>Click on "Feeds"->"Add". The enter the url in the "RSS link" entry and click "Get feed"</p>
+   		<h5>Where can I find RSS links?</h5>
+   		<p>In each TVUnderground's seasons, there's this icon: <img src="./img/rss.png" alt="rss icon"/> in the top right corner. Right click on it, then click on copy link's address. You now have the address in your clipboard</p>
+   		<!--<h4>Chagelog</h4>   You put it if you want it>
+   		<ul></ul>-->
+   		<h4>Contact</h4>
+   		<p>Support is at: <br> <img src="./img/email.png"/>. </p>
+		
+		<h4>Hosting</h4>
+		SourceForge.net provides hosting for TVUnderground Downloader <br>
+		<a href="http://sourceforge.net/projects/tvudownloader"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=357576&amp;type=14" width="150" height="40" alt="Get TvUnderground Downloader at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a>
+   
+   <!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://sourceforge.net/apps/piwik/tvudownloader/" : "http://sourceforge.net/apps/piwik/tvudownloader/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://sourceforge.net/apps/piwik/tvudownloader/piwik.php?idsite=1" style="border:0" alt=""/></p></noscript>
+<!-- End Piwik Tag -->
+
+   </body>
+       
+</html>
