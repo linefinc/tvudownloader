@@ -49,16 +49,16 @@ namespace tvu
         {
 
             public string FeedSource{get; private set;}
-            public string FeedLink{get; private set;}
+            public string MiddleLink{get; private set;}
             public string Ed2kLink{get; private set;}
 
             public bool PauseDownload{get; private set;}
             public string Category {get; private set;}
             
-            public sDonwloadFile(string Ed2kLink, string FeedLink, string FeedSource, bool PauseDownload, string Category)
+            public sDonwloadFile(string Ed2kLink, string MiddleLink, string FeedSource, bool PauseDownload, string Category)
             {
                 this.Ed2kLink = Ed2kLink;
-                this.FeedLink = FeedLink;
+                this.MiddleLink = MiddleLink;
                 this.FeedSource = FeedSource;
                 this.PauseDownload = PauseDownload;
                 this.Category = Category;
@@ -274,17 +274,18 @@ namespace tvu
 
         private void UpdateRssFeedGUI()
         {
+            // clear list
+            listView1.Items.Clear();
 
-            while (listView1.Items.Count > 0)
+            //update rss feed
+            foreach(RssSubscrission feed in MainConfig.RssFeedList)
             {
-                listView1.Items.Remove(listView1.Items[0]);
+                feed.LastUpgradeDate = MainHistory.LastDownloadDateByFeedSource(feed.Url);
+                feed.TotalDownloads = MainHistory.LinkCountByFeedSource(feed.Url);
             }
 
             List<RssSubscrission> myRssFeedList = new List<RssSubscrission>();
             myRssFeedList.AddRange(MainConfig.RssFeedList);
-            //
-            //people.Sort((x, y) => string.Compare(x.LastName, y.LastName));
-            //
             myRssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title));
 
 
@@ -529,15 +530,15 @@ namespace tvu
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
 
-
-            
-
-
+            // Notification start secondary thread
             AppendLogMessage("Start RSS Check", false);
 
-            List<sDonwloadFile> myList = new List<sDonwloadFile>();
 
-
+            List<sDonwloadFile> DonwloadFileList = new List<sDonwloadFile>();
+            
+            //
+            //  Scan RSS link and add new Middel Link to it list
+            //
             foreach (RssSubscrission feed in MainConfig.RssFeedList)
             {
 
@@ -547,8 +548,6 @@ namespace tvu
                 try
                 {
                     string WebPage = WebFetch.Fetch(feed.Url, true);
-                   
-                    List<string> elemList = new List<string>();
 
                     if (WebPage != null)
                     {
@@ -557,108 +556,27 @@ namespace tvu
                         WebPage.Replace("http://www.tvunderground.org.ru/", "http://tvunderground.org.ru/");
 
                         Regex Pattern = new Regex(@"http://tvunderground.org.ru/index.php\?show=ed2k&season=\d{1,10}&sid\[\d{1,10}\]=\d{1,10}");
-                        
+
                         MatchCollection matchCollection = Pattern.Matches(WebPage);
 
-                     
-                        foreach(Match value in matchCollection)
+                        foreach (Match value in matchCollection)
                         {
-                            string FeedLink = value.ToString();
-                            if (MainHistory.FileExistByFeedLink(FeedLink) == false)
+                            string MiddleLink = value.ToString();
+                            if (MainHistory.FileExistByFeedLink(MiddleLink) == false)
                             {
-                                elemList.Add(FeedLink);
+                                
+                                sDonwloadFile DL = new sDonwloadFile(null, MiddleLink, feed.Url,feed.PauseDownload,feed.Category);
+                                DonwloadFileList.Add(DL);
                                 feed.tvuStatus = tvuStatus.Unknow; // force refrash of tv Undergoud status when find a new file
                             }
-
-                            // limit the number of possible download for check
-                            //if (counter > MainConfig.MaxSimultaneousFeedDownloads)
-                            //{
-                            //    AppendLogMessage("Max Simultaneous Feed Downloads Limit", false);
-                            //    break;
-                            //}
-                        
-                        } 
-
-                        // 
-                        //  Start check of complete element 
-                        //             
-                        if (feed.tvuStatus == tvuStatus.Unknow)
-                        {
-                            Pattern = new Regex(@"http://tvunderground.org.ru/index.php\?show=episodes&sid=\d{1,10}");
-                            Match Match = Pattern.Match(WebPage);
-                            string url = Match.Value;
-                            feed.tvuStatus = WebManagerTVU.CheckComplete(url);
                         }
                     }
-                    //
-                    // end check compelte element
-                    //
-
-                    // reverse the list so the laft feed ( first temporal feed) became the first first feed in list
-                    elemList.Reverse();
-
-                    int counter = 0;
-                    foreach (string FeedLink in elemList)
-                    {
-
-                        
-
-                        string page = null;
-
-                        if (counter < 4)
-                        {
-                            // download the page in FeedLink
-                            AppendLogMessage(string.Format("try download page {0}", FeedLink), true);
-                            page = WebFetch.Fetch(FeedLink, true);
-                        }
-
-
-                        if (counter >= 4)
-                        {
-                            AppendLogMessage("Limit donwload per channel",false);
-                        }
-
-
-                        if (page != null) 
-                        {
-                            // find ed2k
-                            string sEd2k = RssParserTVU.FindEd2kLink(page);
-
-                            if (MainHistory.ExistInHistoryByEd2k(sEd2k) == -1)
-                            {
-                                Ed2kParser parser = new Ed2kParser(sEd2k);
-                                AppendLogMessage(string.Format("Found new file {0}", parser.GetFileName()), false);
-
-                                sDonwloadFile DL = new sDonwloadFile(sEd2k, FeedLink, feed.Url,feed.PauseDownload,feed.Category);
-                                
-                                // remove the comment:
-                                //counter++;
-
-                                myList.Add(DL);
-                            }
-                            else
-                            {
-                                // link ed2k just download bat not correct registred
-                                // to avoid rendondance of link
-                                MainHistory.Add(sEd2k, FeedLink, feed.Url);
-                            }
-
-                        }
-
-                    }
-
-
-
                 }
                 catch
                 {
-                    AppendLogMessage("Some Error in rss parsing", false);
-                    feed.status = enumStatus.Error;
+                    AppendLogMessage("Error parsin RSS data (" + feed.Url + ")",false);
                 }
 
-                //update rss feed
-                feed.LastUpgradeDate = MainHistory.LastDownloadDateByFeedSource(feed.Url);
-                feed.TotalDownloads = MainHistory.LinkCountByFeedSource(feed.Url);
                 int progress = (MainConfig.RssFeedList.IndexOf(feed) + 1) * 100;
                 progress = progress / MainConfig.RssFeedList.Count;
                 backgroundWorker1.ReportProgress(progress);
@@ -666,16 +584,51 @@ namespace tvu
 
             }
 
+            //
+            //  Start check intermedi link to find get ed2k
+            //
+            
+            DonwloadFileList.Reverse(); // reverse list so first temporal middle link became the first list
 
 
-            if (myList.Count == 0)
+            foreach (sDonwloadFile Link in DonwloadFileList)
+            {
+                AppendLogMessage(string.Format("try download page {0}", Link.MiddleLink), true);
+                string page = null;
+
+                // download the page in FeedLink
+                if ((page= WebFetch.Fetch(Link.MiddleLink, true)) != null)
+                {
+                    // find ed2k
+                    string sEd2k = RssParserTVU.FindEd2kLink(page);
+
+                    if (MainHistory.ExistInHistoryByEd2k(sEd2k) == -1)
+                    {
+                        Ed2kParser parser = new Ed2kParser(sEd2k);
+                        AppendLogMessage(string.Format("Found new file {0}", parser.GetFileName()), false);
+                        Link.Ed2kLink = parser.Ed2kLink;
+                    }
+                    else
+                    {
+                        // link ed2k just download bat not correct registred
+                        // to avoid rendondance of link
+
+                        MainHistory.Add(sEd2k, Link.MiddleLink, Link.FeedSource);
+                    }
+
+                }
+
+
+            }
+
+            if (DonwloadFileList.Count == 0)
             {
                 AppendLogMessage("Nothing to download", true);
                 return;
             }
             else
             {
-                AppendLogMessage("Total File Found " + myList.Count, true);
+                AppendLogMessage("Total File Found " + DonwloadFileList.Count, true);
             }
 
 
@@ -689,7 +642,7 @@ namespace tvu
             //
             // try to start emule
             // the if work only if rc == null ad 
-            if ((MainConfig.StartEmuleIfClose == true) & (myList.Count > MainConfig.MinToStartEmule))
+            if ((MainConfig.StartEmuleIfClose == true) & (DonwloadFileList.Count > MainConfig.MinToStartEmule))
             {
                 for (int i = 1; (i <= 5) & (rc == null); i++)
                 {
@@ -712,7 +665,7 @@ namespace tvu
             AppendLogMessage("Check min download", true);
             if (rc == null)
             {
-                if (myList.Count < MainConfig.MinToStartEmule)
+                if (DonwloadFileList.Count < MainConfig.MinToStartEmule)
                 {
                     AppendLogMessage("Min file download not reached", false);
                     return;
@@ -776,7 +729,7 @@ namespace tvu
 
                 
                 // estraggo i file da scaricare del feed
-                List<sDonwloadFile> tempDonwloadFileList = myList.FindAll(delegate(sDonwloadFile file) { return file.FeedSource == FeedURL; });
+                List<sDonwloadFile> tempDonwloadFileList = DonwloadFileList.FindAll(delegate(sDonwloadFile file) { return file.FeedSource == FeedURL; });
 
                 List<sDonwloadFile> temp = new List<sDonwloadFile>();
 
@@ -787,10 +740,10 @@ namespace tvu
                 }
 
                 // rimuovo tutti dalla mian list
-                myList.RemoveAll(delegate(sDonwloadFile file) { return file.FeedSource == FeedURL; });
+                DonwloadFileList.RemoveAll(delegate(sDonwloadFile file) { return file.FeedSource == FeedURL; });
 
                 // aggiungo i file da scaricare
-                myList.AddRange(temp);
+                DonwloadFileList.AddRange(temp);
 
 
                 // to remove, not usefull
@@ -800,7 +753,7 @@ namespace tvu
             //
             //  Download file 
             // 
-            foreach (sDonwloadFile DownloadFile in myList)
+            foreach (sDonwloadFile DownloadFile in DonwloadFileList)
             {
                 Ed2kParser ed2klink = new Ed2kParser(DownloadFile.Ed2kLink);
                 AppendLogMessage("Add file to download", true);
@@ -816,14 +769,14 @@ namespace tvu
                     AppendLogMessage("Stop download (pause)", true);
                     Service.StartDownload(ed2klink);
                 }
-                MainHistory.Add(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);
+                MainHistory.Add(DownloadFile.Ed2kLink, DownloadFile.DonwloadFileList, DownloadFile.FeedSource);
                 Ed2kParser parser = new Ed2kParser(DownloadFile.Ed2kLink);
                 AppendLogMessage(string.Format("Add file to emule {0} \n", parser.GetFileName()) + Environment.NewLine, false);
                 SendMailDownload(parser.GetFileName(), DownloadFile.Ed2kLink);
 
                 { // progress bar
-                    int progress = (myList.IndexOf(DownloadFile) + 1) * 100;
-                    backgroundWorker1.ReportProgress(progress / myList.Count);
+                    int progress = (DonwloadFileList.IndexOf(DownloadFile) + 1) * 100;
+                    backgroundWorker1.ReportProgress(progress / DonwloadFileList.Count);
                 }
             }
             MainHistory.Save();
@@ -1583,7 +1536,7 @@ namespace tvu
             MainConfig.Save();
             foreach (fileHistory file in dialog.NewHistory)
             {
-                MainHistory.Add(file.GetLink(), file.FeedLink, file.FeedSource);
+                MainHistory.Add(file.GetLink(), file.MiddleLink, file.FeedSource);
             }
             MainHistory.Save();
             UpdateRssFeedGUI();

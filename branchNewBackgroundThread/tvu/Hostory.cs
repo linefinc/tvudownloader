@@ -12,20 +12,20 @@ namespace tvu
     public class fileHistory : Ed2kParser
     {
 
-        public fileHistory(string link, string FeedLink, string FeedSource)
+        public fileHistory(string link, string MiddleLink, string FeedSource)
             : base(link)
         {
-            this.FeedLink = FeedLink;
+            this.MiddleLink = MiddleLink;
             this.FeedSource = FeedSource;
             this.Date = DateTime.Now.ToString("s");
         }
 
 
-        public fileHistory(string link, string FeedLink, string FeedSource, string Date)
+        public fileHistory(string link, string MiddleLink, string FeedSource, string Date)
             : base(link)
         {
-            
-            this.FeedLink = FeedLink;
+
+            this.MiddleLink = MiddleLink;
             this.FeedSource = FeedSource;
             this.Date= Date;
 
@@ -37,11 +37,10 @@ namespace tvu
         /// <summary>
         /// link of page than contain ed2k link
         /// </summary>
-        public string FeedLink {  get; private set; }
+        public string MiddleLink { get; private set; }
         /// <summary>
         /// url of feed
         /// </summary>
-
         public string FeedSource { get; private set; }
         public string Date {  get; private set; }
     }
@@ -79,7 +78,7 @@ namespace tvu
             {
                 
                 string strDate = DateTime.Now.ToString("s"); // to avoid compatibility with old history file
-                string strFeedLink = "";
+                string strMiddleLink = "";
                 string strEd2k = "";
                 string strFeedSource = "";
 
@@ -92,9 +91,9 @@ namespace tvu
                         strEd2k = t.InnerText;
                     }
 
-                    if (t.Name == "FeedLink")
+                    if (t.Name == "MiddleLink")
                     {
-                        strFeedLink = t.InnerText;
+                        strMiddleLink = t.InnerText;
                     }
 
                     if (t.Name == "FeedSource")
@@ -110,7 +109,7 @@ namespace tvu
 
                 }
 
-                fileHistoryList.Add(new fileHistory(strEd2k, strFeedLink, strFeedSource, strDate));
+                fileHistoryList.Add(new fileHistory(strEd2k, strMiddleLink, strFeedSource, strDate));
             }
         }
 
@@ -124,7 +123,7 @@ namespace tvu
             {
                 textWritter.WriteStartElement("Item");// open Item
                 textWritter.WriteElementString("Ed2k", fh.GetLink());
-                textWritter.WriteElementString("FeedLink", fh.FeedLink);
+                textWritter.WriteElementString("MiddleLink", fh.MiddleLink);
                 textWritter.WriteElementString("FeedSource", fh.FeedSource);
                 textWritter.WriteElementString("Date", fh.Date);
                 textWritter.WriteEndElement(); // close Item
@@ -137,10 +136,10 @@ namespace tvu
         ///
         /// <summary>Add a element to list </summary>
         /// <param name='ed2k'>ED2K Link</param>
-        /// <param name='FeedLink'>Link in Feed</param>
+        /// <param name='MiddleLink'>Link in Feed</param>
         /// <param name='FeedSource'>Rss Feed Link</param>
         ///
-        public void Add(string ed2k, string FeedLink, string FeedSource)
+        public void Add(string ed2k, string MiddleLink, string FeedSource)
         {
             // delete old file whit same ed2k name
             int index;
@@ -149,9 +148,9 @@ namespace tvu
                 fileHistoryList.Remove(fileHistoryList[index]);
             }
 
-            
 
-            fileHistory fh = new fileHistory(ed2k,FeedLink,FeedSource);
+
+            fileHistory fh = new fileHistory(ed2k, MiddleLink, FeedSource);
             
             fileHistoryList.Add(fh);
         }
@@ -160,7 +159,7 @@ namespace tvu
         {
             foreach (fileHistory fh in fileHistoryList)
             {
-                if (fh.FeedLink == link)
+                if (fh.MiddleLink == link)
                 {
                     return true;
                 }

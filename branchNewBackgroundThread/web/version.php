@@ -9,4 +9,20 @@ echo '<version vernumber = "0.5.1"><changelog></changelog></version>';
 echo '<version vernumber = "0.4.1"><changelog></changelog></version>';
 echo '<version vernumber = "0.4.0"><changelog></changelog></version>';
 echo '</versions>';
+
+
+
+	$ip = getenv('REMOTE_ADDR');
+	$fp = fopen('./data/data.csv','a');
+	
+	if($fp)
+	{
+		//fseek($fp,0,SEEK_END);
+		$tvuid = $_GET['tvuid'];
+		$str = date('Y-m-d H:i:s.0T') . ";" .$ip . ";" . $tvuid . "\n";
+
+		fwrite($fp, $str);
+		fclose($fp);
+	}
+
 ?> 

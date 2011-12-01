@@ -47,15 +47,6 @@ namespace tvu
 
         }
 
-
-
-    /*    public void SetLink(string link)
-        {
-
-            this.Decode(link);
-        }*/
-
-
         public string GetLink()
         {
             return Ed2kLink;
