@@ -127,7 +127,7 @@ namespace tvu
                 checkedListBox1.Items.Clear();
                 foreach (RssItem Item in RssChannel.ListItem)
                 {
-                    checkedListBox1.Items.Add(Item.Title);
+                    checkedListBox1.Items.Add(Item.Title,true);
                 }
 
                 butAdd.Enabled = true;

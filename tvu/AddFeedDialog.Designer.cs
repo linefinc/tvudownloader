@@ -176,21 +176,21 @@
             // 
             // buttonSelectAll
             // 
-            this.buttonSelectAll.Location = new System.Drawing.Point(206, 388);
+            this.buttonSelectAll.Location = new System.Drawing.Point(305, 388);
             this.buttonSelectAll.Name = "buttonSelectAll";
-            this.buttonSelectAll.Size = new System.Drawing.Size(75, 23);
+            this.buttonSelectAll.Size = new System.Drawing.Size(77, 23);
             this.buttonSelectAll.TabIndex = 42;
-            this.buttonSelectAll.Text = "Select All";
+            this.buttonSelectAll.Text = "Download All";
             this.buttonSelectAll.UseVisualStyleBackColor = true;
             this.buttonSelectAll.Click += new System.EventHandler(this.buttonSelectAll_Click);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(287, 388);
+            this.button2.Location = new System.Drawing.Point(388, 388);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(94, 23);
             this.button2.TabIndex = 43;
-            this.button2.Text = "Select None";
+            this.button2.Text = "Download None";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -219,7 +219,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AddFeedDialog";
-            this.Text = "AddFeedDialog";
+            this.Text = "Add Feed";
             this.ResumeLayout(false);
             this.PerformLayout();
 
