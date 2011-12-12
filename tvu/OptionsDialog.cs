@@ -88,6 +88,10 @@ namespace tvu
             //  Service Url
             //
             LocalConfig.ServiceUrl = textBoxServiceUrl.Text;
+            if(  LocalConfig.ServiceUrl.IndexOf("http://") == -1)
+            {
+                LocalConfig.ServiceUrl = "http://" + LocalConfig.ServiceUrl;
+            }
             //
             //  Password
             //

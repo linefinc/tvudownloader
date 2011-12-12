@@ -535,7 +535,7 @@ namespace tvu
 
             AppendLogMessage("Start RSS Check", false);
 
-            List<sDonwloadFile> myList = new List<sDonwloadFile>();
+            List<sDonwloadFile> DownloadFileList = new List<sDonwloadFile>();
 
 
             foreach (RssSubscrission feed in MainConfig.RssFeedList)
@@ -634,7 +634,7 @@ namespace tvu
                                 // remove the comment:
                                 //counter++;
 
-                                myList.Add(DL);
+                                DownloadFileList.Add(DL);
                             }
                             else
                             {
@@ -668,14 +668,14 @@ namespace tvu
 
 
 
-            if (myList.Count == 0)
+            if (DownloadFileList.Count == 0)
             {
                 AppendLogMessage("Nothing to download", true);
                 return;
             }
             else
             {
-                AppendLogMessage("Total File Found " + myList.Count, true);
+                AppendLogMessage("Total File Found " + DownloadFileList.Count, true);
             }
 
 
@@ -689,7 +689,7 @@ namespace tvu
             //
             // try to start emule
             // the if work only if rc == null ad 
-            if ((MainConfig.StartEmuleIfClose == true) & (myList.Count > MainConfig.MinToStartEmule))
+            if ((MainConfig.StartEmuleIfClose == true) & (DownloadFileList.Count > MainConfig.MinToStartEmule))
             {
                 for (int i = 1; (i <= 5) & (rc == null); i++)
                 {
@@ -712,7 +712,7 @@ namespace tvu
             AppendLogMessage("Check min download", true);
             if (rc == null)
             {
-                if (myList.Count < MainConfig.MinToStartEmule)
+                if (DownloadFileList.Count < MainConfig.MinToStartEmule)
                 {
                     AppendLogMessage("Min file download not reached", false);
                     return;
@@ -728,8 +728,12 @@ namespace tvu
             AppendLogMessage("Retrive list Category", true);
             Service.GetCategory(true);  // force upgrade category list 
 
+            AppendLogMessage("Clean download list (step 1) Find channel from ed2k", true);
+            
+
             List<string> ActualDownloads = Service.GetActualDownloads();
-            List<string> myFeedSoruceLink = new List<string>();
+                        
+            List<sDonwloadFile> ActualDownloadFileList = new List<sDonwloadFile>();
 
             foreach (string ad in ActualDownloads)
             {
@@ -742,8 +746,8 @@ namespace tvu
                 string myFileName = mySplit[2];
                 ulong myFileSize = Convert.ToUInt64(mySplit[3]);
 
-                
 
+                AppendLogMessage("check file ed2k = " + ad, true);
 
                 foreach (fileHistory fh in MainHistory.fileHistoryList)
                 {
@@ -751,56 +755,88 @@ namespace tvu
 
                     if ((fh.FileName == myFileName) && (fh.FileSize == myFileSize))
                     {
-                        myFeedSoruceLink.Add(fh.FeedSource);
+                        sDonwloadFile newADFile = new sDonwloadFile(ad,fh.FeedLink,fh.FeedSource,false,"");
+                        ActualDownloadFileList.Add(newADFile);
+
+                        AppendLogMessage("myFeedSoruceLink.Add(" + fh.FeedSource + ");",true);
                     }
                     
                     
                 }
 
             }
+            AppendLogMessage("myFeedSoruceLink.Count = " + ActualDownloadFileList.Count, true);
+            AppendLogMessage("MainConfig.RssFeedList.Count = " + MainConfig.RssFeedList.Count, true);
+
+            AppendLogMessage("Clean download list (step 2) check limit for each channel", true);
 
             
-
+            // clean RssFeedList
+            List<RssSubscrission> RssFeedList = new List<RssSubscrission>();
+            RssFeedList.AddRange(MainConfig.RssFeedList);
 
             foreach(RssSubscrission RssFeed in MainConfig.RssFeedList)
             {
+                AppendLogMessage("check feed = \"" + RssFeed.Title + "\"", true);
                 string FeedURL = RssFeed.Url;
             
     
                 // calcolo il numero di file che ho con quel feed;
-                List<string> myFeedList = myFeedSoruceLink.FindAll(delegate(string t) { return t == FeedURL; });
+                List<sDonwloadFile> ActualDownLoadFileForRssFeed;
+                ActualDownLoadFileForRssFeed = ActualDownloadFileList.FindAll(delegate(sDonwloadFile t)
+                                { return t.FeedLink == FeedURL; });
 
+                // estraggo i file da scaricare del feed
+                List<sDonwloadFile> DownloadFileListForRssFeed;
+                DownloadFileListForRssFeed = DownloadFileList.FindAll(delegate(sDonwloadFile file)
+                                { return file.FeedSource == FeedURL; });
+
+                AppendLogMessage("> MainConfig.MaxSimultaneousFeedDownloads = " + MainConfig.MaxSimultaneousFeedDownloads, true);
+                AppendLogMessage("> ActualDownLoadFileForRssFeed.Count = " + ActualDownLoadFileForRssFeed.Count, true);
+                AppendLogMessage("> DownloadFileListForRssFeed  =" + DownloadFileListForRssFeed.Count, true);
+                
                 // calcolo il numero di file da scaricare:
                 // NumeroMassimoDiFilePerCanale - NumeroDiFileGiàInDownlaod
-                int dif = MainConfig.MaxSimultaneousFeedDownloads - myFeedList.Count;
+                int dif = MainConfig.MaxSimultaneousFeedDownloads - ActualDownLoadFileForRssFeed.Count;
+                AppendLogMessage("1) DIF  =" + dif, true);
 
-                
-                // estraggo i file da scaricare del feed
-                List<sDonwloadFile> tempDonwloadFileList = myList.FindAll(delegate(sDonwloadFile file) { return file.FeedSource == FeedURL; });
-
-                List<sDonwloadFile> temp = new List<sDonwloadFile>();
-
-                // copio la lista dei file da scaricare
-                for (; dif > 0; dif--)
+                if (DownloadFileListForRssFeed.Count > 0)
                 {
-                    temp.Add(tempDonwloadFileList[dif]);
+                    if (dif <= 0)
+                    {
+                        // nothing to download
+                        foreach (sDonwloadFile file in DownloadFileListForRssFeed)
+                        {
+                            DownloadFileList.Remove(file);
+                        }
+                        AppendLogMessage("2> DownloadFileListForRssFeed  =" + DownloadFileListForRssFeed.Count, true);
+                    }
+                    else
+                    {
+
+
+                        DownloadFileListForRssFeed.Sort(delegate(sDonwloadFile A, sDonwloadFile B)
+                                                        { return A.Ed2kLink.CompareTo(B.Ed2kLink); });
+
+                        for (int index = dif; index < DownloadFileListForRssFeed.Count; index++)
+                        {
+                            sDonwloadFile temp = DownloadFileListForRssFeed[index];
+                            DownloadFileList.Remove(temp);
+                        }
+
+
+                        AppendLogMessage("2> DownloadFileListForRssFeed  =" + DownloadFileListForRssFeed.Count, true);
+                    }
                 }
-
-                // rimuovo tutti dalla mian list
-                myList.RemoveAll(delegate(sDonwloadFile file) { return file.FeedSource == FeedURL; });
-
-                // aggiungo i file da scaricare
-                myList.AddRange(temp);
-
-
-                // to remove, not usefull
-                //myFeedSoruceLink.RemoveAll(delegate(string t) { return t == FeedURL; });
             }
-      
+
+            AppendLogMessage("DownloadFileList  = " + DownloadFileList.Count, true);
+
+            AppendLogMessage("Download file", true);
             //
             //  Download file 
             // 
-            foreach (sDonwloadFile DownloadFile in myList)
+            foreach (sDonwloadFile DownloadFile in DownloadFileList)
             {
                 Ed2kParser ed2klink = new Ed2kParser(DownloadFile.Ed2kLink);
                 AppendLogMessage("Add file to download", true);
@@ -822,8 +858,8 @@ namespace tvu
                 SendMailDownload(parser.GetFileName(), DownloadFile.Ed2kLink);
 
                 { // progress bar
-                    int progress = (myList.IndexOf(DownloadFile) + 1) * 100;
-                    backgroundWorker1.ReportProgress(progress / myList.Count);
+                    int progress = (DownloadFileList.IndexOf(DownloadFile) + 1) * 100;
+                    backgroundWorker1.ReportProgress(progress / DownloadFileList.Count);
                 }
             }
             MainHistory.Save();
