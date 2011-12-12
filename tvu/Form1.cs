@@ -844,29 +844,29 @@ namespace tvu
             // 
             foreach (sDonwloadFile DownloadFile in DownloadFileList)
             {
-                //Ed2kParser ed2klink = new Ed2kParser(DownloadFile.Ed2kLink);
-                //AppendLogMessage("Add file to download", true);
-                //Service.AddToDownload(ed2klink, DownloadFile.Category);
+                Ed2kfile ed2klink = new Ed2kfile(DownloadFile.Ed2kLink);
+                AppendLogMessage("Add file to download", true);
+                Service.AddToDownload(ed2klink, DownloadFile.Category);
 
-                //if (DownloadFile.PauseDownload == true)
-                //{
-                //    AppendLogMessage("Start download", true);
-                //    Service.StopDownload(ed2klink);
-                //}
-                //else
-                //{
-                //    AppendLogMessage("Stop download (pause)", true);
-                //    Service.StartDownload(ed2klink);
-                //}
+                if (DownloadFile.PauseDownload == true)
+                {
+                    AppendLogMessage("Start download", true);
+                    Service.StopDownload(ed2klink);
+                }
+                else
+                {
+                    AppendLogMessage("Stop download (pause)", true);
+                    Service.StartDownload(ed2klink);
+                }
                 MainHistory.Add(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);
-                //Ed2kParser parser = new Ed2kParser(DownloadFile.Ed2kLink);
-                //AppendLogMessage(string.Format("Add file to emule {0} \n", parser.GetFileName()) + Environment.NewLine, false);
-                //SendMailDownload(parser.GetFileName(), DownloadFile.Ed2kLink);
+                Ed2kfile parser = new Ed2kfile(DownloadFile.Ed2kLink);
+                AppendLogMessage(string.Format("Add file to emule {0} \n", parser.GetFileName()) + Environment.NewLine, false);
+                SendMailDownload(parser.GetFileName(), DownloadFile.Ed2kLink);
 
-                //{ // progress bar
-                //    int progress = (DownloadFileList.IndexOf(DownloadFile) + 1) * 100;
-                //    backgroundWorker1.ReportProgress(progress / DownloadFileList.Count);
-                //}
+                { // progress bar
+                    int progress = (DownloadFileList.IndexOf(DownloadFile) + 1) * 100;
+                    backgroundWorker1.ReportProgress(progress / DownloadFileList.Count);
+                }
             }
             MainHistory.Save();
             Service.LogOut();
