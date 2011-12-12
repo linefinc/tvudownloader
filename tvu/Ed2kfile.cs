@@ -4,7 +4,7 @@ using System.Text;
 
 namespace tvu
 {
-    public class Ed2kParser
+    public class Ed2kfile
     {
         public string Ed2kLink { get; private set; }
         public string FileName {  get; private set; }
@@ -12,15 +12,12 @@ namespace tvu
         public string HashSHA1 {  get; private set; }
         public ulong FileSize {  get; private set; }
 
-        public Ed2kParser(string link)
+        public Ed2kfile(string link)
         {
             Ed2kLink = link;
-            Decode(link);
-        }
+            HashSHA1 = null;
 
-        private void Decode(string link)
-        {
-            if (link.Substring(0,13) != "ed2k://|file|")
+            if (link.Substring(0, 13) != "ed2k://|file|")
             {
                 throw (new System.ApplicationException("Link error (missing ed2k://|file|)"));
             }
@@ -39,22 +36,12 @@ namespace tvu
 
             if (temp.Length > 6)
             {
-                if(temp[5].Substring(0,2) == "h=")
+                if (temp[5].Substring(0, 2) == "h=")
                 {
                     HashSHA1 = temp[5].Substring(2);
                 }
             }
-
         }
-
-
-
-    /*    public void SetLink(string link)
-        {
-
-            this.Decode(link);
-        }*/
-
 
         public string GetLink()
         {
@@ -76,7 +63,7 @@ namespace tvu
             return HashMD4;
         }
 
-        public static bool operator ==(Ed2kParser A, Ed2kParser B)
+        public static bool operator ==(Ed2kfile A, Ed2kfile B)
         {
             if (A.FileSize != B.FileSize)
             {
@@ -88,12 +75,21 @@ namespace tvu
                 return false;
             }
 
+            if (A.HashSHA1 == null)
+                return true;
+
+            if (B.HashSHA1 == null)
+                return true;
+
+            if (A.HashSHA1 != B.HashSHA1)
+                return false;
+
             return true;
         }
 
          public override bool Equals(object o)
          {
-             Ed2kParser A = (Ed2kParser)o;
+             Ed2kfile A = (Ed2kfile)o;
 
              if (this.FileSize != A.FileSize)
              {
@@ -105,11 +101,13 @@ namespace tvu
                  return false;
              }
 
+             
+
              return true;
          }
 
 
-        public  bool Equals(Ed2kParser A)
+        public  bool Equals(Ed2kfile A)
         {
             if (this.FileSize != A.FileSize)
             {
@@ -124,7 +122,7 @@ namespace tvu
             return true;
         }
 
-        public static bool operator !=(Ed2kParser A, Ed2kParser B)
+        public static bool operator !=(Ed2kfile A, Ed2kfile B)
         {
             if (A.FileSize == B.FileSize)
             {

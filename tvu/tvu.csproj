@@ -78,7 +78,7 @@
       <DependentUpon>AddFeedDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Config.cs" />
-    <Compile Include="Ed2kParser.cs" />
+    <Compile Include="Ed2kfile.cs" />
     <Compile Include="eMuleWebManager.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

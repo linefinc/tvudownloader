@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 
 namespace tvu
 {
-    public class fileHistory : Ed2kParser
+    public class fileHistory : Ed2kfile
     {
 
         public fileHistory(string link, string FeedLink, string FeedSource)
@@ -171,11 +171,11 @@ namespace tvu
 
         public int ExistInHistoryByEd2k(string Ed2kLink)
         {
-            Ed2kParser A = new Ed2kParser(Ed2kLink);
+            Ed2kfile A = new Ed2kfile(Ed2kLink);
 
             for(int index =0; index < fileHistoryList.Count; index++)
             {
-                Ed2kParser B = new Ed2kParser(fileHistoryList[index].GetLink());
+                Ed2kfile B = new Ed2kfile(fileHistoryList[index].GetLink());
 
                 if (A == B)
                 {

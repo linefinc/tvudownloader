@@ -626,7 +626,7 @@ namespace tvu
 
                             if (MainHistory.ExistInHistoryByEd2k(sEd2k) == -1)
                             {
-                                Ed2kParser parser = new Ed2kParser(sEd2k);
+                                Ed2kfile parser = new Ed2kfile(sEd2k);
                                 AppendLogMessage(string.Format("Found new file {0}", parser.GetFileName()), false);
 
                                 sDonwloadFile DL = new sDonwloadFile(sEd2k, FeedLink, feed.Url,feed.PauseDownload,feed.Category);
@@ -729,10 +729,11 @@ namespace tvu
             Service.GetCategory(true);  // force upgrade category list 
 
             AppendLogMessage("Clean download list (step 1) Find channel from ed2k", true);
-            
 
-            List<string> ActualDownloads = Service.GetActualDownloads();
-                        
+
+            List<string> ActualDownloads = Service.GetActualDownloads();/// file downloaded with this program and now in download in emule
+
+            AppendLogMessage("Actual Download in Emule " + ActualDownloads.Count, true);
             List<sDonwloadFile> ActualDownloadFileList = new List<sDonwloadFile>();
 
             foreach (string ad in ActualDownloads)
@@ -742,30 +743,30 @@ namespace tvu
                 //int TrimEnd = ad.IndexOf("|", TrimStart + 1);
                 //string a = ad.Substring(TrimStart, TrimEnd - TrimStart);
 
-                string[] mySplit = ad.Split('|');
-                string myFileName = mySplit[2];
-                ulong myFileSize = Convert.ToUInt64(mySplit[3]);
+                Ed2kfile newFile = new Ed2kfile(ad);
 
+                //string[] mySplit = ad.Split('|');
+                //string myFileName = mySplit[2];
+                //ulong myFileSize = Convert.ToUInt64(mySplit[3]);
 
-                AppendLogMessage("check file ed2k = " + ad, true);
+               
+                AppendLogMessage("check file ed2k = " + newFile.FileName, true);
 
                 foreach (fileHistory fh in MainHistory.fileHistoryList)
                 {
-
-
-                    if ((fh.FileName == myFileName) && (fh.FileSize == myFileSize))
+                    if (fh == newFile)
                     {
                         sDonwloadFile newADFile = new sDonwloadFile(ad,fh.FeedLink,fh.FeedSource,false,"");
                         ActualDownloadFileList.Add(newADFile);
 
-                        AppendLogMessage("myFeedSoruceLink.Add(" + fh.FeedSource + ");",true);
+                        AppendLogMessage("Found file (" + newFile.FileName + ")", true);        
                     }
                     
                     
                 }
 
             }
-            AppendLogMessage("myFeedSoruceLink.Count = " + ActualDownloadFileList.Count, true);
+            AppendLogMessage("ActualDownloadFileList.Count = " + ActualDownloadFileList.Count , true);
             AppendLogMessage("MainConfig.RssFeedList.Count = " + MainConfig.RssFeedList.Count, true);
 
             AppendLogMessage("Clean download list (step 2) check limit for each channel", true);
@@ -774,6 +775,8 @@ namespace tvu
             // clean RssFeedList
             List<RssSubscrission> RssFeedList = new List<RssSubscrission>();
             RssFeedList.AddRange(MainConfig.RssFeedList);
+
+            AppendLogMessage("MainConfig.MaxSimultaneousFeedDownloads = " + MainConfig.MaxSimultaneousFeedDownloads, true);
 
             foreach(RssSubscrission RssFeed in MainConfig.RssFeedList)
             {
@@ -791,7 +794,7 @@ namespace tvu
                 DownloadFileListForRssFeed = DownloadFileList.FindAll(delegate(sDonwloadFile file)
                                 { return file.FeedSource == FeedURL; });
 
-                AppendLogMessage("> MainConfig.MaxSimultaneousFeedDownloads = " + MainConfig.MaxSimultaneousFeedDownloads, true);
+                
                 AppendLogMessage("> ActualDownLoadFileForRssFeed.Count = " + ActualDownLoadFileForRssFeed.Count, true);
                 AppendLogMessage("> DownloadFileListForRssFeed  =" + DownloadFileListForRssFeed.Count, true);
                 
@@ -804,16 +807,19 @@ namespace tvu
                 {
                     if (dif <= 0)
                     {
+                        AppendLogMessage("2A) Now remove " + DownloadFileListForRssFeed.Count + "element", true);
+
                         // nothing to download
                         foreach (sDonwloadFile file in DownloadFileListForRssFeed)
                         {
                             DownloadFileList.Remove(file);
                         }
-                        AppendLogMessage("2> DownloadFileListForRssFeed  =" + DownloadFileListForRssFeed.Count, true);
+                        AppendLogMessage("3A) DownloadFileListForRssFeed  =" + DownloadFileListForRssFeed.Count, true);
                     }
                     else
                     {
-
+                        int delta = DownloadFileListForRssFeed.Count - dif;
+                        AppendLogMessage("2B) Now remove " + delta + "element", true);
 
                         DownloadFileListForRssFeed.Sort(delegate(sDonwloadFile A, sDonwloadFile B)
                                                         { return A.Ed2kLink.CompareTo(B.Ed2kLink); });
@@ -825,7 +831,7 @@ namespace tvu
                         }
 
 
-                        AppendLogMessage("2> DownloadFileListForRssFeed  =" + DownloadFileListForRssFeed.Count, true);
+                        AppendLogMessage("3B) DownloadFileListForRssFeed  =" + DownloadFileListForRssFeed.Count, true);
                     }
                 }
             }
@@ -838,29 +844,29 @@ namespace tvu
             // 
             foreach (sDonwloadFile DownloadFile in DownloadFileList)
             {
-                Ed2kParser ed2klink = new Ed2kParser(DownloadFile.Ed2kLink);
-                AppendLogMessage("Add file to download", true);
-                Service.AddToDownload(ed2klink, DownloadFile.Category);
+                //Ed2kParser ed2klink = new Ed2kParser(DownloadFile.Ed2kLink);
+                //AppendLogMessage("Add file to download", true);
+                //Service.AddToDownload(ed2klink, DownloadFile.Category);
 
-                if (DownloadFile.PauseDownload == true)
-                {
-                    AppendLogMessage("Start download", true);
-                    Service.StopDownload(ed2klink);
-                }
-                else
-                {
-                    AppendLogMessage("Stop download (pause)", true);
-                    Service.StartDownload(ed2klink);
-                }
+                //if (DownloadFile.PauseDownload == true)
+                //{
+                //    AppendLogMessage("Start download", true);
+                //    Service.StopDownload(ed2klink);
+                //}
+                //else
+                //{
+                //    AppendLogMessage("Stop download (pause)", true);
+                //    Service.StartDownload(ed2klink);
+                //}
                 MainHistory.Add(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);
-                Ed2kParser parser = new Ed2kParser(DownloadFile.Ed2kLink);
-                AppendLogMessage(string.Format("Add file to emule {0} \n", parser.GetFileName()) + Environment.NewLine, false);
-                SendMailDownload(parser.GetFileName(), DownloadFile.Ed2kLink);
+                //Ed2kParser parser = new Ed2kParser(DownloadFile.Ed2kLink);
+                //AppendLogMessage(string.Format("Add file to emule {0} \n", parser.GetFileName()) + Environment.NewLine, false);
+                //SendMailDownload(parser.GetFileName(), DownloadFile.Ed2kLink);
 
-                { // progress bar
-                    int progress = (DownloadFileList.IndexOf(DownloadFile) + 1) * 100;
-                    backgroundWorker1.ReportProgress(progress / DownloadFileList.Count);
-                }
+                //{ // progress bar
+                //    int progress = (DownloadFileList.IndexOf(DownloadFile) + 1) * 100;
+                //    backgroundWorker1.ReportProgress(progress / DownloadFileList.Count);
+                //}
             }
             MainHistory.Save();
             Service.LogOut();

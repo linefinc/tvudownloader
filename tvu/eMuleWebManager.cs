@@ -150,7 +150,7 @@ namespace tvu
             WebFetch.Fetch(temp, true);
         }
 
-        public void AddToDownload(Ed2kParser Ed2kLink, string Category)
+        public void AddToDownload(Ed2kfile Ed2kLink, string Category)
         {
             int CategoryId = CategoryCache.IndexOf(Category);
             if (CategoryId == -1)
@@ -163,13 +163,13 @@ namespace tvu
             WebFetch.Fetch(temp, true);
         }
 
-        public void StartDownload(Ed2kParser Ed2kLink)
+        public void StartDownload(Ed2kfile Ed2kLink)
         {
             string temp = string.Format("{0}/?ses={1}&w=transfer&op=resume&file={2}", Host, SesID, Ed2kLink.GetHash());
             WebFetch.Fetch(temp, true);
         }
 
-        public void StopDownload(Ed2kParser Ed2kLink)
+        public void StopDownload(Ed2kfile Ed2kLink)
         {
             string temp = string.Format("{0}/?ses={1}&w=transfer&op=stop&file={2}", Host, SesID, Ed2kLink.GetHash());
             WebFetch.Fetch(temp, true);
