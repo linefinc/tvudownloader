@@ -35,6 +35,8 @@ namespace tvu
         public string MailSender { get; set; }
         public int intervalBetweenUpgradeCheck { get; set; }
         public string LastUpgradeCheck { get; set; }
+        public string FileNameLog { get; set; }
+        public bool saveLog  { get; set; }
         public bool StartWithWindows
         {
             get
@@ -89,6 +91,12 @@ namespace tvu
             FileName = Application.LocalUserAppDataPath;
             int rc = FileName.LastIndexOf("\\");
             FileName = FileName.Substring(0, rc) + "\\config.xml";
+
+            FileNameLog = Application.LocalUserAppDataPath;
+            rc = FileNameLog.LastIndexOf("\\");
+            FileNameLog = FileName.Substring(0, rc) + "\\log.txt";
+
+            saveLog = true;
 
             RssFeedList = new List<RssSubscrission>();
             if (!File.Exists(this.FileName))

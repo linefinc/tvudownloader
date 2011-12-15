@@ -70,8 +70,6 @@ namespace tvu
         public Form1()
         {
 
-            this.FormClosing += Form1_FormClosing;
-
             MainConfig = new Config();
             MainConfig.Load();
 
@@ -384,6 +382,47 @@ namespace tvu
 
         private void AppendText(string text, bool verbose)
         {
+
+            if (MainConfig.saveLog == true)
+            {
+                StreamWriter w = File.AppendText(MainConfig.FileNameLog);
+                w.WriteLine(text);
+                w.Flush();
+                w.Close();
+
+
+                FileInfo f = new FileInfo(MainConfig.FileNameLog);
+                if (f.Length > 1000000)
+                {
+
+                    FileStream fs = new FileStream(MainConfig.FileNameLog, FileMode.Open);
+
+                    int length = (int)fs.Length;
+
+
+                    byte[] buffer = new byte[length];
+
+                    fs.Read(buffer, 0, length);
+                    string str = System.Text.ASCIIEncoding.UTF8.GetString(buffer);
+
+                    int offset = length * 1 / 10; // 10%
+                    int start = str.IndexOf(Environment.NewLine, offset);
+                    str = str.Substring(start);
+                    str = str.TrimStart('\n', '\r', ' ');
+                    fs.Close();
+
+
+                    fs = new FileStream(MainConfig.FileNameLog, FileMode.Create);
+
+                    buffer = System.Text.ASCIIEncoding.UTF8.GetBytes(str);
+                    fs.Seek(0, SeekOrigin.Begin);
+                    fs.Write(buffer, 0, buffer.Length);
+
+                    fs.Close();
+                }
+            }
+
+
             if (verbose == false)
             {
                 this.LogTextBox.Text += text;
@@ -541,6 +580,12 @@ namespace tvu
             foreach (RssSubscrission feed in MainConfig.RssFeedList)
             {
 
+                if (backgroundWorker1.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+
                 feed.status = enumStatus.Ok;
                 AppendLogMessage("Read RSS " + feed.Url, true);
 
@@ -563,6 +608,12 @@ namespace tvu
                      
                         foreach(Match value in matchCollection)
                         {
+                            if (backgroundWorker1.CancellationPending)
+                            {
+                                e.Cancel = true;
+                                return;
+                            }
+                            
                             string FeedLink = value.ToString();
                             if (MainHistory.FileExistByFeedLink(FeedLink) == false)
                             {
@@ -570,13 +621,7 @@ namespace tvu
                                 feed.tvuStatus = tvuStatus.Unknow; // force refrash of tv Undergoud status when find a new file
                             }
 
-                            // limit the number of possible download for check
-                            //if (counter > MainConfig.MaxSimultaneousFeedDownloads)
-                            //{
-                            //    AppendLogMessage("Max Simultaneous Feed Downloads Limit", false);
-                            //    break;
-                            //}
-                        
+                            
                         } 
 
                         // 
@@ -600,8 +645,12 @@ namespace tvu
                     int counter = 0;
                     foreach (string FeedLink in elemList)
                     {
-
-                        
+                        if (backgroundWorker1.CancellationPending)
+                        {
+                            e.Cancel = true;
+                            return;
+                        }
+                     
 
                         string page = null;
 
@@ -656,6 +705,12 @@ namespace tvu
                     feed.status = enumStatus.Error;
                 }
 
+                if (backgroundWorker1.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+
                 //update rss feed
                 feed.LastUpgradeDate = MainHistory.LastDownloadDateByFeedSource(feed.Url);
                 feed.TotalDownloads = MainHistory.LinkCountByFeedSource(feed.Url);
@@ -693,6 +748,13 @@ namespace tvu
             {
                 for (int i = 1; (i <= 5) & (rc == null); i++)
                 {
+                    if (backgroundWorker1.CancellationPending)
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
+                        
+                    
                     AppendLogMessage(string.Format("start eMule Now (try {0}/5)", i), false);
                     AppendLogMessage("Wait 60 sec", false);
                     try
@@ -703,7 +765,18 @@ namespace tvu
                     {
                         AppendLogMessage("Unable start application", false);
                     }
-                    Thread.Sleep(5000);
+
+                    for (int n = 0; n < 10; n++)
+                    {
+                        if (backgroundWorker1.CancellationPending)
+                        {
+                            e.Cancel = true;
+                            return;
+                        }
+                        
+                        Thread.Sleep(500);
+                    }
+                    
                     rc = Service.LogIn();
 
                 }
@@ -780,6 +853,7 @@ namespace tvu
 
             foreach(RssSubscrission RssFeed in MainConfig.RssFeedList)
             {
+                
                 AppendLogMessage("check feed = \"" + RssFeed.Title + "\"", true);
                 string FeedURL = RssFeed.Url;
             
@@ -844,6 +918,13 @@ namespace tvu
             // 
             foreach (sDonwloadFile DownloadFile in DownloadFileList)
             {
+
+                if (backgroundWorker1.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+                        
                 Ed2kfile ed2klink = new Ed2kfile(DownloadFile.Ed2kLink);
                 AppendLogMessage("Add file to download", true);
                 Service.AddToDownload(ed2klink, DownloadFile.Category);
@@ -877,6 +958,11 @@ namespace tvu
         /// </summary>
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            if (e.Cancelled)
+            {
+                AppendLogMessage("Background Worker Cancelled",false);
+            }
+            
             UpdateRecentActivity();
             UpdateRssFeedGUI();
             menuItemCheckNow.Enabled = true;
@@ -898,6 +984,17 @@ namespace tvu
 
         void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            
+            AppendLogMessage("FormClosing Event",true); 
+            AppendLogMessage(string.Format("{0} = {1}", "CloseReason", e.CloseReason),true);
+            AppendLogMessage(string.Format("{0} = {1}", "Cancel", e.Cancel),true);
+            AppendLogMessage(string.Format("{0} = {1}", "mAllowClose", mAllowClose), true);
+
+            if (e.CloseReason == CloseReason.WindowsShutDown)
+            {
+                mAllowClose = true;
+            }
+
             // MSDN http://social.msdn.microsoft.com/forums/en-US/csharpgeneral/thread/eab563c3-37d0-4ebd-a086-b9ea7bb03fed
             if (!mAllowClose)
             {                   // Hide when user clicks X
@@ -908,6 +1005,7 @@ namespace tvu
             else
             {
                 notifyIcon1.Visible = false;      // Avoid ghost
+                backgroundWorker1.CancelAsync();
             }
         }
 
@@ -1674,6 +1772,8 @@ namespace tvu
             MainHistory.Save();
             UpdateRssFeedGUI(); ///upgrade gui
         }
+
+    
      
     
     }
