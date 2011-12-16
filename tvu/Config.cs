@@ -96,8 +96,6 @@ namespace tvu
             rc = FileNameLog.LastIndexOf("\\");
             FileNameLog = FileName.Substring(0, rc) + "\\log.txt";
 
-            saveLog = true;
-
             RssFeedList = new List<RssSubscrission>();
             if (!File.Exists(this.FileName))
             {
@@ -181,6 +179,9 @@ namespace tvu
             textWritter.WriteString(MailSender.ToString());
             textWritter.WriteEndElement();
 
+            textWritter.WriteStartElement("SaveLog");
+            textWritter.WriteString(saveLog.ToString());
+            textWritter.WriteEndElement();
 
             textWritter.WriteStartElement("tvudwid");
             textWritter.WriteString(tvudwid);
@@ -310,6 +311,8 @@ namespace tvu
             debug = (bool)Convert.ToBoolean(ReadString(xDoc, "Debug", "false"));
 
             Verbose = (bool)Convert.ToBoolean(ReadString(xDoc, "Verbose", "false"));
+
+            saveLog = (bool)Convert.ToBoolean(ReadString(xDoc, "SaveLog", "false"));
 
             EmailNotification = (bool)Convert.ToBoolean(ReadString(xDoc, "EmailNotification", "false"));
 
