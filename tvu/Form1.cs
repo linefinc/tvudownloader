@@ -1292,6 +1292,8 @@ namespace tvu
                 MainConfig.MailReceiver = OptDialog.LocalConfig.MailReceiver;
                 MainConfig.AutoClearLog = OptDialog.LocalConfig.AutoClearLog;
                 MainConfig.intervalBetweenUpgradeCheck = OptDialog.LocalConfig.intervalBetweenUpgradeCheck;
+                MainConfig.MaxSimultaneousFeedDownloads = OptDialog.LocalConfig.MaxSimultaneousFeedDownloads;
+                MainConfig.saveLog = OptDialog.LocalConfig.saveLog;
 
                 MainConfig.Save();
 
@@ -1771,6 +1773,23 @@ namespace tvu
             MainConfig.Save();
             MainHistory.Save();
             UpdateRssFeedGUI(); ///upgrade gui
+        }
+
+        private void openLogFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (System.IO.File.Exists(MainConfig.FileNameLog) == true)
+                {
+                    string command = string.Format("notepad.exe {0}", MainConfig.FileNameLog);
+                    Process.Start(command);
+                }
+            }
+            catch
+            { 
+            
+            }
+
         }
 
     

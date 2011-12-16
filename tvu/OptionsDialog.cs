@@ -29,6 +29,8 @@ namespace tvu
             numericUpDownIntervalTime.Value = inConfig.IntervalTime;
             numericUpDownMinDownloadToStrarTEmule.Value = inConfig.MinToStartEmule;
             numericUpDownIntervalCheck.Value = inConfig.intervalBetweenUpgradeCheck;
+
+            numericUpDownMaxSimultaneousDownloadForFeed.Value = inConfig.MaxSimultaneousFeedDownloads;
             checkBoxStartMinimized.Checked = inConfig.StartMinimized;
             checkBoxStartEmuleIfClose.Checked = inConfig.StartEmuleIfClose;
             checkBoxCloseEmuleIfAllIsDone.Checked = inConfig.CloseEmuleIfAllIsDone;
@@ -36,7 +38,7 @@ namespace tvu
             checkBoxAutoClear.Checked = inConfig.AutoClearLog;
             checkBoxVerbose.Checked = inConfig.Verbose;
             checkBoxEmailNotification.Checked = inConfig.EmailNotification;
-
+            checkBoxSaveLogToFile.Checked = inConfig.saveLog;
         }
 
         private void buttonSave_Click(object sender, EventArgs e)
@@ -132,7 +134,20 @@ namespace tvu
             //  Interval Check
             //
             LocalConfig.intervalBetweenUpgradeCheck = Convert.ToInt32(numericUpDownIntervalCheck.Value);
+            //
+            //
+            //
+            LocalConfig.MaxSimultaneousFeedDownloads = Convert.ToInt32(numericUpDownMaxSimultaneousDownloadForFeed.Value);
             
+            //
+            //  Save log to file
+            //
+            LocalConfig.saveLog = false;
+            if (checkBoxSaveLogToFile.Checked == true)
+            {
+                LocalConfig.saveLog = true;
+            }
+
 
             this.DialogResult = DialogResult.OK;
             this.Close();
