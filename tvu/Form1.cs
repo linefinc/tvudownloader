@@ -69,32 +69,22 @@ namespace tvu
 
         public Form1()
         {
-
+            // load config
             MainConfig = new Config();
             MainConfig.Load();
-
-            InitializeComponent();
-
-            UpdateRssFeedGUI();
-            SetupNotify();
-
-            label8.Text = "";
-            label10.Text = "";
-            label12.Text = "";
-            label14.Text = "";
-            label16.Text = "";
-
-
-            DownloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
-            AutoCloseDataTime = DateTime.Now.AddMinutes(1);
 
             // load History
             MainHistory = new History();
             MainHistory.Read();
 
-            UpdateRecentActivity();
-            UpdateRssFeedGUI();
+            InitializeComponent();
+            SetupNotify();
 
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            
             if (MainConfig.AutoClearLog == true)
             {
                 autoClearToolStripMenuItem.Checked = true;
@@ -105,9 +95,29 @@ namespace tvu
                 verboseToolStripMenuItem.Checked = true;
             }
 
+            // download date time
+            DownloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
+
+            //auto close mule
+            if (MainConfig.CloseEmuleIfAllIsDone == true)
+            {
+                EnableAutoCloseEmule();
+            }
+            else
+            {
+                DisableAutoCloseEmule();
+            }
+
+            label8.Text = "";
+            label10.Text = "";
+            label12.Text = "";
+            label14.Text = "";
+            label16.Text = "";
+
+            UpdateRecentActivity();
+            UpdateRssFeedGUI();
+
         }
-
-
 
 
         private void SetupNotify()
@@ -1344,7 +1354,7 @@ namespace tvu
 
         private void timer3_Tick(object sender, EventArgs e)
         {
-
+            AppendLogMessage("[AutoClose Mule] timer3_Tick", true);
             autoclose();
         }
         //
@@ -1355,12 +1365,14 @@ namespace tvu
         {
             if (MainConfig.CloseEmuleIfAllIsDone == false)
             {
+                AppendLogMessage("[AutoClose Mule] MainConfig.CloseEmuleIfAllIsDone == false", true);
                 return;
             }
 
             // check if Auto Close Data Time is not set
             if (AutoCloseDataTime == DateTime.MinValue)
             {
+                AppendLogMessage("[AutoClose Mule] AutoCloseDataTime = DateTime.Now.AddMinutes(30);", true);
                 AutoCloseDataTime = DateTime.Now.AddMinutes(30);
             }
 
@@ -1369,6 +1381,7 @@ namespace tvu
             //
             if (DateTime.Now < AutoCloseDataTime)
             {
+                AppendLogMessage("[AutoClose Mule] DateTime.Now < AutoCloseDataTime", true);
                 return;
             }
 
@@ -1453,6 +1466,7 @@ namespace tvu
             this.autoCloseEMuleToolStripMenuItem.Checked = true; // File -> Menu -> Configure
             this.MainConfig.CloseEmuleIfAllIsDone = true; // Enable function
             AutoCloseDataTime = DateTime.Now.AddMinutes(30);
+            timer3.Enabled = true;
         }
 
         public void DisableAutoCloseEmule()
@@ -1460,7 +1474,7 @@ namespace tvu
             this.menuItemAutoCloseEmule.Checked = false; // disable context menu
             this.autoCloseEMuleToolStripMenuItem.Checked = false; // File -> Menu -> Configure
             this.MainConfig.CloseEmuleIfAllIsDone = false; // disable function
-            
+            timer3.Enabled = false;
 
         }
 
@@ -1791,6 +1805,8 @@ namespace tvu
             }
 
         }
+
+        
 
     
      

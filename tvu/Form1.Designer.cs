@@ -90,9 +90,9 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.verboseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sendLogToEmailToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openLogFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer3 = new System.Windows.Forms.Timer(this.components);
-            this.openLogFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
@@ -417,7 +417,7 @@
             // checkNowToolStripMenuItem
             // 
             this.checkNowToolStripMenuItem.Name = "checkNowToolStripMenuItem";
-            this.checkNowToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.checkNowToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.checkNowToolStripMenuItem.Text = "Check Now";
             this.checkNowToolStripMenuItem.Click += new System.EventHandler(this.checkNowToolStripMenuItem_Click);
             // 
@@ -432,7 +432,7 @@
             this.autoCloseEMuleToolStripMenuItem,
             this.testAutoCloseToolStripMenuItem});
             this.optionToolStripMenuItem.Name = "optionToolStripMenuItem";
-            this.optionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.optionToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.optionToolStripMenuItem.Text = "Options";
             // 
             // globalOptionToolStripMenuItem
@@ -501,24 +501,24 @@
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(135, 6);
             // 
             // hideToolStripMenuItem
             // 
             this.hideToolStripMenuItem.Name = "hideToolStripMenuItem";
-            this.hideToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.hideToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.hideToolStripMenuItem.Text = "Hide";
             this.hideToolStripMenuItem.Click += new System.EventHandler(this.hideToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(135, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -599,6 +599,13 @@
             this.sendLogToEmailToolStripMenuItem.Text = "Send Log To Email";
             this.sendLogToEmailToolStripMenuItem.Click += new System.EventHandler(this.sendLogToEmailToolStripMenuItem_Click);
             // 
+            // openLogFileToolStripMenuItem
+            // 
+            this.openLogFileToolStripMenuItem.Name = "openLogFileToolStripMenuItem";
+            this.openLogFileToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.openLogFileToolStripMenuItem.Text = "Open Log File";
+            this.openLogFileToolStripMenuItem.Click += new System.EventHandler(this.openLogFileToolStripMenuItem_Click);
+            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
@@ -610,13 +617,6 @@
             // 
             this.timer3.Interval = 60000;
             this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
-            // 
-            // openLogFileToolStripMenuItem
-            // 
-            this.openLogFileToolStripMenuItem.Name = "openLogFileToolStripMenuItem";
-            this.openLogFileToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-            this.openLogFileToolStripMenuItem.Text = "Open Log File";
-            this.openLogFileToolStripMenuItem.Click += new System.EventHandler(this.openLogFileToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -630,6 +630,7 @@
             this.MinimizeBox = false;
             this.Name = "Form1";
             this.Text = "TvUnderground Downloader";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.tabLog.ResumeLayout(false);
             this.tabLog.PerformLayout();
