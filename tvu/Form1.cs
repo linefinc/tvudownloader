@@ -69,6 +69,10 @@ namespace tvu
 
         public Form1()
         {
+            
+            
+            
+            
             // load config
             MainConfig = new Config();
             MainConfig.Load();
@@ -258,13 +262,13 @@ namespace tvu
             {
                 this.menuItemEnable.Checked = false;
                 MainConfig.Enebled = false;
-                timer1.Enabled = false;
+                timerRssCheck.Enabled = false;
             }
             else
             {
                 this.menuItemEnable.Checked = true;
                 MainConfig.Enebled = true;
-                timer1.Enabled = true;
+                timerRssCheck.Enabled = true;
             }
         }
 
@@ -562,6 +566,7 @@ namespace tvu
             addToolStripMenuItem.Enabled = false;
             deleteCompleteToolStripMenuItem.Enabled = false;
             menuItemCheckNow.Enabled = false;
+            cancelCheckToolStripMenuItem.Enabled = true;
             backgroundWorker1.RunWorkerAsync();
 
         }
@@ -819,36 +824,35 @@ namespace tvu
             AppendLogMessage("Actual Download in Emule " + ActualDownloads.Count, true);
             List<sDonwloadFile> ActualDownloadFileList = new List<sDonwloadFile>();
 
+
             foreach (string ad in ActualDownloads)
             {
-
-                //int TrimStart = ad.IndexOf("h=") + 2;
-                //int TrimEnd = ad.IndexOf("|", TrimStart + 1);
-                //string a = ad.Substring(TrimStart, TrimEnd - TrimStart);
-
-                Ed2kfile newFile = new Ed2kfile(ad);
-
-                //string[] mySplit = ad.Split('|');
-                //string myFileName = mySplit[2];
-                //ulong myFileSize = Convert.ToUInt64(mySplit[3]);
-
-               
-                AppendLogMessage("check file ed2k = " + newFile.FileName, true);
-
-                foreach (fileHistory fh in MainHistory.fileHistoryList)
+                try
                 {
-                    if (fh == newFile)
-                    {
-                        sDonwloadFile newADFile = new sDonwloadFile(ad,fh.FeedLink,fh.FeedSource,false,"");
-                        ActualDownloadFileList.Add(newADFile);
+                    Ed2kfile newFile = new Ed2kfile(ad);
 
-                        AppendLogMessage("Found file (" + newFile.FileName + ")", true);        
+                    AppendLogMessage("check file ed2k = " + newFile.FileName, true);
+
+                    foreach (fileHistory fh in MainHistory.fileHistoryList)
+                    {
+                        if (fh == newFile)
+                        {
+                            sDonwloadFile newADFile = new sDonwloadFile(ad, fh.FeedLink, fh.FeedSource, false, "");
+                            ActualDownloadFileList.Add(newADFile);
+
+                            AppendLogMessage("Found file (" + newFile.FileName + ")", true);
+                        }
                     }
-                    
+
+                }
+                catch (Exception exception)
+                {
+                    AppendLogMessage("Error in ckeck file \"" + ad ,false);
+                    AppendLogMessage("Error message error: \"" + exception.Message + "\"", false);
                     
                 }
-
             }
+           
             AppendLogMessage("ActualDownloadFileList.Count = " + ActualDownloadFileList.Count , true);
             AppendLogMessage("MainConfig.RssFeedList.Count = " + MainConfig.RssFeedList.Count, true);
 
@@ -975,6 +979,7 @@ namespace tvu
             
             UpdateRecentActivity();
             UpdateRssFeedGUI();
+            cancelCheckToolStripMenuItem.Enabled = true;
             menuItemCheckNow.Enabled = true;
             checkNowToolStripMenuItem.Enabled = true;
             deleteToolStripMenuItem.Enabled = true;
@@ -1354,7 +1359,7 @@ namespace tvu
 
         private void timer3_Tick(object sender, EventArgs e)
         {
-            AppendLogMessage("[AutoClose Mule] timer3_Tick", true);
+            //AppendLogMessage("[AutoClose Mule] timer3_Tick", true);
             autoclose();
         }
         //
@@ -1381,12 +1386,12 @@ namespace tvu
             //
             if (DateTime.Now < AutoCloseDataTime)
             {
-                AppendLogMessage("[AutoClose Mule] DateTime.Now < AutoCloseDataTime", true);
+                //AppendLogMessage("[AutoClose Mule] DateTime.Now < AutoCloseDataTime", true);
                 return;
             }
 
             // suspend event while connect with mule
-            timer3.Enabled = false;
+            timerAutoClose.Enabled = false;
 
             // conncect to mule
 
@@ -1427,7 +1432,7 @@ namespace tvu
                     AppendLogMessage("[AutoClose Mule: CLOSE] Close Service", true);
                     Dialog.Dispose();
                     Service.Close();
-                    timer3.Enabled = true;  // enable timer 
+                    timerAutoClose.Enabled = true;  // enable timer 
                     break;
                 // to fix here                    
                 case AlertChoiceEnum.Skip: // SKIP
@@ -1437,7 +1442,7 @@ namespace tvu
                     Dialog.Dispose();
                     AppendLogMessage("[AutoClose Mule] LogOut", true);
                     Service.LogOut();
-                    timer3.Enabled = true;  // enable timer 
+                    timerAutoClose.Enabled = true;  // enable timer 
                     break;
                 case AlertChoiceEnum.Disable:    // disable autoclose
                     AppendLogMessage("[AutoClose Mule: DISABLE] Disable", true);
@@ -1445,7 +1450,7 @@ namespace tvu
                     AppendLogMessage("[AutoClose Mule] LogOut", true);
                     Service.LogOut();
                     DisableAutoCloseEmule();
-                    timer3.Enabled = true;  // enable timer 
+                    timerAutoClose.Enabled = true;  // enable timer 
                     break;
             }
 
@@ -1466,7 +1471,7 @@ namespace tvu
             this.autoCloseEMuleToolStripMenuItem.Checked = true; // File -> Menu -> Configure
             this.MainConfig.CloseEmuleIfAllIsDone = true; // Enable function
             AutoCloseDataTime = DateTime.Now.AddMinutes(30);
-            timer3.Enabled = true;
+            timerAutoClose.Enabled = true;
         }
 
         public void DisableAutoCloseEmule()
@@ -1474,7 +1479,7 @@ namespace tvu
             this.menuItemAutoCloseEmule.Checked = false; // disable context menu
             this.autoCloseEMuleToolStripMenuItem.Checked = false; // File -> Menu -> Configure
             this.MainConfig.CloseEmuleIfAllIsDone = false; // disable function
-            timer3.Enabled = false;
+            timerAutoClose.Enabled = false;
 
         }
 
@@ -1793,17 +1798,26 @@ namespace tvu
         {
             try
             {
+                AppendLogMessage("Open log file " + MainConfig.FileNameLog, false);
+
                 if (System.IO.File.Exists(MainConfig.FileNameLog) == true)
                 {
+
+                    AppendLogMessage("File exist", false);
                     string command = string.Format("notepad.exe {0}", MainConfig.FileNameLog);
                     Process.Start(command);
                 }
             }
-            catch
-            { 
-            
+            catch(Exception exception)
+            {
+                AppendLogMessage("Exception \"" + exception.Message + "\"", false);
             }
 
+        }
+
+        private void cancelCheckToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            backgroundWorker1.CancelAsync();
         }
 
         

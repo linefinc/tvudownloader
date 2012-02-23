@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.timerRssCheck = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.tabLog = new System.Windows.Forms.TabPage();
@@ -92,7 +92,8 @@
             this.sendLogToEmailToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openLogFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.timer3 = new System.Windows.Forms.Timer(this.components);
+            this.timerAutoClose = new System.Windows.Forms.Timer(this.components);
+            this.cancelCheckToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
@@ -102,11 +103,11 @@
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // timer1
+            // timerRssCheck
             // 
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 60000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.timerRssCheck.Enabled = true;
+            this.timerRssCheck.Interval = 60000;
+            this.timerRssCheck.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // backgroundWorker1
             // 
@@ -405,6 +406,7 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.checkNowToolStripMenuItem,
+            this.cancelCheckToolStripMenuItem,
             this.optionToolStripMenuItem,
             this.toolStripSeparator2,
             this.hideToolStripMenuItem,
@@ -417,7 +419,7 @@
             // checkNowToolStripMenuItem
             // 
             this.checkNowToolStripMenuItem.Name = "checkNowToolStripMenuItem";
-            this.checkNowToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.checkNowToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.checkNowToolStripMenuItem.Text = "Check Now";
             this.checkNowToolStripMenuItem.Click += new System.EventHandler(this.checkNowToolStripMenuItem_Click);
             // 
@@ -432,7 +434,7 @@
             this.autoCloseEMuleToolStripMenuItem,
             this.testAutoCloseToolStripMenuItem});
             this.optionToolStripMenuItem.Name = "optionToolStripMenuItem";
-            this.optionToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.optionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.optionToolStripMenuItem.Text = "Options";
             // 
             // globalOptionToolStripMenuItem
@@ -501,24 +503,24 @@
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(135, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
             // 
             // hideToolStripMenuItem
             // 
             this.hideToolStripMenuItem.Name = "hideToolStripMenuItem";
-            this.hideToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.hideToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.hideToolStripMenuItem.Text = "Hide";
             this.hideToolStripMenuItem.Click += new System.EventHandler(this.hideToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(135, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -613,10 +615,18 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // timer3
+            // timerAutoClose
             // 
-            this.timer3.Interval = 60000;
-            this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
+            this.timerAutoClose.Interval = 60000;
+            this.timerAutoClose.Tick += new System.EventHandler(this.timer3_Tick);
+            // 
+            // cancelCheckToolStripMenuItem
+            // 
+            this.cancelCheckToolStripMenuItem.Enabled = false;
+            this.cancelCheckToolStripMenuItem.Name = "cancelCheckToolStripMenuItem";
+            this.cancelCheckToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cancelCheckToolStripMenuItem.Text = "Cancel Check";
+            this.cancelCheckToolStripMenuItem.Click += new System.EventHandler(this.cancelCheckToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -651,7 +661,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer timerRssCheck;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.TabPage tabLog;
@@ -700,7 +710,7 @@
         private System.Windows.Forms.ToolStripMenuItem oPMLToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
-        private System.Windows.Forms.Timer timer3;
+        private System.Windows.Forms.Timer timerAutoClose;
         private System.Windows.Forms.ToolStripMenuItem verboseToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ColumnHeader columnHeader6;
@@ -715,6 +725,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem openLogFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cancelCheckToolStripMenuItem;
     }
 }
 
