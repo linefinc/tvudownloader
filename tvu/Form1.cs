@@ -69,10 +69,6 @@ namespace tvu
 
         public Form1()
         {
-            
-            
-            
-            
             // load config
             MainConfig = new Config();
             MainConfig.Load();
@@ -1357,9 +1353,8 @@ namespace tvu
             newForm.ShowDialog();
         }
 
-        private void timer3_Tick(object sender, EventArgs e)
+        private void timerAutoClose_Tick(object sender, EventArgs e)
         {
-            //AppendLogMessage("[AutoClose Mule] timer3_Tick", true);
             autoclose();
         }
         //

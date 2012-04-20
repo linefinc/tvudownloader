@@ -618,7 +618,7 @@
             // timerAutoClose
             // 
             this.timerAutoClose.Interval = 60000;
-            this.timerAutoClose.Tick += new System.EventHandler(this.timer3_Tick);
+            this.timerAutoClose.Tick += new System.EventHandler(this.timerAutoClose_Tick);
             // 
             // cancelCheckToolStripMenuItem
             // 
