@@ -99,6 +99,7 @@
       <DependentUpon>FormOPMLImporter.cs</DependentUpon>
     </Compile>
     <Compile Include="Hostory.cs" />
+    <Compile Include="ListViewColumnSorter.cs" />
     <Compile Include="OptionsDialog.cs">
       <SubType>Form</SubType>
     </Compile>

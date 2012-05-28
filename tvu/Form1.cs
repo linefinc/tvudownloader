@@ -35,6 +35,7 @@ namespace tvu
         private System.Windows.Forms.MenuItem menuItemAutoCloseEmule;
         private System.Windows.Forms.MenuItem menuItemEnable;
 
+        private ListViewColumnSorter lvwColumnSorter;
 
         public Config MainConfig;
         public History MainHistory;
@@ -43,6 +44,8 @@ namespace tvu
 
         private DateTime DownloadDataTime;
         private DateTime AutoCloseDataTime;
+
+
 
 
         public class sDonwloadFile
@@ -113,6 +116,11 @@ namespace tvu
             label12.Text = "";
             label14.Text = "";
             label16.Text = "";
+
+            // Create an instance of a ListView column sorter and assign it 
+            // to the ListView control.
+            lvwColumnSorter = new ListViewColumnSorter();
+            this.listView1.ListViewItemSorter = lvwColumnSorter;
 
             UpdateRecentActivity();
             UpdateRssFeedGUI();
@@ -1813,6 +1821,34 @@ namespace tvu
         private void cancelCheckToolStripMenuItem_Click(object sender, EventArgs e)
         {
             backgroundWorker1.CancelAsync();
+        }
+
+        private void listView1_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            //http://support.microsoft.com/kb/319401
+
+            // Determine if clicked column is already the column that is being sorted.
+            if (e.Column == lvwColumnSorter.SortColumn)
+            {
+                // Reverse the current sort direction for this column.
+                if (lvwColumnSorter.Order == SortOrder.Ascending)
+                {
+                    lvwColumnSorter.Order = SortOrder.Descending;
+                }
+                else
+                {
+                    lvwColumnSorter.Order = SortOrder.Ascending;
+                }
+            }
+            else
+            {
+                // Set the column number that is to be sorted; default to ascending.
+                lvwColumnSorter.SortColumn = e.Column;
+                lvwColumnSorter.Order = SortOrder.Ascending;
+            }
+
+            // Perform the sort with these new sort options.
+            this.listView1.Sort();
         }
 
         
