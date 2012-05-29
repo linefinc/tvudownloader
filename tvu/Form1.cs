@@ -1270,8 +1270,7 @@ namespace tvu
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AboutBox1 dialog = new AboutBox1();
-            dialog.ShowDialog();
+           
 
         }
 
@@ -1849,6 +1848,22 @@ namespace tvu
 
             // Perform the sort with these new sort options.
             this.listView1.Sort();
+        }
+
+        private void aboutToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            AboutBox1 dialog = new AboutBox1();
+            dialog.ShowDialog();
+        }
+
+        private void reportABugToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://sourceforge.net/tracker/?group_id=357576&atid=1492909");
+        }
+
+        private void helpToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://tvudownloader.sourceforge.net/");
         }
 
         
