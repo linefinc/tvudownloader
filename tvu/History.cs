@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Text;
 using System.Xml;
 using System.IO;
@@ -9,54 +10,19 @@ using System.Text.RegularExpressions;
 
 namespace tvu
 {
-    public class fileHistory : Ed2kfile
-    {
-
-        public fileHistory(string link, string FeedLink, string FeedSource)
-            : base(link)
-        {
-            this.FeedLink = FeedLink;
-            this.FeedSource = FeedSource;
-            this.Date = DateTime.Now.ToString("s");
-        }
-
-
-        public fileHistory(string link, string FeedLink, string FeedSource, string Date)
-            : base(link)
-        {
-            
-            this.FeedLink = FeedLink;
-            this.FeedSource = FeedSource;
-            this.Date= Date;
-
-        }
-
-
-
-
-        /// <summary>
-        /// link of page than contain ed2k link
-        /// </summary>
-        public string FeedLink {  get; private set; }
-        /// <summary>
-        /// url of feed
-        /// </summary>
-
-        public string FeedSource { get; private set; }
-        public string Date {  get; private set; }
-    }
-
-    public class History
+      public class History
     {
 
         public string FileName { get; private set; }
 
         public List<fileHistory> fileHistoryList { get; private set; }
+        private Hashtable HashtableGuid;
 
         public History()
         {
             fileHistoryList = new List<fileHistory>();
-            
+            HashtableGuid = new Hashtable();
+
             FileName = Application.LocalUserAppDataPath;
             int rc = FileName.LastIndexOf("\\");
             FileName = FileName.Substring(0, rc) + "\\History.xml";
@@ -77,7 +43,7 @@ namespace tvu
 
             for (int i = 0; i < ItemList.Count; i++)
             {
-                
+
                 string strDate = DateTime.Now.ToString("s"); // to avoid compatibility with old history file
                 string strFeedLink = "";
                 string strEd2k = "";
@@ -86,7 +52,7 @@ namespace tvu
                 XmlNode node = ItemList[i];
                 foreach (XmlNode t in node.ChildNodes)
                 {
-                
+
                     if (t.Name == "Ed2k")
                     {
                         strEd2k = t.InnerText;
@@ -131,7 +97,7 @@ namespace tvu
             }
 
             textWritter.Close();
-           
+
         }
 
         ///
@@ -147,33 +113,26 @@ namespace tvu
             while ((index = ExistInHistoryByEd2k(ed2k)) != -1)
             {
                 fileHistoryList.Remove(fileHistoryList[index]);
+                HashtableGuid.Remove(FeedSource);
             }
 
-            
 
-            fileHistory fh = new fileHistory(ed2k,FeedLink,FeedSource);
-            
+
+            fileHistory fh = new fileHistory(ed2k, FeedLink, FeedSource);
+            HashtableGuid.Add(FeedSource, fh);
             fileHistoryList.Add(fh);
         }
 
         public bool FileExistByFeedLink(string link)
         {
-            foreach (fileHistory fh in fileHistoryList)
-            {
-                if (fh.FeedLink == link)
-                {
-                    return true;
-                }
-
-            }
-            return false;
+            return HashtableGuid.ContainsKey(link);
         }
 
         public int ExistInHistoryByEd2k(string Ed2kLink)
         {
             Ed2kfile A = new Ed2kfile(Ed2kLink);
 
-            for(int index =0; index < fileHistoryList.Count; index++)
+            for (int index = 0; index < fileHistoryList.Count; index++)
             {
                 Ed2kfile B = new Ed2kfile(fileHistoryList[index].GetLink());
 
@@ -210,10 +169,10 @@ namespace tvu
                     {
                         date = fh.Date;
                     }
-                    
+
                     if (date.CompareTo(fh.Date) == -1)
-                    { 
-                        date = fh.Date; 
+                    {
+                        date = fh.Date;
                     }
                 }
             }
@@ -223,7 +182,7 @@ namespace tvu
 
         public void DeleteFile(string FileNameED2k)
         {
-            for(int i =0;i < fileHistoryList.Count; i++)
+            for (int i = 0; i < fileHistoryList.Count; i++)
             {
                 string fh_Ed2kLink = fileHistoryList[i].GetLink();
                 int rc = fh_Ed2kLink.IndexOf(FileName);
@@ -238,9 +197,9 @@ namespace tvu
 
         public void DeleteFileByFeedSource(string FeedSource)
         {
-            
+
             List<fileHistory> fileToDelete = new List<fileHistory>();
-            
+
             foreach (fileHistory fh in fileHistoryList)
             {
                 if (fh.FeedSource == FeedSource)
@@ -297,7 +256,7 @@ namespace tvu
         /// <param name="list">List of ed2k in active download from GetActualDownloads()</param>
         /// <param name="FeedSource">Feed soruce</param>
         /// <returns></returns>
-        public int GetFeedByDownload(List<string> list,string FeedSource)
+        public int GetFeedByDownload(List<string> list, string FeedSource)
         {
             int count = 0;
 
