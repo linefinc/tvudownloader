@@ -84,6 +84,8 @@ namespace tvu
         public void Save()
         {
             XmlTextWriter textWritter = new XmlTextWriter(FileName, null);
+            textWritter.Formatting = Formatting.Indented;
+            textWritter.Indentation = 4;
             textWritter.WriteStartDocument();
             textWritter.WriteStartElement("History");
 
@@ -95,6 +97,7 @@ namespace tvu
                 textWritter.WriteElementString("FeedSource", fh.FeedSource);
                 textWritter.WriteElementString("Date", fh.Date);
                 textWritter.WriteEndElement(); // close Item
+                
             }
 
             textWritter.Close();
