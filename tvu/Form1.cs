@@ -621,18 +621,18 @@ namespace tvu
                         WebPage.Replace("http://www.tvunderground.org.ru/", "http://tvunderground.org.ru/");
 
                         Regex Pattern = new Regex(@"http://tvunderground.org.ru/index.php\?show=ed2k&season=\d{1,10}&sid\[\d{1,10}\]=\d{1,10}");
-                        
+
                         MatchCollection matchCollection = Pattern.Matches(WebPage);
 
-                     
-                        foreach(Match value in matchCollection)
+
+                        foreach (Match value in matchCollection)
                         {
                             if (backgroundWorker1.CancellationPending)
                             {
                                 e.Cancel = true;
                                 return;
                             }
-                            
+
                             string FeedLink = value.ToString();
                             if (MainHistory.FileExistByFeedLink(FeedLink) == false)
                             {
@@ -640,19 +640,36 @@ namespace tvu
                                 feed.tvuStatus = tvuStatus.Unknow; // force refrash of tv Undergoud status when find a new file
                             }
 
-                            
-                        } 
 
+                        }
+
+
+                        try
+                        {
+                            DateTime LastTvUStatusUpgradeDate = Convert.ToDateTime(feed.LastTvUStatusUpgradeDate);
+                            TimeSpan ts = DateTime.Now - LastTvUStatusUpgradeDate;
+                            if (ts.TotalDays > 15)
+                            {
+                                feed.tvuStatus = tvuStatus.Unknow;
+                            }
+                        }
+                        catch
+                        {
+                            feed.tvuStatus = tvuStatus.Unknow;
+                        }
                         // 
                         //  Start check of complete element 
-                        //             
+                        // 
                         if (feed.tvuStatus == tvuStatus.Unknow)
                         {
                             Pattern = new Regex(@"http://tvunderground.org.ru/index.php\?show=episodes&sid=\d{1,10}");
                             Match Match = Pattern.Match(WebPage);
                             string url = Match.Value;
                             feed.tvuStatus = WebManagerTVU.CheckComplete(url);
+                            feed.LastTvUStatusUpgradeDate = DateTime.Now.ToString();
                         }
+
+
                     }
                     //
                     // end check compelte element
