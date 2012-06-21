@@ -75,8 +75,9 @@ namespace tvu
 
 
                 }
-
-                fileHistoryList.Add(new fileHistory(strEd2k, strFeedLink, strFeedSource, strDate));
+                fileHistory fh = new fileHistory(strEd2k, strFeedLink, strFeedSource, strDate);
+                fileHistoryList.Add(fh);
+                HashtableGuid.Add(strFeedLink, fh);
             }
         }
 
