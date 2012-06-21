@@ -639,8 +639,6 @@ namespace tvu
                                 elemList.Add(FeedLink);
                                 feed.tvuStatus = tvuStatus.Unknow; // force refrash of tv Undergoud status when find a new file
                             }
-
-
                         }
 
 
@@ -677,6 +675,7 @@ namespace tvu
 
                     // reverse the list so the laft feed ( first temporal feed) became the first first feed in list
                     elemList.Reverse();
+
 
                     int counter = 0;
                     foreach (string FeedLink in elemList)
@@ -1791,23 +1790,20 @@ namespace tvu
 
         private void deleteCompleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            List<RssSubscrission> channelToDelete = new List<RssSubscrission>();
-            
-            foreach (RssSubscrission channel in MainConfig.RssFeedList)
+                        
+            List<RssSubscrission> channelToDelete = MainConfig.RssFeedList.FindAll(delegate(RssSubscrission t) { return t.tvuStatus == tvuStatus.Complete ;});
+
+            List<string> ListUrl = new List<string>();
+
+            foreach (RssSubscrission t in channelToDelete)
             {
-                if (channel.tvuStatus == tvuStatus.Complete)
-                {
-                    channelToDelete.Add(channel);
-                }
+                ListUrl.Add(t.Url);
             }
 
-            while (channelToDelete.Count > 0)
-            {
-                string channelUrl = channelToDelete[0].Url;
-                MainHistory.DeleteFileByFeedSource(channelUrl);
-                MainConfig.RssFeedList.Remove(channelToDelete[0]);
-                
-            }
+            MainConfig.RssFeedList.RemoveAll(delegate(RssSubscrission t) { return t.tvuStatus == tvuStatus.Complete; });
+            MainHistory.fileHistoryList.RemoveAll(delegate(fileHistory t) { return ListUrl.IndexOf(t.FeedLink) > -1; });
+            MainHistory.fileHistoryList.RemoveAll(delegate(fileHistory t) { return ListUrl.IndexOf(t.FeedSource) > -1; });
+
             MainConfig.Save();
             MainHistory.Save();
             UpdateRssFeedGUI(); ///upgrade gui
