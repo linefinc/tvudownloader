@@ -965,12 +965,12 @@ namespace tvu
 
                 if (DownloadFile.PauseDownload == true)
                 {
-                    AppendLogMessage("Start download", true);
+                    AppendLogMessage("Pause download", true);
                     Service.StopDownload(ed2klink);
                 }
                 else
                 {
-                    AppendLogMessage("Stop download (pause)", true);
+                    AppendLogMessage("Resume download", true);
                     Service.StartDownload(ed2klink);
                 }
                 MainHistory.Add(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);

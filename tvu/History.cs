@@ -123,7 +123,7 @@ namespace tvu
 
 
             fileHistory fh = new fileHistory(ed2k, FeedLink, FeedSource);
-            HashtableGuid.Add(FeedSource, fh);
+            HashtableGuid.Add(FeedLink, fh);
             fileHistoryList.Add(fh);
         }
 
