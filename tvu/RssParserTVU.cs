@@ -4,9 +4,9 @@ using System.Text;
 
 namespace tvu
 {
-    class Rss
+    public class RssChannel
     {
-        public Rss()
+        public RssChannel()
         {
             ListItem = new List<RssItem>();
         }
@@ -25,7 +25,7 @@ namespace tvu
         public string Link;
     }
     
-    class RssItem
+    public class RssItem
     {
         
         public string PubDate;
@@ -39,7 +39,7 @@ namespace tvu
     {
 
 
-        public static Rss Parse(string page)
+        public static RssChannel Parse(string page)
         {
 
             //<item>
@@ -50,7 +50,7 @@ namespace tvu
             //  <guid>http://tvunderground.org.ru/index.php?show=ed2k&season=34875&sid%5B514856%5D=1</guid> 
             //</item>
 
-            Rss RssChannel = new Rss();
+            RssChannel RssChannel = new RssChannel();
             RssChannel.Title = GetStringByDelimiter(page, "<title>", "</title>", 0);
             RssChannel.Description = GetStringByDelimiter(page, "<title>", "</title>", 0);
 

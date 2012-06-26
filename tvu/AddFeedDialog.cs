@@ -15,7 +15,7 @@ namespace tvu
         public List<fileHistory> NewHistory { get; private set; }
         private string ServiceUrl;
         private string Password;
-        private Rss RssChannel;
+        private RssChannel RssChannel;
 
 
 

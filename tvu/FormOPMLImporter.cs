@@ -12,13 +12,13 @@ namespace tvu
 {
     public partial class FormOPMLImporter : Form
     {
-        private List<Rss> ListRss;
+        private List<RssChannel> ListRss;
         private List<string> myItemChecked;
         private bool secureSelect = false;
         public FormOPMLImporter()
         {
             InitializeComponent();
-            ListRss = new List<Rss>();
+            ListRss = new List<RssChannel>();
             myItemChecked = new List<string>();
         }
 
@@ -67,7 +67,7 @@ namespace tvu
                     foreach (string p in Feed)
                     {
                         string WebPage = WebFetch.Fetch(p,true);
-                        Rss RssChannel = RssParserTVU.Parse(WebPage);
+                        RssChannel RssChannel = RssParserTVU.Parse(WebPage);
                         ListRss.Add(RssChannel);
                     }
 
@@ -88,7 +88,7 @@ namespace tvu
             comboBox1.Items.Clear();
 
             comboBox1.Items.Add("");
-            foreach (Rss p in ListRss)
+            foreach (RssChannel p in ListRss)
             {
                 comboBox1.Items.Add(p.Title);
             }
@@ -99,8 +99,8 @@ namespace tvu
         {
             
             checkedListBox2.Items.Clear();
-            
-            foreach (Rss p in ListRss)
+
+            foreach (RssChannel p in ListRss)
             {
                 
                 if (feed == "")
