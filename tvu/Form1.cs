@@ -386,7 +386,7 @@ namespace tvu
                     string EmailReceiver = MainConfig.MailReceiver;
                     string EmailSender = MainConfig.MailSender;
                     string Subject = "TV Underground Downloader Notification";
-                    string dump = SmtpClient.SendEmail(stmpServer, EmailReceiver, EmailSender, Subject, LogTextBox.Text);
+                    SmtpClient.SendEmail(stmpServer, EmailReceiver, EmailSender, Subject, LogTextBox.Text);
                 }
             }
 
@@ -1479,7 +1479,7 @@ namespace tvu
                 string EmailReceiver = MainConfig.MailReceiver;
                 string EmailSender = MainConfig.MailSender;
                 string Subject = "TV Underground Downloader Notification";
-                string dump = SmtpClient.SendEmail(stmpServer, EmailReceiver, EmailSender, Subject, LogTextBox.Text);
+                SmtpClient.SendEmail(stmpServer, EmailReceiver, EmailSender, Subject, LogTextBox.Text);
             }
         }
 
