@@ -17,7 +17,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
-##### Version 0.5.2 15/10/2011 ##### 
+##### Version 0.5.3 XX/XX/2012 [svn rev ***] ##### 
++ Add new panel for add rss channel and remove obsolete function
+* Fix ed2k parser
++ Add hashtable to optimize search in history
++ Add ability to user to define update check interval
++ Add log trim to 1M
+* Fix mail sender 
+* other small fix 
+
+
+##### Version 0.5.2 15/10/2011 [svn rev 124] ##### 
 *IMPORTANT fix to improve bandwidth control
 *IMPORTANT fix to reduce fail socket
 *Improve check for TV status (Complete , Running ...) , now it was check 1 time on 2 weeks
