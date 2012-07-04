@@ -1148,8 +1148,6 @@ namespace tvu
                     }
                 }
 
-                bool upgrade = false;
-
                 for (int index = 0; index < currentVersionInt.Count; index++)
                 {
                     if (lastVersionInt[index] > currentVersionInt[index])
@@ -1370,12 +1368,6 @@ namespace tvu
 
         }
 
-        private void importToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            FormOPMLImporter newForm = new FormOPMLImporter();
-            newForm.ShowDialog();
-        }
-
         private void timerAutoClose_Tick(object sender, EventArgs e)
         {
             autoclose();
@@ -1592,65 +1584,7 @@ namespace tvu
             autoclose();
         }
 
-        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog Dialog = new SaveFileDialog();
-            string strOPML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + Environment.NewLine;
-            strOPML += "<opml version=\"1.1\">" + Environment.NewLine;
-            strOPML += "<head>" + Environment.NewLine;
-            strOPML += "<title>Export</title>" + Environment.NewLine;
-            strOPML += "<ownerName></ownerName>" + Environment.NewLine;
-            string dateCreated = DateTime.Now.ToString("ddd, dd MMM yyyy hh:mm:ss") + " GMT";
-            strOPML += "<dateCreated>" + dateCreated + "</dateCreated>" + Environment.NewLine;
-            strOPML += "<dateModified>" + dateCreated + "</dateModified>" + Environment.NewLine;
-            strOPML += "</head>";
-            strOPML += "<body>" + Environment.NewLine; 
-            
-            strOPML +="<outline text=\"tvunderground.org.ru\" title=\"tvunderground.org.ru\">"+ Environment.NewLine;
-
-            foreach (RssSubscrission sub in MainConfig.RssFeedList)
-            {
-
-                strOPML += "<outline text=\"" + sub.Title + "\" title=\"" + sub.Title + "\" xmlUrl=\"" + sub.Url + "\" type=\"rss\"/>" + Environment.NewLine; 
-            }
-
-            strOPML += "</outline>" + Environment.NewLine; 
-            strOPML += "</body>" + Environment.NewLine;
-            strOPML += "</opml>" + Environment.NewLine; 
-
-            List<string> Feed = new List<string>();
-
-            Dialog.Filter = "OPML (*.opml)|*.opml";
-            Dialog.FilterIndex = 2;
-            Dialog.RestoreDirectory = false;
-
-            if (Dialog.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
-                    Stream myStream;
-
-                    if ((myStream = Dialog.OpenFile()) != null)
-                    {
-
-
-                        foreach (char c in strOPML)
-                        {
-                            myStream.WriteByte((byte)c);
-                        }
-
-                        myStream.Close();
-                    }
-
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error: Could not write file. Original error: " + ex.Message);
-                }
-
-            }
-        }
-
+     
         private void testAutoStartToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -1734,9 +1668,12 @@ namespace tvu
             MainHistory.Save();
             UpdateRssFeedGUI(); ///upgrade gui
         }
-       
+
         void AddRssChannel()
         {
+            /*
+            
+              old code
             AddFeedDialog dialog = new AddFeedDialog(MainConfig.ServiceUrl, MainConfig.Password, MainConfig.DefaultCategory);
             dialog.ShowDialog();
 
@@ -1768,6 +1705,77 @@ namespace tvu
             UpdateRssFeedGUI();
             dialog.Dispose();
             StartDownloadThread();
+              */
+
+            AddFeedDialogPage1 dialogPage1 = new AddFeedDialogPage1();
+            dialogPage1.ShowDialog();
+
+
+
+            if (dialogPage1.DialogResult != DialogResult.OK)
+            {
+                dialogPage1.Dispose();
+                return;
+            }
+
+            List<string> RssUrlList = dialogPage1.RssUrlList;
+
+            AddFeedDialogPage2 dialogPage2 = new AddFeedDialogPage2(RssUrlList,MainConfig.ServiceUrl,MainConfig.Password);
+            dialogPage2.ShowDialog();
+
+            if (dialogPage2.DialogResult != DialogResult.OK)
+            {
+                dialogPage1.Dispose();
+                return;
+            }
+
+            List<RssChannel> RssChannelList = dialogPage2.RssChannelList;
+            List<fileHistory> ListFileHistory = dialogPage2.ListFileHistory;
+
+            // setup default 
+            foreach (RssChannel rc in RssChannelList)
+            {
+                rc.Category = MainConfig.DefaultCategory;
+                rc.Pause = false;
+            }
+
+            AddFeedDialogPage3 dialogPage3 = new AddFeedDialogPage3(RssChannelList, ListFileHistory);
+            dialogPage3.ShowDialog();
+
+            if (dialogPage3.DialogResult != DialogResult.OK)
+            {
+                dialogPage3.Dispose();
+                return;
+            }
+
+            //
+            //  Add rss channel
+            //
+            foreach (RssChannel rsschannel in dialogPage3.ListRssChannel)
+            {
+                RssSubscrission RssSubscrission = new RssSubscrission(rsschannel.Title, rsschannel.Url);
+                RssSubscrission.Category = rsschannel.Category;
+                RssSubscrission.PauseDownload = rsschannel.Pause;
+                MainConfig.RssFeedList.Add(RssSubscrission);
+            }
+            MainConfig.Save();
+            
+            //
+            //  Add filehistory
+            //  
+            List<fileHistory> temp = new List<fileHistory>(dialogPage3.GlobalListFileHisotry);
+            // remove file selected 
+            temp.RemoveAll(delegate(fileHistory fh) { return dialogPage3.SelectedHistory.IndexOf(fh) > -1; });
+            MainHistory.fileHistoryList.AddRange(temp);
+            
+            MainHistory.Save();
+            UpdateRssFeedGUI();
+            dialogPage1.Dispose();
+            dialogPage2.Dispose();
+            dialogPage3.Dispose();
+            StartDownloadThread();
+
+
         }
 
         private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -1877,6 +1885,65 @@ namespace tvu
         private void helpToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("http://tvudownloader.sourceforge.net/");
+        }
+
+        private void oPMLExportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog Dialog = new SaveFileDialog();
+            string strOPML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + Environment.NewLine;
+            strOPML += "<opml version=\"1.1\">" + Environment.NewLine;
+            strOPML += "<head>" + Environment.NewLine;
+            strOPML += "<title>Export</title>" + Environment.NewLine;
+            strOPML += "<ownerName></ownerName>" + Environment.NewLine;
+            string dateCreated = DateTime.Now.ToString("ddd, dd MMM yyyy hh:mm:ss") + " GMT";
+            strOPML += "<dateCreated>" + dateCreated + "</dateCreated>" + Environment.NewLine;
+            strOPML += "<dateModified>" + dateCreated + "</dateModified>" + Environment.NewLine;
+            strOPML += "</head>";
+            strOPML += "<body>" + Environment.NewLine;
+
+            strOPML += "<outline text=\"tvunderground.org.ru\" title=\"tvunderground.org.ru\">" + Environment.NewLine;
+
+            foreach (RssSubscrission sub in MainConfig.RssFeedList)
+            {
+
+                strOPML += "<outline text=\"" + sub.Title + "\" title=\"" + sub.Title + "\" xmlUrl=\"" + sub.Url + "\" type=\"rss\"/>" + Environment.NewLine;
+            }
+
+            strOPML += "</outline>" + Environment.NewLine;
+            strOPML += "</body>" + Environment.NewLine;
+            strOPML += "</opml>" + Environment.NewLine;
+
+            List<string> Feed = new List<string>();
+
+            Dialog.Filter = "OPML (*.opml)|*.opml";
+            Dialog.FilterIndex = 2;
+            Dialog.RestoreDirectory = false;
+
+            if (Dialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    Stream myStream;
+
+                    if ((myStream = Dialog.OpenFile()) != null)
+                    {
+
+
+                        foreach (char c in strOPML)
+                        {
+                            myStream.WriteByte((byte)c);
+                        }
+
+                        myStream.Close();
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: Could not write file. Original error: " + ex.Message);
+                }
+
+            }
         }
 
         

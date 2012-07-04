@@ -23,6 +23,8 @@ namespace tvu
         ///URL (Link of page were is located the rss)
         /// </summary>
         public string Link;
+        public string Category = "";
+        public bool Pause;
     }
     
     public class RssItem

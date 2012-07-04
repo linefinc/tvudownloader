@@ -1,6 +1,6 @@
 ﻿namespace tvu
 {
-    partial class AddFeedDialog
+    partial class AddFeedDialogPage3
     {
         /// <summary>
         /// Required designer variable.
@@ -28,54 +28,29 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.butUpdateCategory = new System.Windows.Forms.Button();
-            this.butAdd = new System.Windows.Forms.Button();
-            this.ButClose = new System.Windows.Forms.Button();
+            this.buttonCancel = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.comboBoxCategory = new System.Windows.Forms.ComboBox();
             this.checkBoxPause = new System.Windows.Forms.CheckBox();
-            this.textUrl = new System.Windows.Forms.TextBox();
-            this.buttonGetFeed = new System.Windows.Forms.Button();
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.buttonSelectAll = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.buttonNext = new System.Windows.Forms.Button();
+            this.buttonFinish = new System.Windows.Forms.Button();
+            this.buttonPrevious = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // butUpdateCategory
+            // buttonCancel
             // 
-            this.butUpdateCategory.Location = new System.Drawing.Point(725, 388);
-            this.butUpdateCategory.Name = "butUpdateCategory";
-            this.butUpdateCategory.Size = new System.Drawing.Size(75, 23);
-            this.butUpdateCategory.TabIndex = 0;
-            this.butUpdateCategory.Text = "Update Category";
-            this.butUpdateCategory.UseVisualStyleBackColor = true;
-            this.butUpdateCategory.Click += new System.EventHandler(this.butUpdateCategory_Click);
-            // 
-            // butAdd
-            // 
-            this.butAdd.Enabled = false;
-            this.butAdd.Location = new System.Drawing.Point(650, 434);
-            this.butAdd.Name = "butAdd";
-            this.butAdd.Size = new System.Drawing.Size(75, 23);
-            this.butAdd.TabIndex = 1;
-            this.butAdd.Text = "Add";
-            this.butAdd.UseVisualStyleBackColor = true;
-            this.butAdd.Click += new System.EventHandler(this.butAdd_Click);
-            // 
-            // ButClose
-            // 
-            this.ButClose.Location = new System.Drawing.Point(731, 434);
-            this.ButClose.Name = "ButClose";
-            this.ButClose.Size = new System.Drawing.Size(75, 23);
-            this.ButClose.TabIndex = 2;
-            this.ButClose.Text = "Close";
-            this.ButClose.UseVisualStyleBackColor = true;
-            this.ButClose.Click += new System.EventHandler(this.ButClose_Click);
+            this.buttonCancel.Location = new System.Drawing.Point(731, 434);
+            this.buttonCancel.Name = "buttonCancel";
+            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancel.TabIndex = 2;
+            this.buttonCancel.Text = "Cancel";
+            this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
             // label5
             // 
@@ -98,85 +73,46 @@
             // comboBoxCategory
             // 
             this.comboBoxCategory.FormattingEnabled = true;
-            this.comboBoxCategory.Location = new System.Drawing.Point(488, 390);
+            this.comboBoxCategory.Location = new System.Drawing.Point(569, 405);
             this.comboBoxCategory.Name = "comboBoxCategory";
             this.comboBoxCategory.Size = new System.Drawing.Size(231, 21);
             this.comboBoxCategory.TabIndex = 33;
+            this.comboBoxCategory.SelectedIndexChanged += new System.EventHandler(this.comboBoxCategory_SelectedIndexChanged);
             // 
             // checkBoxPause
             // 
             this.checkBoxPause.AutoSize = true;
             this.checkBoxPause.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBoxPause.Location = new System.Drawing.Point(12, 394);
+            this.checkBoxPause.Location = new System.Drawing.Point(253, 407);
             this.checkBoxPause.Name = "checkBoxPause";
             this.checkBoxPause.Size = new System.Drawing.Size(118, 17);
             this.checkBoxPause.TabIndex = 32;
             this.checkBoxPause.Text = "Download in Pause";
             this.checkBoxPause.UseVisualStyleBackColor = true;
-            // 
-            // textUrl
-            // 
-            this.textUrl.Location = new System.Drawing.Point(12, 27);
-            this.textUrl.Multiline = true;
-            this.textUrl.Name = "textUrl";
-            this.textUrl.Size = new System.Drawing.Size(788, 29);
-            this.textUrl.TabIndex = 30;
-            this.textUrl.TextChanged += new System.EventHandler(this.textUrl_TextChanged);
-            // 
-            // buttonGetFeed
-            // 
-            this.buttonGetFeed.Location = new System.Drawing.Point(569, 434);
-            this.buttonGetFeed.Name = "buttonGetFeed";
-            this.buttonGetFeed.Size = new System.Drawing.Size(75, 23);
-            this.buttonGetFeed.TabIndex = 37;
-            this.buttonGetFeed.Text = "Get Feed";
-            this.buttonGetFeed.UseVisualStyleBackColor = true;
-            this.buttonGetFeed.Click += new System.EventHandler(this.buttonGetFeed_Click);
+            this.checkBoxPause.CheckedChanged += new System.EventHandler(this.checkBoxPause_CheckedChanged);
             // 
             // checkedListBox1
             // 
             this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(12, 78);
+            this.checkedListBox1.Location = new System.Drawing.Point(12, 33);
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.ScrollAlwaysVisible = true;
-            this.checkedListBox1.Size = new System.Drawing.Size(788, 304);
+            this.checkedListBox1.Size = new System.Drawing.Size(788, 349);
             this.checkedListBox1.TabIndex = 38;
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(12, 434);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(551, 23);
-            this.progressBar1.TabIndex = 39;
-            // 
-            // backgroundWorker1
-            // 
-            this.backgroundWorker1.WorkerReportsProgress = true;
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
-            this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
+            this.checkedListBox1.SelectedValueChanged += new System.EventHandler(this.checkedListBox1_SelectedValueChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 59);
+            this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(106, 13);
             this.label1.TabIndex = 40;
             this.label1.Text = "Episode to download";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 9);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(48, 13);
-            this.label2.TabIndex = 41;
-            this.label2.Text = "RSS link";
-            // 
             // buttonSelectAll
             // 
-            this.buttonSelectAll.Location = new System.Drawing.Point(305, 388);
+            this.buttonSelectAll.Location = new System.Drawing.Point(377, 403);
             this.buttonSelectAll.Name = "buttonSelectAll";
             this.buttonSelectAll.Size = new System.Drawing.Size(77, 23);
             this.buttonSelectAll.TabIndex = 42;
@@ -186,7 +122,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(388, 388);
+            this.button2.Location = new System.Drawing.Point(460, 403);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(94, 23);
             this.button2.TabIndex = 43;
@@ -194,32 +130,60 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // AddFeedDialog
+            // buttonNext
+            // 
+            this.buttonNext.Location = new System.Drawing.Point(569, 434);
+            this.buttonNext.Name = "buttonNext";
+            this.buttonNext.Size = new System.Drawing.Size(75, 23);
+            this.buttonNext.TabIndex = 44;
+            this.buttonNext.Text = "->";
+            this.buttonNext.UseVisualStyleBackColor = true;
+            this.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
+            // 
+            // buttonFinish
+            // 
+            this.buttonFinish.Location = new System.Drawing.Point(650, 434);
+            this.buttonFinish.Name = "buttonFinish";
+            this.buttonFinish.Size = new System.Drawing.Size(75, 23);
+            this.buttonFinish.TabIndex = 45;
+            this.buttonFinish.Text = "Finish";
+            this.buttonFinish.UseVisualStyleBackColor = true;
+            this.buttonFinish.Click += new System.EventHandler(this.buttonFinish_Click);
+            // 
+            // buttonPrevious
+            // 
+            this.buttonPrevious.Location = new System.Drawing.Point(488, 434);
+            this.buttonPrevious.Name = "buttonPrevious";
+            this.buttonPrevious.Size = new System.Drawing.Size(75, 23);
+            this.buttonPrevious.TabIndex = 46;
+            this.buttonPrevious.Text = "<-";
+            this.buttonPrevious.UseVisualStyleBackColor = true;
+            this.buttonPrevious.Click += new System.EventHandler(this.buttonPrevious_Click);
+            // 
+            // AddFeedDialogPage3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(812, 469);
             this.ControlBox = false;
+            this.Controls.Add(this.buttonPrevious);
+            this.Controls.Add(this.buttonFinish);
+            this.Controls.Add(this.buttonNext);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.buttonSelectAll);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.checkedListBox1);
-            this.Controls.Add(this.buttonGetFeed);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.comboBoxCategory);
             this.Controls.Add(this.checkBoxPause);
-            this.Controls.Add(this.textUrl);
-            this.Controls.Add(this.ButClose);
-            this.Controls.Add(this.butAdd);
-            this.Controls.Add(this.butUpdateCategory);
+            this.Controls.Add(this.buttonCancel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "AddFeedDialog";
+            this.Name = "AddFeedDialogPage3";
             this.Text = "Add Feed";
+            this.Load += new System.EventHandler(this.AddFeedDialogPage3_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -227,21 +191,17 @@
 
         #endregion
 
-        private System.Windows.Forms.Button butUpdateCategory;
-        private System.Windows.Forms.Button butAdd;
-        private System.Windows.Forms.Button ButClose;
+        private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox comboBoxCategory;
         private System.Windows.Forms.CheckBox checkBoxPause;
-        private System.Windows.Forms.TextBox textUrl;
-        private System.Windows.Forms.Button buttonGetFeed;
         private System.Windows.Forms.CheckedListBox checkedListBox1;
-        private System.Windows.Forms.ProgressBar progressBar1;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button buttonSelectAll;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button buttonNext;
+        private System.Windows.Forms.Button buttonFinish;
+        private System.Windows.Forms.Button buttonPrevious;
     }
 }

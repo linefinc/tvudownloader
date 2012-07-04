@@ -71,11 +71,23 @@
     <Compile Include="AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
-    <Compile Include="AddFeedDialog.cs">
+    <Compile Include="AddFeedDialogPage1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddFeedDialog.Designer.cs">
-      <DependentUpon>AddFeedDialog.cs</DependentUpon>
+    <Compile Include="AddFeedDialogPage1.Designer.cs">
+      <DependentUpon>AddFeedDialogPage1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddFeedDialogPage2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddFeedDialogPage2.Designer.cs">
+      <DependentUpon>AddFeedDialogPage2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddFeedDialogPage3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddFeedDialogPage3.designer.cs">
+      <DependentUpon>AddFeedDialogPage3.cs</DependentUpon>
     </Compile>
     <Compile Include="Config.cs" />
     <Compile Include="Ed2kfile.cs" />
@@ -93,12 +105,6 @@
     <Compile Include="FormAlerteMuleClose.Designer.cs">
       <DependentUpon>FormAlerteMuleClose.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormOPMLImporter.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormOPMLImporter.Designer.cs">
-      <DependentUpon>FormOPMLImporter.cs</DependentUpon>
-    </Compile>
     <Compile Include="History.cs" />
     <Compile Include="ListViewColumnSorter.cs" />
     <Compile Include="OptionsDialog.cs">
@@ -112,17 +118,20 @@
     <EmbeddedResource Include="AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AddFeedDialog.resx">
-      <DependentUpon>AddFeedDialog.cs</DependentUpon>
+    <EmbeddedResource Include="AddFeedDialogPage1.resx">
+      <DependentUpon>AddFeedDialogPage1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddFeedDialogPage2.resx">
+      <DependentUpon>AddFeedDialogPage2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddFeedDialogPage3.resx">
+      <DependentUpon>AddFeedDialogPage3.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormAlerteMuleClose.resx">
       <DependentUpon>FormAlerteMuleClose.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormOPMLImporter.resx">
-      <DependentUpon>FormOPMLImporter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OptionsDialog.resx">
       <DependentUpon>OptionsDialog.cs</DependentUpon>
