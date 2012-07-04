@@ -1718,6 +1718,11 @@ namespace tvu
                 return;
             }
 
+            if (dialogPage1.RssUrlList.Count == 0)
+            {
+                MessageBox.Show("Nothing to downloads");
+            }
+
             List<string> RssUrlList = dialogPage1.RssUrlList;
 
             AddFeedDialogPage2 dialogPage2 = new AddFeedDialogPage2(RssUrlList,MainConfig.ServiceUrl,MainConfig.Password);
@@ -1726,6 +1731,16 @@ namespace tvu
             if (dialogPage2.DialogResult != DialogResult.OK)
             {
                 dialogPage1.Dispose();
+                dialogPage2.Dispose();
+                return;
+            }
+
+
+            if ((dialogPage2.RssChannelList.Count==0)^(dialogPage2.ListFileHistory.Count==0))
+            {
+                MessageBox.Show("Nothing to downloads");
+                dialogPage1.Dispose();
+                dialogPage2.Dispose();
                 return;
             }
 
@@ -1744,6 +1759,8 @@ namespace tvu
 
             if (dialogPage3.DialogResult != DialogResult.OK)
             {
+                dialogPage1.Dispose();
+                dialogPage2.Dispose();
                 dialogPage3.Dispose();
                 return;
             }
