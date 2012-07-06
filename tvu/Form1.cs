@@ -839,31 +839,28 @@ namespace tvu
             AppendLogMessage("Clean download list (step 1) Find channel from ed2k", true);
 
 
-            List<string> ActualDownloads = Service.GetActualDownloads();/// file downloaded with this program and now in download in emule
+            List<string> CourrentDownloadsFormEmule = Service.GetActualDownloads();/// file downloaded with this program and now in download in emule
 
-            AppendLogMessage("Actual Download in Emule " + ActualDownloads.Count, true);
+            AppendLogMessage("Courrent Download Form Emule " + CourrentDownloadsFormEmule.Count, true);
             List<sDonwloadFile> ActualDownloadFileList = new List<sDonwloadFile>();
 
 
-            foreach (string ad in ActualDownloads)
+            foreach (string ad in CourrentDownloadsFormEmule)
             {
                 try
                 {
                     Ed2kfile newFile = new Ed2kfile(ad);
 
-                    AppendLogMessage("check file ed2k = " + newFile.FileName, true);
-
                     foreach (fileHistory fh in MainHistory.fileHistoryList)
                     {
                         if (fh == newFile)
                         {
-                            sDonwloadFile newADFile = new sDonwloadFile(ad, fh.FeedLink, fh.FeedSource, false, "");
+                            sDonwloadFile newADFile = newADFile = new sDonwloadFile(ad, fh.FeedLink, fh.FeedSource, false, "");
                             ActualDownloadFileList.Add(newADFile);
 
-                            AppendLogMessage("Found file (" + newFile.FileName + ")", true);
+                            AppendLogMessage(string.Format("Found file ({0}) ,{1} ,{2}", newFile.FileName, fh.FeedLink, fh.FeedSource), true);
                         }
                     }
-
                 }
                 catch (Exception exception)
                 {
@@ -874,7 +871,7 @@ namespace tvu
             }
            
             AppendLogMessage("ActualDownloadFileList.Count = " + ActualDownloadFileList.Count , true);
-            AppendLogMessage("MainConfig.RssFeedList.Count = " + MainConfig.RssFeedList.Count, true);
+            //AppendLogMessage("MainConfig.RssFeedList.Count = " + MainConfig.RssFeedList.Count, true);
 
             AppendLogMessage("Clean download list (step 2) check limit for each channel", true);
 
@@ -893,53 +890,57 @@ namespace tvu
             
     
                 // calcolo il numero di file che ho con quel feed;
-                List<sDonwloadFile> ActualDownLoadFileForRssFeed;
-                ActualDownLoadFileForRssFeed = ActualDownloadFileList.FindAll(delegate(sDonwloadFile t)
-                                { return t.FeedLink == FeedURL; });
+                List<sDonwloadFile> CurrentlyDownloadingFileFromEmuleByFeed;
+                CurrentlyDownloadingFileFromEmuleByFeed = ActualDownloadFileList.FindAll(delegate(sDonwloadFile t)
+                                { return (t.FeedLink == FeedURL)^(t.FeedSource == FeedURL); });
 
                 // estraggo i file da scaricare del feed
-                List<sDonwloadFile> DownloadFileListForRssFeed;
-                DownloadFileListForRssFeed = DownloadFileList.FindAll(delegate(sDonwloadFile file)
-                                { return file.FeedSource == FeedURL; });
+                List<sDonwloadFile> PendingFileFromRssFeed;
+                PendingFileFromRssFeed = DownloadFileList.FindAll(delegate(sDonwloadFile file)
+                                                        { return (file.FeedLink == FeedURL) ^ (file.FeedSource == FeedURL); });
 
+                //AppendLogMessage("> Currently Downloading File From Emule By Feed Count = " + CurrentlyDownloadingFileFromEmuleByFeed.Count, true);
+                //AppendLogMessage("> DUMP CurrentlyDownloadingFileFromEmuleByFeed",true);
+                //CurrentlyDownloadingFileFromEmuleByFeed.ForEach(delegate(sDonwloadFile t) { AppendLogMessage("\t\t> " + t.Ed2kLink, true); });
                 
-                AppendLogMessage("> ActualDownLoadFileForRssFeed.Count = " + ActualDownLoadFileForRssFeed.Count, true);
-                AppendLogMessage("> DownloadFileListForRssFeed  =" + DownloadFileListForRssFeed.Count, true);
-                
+                //AppendLogMessage("> Pending File From Rss Feed Cout = " + PendingFileFromRssFeed.Count, true);
+                //AppendLogMessage("> DUMP CurrentlyDownloadingFileFromEmuleByFeed",true);
+                //PendingFileFromRssFeed.ForEach(delegate(sDonwloadFile t) { AppendLogMessage("\t\t> " + t.Ed2kLink, true); });
+
                 // calcolo il numero di file da scaricare:
                 // NumeroMassimoDiFilePerCanale - NumeroDiFileGiàInDownlaod
-                int dif = MainConfig.MaxSimultaneousFeedDownloads - ActualDownLoadFileForRssFeed.Count;
-                AppendLogMessage("1) DIF  =" + dif, true);
+                int dif = MainConfig.MaxSimultaneousFeedDownloads - CurrentlyDownloadingFileFromEmuleByFeed.Count;
+                //AppendLogMessage("1) DIF  =" + dif, true);
 
-                if (DownloadFileListForRssFeed.Count > 0)
+                if (PendingFileFromRssFeed.Count > 0)
                 {
                     if (dif <= 0)
                     {
-                        AppendLogMessage("2A) Now remove " + DownloadFileListForRssFeed.Count + "element", true);
+                        AppendLogMessage("Limit reached, remove all pending element", true);
 
                         // nothing to download
-                        foreach (sDonwloadFile file in DownloadFileListForRssFeed)
+                        foreach (sDonwloadFile file in PendingFileFromRssFeed)
                         {
                             DownloadFileList.Remove(file);
                         }
-                        AppendLogMessage("3A) DownloadFileListForRssFeed  =" + DownloadFileListForRssFeed.Count, true);
+                       
                     }
                     else
                     {
-                        int delta = DownloadFileListForRssFeed.Count - dif;
-                        AppendLogMessage("2B) Now remove " + delta + "element", true);
+                        int delta = PendingFileFromRssFeed.Count - dif;
+                        AppendLogMessage(string.Format("Limit reached, remove {0} pending element", delta), true);
 
-                        DownloadFileListForRssFeed.Sort(delegate(sDonwloadFile A, sDonwloadFile B)
+                        PendingFileFromRssFeed.Sort(delegate(sDonwloadFile A, sDonwloadFile B)
                                                         { return A.Ed2kLink.CompareTo(B.Ed2kLink); });
 
-                        for (int index = dif; index < DownloadFileListForRssFeed.Count; index++)
+                        for (int index = dif; index < PendingFileFromRssFeed.Count; index++)
                         {
-                            sDonwloadFile temp = DownloadFileListForRssFeed[index];
+                            sDonwloadFile temp = PendingFileFromRssFeed[index];
                             DownloadFileList.Remove(temp);
                         }
 
 
-                        AppendLogMessage("3B) DownloadFileListForRssFeed  =" + DownloadFileListForRssFeed.Count, true);
+                        //AppendLogMessage("3B) DownloadFileListForRssFeed  =" + PendingFileFromRssFeed.Count, true);
                     }
                 }
             }

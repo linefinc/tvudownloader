@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ---- Change Log ----
 ##### Version 0.5.3 XX/XX/2012 [svn rev ***] ##### 
+* Fix download limitator
 + Add new panel for add rss channel and remove obsolete function
 * Fix ed2k parser
 + Add hashtable to optimize search in history
