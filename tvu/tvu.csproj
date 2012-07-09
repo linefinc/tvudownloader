@@ -91,6 +91,12 @@
     </Compile>
     <Compile Include="Config.cs" />
     <Compile Include="Ed2kfile.cs" />
+    <Compile Include="EditFeedForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditFeedForm.Designer.cs">
+      <DependentUpon>EditFeedForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="eMuleWebManager.cs" />
     <Compile Include="fileHistory.cs" />
     <Compile Include="Form1.cs">
@@ -126,6 +132,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddFeedDialogPage3.resx">
       <DependentUpon>AddFeedDialogPage3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditFeedForm.resx">
+      <DependentUpon>EditFeedForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

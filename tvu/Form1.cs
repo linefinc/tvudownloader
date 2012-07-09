@@ -1964,6 +1964,13 @@ namespace tvu
             }
         }
 
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EditFeedForm form = new EditFeedForm("prova", false);
+            form.ShowDialog();
+
+        }
+
         
 
     
