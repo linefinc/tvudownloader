@@ -1784,6 +1784,7 @@ namespace tvu
             List<fileHistory> temp = new List<fileHistory>(dialogPage3.GlobalListFileHisotry);
             // remove file selected 
             temp.RemoveAll(delegate(fileHistory fh) { return dialogPage3.SelectedHistory.IndexOf(fh) > -1; });
+            temp.ForEach(delegate(fileHistory fh) { fh.Date = DateTime.Now.AddYears(-1).ToString("s");});
             MainHistory.fileHistoryList.AddRange(temp);
             
             MainHistory.Save();
