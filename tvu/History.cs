@@ -77,7 +77,9 @@ namespace tvu
                 }
                 fileHistory fh = new fileHistory(strEd2k, strFeedLink, strFeedSource, strDate);
                 fileHistoryList.Add(fh);
-                HashtableGuid.Add(strFeedLink, fh);
+
+                if (!HashtableGuid.ContainsKey(strFeedLink))
+                    HashtableGuid.Add(strFeedLink, fh);
             }
         }
 
@@ -123,7 +125,8 @@ namespace tvu
 
 
             fileHistory fh = new fileHistory(ed2k, FeedLink, FeedSource);
-            HashtableGuid.Add(FeedLink, fh);
+            if(!HashtableGuid.ContainsKey(FeedLink))
+                HashtableGuid.Add(FeedLink, fh);
             fileHistoryList.Add(fh);
         }
 
