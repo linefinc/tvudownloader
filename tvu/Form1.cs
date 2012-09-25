@@ -676,58 +676,56 @@ namespace tvu
                     // reverse the list so the laft feed ( first temporal feed) became the first first feed in list
                     elemList.Reverse();
 
+                    FeedLinkCache feedLinkCache = new FeedLinkCache();
+                    feedLinkCache.Load();
+                    
 
-                    int counter = 0;
                     foreach (string FeedLink in elemList)
                     {
+                          string sEd2k = string.Empty;
+                        
                         if (backgroundWorker1.CancellationPending)
                         {
                             e.Cancel = true;
                             return;
                         }
-                     
 
-                        string page = null;
-
-                        if (counter < 4)
+                        sEd2k = feedLinkCache.FindFeedLink(FeedLink);
+                        if (sEd2k == string.Empty)
                         {
+                            string page = null;
+
                             // download the page in FeedLink
                             AppendLogMessage(string.Format("try download page {0}", FeedLink), true);
-                            page = WebFetch.Fetch(FeedLink, true);
-                        }
 
-
-                        if (counter >= 4)
-                        {
-                            AppendLogMessage("Limit donwload per channel",false);
-                        }
-
-
-                        if (page != null) 
-                        {
-                            // find ed2k
-                            string sEd2k = RssParserTVU.FindEd2kLink(page);
-
-                            if (MainHistory.ExistInHistoryByEd2k(sEd2k) == -1)
+                            if ((page = WebFetch.Fetch(FeedLink, true)) == null)
                             {
-                                Ed2kfile parser = new Ed2kfile(sEd2k);
-                                AppendLogMessage(string.Format("Found new file {0}", parser.GetFileName()), false);
-
-                                sDonwloadFile DL = new sDonwloadFile(sEd2k, FeedLink, feed.Url,feed.PauseDownload,feed.Category);
-                                
-                                // remove the comment:
-                                //counter++;
-
-                                DownloadFileList.Add(DL);
+                                continue;
                             }
-                            else
-                            {
-                                // link ed2k just download bat not correct registred
-                                // to avoid rendondance of link
-                                MainHistory.Add(sEd2k, FeedLink, feed.Url);
-                            }
+                            // parse ed2k
+                            sEd2k = RssParserTVU.FindEd2kLink(page);
 
                         }
+
+                        if (MainHistory.ExistInHistoryByEd2k(sEd2k) == -1)
+                        {
+                            Ed2kfile parser = new Ed2kfile(sEd2k);
+                            AppendLogMessage(string.Format("Found new file {0}", parser.GetFileName()), false);
+
+                            sDonwloadFile DL = new sDonwloadFile(sEd2k, FeedLink, feed.Url, feed.PauseDownload, feed.Category);
+
+                            // remove the comment:
+                            //counter++;
+
+                            DownloadFileList.Add(DL);
+                        }
+                        else
+                        {
+                            // link ed2k just download bat not correct registred
+                            // to avoid rendondance of link
+                            MainHistory.Add(sEd2k, FeedLink, feed.Url);
+                        }
+
 
                     }
 
