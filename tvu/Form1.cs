@@ -596,6 +596,9 @@ namespace tvu
             List<sDonwloadFile> DownloadFileList = new List<sDonwloadFile>();
 
 
+            FeedLinkCache feedLinkCache = new FeedLinkCache();
+            feedLinkCache.Load();
+
             foreach (RssSubscrission feed in MainConfig.RssFeedList)
             {
 
@@ -676,13 +679,12 @@ namespace tvu
                     // reverse the list so the laft feed ( first temporal feed) became the first first feed in list
                     elemList.Reverse();
 
-                    FeedLinkCache feedLinkCache = new FeedLinkCache();
-                    feedLinkCache.Load();
+                    
                     
 
                     foreach (string FeedLink in elemList)
                     {
-                          string sEd2k = string.Empty;
+                        string sEd2k = string.Empty;
                         
                         if (backgroundWorker1.CancellationPending)
                         {
@@ -704,6 +706,7 @@ namespace tvu
                             }
                             // parse ed2k
                             sEd2k = RssParserTVU.FindEd2kLink(page);
+                            feedLinkCache.AddFeedLink(FeedLink, sEd2k);
 
                         }
 
@@ -728,7 +731,7 @@ namespace tvu
 
 
                     }
-
+                   
 
 
                 }
@@ -754,7 +757,7 @@ namespace tvu
 
             }
 
-
+            feedLinkCache.Save();
 
             if (DownloadFileList.Count == 0)
             {
