@@ -28,6 +28,11 @@ namespace tvu
             string temp = string.Format("{0}/?ses={1}&w=transfer&cat=0", Host, SesID);
             temp = WebFetch.Fetch(temp,true);
 
+            if (temp == null)
+            {
+                return ListDownloads;
+            }
+
             int p = temp.IndexOf("ed2k://|file|");
             int m = temp.IndexOf("|/", p + 5);
             while(p != -1)

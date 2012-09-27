@@ -17,13 +17,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
-##### Version 0.5.3 XX/XX/2012 [svn rev ***] ##### 
+##### Version 0.5.3 26/09/2012 [svn rev ***] ##### 
 * Fix download limitator
 + Add new panel for add rss channel and remove obsolete function
 * Fix ed2k parser
 + Add hashtable to optimize search in history
 + Add ability to user to define update check interval
 + Add log trim to 1M
++ Add cache for feed link
++ Add single istance for application
 * Fix mail sender 
 * other small fix 
 
