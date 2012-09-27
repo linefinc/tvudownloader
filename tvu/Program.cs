@@ -18,7 +18,9 @@ namespace tvu
 
             if (Process.GetProcessesByName(aProcName).Length > 1)
             {
+                MessageBox.Show("Application just started");
                 Application.ExitThread();
+                return;
             }
 
 

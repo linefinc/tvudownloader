@@ -26,15 +26,36 @@ namespace tvu
             FileName = FileName.Substring(0, rc) + "\\FeedLinkCache.xml";
         }
 
-        public void AddFeedLink(string FeedLink,string Ed2kLink)
+        public void AddFeedLink(string FeedLink, string Ed2kLink)
         {
+
+            AddFeedLink(FeedLink, Ed2kLink, DateTime.Now.ToString("s"));
+
+        }
+
+        public void AddFeedLink(string FeedLink,string Ed2kLink, string Date)
+        {
+            // to avoid duplicate
+            foreach (FeedLinkCacheRow t in FeedLinkCacheTable)
+            {
+                if (t.FeedLink == FeedLink)
+                {
+                    return;
+                }
+            }
+            
+            // add new item
             FeedLinkCacheRow flcr = new FeedLinkCacheRow();
             flcr.Ed2kLink = Ed2kLink;
             flcr.FeedLink = FeedLink;
+            
             flcr.Date = DateTime.Now.ToString("s");
 
             FeedLinkCacheTable.Add(flcr);
         }
+
+
+
 
         public string FindFeedLink(string FeedLink)
         {
@@ -89,17 +110,13 @@ namespace tvu
                         strDate = t.InnerText;
                     }
 
-                    FeedLinkCacheRow flcr = new FeedLinkCacheRow();
-                    flcr.Date = strDate;
-                    flcr.FeedLink = strFeedLink;
-                    flcr.Ed2kLink = strEd2k;
-
                     DateTime dateTimeLimit = DateTime.Now.AddDays(15.0);
                     DateTime itemDateTime = DateTime.Parse(strDate);
                     TimeSpan ts = dateTimeLimit - itemDateTime;
                     if (ts.Days > 0)
                     {
-                        FeedLinkCacheTable.Add(flcr);
+                        AddFeedLink(strFeedLink, strEd2k, strDate);
+                       
                     }
 
                 }
