@@ -72,6 +72,9 @@ namespace tvu
 
         public void Load()
         {
+            // Clear list
+            FeedLinkCacheTable.Clear();
+
             if (!File.Exists(FileName))
             {
                 return;

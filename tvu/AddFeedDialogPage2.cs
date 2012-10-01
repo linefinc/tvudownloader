@@ -55,6 +55,10 @@ namespace tvu
                 }
             }
 
+
+            FeedLinkCache feedLinkCache = new FeedLinkCache();
+            feedLinkCache.Load();
+
             foreach (RssChannel rssChannel in RssChannelList)
             {
                 foreach (RssItem Item in rssChannel.ListItem)
@@ -75,6 +79,8 @@ namespace tvu
                         fileHistory file = new fileHistory(sEd2k, rssChannel.Link, rssChannel.Url);
                         ListFileHistory.Add(file);
                         backgroundWorker1.ReportProgress(0);
+                        // update feedLinkCache
+                        feedLinkCache.AddFeedLink(Item.Guid, sEd2k);
                     }
                     catch
                     {
@@ -82,6 +88,8 @@ namespace tvu
                 }
 
             }
+
+            feedLinkCache.Save();
 
             try
             {

@@ -65,9 +65,11 @@
             this.ClientSize = new System.Drawing.Size(284, 73);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.buttonCancel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AddFeedDialogPage2";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Page2";
             this.Load += new System.EventHandler(this.AddFeedDialogPage2_Load);
             this.ResumeLayout(false);

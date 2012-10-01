@@ -41,7 +41,7 @@
             // 
             // ButClose
             // 
-            this.ButClose.Location = new System.Drawing.Point(731, 434);
+            this.ButClose.Location = new System.Drawing.Point(725, 242);
             this.ButClose.Name = "ButClose";
             this.ButClose.Size = new System.Drawing.Size(75, 23);
             this.ButClose.TabIndex = 2;
@@ -77,7 +77,7 @@
             // 
             // buttonNext
             // 
-            this.buttonNext.Location = new System.Drawing.Point(650, 434);
+            this.buttonNext.Location = new System.Drawing.Point(644, 242);
             this.buttonNext.Name = "buttonNext";
             this.buttonNext.Size = new System.Drawing.Size(75, 23);
             this.buttonNext.TabIndex = 37;
@@ -112,7 +112,7 @@
             // buttonBrowse
             // 
             this.buttonBrowse.Enabled = false;
-            this.buttonBrowse.Location = new System.Drawing.Point(725, 216);
+            this.buttonBrowse.Location = new System.Drawing.Point(725, 189);
             this.buttonBrowse.Name = "buttonBrowse";
             this.buttonBrowse.Size = new System.Drawing.Size(75, 23);
             this.buttonBrowse.TabIndex = 44;
@@ -123,7 +123,7 @@
             // textBox1
             // 
             this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(15, 216);
+            this.textBox1.Location = new System.Drawing.Point(15, 189);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(704, 20);
             this.textBox1.TabIndex = 45;
@@ -132,7 +132,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(812, 469);
+            this.ClientSize = new System.Drawing.Size(812, 277);
             this.ControlBox = false;
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.buttonBrowse);
@@ -143,10 +143,11 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.textUrl);
             this.Controls.Add(this.ButClose);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AddFeedDialogPage1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add Feed";
             this.ResumeLayout(false);
             this.PerformLayout();

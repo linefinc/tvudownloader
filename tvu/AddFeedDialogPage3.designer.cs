@@ -178,10 +178,11 @@
             this.Controls.Add(this.comboBoxCategory);
             this.Controls.Add(this.checkBoxPause);
             this.Controls.Add(this.buttonCancel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AddFeedDialogPage3";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add Feed";
             this.Load += new System.EventHandler(this.AddFeedDialogPage3_Load);
             this.ResumeLayout(false);
