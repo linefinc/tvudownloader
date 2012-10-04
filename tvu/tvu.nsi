@@ -1,9 +1,8 @@
-; example2.nsi
+; tvu.nsi
 ;
-; This script is based on example1.nsi, but it remember the directory, 
-; has uninstall support and (optionally) installs start menu shortcuts.
+; "Tv Underground Downloader" installer script 
 ;
-; It will install example2.nsi into a directory that the user selects,
+; 
 
 ;--------------------------------
 

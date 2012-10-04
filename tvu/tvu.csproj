@@ -114,6 +114,7 @@
     </Compile>
     <Compile Include="History.cs" />
     <Compile Include="ListViewColumnSorter.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="OptionsDialog.cs">
       <SubType>Form</SubType>
     </Compile>

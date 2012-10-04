@@ -10,8 +10,11 @@ using System.Text.RegularExpressions;
 
 namespace tvu
 {
-      public class History
+    public class History
     {
+
+
+
 
         public string FileName { get; private set; }
 
@@ -99,7 +102,7 @@ namespace tvu
                 textWritter.WriteElementString("FeedSource", fh.FeedSource);
                 textWritter.WriteElementString("Date", fh.Date);
                 textWritter.WriteEndElement(); // close Item
-                
+
             }
 
             textWritter.Close();
@@ -125,7 +128,7 @@ namespace tvu
 
 
             fileHistory fh = new fileHistory(ed2k, FeedLink, FeedSource);
-            if(!HashtableGuid.ContainsKey(FeedLink))
+            if (!HashtableGuid.ContainsKey(FeedLink))
                 HashtableGuid.Add(FeedLink, fh);
             fileHistoryList.Add(fh);
         }
