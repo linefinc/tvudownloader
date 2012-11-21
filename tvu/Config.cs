@@ -11,32 +11,48 @@ namespace tvu
     public class Config
     {
         public const string Version = "0.05.3";
-        public string ServiceUrl { get; set; }
-        public string Password { get; set; }
-        public int IntervalTime { get; set; }
-        public bool StartMinimized { get; set; }
-        public bool CloseEmuleIfAllIsDone { get; set; }
-        public bool StartEmuleIfClose { get; set; }
-        public bool AutoClearLog { get; set; }
-        public List<RssSubscrission> RssFeedList { get; set; }
-        public string eMuleExe { get; set; }
-        public bool debug {get; set;}
-        public string FileName { get; set; }
-        public string DefaultCategory { get; set; }
-        public enumStatus Status { get; set; }
-        public bool Enebled { get; set; }
-        public int MaxSimultaneousFeedDownloads { get; set; }
-        public int MinToStartEmule { get; set; }
-        public string tvudwid { get; set; } //Unique id
-        public bool Verbose { get; set; }
-        public bool EmailNotification { get; set; }
-        public string ServerSMTP { get; set; }
-        public string MailReceiver { get; set; }
-        public string MailSender { get; set; }
-        public int intervalBetweenUpgradeCheck { get; set; }
-        public string LastUpgradeCheck { get; set; }
-        public string FileNameLog { get; set; }
-        public bool saveLog  { get; set; }
+        public string ServiceUrl;
+        public string Password;
+        public int IntervalTime;
+        public bool StartMinimized;
+        public bool CloseEmuleIfAllIsDone;
+        public bool StartEmuleIfClose;
+        public bool AutoClearLog;
+        public List<RssSubscrission> RssFeedList ;
+        public string eMuleExe;
+        public bool debug;
+        public string FileName
+        {
+            get
+            {
+                string temp = Application.LocalUserAppDataPath;
+                int rc = temp.LastIndexOf("\\");
+                return temp.Substring(0, rc) + "\\config.xml";
+            }
+        }
+        public string DefaultCategory ;
+        public enumStatus Status ;
+        public bool Enebled ;
+        public int MaxSimultaneousFeedDownloads ;
+        public int MinToStartEmule ;
+        public string tvudwid ; //Unique id
+        public bool Verbose ;
+        public bool EmailNotification ;
+        public string ServerSMTP ;
+        public string MailReceiver ;
+        public string MailSender ;
+        public int intervalBetweenUpgradeCheck ;
+        public string LastUpgradeCheck ;
+        public string FileNameLog
+        {
+            get
+            {
+                string temp = Application.LocalUserAppDataPath;
+                int rc = temp.LastIndexOf("\\");
+                return temp.Substring(0, rc) + "\\log.txt";
+            }
+        }
+        public bool saveLog  ;
         public static bool StartWithWindows
         {
             get
@@ -88,13 +104,7 @@ namespace tvu
             // get Local USer App data Path, remove version direcorty and add config.xml
             //
 
-            FileName = Application.LocalUserAppDataPath;
-            int rc = FileName.LastIndexOf("\\");
-            FileName = FileName.Substring(0, rc) + "\\config.xml";
-
-            FileNameLog = Application.LocalUserAppDataPath;
-            rc = FileNameLog.LastIndexOf("\\");
-            FileNameLog = FileName.Substring(0, rc) + "\\log.txt";
+            
 
             RssFeedList = new List<RssSubscrission>();
             if (!File.Exists(this.FileName))
