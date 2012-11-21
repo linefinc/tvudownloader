@@ -1310,7 +1310,6 @@ namespace tvu
             {
                 MainConfig.IntervalTime = OptDialog.LocalConfig.IntervalTime;
                 MainConfig.StartMinimized = OptDialog.LocalConfig.StartMinimized;
-                MainConfig.StartWithWindows = OptDialog.LocalConfig.StartWithWindows;
                 MainConfig.StartEmuleIfClose = OptDialog.LocalConfig.StartEmuleIfClose;
                 MainConfig.CloseEmuleIfAllIsDone = OptDialog.LocalConfig.CloseEmuleIfAllIsDone;
                 MainConfig.Verbose = OptDialog.LocalConfig.Verbose;

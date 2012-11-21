@@ -53,6 +53,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.tabPageNetwork = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label14 = new System.Windows.Forms.Label();
             this.buttonCheckNow = new System.Windows.Forms.Button();
             this.textBoxPassword = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
@@ -76,7 +77,6 @@
             this.checkBoxSaveLogToFile = new System.Windows.Forms.CheckBox();
             this.checkBoxVerbose = new System.Windows.Forms.CheckBox();
             this.checkBoxAutoClear = new System.Windows.Forms.CheckBox();
-            this.label14 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.tabPageGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxSimultaneousDownloadForFeed)).BeginInit();
@@ -360,6 +360,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Network";
             // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(117, 32);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(213, 13);
+            this.label14.TabIndex = 35;
+            this.label14.Text = "Insert Emule Url like \"http://localhost:4000\"";
+            // 
             // buttonCheckNow
             // 
             this.buttonCheckNow.Location = new System.Drawing.Point(261, 83);
@@ -581,15 +590,6 @@
             this.checkBoxAutoClear.Text = "Auto Clear Log";
             this.checkBoxAutoClear.UseVisualStyleBackColor = true;
             // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(117, 32);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(213, 13);
-            this.label14.TabIndex = 35;
-            this.label14.Text = "Insert Emule Url like \"http://localhost:4000\"";
-            // 
             // OptionsDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -604,7 +604,7 @@
             this.Name = "OptionsDialog";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.Text = "OptionsDialog";
+            this.Text = "Options";
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.tabPageGeneral.ResumeLayout(false);
             this.tabPageGeneral.PerformLayout();

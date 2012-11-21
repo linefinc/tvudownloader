@@ -34,7 +34,7 @@ namespace tvu
             checkBoxStartMinimized.Checked = inConfig.StartMinimized;
             checkBoxStartEmuleIfClose.Checked = inConfig.StartEmuleIfClose;
             checkBoxCloseEmuleIfAllIsDone.Checked = inConfig.CloseEmuleIfAllIsDone;
-            checkBoxStartWithWindows.Checked = inConfig.StartWithWindows;
+            checkBoxStartWithWindows.Checked = Config.StartWithWindows;
             checkBoxAutoClear.Checked = inConfig.AutoClearLog;
             checkBoxVerbose.Checked = inConfig.Verbose;
             checkBoxEmailNotification.Checked = inConfig.EmailNotification;
@@ -54,10 +54,13 @@ namespace tvu
             //
             // StartWithWindows
             //
-            LocalConfig.StartWithWindows = false;
             if (checkBoxStartWithWindows.Checked == true)
             {
-                LocalConfig.StartWithWindows = true;
+                Config.StartWithWindows = true;
+            }
+            else
+            {
+                Config.StartWithWindows = false;
             }
             //
             // StartEmuleIfClose

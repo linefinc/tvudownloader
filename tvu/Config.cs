@@ -37,7 +37,7 @@ namespace tvu
         public string LastUpgradeCheck { get; set; }
         public string FileNameLog { get; set; }
         public bool saveLog  { get; set; }
-        public bool StartWithWindows
+        public static bool StartWithWindows
         {
             get
             {
