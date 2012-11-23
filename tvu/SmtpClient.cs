@@ -10,7 +10,7 @@ namespace tvu
 {
     class SmtpClient
     {
-        public static void SendEmail(string SmtpServer, string EmailReceiver, string EmailSender, string Subject, string Message)
+        public static bool SendEmail(string SmtpServer, string EmailReceiver, string EmailSender, string Subject, string Message)
         {
 
             //Notifica eMule: Viene terminato un Download
@@ -24,8 +24,15 @@ namespace tvu
             message.From = new System.Net.Mail.MailAddress(EmailSender);
             message.Body = Message;
             System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(SmtpServer);
-            smtp.Send(message);
-
+            try
+            {
+                smtp.Send(message);
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
