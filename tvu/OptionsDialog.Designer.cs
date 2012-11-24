@@ -201,7 +201,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(15, 172);
+            this.label13.Location = new System.Drawing.Point(6, 183);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(184, 13);
             this.label13.TabIndex = 55;
@@ -209,7 +209,7 @@
             // 
             // numericUpDownMaxSimultaneousDownloadForFeed
             // 
-            this.numericUpDownMaxSimultaneousDownloadForFeed.Location = new System.Drawing.Point(295, 170);
+            this.numericUpDownMaxSimultaneousDownloadForFeed.Location = new System.Drawing.Point(295, 181);
             this.numericUpDownMaxSimultaneousDownloadForFeed.Name = "numericUpDownMaxSimultaneousDownloadForFeed";
             this.numericUpDownMaxSimultaneousDownloadForFeed.Size = new System.Drawing.Size(47, 20);
             this.numericUpDownMaxSimultaneousDownloadForFeed.TabIndex = 54;
@@ -217,7 +217,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(15, 146);
+            this.label8.Location = new System.Drawing.Point(6, 157);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(144, 13);
             this.label8.TabIndex = 53;
@@ -225,7 +225,7 @@
             // 
             // numericUpDownMinDownloadToStrarTEmule
             // 
-            this.numericUpDownMinDownloadToStrarTEmule.Location = new System.Drawing.Point(295, 144);
+            this.numericUpDownMinDownloadToStrarTEmule.Location = new System.Drawing.Point(295, 155);
             this.numericUpDownMinDownloadToStrarTEmule.Name = "numericUpDownMinDownloadToStrarTEmule";
             this.numericUpDownMinDownloadToStrarTEmule.Size = new System.Drawing.Size(47, 20);
             this.numericUpDownMinDownloadToStrarTEmule.TabIndex = 52;
@@ -233,7 +233,7 @@
             // checkBoxCloseEmuleIfAllIsDone
             // 
             this.checkBoxCloseEmuleIfAllIsDone.AutoSize = true;
-            this.checkBoxCloseEmuleIfAllIsDone.Location = new System.Drawing.Point(200, 47);
+            this.checkBoxCloseEmuleIfAllIsDone.Location = new System.Drawing.Point(6, 65);
             this.checkBoxCloseEmuleIfAllIsDone.Name = "checkBoxCloseEmuleIfAllIsDone";
             this.checkBoxCloseEmuleIfAllIsDone.Size = new System.Drawing.Size(142, 17);
             this.checkBoxCloseEmuleIfAllIsDone.TabIndex = 50;
@@ -242,14 +242,14 @@
             // 
             // textBoxEmuleExe
             // 
-            this.textBoxEmuleExe.Location = new System.Drawing.Point(98, 118);
+            this.textBoxEmuleExe.Location = new System.Drawing.Point(98, 134);
             this.textBoxEmuleExe.Name = "textBoxEmuleExe";
             this.textBoxEmuleExe.Size = new System.Drawing.Size(244, 20);
             this.textBoxEmuleExe.TabIndex = 47;
             // 
             // textBoxDefaultCategory
             // 
-            this.textBoxDefaultCategory.Location = new System.Drawing.Point(98, 75);
+            this.textBoxDefaultCategory.Location = new System.Drawing.Point(98, 88);
             this.textBoxDefaultCategory.Name = "textBoxDefaultCategory";
             this.textBoxDefaultCategory.Size = new System.Drawing.Size(244, 20);
             this.textBoxDefaultCategory.TabIndex = 46;
@@ -257,7 +257,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 121);
+            this.label5.Location = new System.Drawing.Point(6, 134);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(79, 13);
             this.label5.TabIndex = 48;
@@ -266,7 +266,7 @@
             // checkBoxStartEmuleIfClose
             // 
             this.checkBoxStartEmuleIfClose.AutoSize = true;
-            this.checkBoxStartEmuleIfClose.Location = new System.Drawing.Point(6, 101);
+            this.checkBoxStartEmuleIfClose.Location = new System.Drawing.Point(9, 114);
             this.checkBoxStartEmuleIfClose.Name = "checkBoxStartEmuleIfClose";
             this.checkBoxStartEmuleIfClose.Size = new System.Drawing.Size(116, 17);
             this.checkBoxStartEmuleIfClose.TabIndex = 49;
@@ -276,7 +276,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 78);
+            this.label4.Location = new System.Drawing.Point(6, 91);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(86, 13);
             this.label4.TabIndex = 45;
@@ -304,7 +304,7 @@
             // 
             // numericUpDownIntervalTime
             // 
-            this.numericUpDownIntervalTime.Location = new System.Drawing.Point(105, 47);
+            this.numericUpDownIntervalTime.Location = new System.Drawing.Point(295, 47);
             this.numericUpDownIntervalTime.Maximum = new decimal(new int[] {
             720,
             0,
@@ -329,9 +329,9 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(6, 49);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(93, 13);
+            this.label7.Size = new System.Drawing.Size(147, 13);
             this.label7.TabIndex = 38;
-            this.label7.Text = "Interval Time [min]";
+            this.label7.Text = "Check feed Interval time [min]";
             // 
             // tabPageNetwork
             // 
@@ -528,7 +528,7 @@
             this.tabPageUpdate.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageUpdate.Size = new System.Drawing.Size(357, 248);
             this.tabPageUpdate.TabIndex = 3;
-            this.tabPageUpdate.Text = "Update";
+            this.tabPageUpdate.Text = "Software update ";
             this.tabPageUpdate.UseVisualStyleBackColor = true;
             // 
             // label12
@@ -536,9 +536,9 @@
             this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(6, 13);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(191, 13);
+            this.label12.Size = new System.Drawing.Size(234, 13);
             this.label12.TabIndex = 1;
-            this.label12.Text = "Update check interval days (0 = never)";
+            this.label12.Text = "Software update check interval days (0 = never)";
             // 
             // numericUpDownIntervalCheck
             // 

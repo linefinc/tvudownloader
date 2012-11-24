@@ -164,7 +164,11 @@ namespace tvu
             }
             
             string temp;
-            temp = string.Format("{0}/?ses={1}&w=transfer&ed2k={2}&cat={3}", Host, SesID, Ed2kLink.GetLink(), CategoryId);
+           
+            temp = string.Format("{0}/?ses={1}&w=transfer&ed2k={2}&cat={3}", Host, SesID, Ed2kLink.GetEscapedLink(), CategoryId);
+
+            
+
             WebFetch.Fetch(temp, true);
         }
 

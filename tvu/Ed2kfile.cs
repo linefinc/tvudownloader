@@ -50,7 +50,12 @@ namespace tvu
         {
             return Ed2kLink;
         }
-        
+
+        public string GetEscapedLink()
+        {
+            return Uri.EscapeDataString(Ed2kLink);
+        }
+
         public string GetFileName()
         {
             return FileName;
