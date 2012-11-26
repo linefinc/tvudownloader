@@ -17,6 +17,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
+##### Version 0.5.4 26/11/2012 [svn rev 176] ##### 
+* Fix bug when Ed2k link contains special characters
+* Improve register value mapping
+* Fix crash when SMTP server not replay
+* Fix delete episode that non works correctly 
+
+
 ##### Version 0.5.3 10/10/2012 [svn rev 167] ##### 
 * Fix download limitator
 + Add new panel for add rss channel and remove obsolete function
