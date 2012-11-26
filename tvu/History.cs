@@ -192,17 +192,7 @@ namespace tvu
 
         public void DeleteFile(string FileNameED2k)
         {
-            for (int i = 0; i < fileHistoryList.Count; i++)
-            {
-                string fh_Ed2kLink = fileHistoryList[i].GetLink();
-                int rc = fh_Ed2kLink.IndexOf(FileName);
-                if (rc > 0)
-                {
-                    //delete me
-                    fileHistoryList.Remove(fileHistoryList[i]);
-                    return;
-                }
-            }
+            fileHistoryList.RemoveAll(delegate(fileHistory temp) { return temp.FileName == FileNameED2k; });
         }
 
         public void DeleteFileByFeedSource(string FeedSource)

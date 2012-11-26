@@ -1672,46 +1672,8 @@ namespace tvu
 
         void AddRssChannel()
         {
-            /*
-            
-              old code
-            AddFeedDialog dialog = new AddFeedDialog(MainConfig.ServiceUrl, MainConfig.Password, MainConfig.DefaultCategory);
-            dialog.ShowDialog();
-
-            if (dialog.DialogResult != DialogResult.OK)
-            {
-                dialog.Dispose();
-                return;
-            }
-
-            // find rss duplicate
-            foreach (RssSubscrission temp in MainConfig.RssFeedList)
-            {
-                if (temp.Url == dialog.NewFeed.Url)
-                {
-                    dialog.Dispose();
-                    return;
-                }
-
-            }
-
-
-            MainConfig.RssFeedList.Add(dialog.NewFeed);
-            MainConfig.Save();
-            foreach (fileHistory file in dialog.NewHistory)
-            {
-                MainHistory.Add(file.GetLink(), file.FeedLink, file.FeedSource);
-            }
-            MainHistory.Save();
-            UpdateRssFeedGUI();
-            dialog.Dispose();
-            StartDownloadThread();
-              */
-
             AddFeedDialogPage1 dialogPage1 = new AddFeedDialogPage1();
             dialogPage1.ShowDialog();
-
-
 
             if (dialogPage1.DialogResult != DialogResult.OK)
             {
@@ -1812,7 +1774,12 @@ namespace tvu
             string p = string.Format("DELETE {0}:{1}", i, str);
             AppendLogMessage(p, false);
 
+            
             MainHistory.DeleteFile(str);
+            listView2.Items.Remove(temp);
+            MainHistory.Save();
+            UpdateRssFeedGUI();
+            
         }
 
         private void deleteCompleteToolStripMenuItem_Click(object sender, EventArgs e)
