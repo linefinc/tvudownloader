@@ -1649,20 +1649,22 @@ namespace tvu
             }
 
 
-            List<fileHistory> FileToDelete = new List<fileHistory>();
+            List<string> FileToDelete = new List<string>();
 
             foreach (fileHistory fh in MainHistory.fileHistoryList)
             {
                 if (fh.FeedSource == Feed.Url)
                 {
-                    FileToDelete.Add(fh);
+                    FileToDelete.Add(fh.Ed2kLink);
                 }
             }
 
-            foreach (fileHistory fh in FileToDelete)
-            {
-                MainHistory.fileHistoryList.Remove(fh);
-            }
+
+            MainHistory.fileHistoryList.RemoveAll(delegate(fileHistory fh) { return FileToDelete.IndexOf(fh.Ed2kLink) > -1; });
+            FeedLinkCache newFeedLinkCache = new FeedLinkCache();
+            newFeedLinkCache.Load();
+            newFeedLinkCache.FeedLinkCacheTable.RemoveAll(delegate(FeedLinkCacheRow flcr) { return FileToDelete.IndexOf(flcr.Ed2kLink) > -1; });
+            newFeedLinkCache.Save();
 
             MainConfig.RssFeedList.Remove(Feed);
             MainConfig.Save();

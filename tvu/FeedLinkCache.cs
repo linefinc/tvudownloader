@@ -6,16 +6,18 @@ using System.Windows.Forms;
 
 namespace tvu
 {
+    public class FeedLinkCacheRow
+    {
+        public string FeedLink;
+        public string Ed2kLink;
+        public string Date;
+    }
+    
     public class FeedLinkCache
     {
-        class FeedLinkCacheRow
-        {
-            public string FeedLink;
-            public string Ed2kLink;
-            public string Date;
-        }
+        
 
-        List<FeedLinkCacheRow> FeedLinkCacheTable;
+        public List<FeedLinkCacheRow> FeedLinkCacheTable;
         public string FileName { get; private set; }
 
         public FeedLinkCache()
