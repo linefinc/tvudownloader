@@ -10,35 +10,58 @@ namespace tvu
 {
     public partial class OptionsDialog : Form
     {
-        public Config LocalConfig;
+        //public Config LocalConfig;
+
+        public string ServiceUrl {private set;get;}
+        public string Password;
+        public int IntervalTime;
+        public bool StartMinimized;
+        public bool CloseEmuleIfAllIsDone;
+        public bool StartEmuleIfClose;
+        public bool AutoClearLog;
+        public string eMuleExe;
+        public bool debug;
+        public string DefaultCategory;
+        public enumStatus Status;
+        public bool Enebled;
+        public int MaxSimultaneousFeedDownloads;
+        public int MinToStartEmule;
+        public bool Verbose;
+        public bool EmailNotification;
+        public string ServerSMTP;
+        public string MailReceiver;
+        public string MailSender;
+        public int intervalBetweenUpgradeCheck;
+        public string LastUpgradeCheck;
+
+        public bool saveLog;
+        public bool StartWithWindows;
 
         public OptionsDialog(Config inConfig)
         {
             InitializeComponent();
-            LocalConfig = new Config();
 
+            textBoxServiceUrl.Text = ServiceUrl = inConfig.ServiceUrl;
+            textBoxPassword.Text = Password = inConfig.Password;
+            textBoxEmuleExe.Text = eMuleExe = inConfig.eMuleExe;
+            textBoxDefaultCategory.Text = DefaultCategory = inConfig.DefaultCategory;
+            textBoxMailReceiver.Text = MailReceiver = inConfig.MailReceiver;
+            textBoxMailSender.Text = MailSender = inConfig.MailSender;
+            textBoxServerSmtp.Text = ServerSMTP = inConfig.ServerSMTP;
 
-            textBoxServiceUrl.Text = inConfig.ServiceUrl;
-            textBoxPassword.Text = inConfig.Password;
-            textBoxEmuleExe.Text = inConfig.eMuleExe;
-            textBoxDefaultCategory.Text = LocalConfig.DefaultCategory;
-            textBoxMailReceiver.Text = inConfig.MailReceiver;
-            textBoxMailSender.Text = inConfig.MailSender;
-            textBoxServerSmtp.Text = inConfig.ServerSMTP;
+            numericUpDownIntervalTime.Value = IntervalTime = inConfig.IntervalTime;
+            numericUpDownMinDownloadToStrarTEmule.Value = MinToStartEmule = inConfig.MinToStartEmule;
+            numericUpDownIntervalCheck.Value = intervalBetweenUpgradeCheck = inConfig.intervalBetweenUpgradeCheck;
 
-            numericUpDownIntervalTime.Value = inConfig.IntervalTime;
-            numericUpDownMinDownloadToStrarTEmule.Value = inConfig.MinToStartEmule;
-            numericUpDownIntervalCheck.Value = inConfig.intervalBetweenUpgradeCheck;
-
-            numericUpDownMaxSimultaneousDownloadForFeed.Value = inConfig.MaxSimultaneousFeedDownloads;
-            checkBoxStartMinimized.Checked = inConfig.StartMinimized;
-            checkBoxStartEmuleIfClose.Checked = inConfig.StartEmuleIfClose;
-            checkBoxCloseEmuleIfAllIsDone.Checked = inConfig.CloseEmuleIfAllIsDone;
-            checkBoxStartWithWindows.Checked = Config.StartWithWindows;
-            checkBoxAutoClear.Checked = inConfig.AutoClearLog;
-            checkBoxVerbose.Checked = inConfig.Verbose;
-            checkBoxEmailNotification.Checked = inConfig.EmailNotification;
-            checkBoxSaveLogToFile.Checked = inConfig.saveLog;
+            numericUpDownMaxSimultaneousDownloadForFeed.Value = MaxSimultaneousFeedDownloads = inConfig.MaxSimultaneousFeedDownloads;
+            checkBoxStartMinimized.Checked = StartMinimized = inConfig.StartMinimized;
+            checkBoxStartEmuleIfClose.Checked = StartEmuleIfClose = inConfig.StartEmuleIfClose;
+            checkBoxCloseEmuleIfAllIsDone.Checked = CloseEmuleIfAllIsDone = inConfig.CloseEmuleIfAllIsDone;
+            checkBoxStartWithWindows.Checked = StartWithWindows = Config.StartWithWindows;
+            checkBoxAutoClear.Checked = AutoClearLog = inConfig.AutoClearLog;
+            checkBoxVerbose.Checked = Verbose = inConfig.Verbose;
+            checkBoxEmailNotification.Checked = EmailNotification = inConfig.EmailNotification;
+            checkBoxSaveLogToFile.Checked = saveLog = inConfig.saveLog;
         }
 
         private void buttonSave_Click(object sender, EventArgs e)
@@ -46,109 +69,109 @@ namespace tvu
             //
             // StartMinimized
             //
-            LocalConfig.StartMinimized = false;
+            StartMinimized = false;
             if (checkBoxStartMinimized.Checked == true)
             {
-                LocalConfig.StartMinimized = true;
+                StartMinimized = true;
             }
             //
             // StartWithWindows
             //
             if (checkBoxStartWithWindows.Checked == true)
             {
-                Config.StartWithWindows = true;
+                StartWithWindows = true;
             }
             else
             {
-                Config.StartWithWindows = false;
+                StartWithWindows = false;
             }
             //
             // StartEmuleIfClose
             //
-            LocalConfig.StartEmuleIfClose = false;
+            StartEmuleIfClose = false;
             if (checkBoxStartEmuleIfClose.Checked == true)
             {
-                LocalConfig.StartEmuleIfClose = true;
+                StartEmuleIfClose = true;
             }
             //
             // CloseWhenAllDone
             //
-            LocalConfig.CloseEmuleIfAllIsDone = false;
+            CloseEmuleIfAllIsDone = false;
             if (checkBoxCloseEmuleIfAllIsDone.Checked == true)
             {
-                LocalConfig.CloseEmuleIfAllIsDone = true;
+                CloseEmuleIfAllIsDone = true;
             }
 
-            LocalConfig.AutoClearLog = false;
+            AutoClearLog = false;
             if (checkBoxAutoClear.Checked == true)
             {
-                LocalConfig.AutoClearLog = true;
+                AutoClearLog = true;
             }
             //
             //  Verbosen
-            LocalConfig.Verbose = checkBoxVerbose.Checked;
+            Verbose = checkBoxVerbose.Checked;
             //
 
             //
             //  Service Url
             //
-            LocalConfig.ServiceUrl = textBoxServiceUrl.Text;
-            if(  LocalConfig.ServiceUrl.IndexOf("http://") == -1)
+            ServiceUrl = textBoxServiceUrl.Text;
+            if(  ServiceUrl.IndexOf("http://") == -1)
             {
-                LocalConfig.ServiceUrl = "http://" + LocalConfig.ServiceUrl;
+                ServiceUrl = "http://" + ServiceUrl;
             }
             //
             //  Password
             //
-            LocalConfig.Password = textBoxPassword.Text;
+            Password = textBoxPassword.Text;
             //
             // Default Category
             //
-            LocalConfig.DefaultCategory = textBoxDefaultCategory.Text;
+            DefaultCategory = textBoxDefaultCategory.Text;
             //
             // Emule Exe
             //
-            LocalConfig.eMuleExe = textBoxEmuleExe.Text;
+            eMuleExe = textBoxEmuleExe.Text;
             //
             //  Interval time
             //
-            LocalConfig.IntervalTime = Convert.ToInt32(numericUpDownIntervalTime.Value);
+            IntervalTime = Convert.ToInt32(numericUpDownIntervalTime.Value);
             //
             //  Min download to start emule
             //
-            LocalConfig.MinToStartEmule = Convert.ToInt32(numericUpDownMinDownloadToStrarTEmule.Value);
+            MinToStartEmule = Convert.ToInt32(numericUpDownMinDownloadToStrarTEmule.Value);
             //
             //
             //
-            LocalConfig.EmailNotification = checkBoxEmailNotification.Checked;
+            EmailNotification = checkBoxEmailNotification.Checked;
             //
             // emeil server
             //
-            LocalConfig.ServerSMTP = textBoxServerSmtp.Text;
+            ServerSMTP = textBoxServerSmtp.Text;
             //
             //  email Sender
             //
-            LocalConfig.MailSender = textBoxMailSender.Text;
+            MailSender = textBoxMailSender.Text;
             //
             //  email receiver
             //
-            LocalConfig.MailReceiver = textBoxMailReceiver.Text;
+            MailReceiver = textBoxMailReceiver.Text;
             //
             //  Interval Check
             //
-            LocalConfig.intervalBetweenUpgradeCheck = Convert.ToInt32(numericUpDownIntervalCheck.Value);
+            intervalBetweenUpgradeCheck = Convert.ToInt32(numericUpDownIntervalCheck.Value);
             //
             //
             //
-            LocalConfig.MaxSimultaneousFeedDownloads = Convert.ToInt32(numericUpDownMaxSimultaneousDownloadForFeed.Value);
+            MaxSimultaneousFeedDownloads = Convert.ToInt32(numericUpDownMaxSimultaneousDownloadForFeed.Value);
             
             //
             //  Save log to file
             //
-            LocalConfig.saveLog = false;
+            saveLog = false;
             if (checkBoxSaveLogToFile.Checked == true)
             {
-                LocalConfig.saveLog = true;
+                saveLog = true;
             }
 
 

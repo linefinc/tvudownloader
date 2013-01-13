@@ -1225,29 +1225,34 @@ namespace tvu
 
             if (OptDialog.DialogResult == DialogResult.OK)
             {
-                MainConfig.IntervalTime = OptDialog.LocalConfig.IntervalTime;
-                MainConfig.StartMinimized = OptDialog.LocalConfig.StartMinimized;
-                MainConfig.StartEmuleIfClose = OptDialog.LocalConfig.StartEmuleIfClose;
-                MainConfig.CloseEmuleIfAllIsDone = OptDialog.LocalConfig.CloseEmuleIfAllIsDone;
-                MainConfig.Verbose = OptDialog.LocalConfig.Verbose;
-                MainConfig.ServiceUrl = OptDialog.LocalConfig.ServiceUrl;
-                MainConfig.Password = OptDialog.LocalConfig.Password;
-                MainConfig.DefaultCategory = OptDialog.LocalConfig.DefaultCategory;
-                MainConfig.eMuleExe = OptDialog.LocalConfig.eMuleExe;
-                MainConfig.IntervalTime = OptDialog.LocalConfig.IntervalTime;
-                MainConfig.MinToStartEmule = OptDialog.LocalConfig.MinToStartEmule;
-                MainConfig.EmailNotification = OptDialog.LocalConfig.EmailNotification;
-                MainConfig.ServerSMTP = OptDialog.LocalConfig.ServerSMTP;
-                MainConfig.MailSender = OptDialog.LocalConfig.MailSender;
-                MainConfig.MailReceiver = OptDialog.LocalConfig.MailReceiver;
-                MainConfig.AutoClearLog = OptDialog.LocalConfig.AutoClearLog;
-                MainConfig.intervalBetweenUpgradeCheck = OptDialog.LocalConfig.intervalBetweenUpgradeCheck;
-                MainConfig.MaxSimultaneousFeedDownloads = OptDialog.LocalConfig.MaxSimultaneousFeedDownloads;
-                MainConfig.saveLog = OptDialog.LocalConfig.saveLog;
+                MainConfig.IntervalTime = OptDialog.IntervalTime;
+                MainConfig.StartMinimized = OptDialog.StartMinimized;
+                MainConfig.StartEmuleIfClose = OptDialog.StartEmuleIfClose;
+                MainConfig.CloseEmuleIfAllIsDone = OptDialog.CloseEmuleIfAllIsDone;
+
+                Config.StartWithWindows = OptDialog.StartWithWindows;
                 
+                MainConfig.Verbose = OptDialog.Verbose;
                 Log.Instance.SetVerboseMode(MainConfig.Verbose);
 
-                MainConfig.Save();
+                MainConfig.ServiceUrl = OptDialog.ServiceUrl;
+                MainConfig.Password = OptDialog.Password;
+                MainConfig.DefaultCategory = OptDialog.DefaultCategory;
+                MainConfig.eMuleExe = OptDialog.eMuleExe;
+                MainConfig.IntervalTime = OptDialog.IntervalTime;
+                MainConfig.MinToStartEmule = OptDialog.MinToStartEmule;
+                MainConfig.EmailNotification = OptDialog.EmailNotification;
+                MainConfig.ServerSMTP = OptDialog.ServerSMTP;
+                MainConfig.MailSender = OptDialog.MailSender;
+                MainConfig.MailReceiver = OptDialog.MailReceiver;
+                MainConfig.AutoClearLog = OptDialog.AutoClearLog;
+                MainConfig.intervalBetweenUpgradeCheck = OptDialog.intervalBetweenUpgradeCheck;
+                MainConfig.MaxSimultaneousFeedDownloads = OptDialog.MaxSimultaneousFeedDownloads;
+                MainConfig.saveLog = OptDialog.saveLog;
+                
+                
+
+               
 
                 if (MainConfig.CloseEmuleIfAllIsDone == true)
                 {
@@ -1266,6 +1271,8 @@ namespace tvu
                 {
                     autoStartEMuleToolStripMenuItem.Checked = false;
                 }
+
+                MainConfig.Save();
             }
             
 
