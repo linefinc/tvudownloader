@@ -44,6 +44,9 @@ namespace tvu
 
             XmlNodeList ItemList = xDoc.GetElementsByTagName("Item");
 
+            List<string> stringCache = new List<string>();
+
+
             for (int i = 0; i < ItemList.Count; i++)
             {
 
@@ -58,22 +61,23 @@ namespace tvu
 
                     if (t.Name == "Ed2k")
                     {
-                        strEd2k = t.InnerText;
+                        strEd2k = cacheStringOptimize(stringCache, t.InnerText);
                     }
 
                     if (t.Name == "FeedLink")
                     {
-                        strFeedLink = t.InnerText;
+                        strFeedLink = cacheStringOptimize(stringCache, t.InnerText);
                     }
 
                     if (t.Name == "FeedSource")
                     {
-                        strFeedSource = t.InnerText;
+
+                        strFeedSource = cacheStringOptimize(stringCache, t.InnerText);
                     }
 
                     if (t.Name == "Date")
                     {
-                        strDate = t.InnerText;
+                        strDate = cacheStringOptimize(stringCache, t.InnerText);
                     }
 
 
@@ -107,6 +111,20 @@ namespace tvu
 
             textWritter.Close();
 
+        }
+
+        private static string cacheStringOptimize(List<string> stringCache, string value)
+        {
+            int index = stringCache.IndexOf(value);
+            if (index >= 0)
+            {
+                return stringCache[index];
+            }
+            else
+            {
+                stringCache.Add(value);
+                return stringCache[stringCache.Count-1];
+            }
         }
 
         ///
