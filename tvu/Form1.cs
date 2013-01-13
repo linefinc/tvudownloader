@@ -125,6 +125,10 @@ namespace tvu
             UpdateRecentActivity();
             UpdateRssFeedGUI();
 
+            Log.Instance.AddLogTarget(new LogTargetTextBox(this, LogTextBox));
+            Log.Instance.AddLogTarget(new LogTargetFile(MainConfig.FileNameLog));
+            Log.Instance.SetVerboseMode(MainConfig.Verbose);
+            
         }
 
 
@@ -230,7 +234,7 @@ namespace tvu
 
         private void menu_AutoStartEmule(object Sender, EventArgs e)
         {
-            AppendLogMessage("Auto Start Emule", false);
+            Log.logInfo("Auto Start Emule");
             if (MainConfig.StartEmuleIfClose == true)
             {
                 this.menuItemAutoStartEmule.Checked = false;
@@ -364,8 +368,6 @@ namespace tvu
         private void timer1_Tick(object sender, EventArgs e)
         {
 
-
-
             if (DateTime.Now > DownloadDataTime)
             {
                 if (MainConfig.AutoClearLog == true)
@@ -375,8 +377,8 @@ namespace tvu
 
                 DownloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
 
-                AppendLogMessage("Now : " + DateTime.Now.ToString(), false);
-                AppendLogMessage("next tick : " + DownloadDataTime.ToString(), false);
+                Log.logInfo("Now : " + DateTime.Now.ToString());
+                Log.logInfo("next tick : " + DownloadDataTime.ToString());
                 StartDownloadThread();
                 UpdateRssFeedGUI();
 
@@ -398,91 +400,6 @@ namespace tvu
 
         }
 
-        private void AppendText(string text, bool verbose)
-        {
-
-            if (MainConfig.saveLog == true)
-            {
-                StreamWriter w = File.AppendText(MainConfig.FileNameLog);
-                w.WriteLine(text);
-                w.Flush();
-                w.Close();
-
-
-                FileInfo f = new FileInfo(MainConfig.FileNameLog);
-                if (f.Length > 1000000)
-                {
-
-                    FileStream fs = new FileStream(MainConfig.FileNameLog, FileMode.Open);
-
-                    int length = (int)fs.Length;
-
-
-                    byte[] buffer = new byte[length];
-
-                    fs.Read(buffer, 0, length);
-                    string str = System.Text.ASCIIEncoding.UTF8.GetString(buffer);
-
-                    int offset = length * 1 / 10; // 10%
-                    int start = str.IndexOf(Environment.NewLine, offset);
-                    str = str.Substring(start);
-                    str = str.TrimStart('\n', '\r', ' ');
-                    fs.Close();
-
-
-                    fs = new FileStream(MainConfig.FileNameLog, FileMode.Create);
-
-                    buffer = System.Text.ASCIIEncoding.UTF8.GetBytes(str);
-                    fs.Seek(0, SeekOrigin.Begin);
-                    fs.Write(buffer, 0, buffer.Length);
-
-                    fs.Close();
-                }
-            }
-
-
-            if (verbose == false)
-            {
-                this.LogTextBox.Text += text;
-                this.LogTextBox.SelectionStart = this.LogTextBox.Text.Length;
-                this.LogTextBox.ScrollToCaret();
-                this.LogTextBox.Refresh();
-                return;
-            }
-
-            if ((verbose == true) && (MainConfig.Verbose == true))
-            {
-                this.LogTextBox.Text += text;
-                this.LogTextBox.SelectionStart = this.LogTextBox.Text.Length;
-                this.LogTextBox.ScrollToCaret();
-                this.LogTextBox.Refresh();
-                return;
-            }
-
-        }
-
-        private void AppendLogMessage(string text, bool verbose)
-        {
-            text = "[" + DateTime.Now.ToString() + "]" + text;
-
-            if (text.IndexOf(Environment.NewLine) == -1)
-            {
-                text += Environment.NewLine;
-            }
-
-            // from msdn guide http://msdn.microsoft.com/en-us/library/ms171728%28VS.90%29.aspx
-            if (this.LogTextBox.InvokeRequired)
-            {
-                // It's on a different thread, so use Invoke.
-                SetTextCallback d = new SetTextCallback(AppendText);
-                this.Invoke(d, new object[] { text, verbose });
-            }
-            else
-            {
-                // It's on the same thread, no need for Invoke
-                AppendText(text, verbose);
-            }
-        }
 
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -556,7 +473,7 @@ namespace tvu
         {
             if (backgroundWorker1.IsBusy == true)
             {
-                AppendLogMessage("Thread is busy", false);
+                Log.logInfo("Thread is busy");
                 return;
             }
 
@@ -588,10 +505,10 @@ namespace tvu
         {
 
 
-            
 
 
-            AppendLogMessage("Start RSS Check", false);
+
+            Log.logInfo("Start RSS Check");
 
             List<sDonwloadFile> DownloadFileList = new List<sDonwloadFile>();
 
@@ -609,7 +526,7 @@ namespace tvu
                 }
 
                 feed.status = enumStatus.Ok;
-                AppendLogMessage("Read RSS " + feed.Url, true);
+                Log.logVerbose("Read RSS " + feed.Url);
 
                 try
                 {
@@ -698,7 +615,7 @@ namespace tvu
                             string page = null;
 
                             // download the page in FeedLink
-                            AppendLogMessage(string.Format("try download page {0}", FeedLink), true);
+                            Log.logVerbose(string.Format("try download page {0}", FeedLink));
 
                             if ((page = WebFetch.Fetch(FeedLink, true)) == null)
                             {
@@ -713,7 +630,7 @@ namespace tvu
                         if (MainHistory.ExistInHistoryByEd2k(sEd2k) == -1)
                         {
                             Ed2kfile parser = new Ed2kfile(sEd2k);
-                            AppendLogMessage(string.Format("Found new file {0}", parser.GetFileName()), false);
+                            Log.logInfo(string.Format("Found new file {0}", parser.GetFileName()));
 
                             sDonwloadFile DL = new sDonwloadFile(sEd2k, FeedLink, feed.Url, feed.PauseDownload, feed.Category);
 
@@ -737,7 +654,7 @@ namespace tvu
                 }
                 catch
                 {
-                    AppendLogMessage("Some Error in rss parsing", false);
+                    Log.logInfo("Some Error in rss parsing");
                     feed.status = enumStatus.Error;
                 }
 
@@ -761,12 +678,12 @@ namespace tvu
 
             if (DownloadFileList.Count == 0)
             {
-                AppendLogMessage("Nothing to download", true);
+                Log.logVerbose("Nothing to download");
                 return;
             }
             else
             {
-                AppendLogMessage("Total File Found " + DownloadFileList.Count, true);
+                Log.logVerbose("Total File Found " + DownloadFileList.Count);
             }
 
 
@@ -789,17 +706,17 @@ namespace tvu
                         e.Cancel = true;
                         return;
                     }
-                        
-                    
-                    AppendLogMessage(string.Format("start eMule Now (try {0}/5)", i), false);
-                    AppendLogMessage("Wait 60 sec", false);
+
+
+                    Log.logInfo(string.Format("start eMule Now (try {0}/5)", i));
+                    Log.logInfo("Wait 60 sec");
                     try
                     {
                         Process.Start(MainConfig.eMuleExe);
                     }
                     catch
                     {
-                        AppendLogMessage("Unable start application", false);
+                        Log.logInfo("Unable start application");
                     }
 
                     for (int n = 0; n < 10; n++)
@@ -818,31 +735,31 @@ namespace tvu
                 }
             }
 
-            AppendLogMessage("Check min download", true);
+            Log.logVerbose("Check min download");
             if (rc == null)
             {
                 if (DownloadFileList.Count < MainConfig.MinToStartEmule)
                 {
-                    AppendLogMessage("Min file download not reached", false);
+                    Log.logInfo("Min file download not reached");
                     return;
                 }
 
-                AppendLogMessage("Unable to connect to eMule web server", false);
+                Log.logInfo("Unable to connect to eMule web server");
                 return;
 
 
             }
 
 
-            AppendLogMessage("Retrive list Category", true);
+            Log.logVerbose("Retrive list Category");
             Service.GetCategory(true);  // force upgrade category list 
 
-            AppendLogMessage("Clean download list (step 1) Find channel from ed2k", true);
+            Log.logVerbose("Clean download list (step 1) Find channel from ed2k");
 
 
             List<string> CourrentDownloadsFormEmule = Service.GetActualDownloads();/// file downloaded with this program and now in download in emule
 
-            AppendLogMessage("Courrent Download Form Emule " + CourrentDownloadsFormEmule.Count, true);
+            Log.logVerbose("Courrent Download Form Emule " + CourrentDownloadsFormEmule.Count);
             List<sDonwloadFile> ActualDownloadFileList = new List<sDonwloadFile>();
 
 
@@ -859,34 +776,34 @@ namespace tvu
                             sDonwloadFile newADFile = newADFile = new sDonwloadFile(ad, fh.FeedLink, fh.FeedSource, false, "");
                             ActualDownloadFileList.Add(newADFile);
 
-                            AppendLogMessage(string.Format("Found file ({0}) ,{1} ,{2}", newFile.FileName, fh.FeedLink, fh.FeedSource), true);
+                            Log.logInfo(string.Format("Found file ({0}) ,{1} ,{2}", newFile.FileName, fh.FeedLink, fh.FeedSource));
                         }
                     }
                 }
                 catch (Exception exception)
                 {
-                    AppendLogMessage("Error in ckeck file \"" + ad ,false);
-                    AppendLogMessage("Error message error: \"" + exception.Message + "\"", false);
+                    Log.logInfo("Error in ckeck file \"" + ad);
+                    Log.logInfo("Error message error: \"" + exception.Message + "\"");
                     
                 }
             }
-           
-            AppendLogMessage("ActualDownloadFileList.Count = " + ActualDownloadFileList.Count , true);
+
+            Log.logInfo("ActualDownloadFileList.Count = " + ActualDownloadFileList.Count);
             //AppendLogMessage("MainConfig.RssFeedList.Count = " + MainConfig.RssFeedList.Count, true);
 
-            AppendLogMessage("Clean download list (step 2) check limit for each channel", true);
+            Log.logInfo("Clean download list (step 2) check limit for each channel");
 
             
             // clean RssFeedList
             List<RssSubscrission> RssFeedList = new List<RssSubscrission>();
             RssFeedList.AddRange(MainConfig.RssFeedList);
 
-            AppendLogMessage("MainConfig.MaxSimultaneousFeedDownloads = " + MainConfig.MaxSimultaneousFeedDownloads, true);
+            Log.logInfo("MainConfig.MaxSimultaneousFeedDownloads = " + MainConfig.MaxSimultaneousFeedDownloads);
 
             foreach(RssSubscrission RssFeed in MainConfig.RssFeedList)
             {
-                
-                AppendLogMessage("check feed = \"" + RssFeed.Title + "\"", true);
+
+                Log.logInfo("check feed = \"" + RssFeed.Title + "\"");
                 string FeedURL = RssFeed.Url;
             
     
@@ -917,7 +834,7 @@ namespace tvu
                 {
                     if (dif <= 0)
                     {
-                        AppendLogMessage("Limit reached, remove all pending element", true);
+                        Log.logVerbose("Limit reached, remove all pending element");
 
                         // nothing to download
                         foreach (sDonwloadFile file in PendingFileFromRssFeed)
@@ -929,7 +846,7 @@ namespace tvu
                     else
                     {
                         int delta = PendingFileFromRssFeed.Count - dif;
-                        AppendLogMessage(string.Format("Limit reached, remove {0} pending element", delta), true);
+                        Log.logVerbose(string.Format("Limit reached, remove {0} pending element", delta));
 
                         PendingFileFromRssFeed.Sort(delegate(sDonwloadFile A, sDonwloadFile B)
                                                         { return A.Ed2kLink.CompareTo(B.Ed2kLink); });
@@ -946,9 +863,9 @@ namespace tvu
                 }
             }
 
-            AppendLogMessage("DownloadFileList  = " + DownloadFileList.Count, true);
+            Log.logVerbose("DownloadFileList  = " + DownloadFileList.Count);
 
-            AppendLogMessage("Download file", true);
+            Log.logVerbose("Download file");
             //
             //  Download file 
             // 
@@ -962,22 +879,22 @@ namespace tvu
                 }
                         
                 Ed2kfile ed2klink = new Ed2kfile(DownloadFile.Ed2kLink);
-                AppendLogMessage("Add file to download", true);
+                Log.logVerbose("Add file to download" );
                 Service.AddToDownload(ed2klink, DownloadFile.Category);
 
                 if (DownloadFile.PauseDownload == true)
                 {
-                    AppendLogMessage("Pause download", true);
+                    Log.logVerbose("Pause download" );
                     Service.StopDownload(ed2klink);
                 }
                 else
                 {
-                    AppendLogMessage("Resume download", true);
+                    Log.logVerbose("Resume download");
                     Service.StartDownload(ed2klink);
                 }
                 MainHistory.Add(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);
                 Ed2kfile parser = new Ed2kfile(DownloadFile.Ed2kLink);
-                AppendLogMessage(string.Format("Add file to emule {0} \n", parser.GetFileName()) + Environment.NewLine, false);
+                Log.logInfo(string.Format("Add file to emule {0} \n", parser.GetFileName()));
                 SendMailDownload(parser.GetFileName(), DownloadFile.Ed2kLink);
 
                 { // progress bar
@@ -996,7 +913,7 @@ namespace tvu
         {
             if (e.Cancelled)
             {
-                AppendLogMessage("Background Worker Cancelled",false);
+                Log.logInfo("Background Worker Cancelled");
             }
             
             UpdateRecentActivity();
@@ -1021,11 +938,11 @@ namespace tvu
 
         void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            
-            AppendLogMessage("FormClosing Event",true); 
-            AppendLogMessage(string.Format("{0} = {1}", "CloseReason", e.CloseReason),true);
-            AppendLogMessage(string.Format("{0} = {1}", "Cancel", e.Cancel),true);
-            AppendLogMessage(string.Format("{0} = {1}", "mAllowClose", mAllowClose), true);
+
+            Log.logVerbose("FormClosing Event");
+            Log.logVerbose(string.Format("{0} = {1}", "CloseReason", e.CloseReason));
+            Log.logVerbose(string.Format("{0} = {1}", "Cancel", e.Cancel));
+            Log.logVerbose(string.Format("{0} = {1}", "mAllowClose", mAllowClose));
 
             if (e.CloseReason == CloseReason.WindowsShutDown)
             {
@@ -1067,7 +984,7 @@ namespace tvu
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            AppendLogMessage("Config loaded " + MainConfig.FileName, false);
+            Log.logInfo("Config loaded " + MainConfig.FileName);
             timer2.Enabled = false;
 
             if (MainConfig.StartMinimized == true)
@@ -1327,6 +1244,8 @@ namespace tvu
                 MainConfig.intervalBetweenUpgradeCheck = OptDialog.LocalConfig.intervalBetweenUpgradeCheck;
                 MainConfig.MaxSimultaneousFeedDownloads = OptDialog.LocalConfig.MaxSimultaneousFeedDownloads;
                 MainConfig.saveLog = OptDialog.LocalConfig.saveLog;
+                
+                Log.Instance.SetVerboseMode(MainConfig.Verbose);
 
                 MainConfig.Save();
 
@@ -1381,14 +1300,14 @@ namespace tvu
         {
             if (MainConfig.CloseEmuleIfAllIsDone == false)
             {
-                AppendLogMessage("[AutoClose Mule] MainConfig.CloseEmuleIfAllIsDone == false", true);
+                Log.logVerbose("[AutoClose Mule] MainConfig.CloseEmuleIfAllIsDone == false");
                 return;
             }
 
             // check if Auto Close Data Time is not set
             if (AutoCloseDataTime == DateTime.MinValue)
             {
-                AppendLogMessage("[AutoClose Mule] AutoCloseDataTime = DateTime.Now.AddMinutes(30);", true);
+                Log.logVerbose("[AutoClose Mule] AutoCloseDataTime = DateTime.Now.AddMinutes(30);");
                 AutoCloseDataTime = DateTime.Now.AddMinutes(30);
             }
 
@@ -1406,7 +1325,7 @@ namespace tvu
 
             // conncect to mule
 
-            AppendLogMessage("[AutoClose Mule] Check Login", true);
+            Log.logVerbose("[AutoClose Mule] Check Login");
             eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
             bool? rc = Service.LogIn();
 
@@ -1415,32 +1334,32 @@ namespace tvu
             if (rc == null)
             {
                 AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
-                AppendLogMessage("[AutoClose Mule] Login failed", true);
+                Log.logVerbose("[AutoClose Mule] Login failed");
                 return;
             }
-            AppendLogMessage("[AutoClose Mule] Login ok", true);
+            Log.logVerbose("[AutoClose Mule] Login ok");
 
-            AppendLogMessage("[AutoClose Mule] Actual Downloads " + Service.GetActualDownloads().Count, true);
+            Log.logVerbose("[AutoClose Mule] Actual Downloads " + Service.GetActualDownloads().Count);
             // if donwload > 0 ... there' s some download ... end 
             if (Service.GetActualDownloads().Count > 0)
             {
-                AppendLogMessage("[AutoClose Mule] GetActualDownloads return >0", true);
+                Log.logVerbose("[AutoClose Mule] GetActualDownloads return >0");
                 AutoCloseDataTime = DateTime.Now.AddMinutes(30);
-                AppendLogMessage("[AutoClose Mule] LogOut", true);
+                Log.logVerbose("[AutoClose Mule] LogOut");
                 Service.LogOut();
                 return;
             }
 
-            AppendLogMessage("[AutoClose Mule] Show dialog ", true);
+            Log.logVerbose("[AutoClose Mule] Show dialog ");
             // pop up form to advise user
             FormAlerteMuleClose Dialog = new FormAlerteMuleClose();
             Dialog.ShowDialog();
 
-            AppendLogMessage("[AutoClose Mule] Dialog return " + Dialog.AlertChoice.ToString(), true);
+            Log.logVerbose("[AutoClose Mule] Dialog return " + Dialog.AlertChoice.ToString());
             switch (Dialog.AlertChoice)
             {
                 case AlertChoiceEnum.Close:// Close
-                    AppendLogMessage("[AutoClose Mule: CLOSE] Close Service", true);
+                    Log.logVerbose("[AutoClose Mule: CLOSE] Close Service");
                     Dialog.Dispose();
                     Service.Close();
                     timerAutoClose.Enabled = true;  // enable timer 
@@ -1448,17 +1367,17 @@ namespace tvu
                 // to fix here                    
                 case AlertChoiceEnum.Skip: // SKIP
                     AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
-                    AppendLogMessage("[AutoClose Mule: SKIP] Skip", true);
-                    AppendLogMessage("[AutoClose Mule: SKIP] Next Tock " + AutoCloseDataTime.ToString(), true);
+                    Log.logVerbose("[AutoClose Mule: SKIP] Skip");
+                    Log.logVerbose("[AutoClose Mule: SKIP] Next Tock " + AutoCloseDataTime.ToString());
                     Dialog.Dispose();
-                    AppendLogMessage("[AutoClose Mule] LogOut", true);
+                    Log.logVerbose("[AutoClose Mule] LogOut");
                     Service.LogOut();
                     timerAutoClose.Enabled = true;  // enable timer 
                     break;
                 case AlertChoiceEnum.Disable:    // disable autoclose
-                    AppendLogMessage("[AutoClose Mule: DISABLE] Disable", true);
+                    Log.logVerbose("[AutoClose Mule: DISABLE] Disable");
                     Dialog.Dispose();
-                    AppendLogMessage("[AutoClose Mule] LogOut", true);
+                    Log.logVerbose("[AutoClose Mule] LogOut");
                     Service.LogOut();
                     DisableAutoCloseEmule();
                     timerAutoClose.Enabled = true;  // enable timer 
@@ -1467,7 +1386,7 @@ namespace tvu
 
             if ((MainConfig.EmailNotification == true) && (sendLogToEmailToolStripMenuItem.Checked))
             {
-                AppendLogMessage("[AutoClose Mule] Send Mail", true);
+                Log.logVerbose("[AutoClose Mule] Send Mail");
                 string stmpServer = MainConfig.ServerSMTP;
                 string EmailReceiver = MainConfig.MailReceiver;
                 string EmailSender = MainConfig.MailSender;
@@ -1556,13 +1475,13 @@ namespace tvu
             {
                 verboseToolStripMenuItem.Checked = false;
                 MainConfig.Verbose = false;
-
             }
             else
             {
                 verboseToolStripMenuItem.Checked = true;
                 MainConfig.Verbose = true;
             }
+            Log.Instance.SetVerboseMode(MainConfig.Verbose);
         }
 
         private void sendLogToEmailToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1594,7 +1513,7 @@ namespace tvu
             }
             catch
             {
-                AppendLogMessage("Unable start application", false);
+                Log.logInfo("Unable start application");
             }
         }
 
@@ -1773,9 +1692,7 @@ namespace tvu
             int i = listView2.Items.IndexOf(temp);
             string str = listView2.Items[i].Text;
 
-            string p = string.Format("DELETE {0}:{1}", i, str);
-            AppendLogMessage(p, false);
-
+            Log.logInfo(string.Format("DELETE {0}:{1}", i, str));
             
             MainHistory.DeleteFile(str);
             listView2.Items.Remove(temp);
@@ -1809,19 +1726,19 @@ namespace tvu
         {
             try
             {
-                AppendLogMessage("Open log file " + MainConfig.FileNameLog, false);
+                Log.logInfo("Open log file " + MainConfig.FileNameLog);
 
                 if (System.IO.File.Exists(MainConfig.FileNameLog) == true)
                 {
 
-                    AppendLogMessage("File exist", false);
+                    Log.logInfo("File exist");
                     string command = string.Format("notepad.exe {0}", MainConfig.FileNameLog);
                     Process.Start(command);
                 }
             }
             catch(Exception exception)
             {
-                AppendLogMessage("Exception \"" + exception.Message + "\"", false);
+                Log.logInfo("Exception \"" + exception.Message + "\"");
             }
 
         }
