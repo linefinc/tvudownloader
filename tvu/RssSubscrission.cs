@@ -4,12 +4,7 @@ using System.Text;
 
 namespace tvu
 {
-    public enum enumStatus
-    {
-        Ok,
-        Error,
-        Idle
-    }
+
 
     public enum tvuStatus
     {
@@ -37,7 +32,6 @@ namespace tvu
         public bool PauseDownload = false;
         public string LastUpgradeDate = "";
         public int TotalDownloads;
-        public enumStatus status = enumStatus.Ok;
         public bool Enabled = true;
         public tvuStatus tvuStatus = tvuStatus.Unknow;
         public string LastTvUStatusUpgradeDate = "";

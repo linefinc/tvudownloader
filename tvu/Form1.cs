@@ -313,17 +313,6 @@ namespace tvu
                 string title = t.Title.Replace("[ed2k] tvunderground.org.ru:", "");
                 ListViewItem item = new ListViewItem(title);
 
-                switch (t.status)
-                {
-                    case enumStatus.Ok:
-                        item.SubItems.Add("Ok");
-                        break;
-
-                    case enumStatus.Error:
-                        item.SubItems.Add("Error");
-                        break;
-
-                }
                 // total downloads
                 item.SubItems.Add(t.TotalDownloads.ToString());
 
@@ -528,7 +517,6 @@ namespace tvu
                     return;
                 }
 
-                feed.status = enumStatus.Ok;
                 Log.logVerbose("Read RSS " + feed.Url);
 
                 try

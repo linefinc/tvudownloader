@@ -31,7 +31,6 @@ namespace tvu
             }
         }
         public string DefaultCategory ;
-        public enumStatus Status ;
         public bool Enebled ;
         public int MaxSimultaneousFeedDownloads ;
         public int MinToStartEmule ;
