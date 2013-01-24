@@ -15,11 +15,13 @@ namespace tvu
     {
 
         public List<string> RssUrlList { private set; get; }
+        private List<string> CurrentRssUrlList ;
 
-        public AddFeedDialogPage1()
+        public AddFeedDialogPage1(List<string> CurrentRssUrlList)
         {
             InitializeComponent();
             this.RssUrlList = new List<string>();
+            this.CurrentRssUrlList = CurrentRssUrlList;
         }
 
         private void buttonNext_Click(object sender, EventArgs e)
@@ -60,8 +62,17 @@ namespace tvu
             foreach (Match p in mc)
             {
                 RssUrlList.Add(p.Value);
-                
             }
+
+            foreach (string rssUrl in RssUrlList)
+            {
+                if (CurrentRssUrlList.IndexOf(rssUrl) != -1)
+                {
+                    MessageBox.Show(string.Format("Error: Rss url duplicate ({0})", rssUrl));
+                    return;
+                }
+            }
+            
 
             this.DialogResult = DialogResult.OK;
             this.Close();

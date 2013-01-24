@@ -1600,7 +1600,12 @@ namespace tvu
 
         void AddRssChannel()
         {
-            AddFeedDialogPage1 dialogPage1 = new AddFeedDialogPage1();
+
+            List<string> CurrentRssUrlList = new List<string>();
+
+            MainConfig.RssFeedList.ForEach(delegate(RssSubscrission t) { CurrentRssUrlList.Add(t.Url); });
+
+            AddFeedDialogPage1 dialogPage1 = new AddFeedDialogPage1(CurrentRssUrlList);
             dialogPage1.ShowDialog();
 
             if (dialogPage1.DialogResult != DialogResult.OK)
