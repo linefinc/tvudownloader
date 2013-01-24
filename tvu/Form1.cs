@@ -357,6 +357,9 @@ namespace tvu
                     case tvuStatus.StillIncomplete:
                         item.SubItems.Add("Still Incomplete");
                         break;
+                    case tvuStatus.OnHiatus:
+                        item.SubItems.Add("On Hiatus");
+                        break;
 
                 }
 

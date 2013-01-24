@@ -16,7 +16,8 @@ namespace tvu
         Complete,
         StillRunning,
         Unknow,
-        StillIncomplete
+        StillIncomplete,
+        OnHiatus
     }
 
     /// <summary>

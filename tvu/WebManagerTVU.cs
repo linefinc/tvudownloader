@@ -27,6 +27,11 @@ namespace tvu
                 {
                     status = tvuStatus.StillIncomplete;
                 }
+
+                if (WebPage.IndexOf("On Hiatus") > 0)
+                {
+                    status = tvuStatus.OnHiatus;
+                }
             }
 
             return status;
