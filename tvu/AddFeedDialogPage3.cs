@@ -25,6 +25,9 @@ namespace tvu
             this.ListRssChannel = ListRssChannel;
             this.GlobalListFileHisotry = GlobalListFileHisotry;
             this.SelectedHistory = new List<fileHistory>(GlobalListFileHisotry); // select all input file
+            labelSelectedElement.Text = string.Format("Selected elements {0}", this.SelectedHistory.Count);
+
+
             index = 0;
 
         }
@@ -45,18 +48,46 @@ namespace tvu
             for (int index = 0; index < checkedListBox1.Items.Count; index++)
                 checkedListBox1.SetItemChecked(index, true);
 
-        }
 
-        private void button2_Click(object sender, EventArgs e)
+            List<fileHistory>  ListFH = GlobalListFileHisotry.FindAll(delegate(fileHistory t) { return t.FeedSource == ListRssChannel[index].Url; });
+
+            foreach (fileHistory fh in ListFH)
+            {
+                SelectedHistory.RemoveAll(delegate(fileHistory t) { return t == fh; });
+            }
+
+            SelectedHistory.AddRange(ListFH);
+            labelSelectedElement.Text = string.Format("Selected elements {0}", this.SelectedHistory.Count);
+           
+            
+        }
+        /// <summary>
+        /// deSelect all element present in checkListBox1 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonSelectNone_Click(object sender, EventArgs e)
         {
             for (int index = 0; index < checkedListBox1.Items.Count; index++)
                 checkedListBox1.SetItemChecked(index, false);
+
+            List<fileHistory> ListFH = GlobalListFileHisotry.FindAll(delegate(fileHistory t) { return t.FeedSource == ListRssChannel[index].Url; });
+            foreach (fileHistory fh in ListFH)
+            {
+                SelectedHistory.RemoveAll(delegate(fileHistory t) { return t == fh; });
+            }
+
+            labelSelectedElement.Text = string.Format("Selected elements {0}", this.SelectedHistory.Count);
+            
         }
+
 
         private void buttonNext_Click(object sender, EventArgs e)
         {
             index = Math.Min(index + 1, ListRssChannel.Count);
             RefreshList();
+
+            
         }
 
         private void buttonPrevious_Click(object sender, EventArgs e)
@@ -108,24 +139,22 @@ namespace tvu
         {
             
             
-            string fileName = checkedListBox1.SelectedItem.ToString();
-            bool isChecked = checkedListBox1.CheckedItems.IndexOf(checkedListBox1.SelectedItem)> -1;
-             
-            
-            List<fileHistory> mySelectedFile = GlobalListFileHisotry.FindAll(delegate(fileHistory t) { return t.FileName == fileName; });
-            if (mySelectedFile.Count == 0)
+            for(int index =0; index < checkedListBox1.Items.Count; index++)
             {
-                return;
+                bool checkedstated = checkedListBox1.GetItemChecked(index);
+
+                fileHistory item = GlobalListFileHisotry.Find(delegate(fileHistory t) { return t.FileName == checkedListBox1.Items[index]; });
+
+                SelectedHistory.RemoveAll(delegate(fileHistory t) { return t == item; });
+
+                if (checkedstated == true)
+                {
+                    SelectedHistory.Add(item);
+                }
+
             }
 
-            fileHistory myFile = mySelectedFile[0];
-
-            SelectedHistory.Remove(myFile);
-            if (isChecked)
-            {
-                SelectedHistory.Add(myFile);
-            }
-
+            labelSelectedElement.Text = string.Format("Selected elements {0}", this.SelectedHistory.Count);
 
         }
 
@@ -138,11 +167,6 @@ namespace tvu
         {
             ListRssChannel[index].Pause = checkBoxPause.Checked;
         }
-
-     
-        
-
-       
 
    
     }

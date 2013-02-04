@@ -36,10 +36,11 @@
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonSelectAll = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.buttonSelectNone = new System.Windows.Forms.Button();
             this.buttonNext = new System.Windows.Forms.Button();
             this.buttonFinish = new System.Windows.Forms.Button();
             this.buttonPrevious = new System.Windows.Forms.Button();
+            this.labelSelectedElement = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // buttonCancel
@@ -120,15 +121,15 @@
             this.buttonSelectAll.UseVisualStyleBackColor = true;
             this.buttonSelectAll.Click += new System.EventHandler(this.buttonSelectAll_Click);
             // 
-            // button2
+            // buttonSelectNone
             // 
-            this.button2.Location = new System.Drawing.Point(460, 403);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(94, 23);
-            this.button2.TabIndex = 43;
-            this.button2.Text = "Download None";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.buttonSelectNone.Location = new System.Drawing.Point(460, 403);
+            this.buttonSelectNone.Name = "buttonSelectNone";
+            this.buttonSelectNone.Size = new System.Drawing.Size(94, 23);
+            this.buttonSelectNone.TabIndex = 43;
+            this.buttonSelectNone.Text = "Download None";
+            this.buttonSelectNone.UseVisualStyleBackColor = true;
+            this.buttonSelectNone.Click += new System.EventHandler(this.buttonSelectNone_Click);
             // 
             // buttonNext
             // 
@@ -160,16 +161,26 @@
             this.buttonPrevious.UseVisualStyleBackColor = true;
             this.buttonPrevious.Click += new System.EventHandler(this.buttonPrevious_Click);
             // 
+            // labelSelectedElement
+            // 
+            this.labelSelectedElement.AutoSize = true;
+            this.labelSelectedElement.Location = new System.Drawing.Point(12, 408);
+            this.labelSelectedElement.Name = "labelSelectedElement";
+            this.labelSelectedElement.Size = new System.Drawing.Size(98, 13);
+            this.labelSelectedElement.TabIndex = 47;
+            this.labelSelectedElement.Text = "Selected element 0";
+            // 
             // AddFeedDialogPage3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(812, 469);
             this.ControlBox = false;
+            this.Controls.Add(this.labelSelectedElement);
             this.Controls.Add(this.buttonPrevious);
             this.Controls.Add(this.buttonFinish);
             this.Controls.Add(this.buttonNext);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.buttonSelectNone);
             this.Controls.Add(this.buttonSelectAll);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.checkedListBox1);
@@ -200,9 +211,10 @@
         private System.Windows.Forms.CheckedListBox checkedListBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonSelectAll;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button buttonSelectNone;
         private System.Windows.Forms.Button buttonNext;
         private System.Windows.Forms.Button buttonFinish;
         private System.Windows.Forms.Button buttonPrevious;
+        private System.Windows.Forms.Label labelSelectedElement;
     }
 }
