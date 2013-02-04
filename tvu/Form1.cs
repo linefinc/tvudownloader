@@ -646,7 +646,6 @@ namespace tvu
                 catch
                 {
                     Log.logInfo("Some Error in rss parsing");
-                    feed.status = enumStatus.Error;
                 }
 
                 if (backgroundWorker1.CancellationPending)
@@ -1662,7 +1661,7 @@ namespace tvu
                 RssSubscrission.PauseDownload = rsschannel.Pause;
                 MainConfig.RssFeedList.Add(RssSubscrission);
             }
-            MainConfig.Save();
+            
             
             //
             //  Add filehistory
@@ -1670,10 +1669,13 @@ namespace tvu
             List<fileHistory> temp = new List<fileHistory>(dialogPage3.GlobalListFileHisotry);
             // remove file selected 
             temp.RemoveAll(delegate(fileHistory fh) { return dialogPage3.SelectedHistory.IndexOf(fh) > -1; });
+            // update data
             temp.ForEach(delegate(fileHistory fh) { fh.Date = DateTime.Now.AddYears(-1).ToString("s");});
             MainHistory.fileHistoryList.AddRange(temp);
             
             MainHistory.Save();
+            MainConfig.Save();
+            
             UpdateRssFeedGUI();
             dialogPage1.Dispose();
             dialogPage2.Dispose();
