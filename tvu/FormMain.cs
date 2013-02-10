@@ -19,7 +19,7 @@ using tvu;
 
 namespace tvu
 {
-    public partial class Form1 : Form
+    public partial class FormMain : Form
     {
         private bool mVisible = true;
         private bool mAllowClose = false;
@@ -70,7 +70,7 @@ namespace tvu
             
         };
 
-        public Form1()
+        public FormMain()
         {
             // load config
             MainConfig = new Config();

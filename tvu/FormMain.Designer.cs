@@ -1,6 +1,6 @@
 ﻿namespace tvu
 {
-    partial class Form1
+    partial class FormMain
     {
         /// <summary>
         /// Variabile di progettazione necessaria.
