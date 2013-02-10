@@ -447,7 +447,7 @@ namespace tvu
             foreach (fileHistory fh in ListHistory)
             {
                 ListViewItem item = new ListViewItem(fh.FileName);
-                string date = fh.Date.Substring(0,9);
+                string date = fh.Date.Substring(0,10);
                 item.SubItems.Add(date);
                 listView2.Items.Add(item);
             }
