@@ -94,7 +94,7 @@ namespace tvu
             set
             {
                 ColumnToSort = value;
-                Log.logVerbose(string.Format("Sort column {0}",ColumnToSort));
+                Log.logDebug(string.Format("Sort column {0}",ColumnToSort));
             }
             get
             {

@@ -63,6 +63,18 @@ namespace  tvu
             Log.instance.ListLogTarget.ForEach(delegate(iLogTarget temp) { temp.WriteText(text); });
         }
 
+        public static void logDebug(string text)
+        {
+#if DEBUG
+            text = "[" + DateTime.Now.ToString() + "]" + text;
+            if (text.IndexOf(Environment.NewLine) == -1)
+            {
+                text += Environment.NewLine;
+            }
+
+            Log.instance.ListLogTarget.ForEach(delegate(iLogTarget temp) { temp.WriteText(text); });
+#endif
+        }
 
 
         public static void logVerbose(string text)
