@@ -318,8 +318,15 @@ namespace tvu
 
                 // last upgrade
                 uint days = 0;
+
+                if (t.LastTvUStatusUpgradeDate == string.Empty)
+                {
+                    t.LastUpgradeDate = MainHistory.LastDownloadDateByFeedSource(t.Url);
+                }
+              
                 if (t.LastUpgradeDate.Equals("") == false)
                 {
+
                     DateTime LastDownloadTime = Convert.ToDateTime(t.LastUpgradeDate);
 
                     TimeSpan diff = DateTime.Now.Subtract(LastDownloadTime);
@@ -488,14 +495,9 @@ namespace tvu
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
 
-
-
-
-
             Log.logInfo("Start RSS Check");
 
             List<sDonwloadFile> DownloadFileList = new List<sDonwloadFile>();
-
 
             FeedLinkCache feedLinkCache = new FeedLinkCache();
             feedLinkCache.Load();
