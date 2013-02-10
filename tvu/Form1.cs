@@ -438,25 +438,17 @@ namespace tvu
             listView2.Items.Clear();
 
 
-
-            List<fileHistory> ListHistory = new List<fileHistory>();
-
-
-            foreach (fileHistory fh in MainHistory.fileHistoryList)
-            {
-                
-                if (fh.FeedSource == Feed.Url)
-                {
-                    ListHistory.Add(fh);
-                }
-            }
+            // extract file by feedLink
+            List<fileHistory> ListHistory;
+            ListHistory = MainHistory.fileHistoryList.FindAll(delegate(fileHistory fh) { return fh.FeedSource == Feed.Url; });
 
             ListHistory.Sort((x, y) => (y.Date.CompareTo(x.Date)));
 
             foreach (fileHistory fh in ListHistory)
             {
                 ListViewItem item = new ListViewItem(fh.FileName);
-                item.SubItems.Add(fh.Date);
+                string date = fh.Date.Substring(0,9);
+                item.SubItems.Add(date);
                 listView2.Items.Add(item);
             }
         }
