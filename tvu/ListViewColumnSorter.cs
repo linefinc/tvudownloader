@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Windows.Forms;
 
 namespace tvu
@@ -50,9 +51,22 @@ namespace tvu
             // Cast the objects to be compared to ListViewItem objects
             listviewX = (ListViewItem)x;
             listviewY = (ListViewItem)y;
+            
+            string strX = listviewX.SubItems[ColumnToSort].Text;
+            string strY = listviewY.SubItems[ColumnToSort].Text;
 
             // Compare the two items
-            compareResult = ObjectCompare.Compare(listviewX.SubItems[ColumnToSort].Text, listviewY.SubItems[ColumnToSort].Text);
+            compareResult = ObjectCompare.Compare(strX, strY);
+
+
+            if ((strX.IndexOf("days") > -1) & (strY.IndexOf("days") > -1))
+            {
+                int integerX = Convert.ToInt32(RemoveAllExceptNotNumbers(strX));
+                int integerY = Convert.ToInt32(RemoveAllExceptNotNumbers(strY));
+
+                compareResult = ObjectCompare.Compare(integerX, integerY);
+            }
+            
 
             // Calculate correct return value based on object comparison
             if (OrderOfSort == SortOrder.Ascending)
@@ -80,6 +94,7 @@ namespace tvu
             set
             {
                 ColumnToSort = value;
+                Log.logVerbose(string.Format("Sort column {0}",ColumnToSort));
             }
             get
             {
@@ -100,6 +115,22 @@ namespace tvu
             {
                 return OrderOfSort;
             }
+        }
+
+        public static string RemoveAllExceptNotNumbers(string str)
+        {
+            string temp = "0";
+
+            foreach (char c in str)
+            {
+                if ((c >= '0') & (c <= '9'))
+                {
+                    temp += c;
+                }
+            }
+
+            return temp;
+
         }
 
     }
