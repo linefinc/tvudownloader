@@ -490,6 +490,10 @@ namespace tvu
             deleteToolStripMenuItem.Enabled = false;
             addToolStripMenuItem.Enabled = false;
             deleteCompleteToolStripMenuItem.Enabled = false;
+            toolStripMenuItemAdd.Enabled = false;
+            toolStripMenuItemDelete.Enabled = false;
+            toolStripMenuItemEdit.Enabled = false;
+
             menuItemCheckNow.Enabled = false;
             cancelCheckToolStripMenuItem.Enabled = true;
             backgroundWorker1.RunWorkerAsync();
@@ -915,12 +919,20 @@ namespace tvu
             
             UpdateRecentActivity();
             UpdateRssFeedGUI();
+            
             cancelCheckToolStripMenuItem.Enabled = true;
             menuItemCheckNow.Enabled = true;
+            
+            deleteToolStripMenuItem.Enabled = true;
+            addToolStripMenuItem.Enabled = true;
+
             checkNowToolStripMenuItem.Enabled = true;
             deleteToolStripMenuItem.Enabled = true;
             addToolStripMenuItem.Enabled = true;
             deleteCompleteToolStripMenuItem.Enabled = true;
+            toolStripMenuItemAdd.Enabled = true;
+            toolStripMenuItemDelete.Enabled = true;
+            toolStripMenuItemEdit.Enabled = true;
         }
 
 

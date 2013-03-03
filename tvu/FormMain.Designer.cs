@@ -57,7 +57,7 @@
             this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemAdd = new System.Windows.Forms.ToolStripMenuItem();
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.tabActivity = new System.Windows.Forms.TabPage();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
@@ -331,7 +331,7 @@
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemAdd,
-            this.editToolStripMenuItem,
+            this.toolStripMenuItemEdit,
             this.toolStripMenuItemDelete});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(108, 70);
@@ -345,10 +345,10 @@
             // 
             // editToolStripMenuItem
             // 
-            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
-            this.editToolStripMenuItem.Text = "Edit";
-            this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
+            this.toolStripMenuItemEdit.Name = "editToolStripMenuItem";
+            this.toolStripMenuItemEdit.Size = new System.Drawing.Size(107, 22);
+            this.toolStripMenuItemEdit.Text = "Edit";
+            this.toolStripMenuItemEdit.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
             // 
             // toolStripMenuItemDelete
             // 
@@ -739,7 +739,7 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem oPMLExportToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemEdit;
     }
 }
 
