@@ -300,6 +300,9 @@ namespace tvu
                 listView1.Items.Remove(listView1.Items[0]);
             }
 
+            FeedLinkCache feedLinkCache = new FeedLinkCache();
+            feedLinkCache.Load();
+
             List<RssSubscrission> myRssFeedList = new List<RssSubscrission>();
             myRssFeedList.AddRange(MainConfig.RssFeedList);
             //
@@ -308,14 +311,24 @@ namespace tvu
             myRssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title));
 
 
+
             foreach (RssSubscrission t in myRssFeedList)
             {
                 string title = t.Title.Replace("[ed2k] tvunderground.org.ru:", "");
                 ListViewItem item = new ListViewItem(title);
 
                 // total downloads
-                item.SubItems.Add(t.TotalDownloads.ToString());
-
+                int counter =feedLinkCache.CountFeedLink(t.Url);
+                
+                
+                if(counter >0)
+                {
+                    item.SubItems.Add(string.Format("{0}+{1}",t.TotalDownloads,counter));
+                }
+                else
+                {
+                    item.SubItems.Add(t.TotalDownloads.ToString());
+                }
                 // last upgrade
                 uint days = 0;
 
@@ -323,7 +336,7 @@ namespace tvu
                 {
                     t.LastUpgradeDate = MainHistory.LastDownloadDateByFeedSource(t.Url);
                 }
-              
+
                 if (t.LastUpgradeDate.Equals("") == false)
                 {
 
@@ -361,7 +374,7 @@ namespace tvu
 
                 listView1.Items.Add(item);
             }
-
+            
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -1655,18 +1668,26 @@ namespace tvu
                 RssSubscrission.PauseDownload = rsschannel.Pause;
                 MainConfig.RssFeedList.Add(RssSubscrission);
             }
-            
-            
+            //
+            //  remove all data from history
+            //
+            foreach (fileHistory fh in dialogPage3.GlobalListFileHisotry)
+            {
+                MainHistory.fileHistoryList.RemoveAll(delegate(fileHistory t) { return t == fh; });
+            }
+
             //
             //  Add filehistory
             //  
-            List<fileHistory> temp = new List<fileHistory>(dialogPage3.GlobalListFileHisotry);
-            // remove file selected 
-            temp.RemoveAll(delegate(fileHistory fh) { return dialogPage3.SelectedHistory.IndexOf(fh) > -1; });
+            List<fileHistory> temp = new List<fileHistory>(dialogPage3.UnselectedHistory);
+            temp.ForEach(delegate(fileHistory fh) { Log.logDebug("UnselectedHistory " + fh.FileName); });
+
             // update data
             temp.ForEach(delegate(fileHistory fh) { fh.Date = DateTime.Now.AddYears(-1).ToString("s");});
             MainHistory.fileHistoryList.AddRange(temp);
             
+            
+
             MainHistory.Save();
             MainConfig.Save();
             
@@ -1852,7 +1873,10 @@ namespace tvu
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            EditFeedForm form = new EditFeedForm("prova", false);
+            //TODO: fix
+            
+            RssSubscrission rs = new RssSubscrission("porva","porva");
+            EditFeedForm form = new EditFeedForm("prova", false,rs.maxSimultaneousDownload);
             form.ShowDialog();
 
         }

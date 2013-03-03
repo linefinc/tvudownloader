@@ -12,25 +12,21 @@ namespace tvu
     public partial class AddFeedDialogPage3 : Form
     {
         private int index;
-        
-        public List<fileHistory> SelectedHistory { get; private set; }
-        public List<fileHistory> GlobalListFileHisotry { get; private set; }
 
+        public List<fileHistory> UnselectedHistory { get; private set; }
+        public List<fileHistory> GlobalListFileHisotry { get; private set; }
         public List<RssChannel> ListRssChannel { get; private set; }
-        
-        public AddFeedDialogPage3( List<RssChannel> ListRssChannel, List<fileHistory> GlobalListFileHisotry)
+
+        public AddFeedDialogPage3(List<RssChannel> ListRssChannel, List<fileHistory> GlobalListFileHisotry)
         {
             InitializeComponent();
 
             this.ListRssChannel = ListRssChannel;
             this.GlobalListFileHisotry = GlobalListFileHisotry;
-            this.SelectedHistory = new List<fileHistory>(GlobalListFileHisotry); // select all input file
-            labelSelectedElement.Text = string.Format("Selected elements {0}", this.SelectedHistory.Count);
-
-
+            this.UnselectedHistory = new List<fileHistory>(); // select all input file
+            labelSelectedElement.Text = string.Format("Selected elements {0}", this.GlobalListFileHisotry.Count);
             index = 0;
-
-        }
+        }     
 
         private void AddFeedDialogPage3_Load(object sender, EventArgs e)
         {
@@ -42,30 +38,30 @@ namespace tvu
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
-   
+        /// <summary>
+        /// Select all element in checkedListBox
+        /// </summary>
+        /// <remarks>
+        /// Remove all element from Unselect
+        /// </remarks>
         private void buttonSelectAll_Click(object sender, EventArgs e)
         {
             for (int index = 0; index < checkedListBox1.Items.Count; index++)
                 checkedListBox1.SetItemChecked(index, true);
 
-
             List<fileHistory>  ListFH = GlobalListFileHisotry.FindAll(delegate(fileHistory t) { return t.FeedSource == ListRssChannel[index].Url; });
 
             foreach (fileHistory fh in ListFH)
             {
-                SelectedHistory.RemoveAll(delegate(fileHistory t) { return t == fh; });
+                UnselectedHistory.RemoveAll(delegate(fileHistory t) { return t == fh; });
             }
 
-            SelectedHistory.AddRange(ListFH);
-            labelSelectedElement.Text = string.Format("Selected elements {0}", this.SelectedHistory.Count);
-           
+            labelSelectedElement.Text = string.Format("Selected elements {0}", this.GlobalListFileHisotry.Count - this.UnselectedHistory.Count);
             
         }
         /// <summary>
         /// deSelect all element present in checkListBox1 
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void buttonSelectNone_Click(object sender, EventArgs e)
         {
             for (int index = 0; index < checkedListBox1.Items.Count; index++)
@@ -74,11 +70,10 @@ namespace tvu
             List<fileHistory> ListFH = GlobalListFileHisotry.FindAll(delegate(fileHistory t) { return t.FeedSource == ListRssChannel[index].Url; });
             foreach (fileHistory fh in ListFH)
             {
-                SelectedHistory.RemoveAll(delegate(fileHistory t) { return t == fh; });
+                UnselectedHistory.RemoveAll(delegate(fileHistory t) { return t == fh; });
             }
-
-            labelSelectedElement.Text = string.Format("Selected elements {0}", this.SelectedHistory.Count);
             
+            labelSelectedElement.Text = string.Format("Selected elements {0}", this.GlobalListFileHisotry.Count - this.UnselectedHistory.Count);
         }
 
 
@@ -86,8 +81,6 @@ namespace tvu
         {
             index = Math.Min(index + 1, ListRssChannel.Count);
             RefreshList();
-
-            
         }
 
         private void buttonPrevious_Click(object sender, EventArgs e)
@@ -98,7 +91,6 @@ namespace tvu
 
         private void RefreshList()
         {
-            
             RssChannel rsschannel = ListRssChannel[index];
             comboBoxCategory.Text = rsschannel.Category;
             checkBoxPause.Checked = ListRssChannel[index].Pause;
@@ -111,22 +103,16 @@ namespace tvu
 
             foreach (fileHistory file in listFileToDisplay)
             {
-                bool selected = false;
+                bool selected = true;
 
-                if (SelectedHistory.IndexOf(file) > -1)
+                if (UnselectedHistory.IndexOf(file) > -1)
                 {
-                    selected = true;
-                 
+                    selected = false;
                 }
-                
                 checkedListBox1.Items.Add(file.FileName, selected);
             }
-            
-            
             buttonNext.Enabled = (ListRssChannel.Count-1) != index;
             buttonPrevious.Enabled = index != 0;
-
-
         }
 
         private void buttonFinish_Click(object sender, EventArgs e)
@@ -137,25 +123,20 @@ namespace tvu
 
         private void checkedListBox1_SelectedValueChanged(object sender, EventArgs e)
         {
-            
-            
-            for(int index =0; index < checkedListBox1.Items.Count; index++)
+            for (int index = 0; index < checkedListBox1.Items.Count; index++)
             {
-                bool checkedstated = checkedListBox1.GetItemChecked(index);
-
+                // get item (fileHistory) form main list
                 fileHistory item = GlobalListFileHisotry.Find(delegate(fileHistory t) { return t.FileName == checkedListBox1.Items[index]; });
 
-                SelectedHistory.RemoveAll(delegate(fileHistory t) { return t == item; });
+                // remove all data 
+                UnselectedHistory.RemoveAll(delegate(fileHistory t) { return t == item; });
 
-                if (checkedstated == true)
+                if (checkedListBox1.GetItemChecked(index) == false)
                 {
-                    SelectedHistory.Add(item);
+                    UnselectedHistory.Add(item);
                 }
-
             }
-
-            labelSelectedElement.Text = string.Format("Selected elements {0}", this.SelectedHistory.Count);
-
+            labelSelectedElement.Text = string.Format("Selected elements {0}", this.GlobalListFileHisotry.Count - this.UnselectedHistory.Count);
         }
 
         private void comboBoxCategory_SelectedIndexChanged(object sender, EventArgs e)
