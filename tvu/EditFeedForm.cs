@@ -12,12 +12,13 @@ namespace tvu
     {
         public string category { private set; get; }
         public bool pause { private set; get; }
+        public int maxSimultaneousDownload { private set; get; }
 
-        public EditFeedForm(string category, bool pause)
+        public EditFeedForm(string category, bool pause, int maxSimultaneousDownload)
         {
             this.pause = pause;
             this.category = category;
-
+            this.maxSimultaneousDownload = maxSimultaneousDownload;
             InitializeComponent();
         }
 

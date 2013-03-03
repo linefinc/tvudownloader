@@ -33,11 +33,15 @@
             this.checkBoxDownloadinPause = new System.Windows.Forms.CheckBox();
             this.comboBoxCategory = new System.Windows.Forms.ComboBox();
             this.labelRssTitle = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.checkBoxEnable = new System.Windows.Forms.CheckBox();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(295, 54);
+            this.buttonCancel.Location = new System.Drawing.Point(295, 139);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 0;
@@ -47,7 +51,7 @@
             // 
             // buttonSave
             // 
-            this.buttonSave.Location = new System.Drawing.Point(214, 54);
+            this.buttonSave.Location = new System.Drawing.Point(214, 139);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(75, 23);
             this.buttonSave.TabIndex = 1;
@@ -58,7 +62,7 @@
             // checkBoxDownloadinPause
             // 
             this.checkBoxDownloadinPause.AutoSize = true;
-            this.checkBoxDownloadinPause.Location = new System.Drawing.Point(12, 52);
+            this.checkBoxDownloadinPause.Location = new System.Drawing.Point(12, 79);
             this.checkBoxDownloadinPause.Name = "checkBoxDownloadinPause";
             this.checkBoxDownloadinPause.Size = new System.Drawing.Size(118, 17);
             this.checkBoxDownloadinPause.TabIndex = 2;
@@ -82,11 +86,55 @@
             this.labelRssTitle.TabIndex = 4;
             this.labelRssTitle.Text = "Rss Title: ";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 51);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(149, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Max Simultaneous Downloads";
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(167, 49);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(61, 20);
+            this.numericUpDown1.TabIndex = 7;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            // 
+            // checkBoxEnable
+            // 
+            this.checkBoxEnable.AutoSize = true;
+            this.checkBoxEnable.Location = new System.Drawing.Point(12, 102);
+            this.checkBoxEnable.Name = "checkBoxEnable";
+            this.checkBoxEnable.Size = new System.Drawing.Size(59, 17);
+            this.checkBoxEnable.TabIndex = 8;
+            this.checkBoxEnable.Text = "Enable";
+            this.checkBoxEnable.UseVisualStyleBackColor = true;
+            // 
             // EditFeedForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(382, 89);
+            this.ClientSize = new System.Drawing.Size(382, 174);
+            this.Controls.Add(this.checkBoxEnable);
+            this.Controls.Add(this.numericUpDown1);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.labelRssTitle);
             this.Controls.Add(this.comboBoxCategory);
             this.Controls.Add(this.checkBoxDownloadinPause);
@@ -96,6 +144,7 @@
             this.MinimizeBox = false;
             this.Name = "EditFeedForm";
             this.Text = "Edit";
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -108,5 +157,8 @@
         private System.Windows.Forms.CheckBox checkBoxDownloadinPause;
         private System.Windows.Forms.ComboBox comboBoxCategory;
         private System.Windows.Forms.Label labelRssTitle;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.CheckBox checkBoxEnable;
     }
 }
