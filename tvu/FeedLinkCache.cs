@@ -84,6 +84,20 @@ namespace tvu
             return string.Empty;
         }
 
+        public int CountFeedLink(string FeedLink)
+        {
+            int counter = 0;
+            foreach (FeedLinkCacheRow flcr in FeedLinkCacheTable)
+            {
+                if (flcr.FeedLink == FeedLink)
+                {
+                    counter++;
+                }
+
+            }
+            return counter;
+        }
+
         public void Load()
         {
             // Clear list

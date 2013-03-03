@@ -245,10 +245,14 @@ namespace tvu
                     textWritter.WriteString(feed.LastUpgradeDate);
                     textWritter.WriteEndElement();
 
-                    textWritter.WriteStartElement("Enabled");//Last Upgrade Date
+                    //TODO: enable not to fix
+                    textWritter.WriteStartElement("Enabled");
                     textWritter.WriteString(feed.Enabled.ToString());
                     textWritter.WriteEndElement();
 
+                    textWritter.WriteStartElement("maxSimultaneousDownload"); // max Simultaneous Downloads
+                    textWritter.WriteString(feed.maxSimultaneousDownload.ToString());
+                    textWritter.WriteEndElement();
 
                     switch (feed.tvuStatus)
                     {
@@ -336,6 +340,7 @@ namespace tvu
             intervalBetweenUpgradeCheck = (int)Convert.ToInt32(ReadString(xDoc, "intervalBetweenUpgradeCheck", "15"));
 
             LastUpgradeCheck = ReadString(xDoc, "LastUpgradeCheck", DateTime.Now.ToString("yyyy-MM-dd"));
+            
             //
             //  Load Channel
             //
@@ -408,6 +413,10 @@ namespace tvu
                         newfeed.LastTvUStatusUpgradeDate = t.FirstChild.Value;
                     }
 
+                    if ((t.Name == "maxSimultaneousDownload") & (t.FirstChild != null))
+                    {
+                        newfeed.maxSimultaneousDownload = (int)Convert.ToInt32(t.FirstChild.Value);
+                    }
 
                 }
 

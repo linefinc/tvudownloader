@@ -38,6 +38,7 @@ namespace tvu
 
         public string TitleCompact { get { return this.Title.Replace("[ed2k] tvunderground.org.ru:", ""); } }
 
+        public int maxSimultaneousDownload;
 
         
     }
