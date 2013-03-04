@@ -250,7 +250,6 @@ namespace tvu
 
         private void menu_AutoCloseEmule(object Sender, EventArgs e)
         {
-            //AppendLogMessage("Auto Close Emule");
             if (MainConfig.CloseEmuleIfAllIsDone == true)
             {
                 this.menuItemAutoCloseEmule.Checked = false;
@@ -791,8 +790,6 @@ namespace tvu
             }
 
             Log.logInfo("ActualDownloadFileList.Count = " + ActualDownloadFileList.Count);
-            //AppendLogMessage("MainConfig.RssFeedList.Count = " + MainConfig.RssFeedList.Count, true);
-
             Log.logInfo("Clean download list (step 2) check limit for each channel");
 
             
@@ -820,9 +817,7 @@ namespace tvu
                                                         { return (file.FeedLink == FeedURL) ^ (file.FeedSource == FeedURL); });
 
                 // calcolo il numero di file da scaricare:
-                // NumeroMassimoDiFilePerCanale - NumeroDiFileGiàInDownlaod
                 int dif = RssFeed.maxSimultaneousDownload - CurrentlyDownloadingFileFromEmuleByFeed.Count;
-                //AppendLogMessage("1) DIF  =" + dif, true);
 
                 if (PendingFileFromRssFeed.Count > 0)
                 {
@@ -850,9 +845,6 @@ namespace tvu
                             sDonwloadFile temp = PendingFileFromRssFeed[index];
                             DownloadFileList.Remove(temp);
                         }
-
-
-                        //AppendLogMessage("3B) DownloadFileListForRssFeed  =" + PendingFileFromRssFeed.Count, true);
                     }
                 }
             }
@@ -1325,7 +1317,6 @@ namespace tvu
             //
             if (DateTime.Now < AutoCloseDataTime)
             {
-                //AppendLogMessage("[AutoClose Mule] DateTime.Now < AutoCloseDataTime", true);
                 return;
             }
 
