@@ -254,30 +254,27 @@ namespace tvu
                     textWritter.WriteString(feed.maxSimultaneousDownload.ToString());
                     textWritter.WriteEndElement();
 
+                    textWritter.WriteStartElement("tvuStatus");
                     switch (feed.tvuStatus)
                     {
                         case tvuStatus.Complete:
-                            textWritter.WriteStartElement("tvuStatus");
                             textWritter.WriteString("Complete");
-                            textWritter.WriteEndElement();
                             break;
                         case tvuStatus.StillIncomplete:
-                            textWritter.WriteStartElement("tvuStatus");
                             textWritter.WriteString("StillIncomplete");
-                            textWritter.WriteEndElement();
                             break;
                         case tvuStatus.StillRunning:
-                            textWritter.WriteStartElement("tvuStatus");
                             textWritter.WriteString("StillRunning");
-                            textWritter.WriteEndElement();
+                            break;
+                        case tvuStatus.OnHiatus:
+                            textWritter.WriteString("OnHiatus");
                             break;
                         case tvuStatus.Unknow:
-                            textWritter.WriteStartElement("tvuStatus");
+                        default:
                             textWritter.WriteString("Unknow");
-                            textWritter.WriteEndElement();
                             break;
                     }
-                    
+                    textWritter.WriteEndElement();
                 }
 
                 textWritter.WriteStartElement("LastTvUStatusUpgradeDate");//Last Tv Undergraund Status Upgrade Date
@@ -399,6 +396,9 @@ namespace tvu
                                 break;
                             case "StillRunning":
                                 newfeed.tvuStatus = tvuStatus.StillRunning;
+                                break;
+                            case "OnHiatus":
+                                newfeed.tvuStatus = tvuStatus.OnHiatus;
                                 break;
                             case "Unknow":
                             default:
