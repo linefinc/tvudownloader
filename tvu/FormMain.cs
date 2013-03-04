@@ -819,24 +819,16 @@ namespace tvu
                 PendingFileFromRssFeed = DownloadFileList.FindAll(delegate(sDonwloadFile file)
                                                         { return (file.FeedLink == FeedURL) ^ (file.FeedSource == FeedURL); });
 
-                //AppendLogMessage("> Currently Downloading File From Emule By Feed Count = " + CurrentlyDownloadingFileFromEmuleByFeed.Count, true);
-                //AppendLogMessage("> DUMP CurrentlyDownloadingFileFromEmuleByFeed",true);
-                //CurrentlyDownloadingFileFromEmuleByFeed.ForEach(delegate(sDonwloadFile t) { AppendLogMessage("\t\t> " + t.Ed2kLink, true); });
-                
-                //AppendLogMessage("> Pending File From Rss Feed Cout = " + PendingFileFromRssFeed.Count, true);
-                //AppendLogMessage("> DUMP CurrentlyDownloadingFileFromEmuleByFeed",true);
-                //PendingFileFromRssFeed.ForEach(delegate(sDonwloadFile t) { AppendLogMessage("\t\t> " + t.Ed2kLink, true); });
-
                 // calcolo il numero di file da scaricare:
                 // NumeroMassimoDiFilePerCanale - NumeroDiFileGiàInDownlaod
-                int dif = MainConfig.MaxSimultaneousFeedDownloads - CurrentlyDownloadingFileFromEmuleByFeed.Count;
+                int dif = RssFeed.maxSimultaneousDownload - CurrentlyDownloadingFileFromEmuleByFeed.Count;
                 //AppendLogMessage("1) DIF  =" + dif, true);
 
                 if (PendingFileFromRssFeed.Count > 0)
                 {
                     if (dif <= 0)
                     {
-                        Log.logVerbose("Limit reached, remove all pending element");
+                        Log.logVerbose(string.Format("Limit reached ({0}), remove all pending element",RssFeed.maxSimultaneousDownload));
 
                         // nothing to download
                         foreach (sDonwloadFile file in PendingFileFromRssFeed)
@@ -848,7 +840,7 @@ namespace tvu
                     else
                     {
                         int delta = PendingFileFromRssFeed.Count - dif;
-                        Log.logVerbose(string.Format("Limit reached, remove {0} pending element", delta));
+                        Log.logVerbose(string.Format("Limit reached ({0}), remove {0} pending element",RssFeed.maxSimultaneousDownload, delta));
 
                         PendingFileFromRssFeed.Sort(delegate(sDonwloadFile A, sDonwloadFile B)
                                                         { return A.Ed2kLink.CompareTo(B.Ed2kLink); });
