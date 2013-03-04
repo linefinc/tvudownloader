@@ -1585,9 +1585,12 @@ namespace tvu
             newFeedLinkCache.FeedLinkCacheTable.RemoveAll(delegate(FeedLinkCacheRow flcr) { return FileToDelete.IndexOf(flcr.Ed2kLink) > -1; });
             newFeedLinkCache.Save();
 
+
+
             MainConfig.RssFeedList.Remove(Feed);
             MainConfig.Save();
             MainHistory.Save();
+            listView2.Items.Clear();
             UpdateRssFeedGUI(); ///upgrade gui
         }
 
