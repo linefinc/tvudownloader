@@ -116,6 +116,7 @@ namespace tvu
             label12.Text = "";
             label14.Text = "";
             labelTotalFiles.Text = "";
+            labelMaxSimultaneousDownloads.Text = "";
 
             // Create an instance of a ListView column sorter and assign it 
             // to the ListView control.
@@ -1885,11 +1886,53 @@ namespace tvu
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //TODO: fix
-            
-            RssSubscrission rs = new RssSubscrission("porva","porva");
-            EditFeedForm form = new EditFeedForm("prova", false,rs.maxSimultaneousDownload);
-            form.ShowDialog();
+         
+            if (listView1.Items.Count == 0)
+                return;
+
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
+            ListViewItem temp = listView1.SelectedItems[0];
+            int i = listView1.Items.IndexOf(temp);
+            string feedTitle = listView1.Items[i].Text;
+
+            RssSubscrission SelectedFeed = MainConfig.RssFeedList[0];
+
+            bool found = false;
+            for (i = 0; i < listView1.Items.Count; i++)
+            {
+                string Title1 = MainConfig.RssFeedList[i].Title.Replace("[ed2k] tvunderground.org.ru:", "");
+                string Title2 = feedTitle.Replace("[ed2k] tvunderground.org.ru:", "");
+                if (Title1 == Title2)
+                {
+                    SelectedFeed = MainConfig.RssFeedList[i];
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found == false)
+            {
+                return;
+            }
+
+            EditFeedForm dialog = new EditFeedForm(SelectedFeed.Category, SelectedFeed.PauseDownload, SelectedFeed.Enabled,SelectedFeed.maxSimultaneousDownload);
+            dialog.ShowDialog();
+
+            if (dialog.DialogResult != DialogResult.OK)
+            {
+                dialog.Dispose();
+                return;
+            }
+
+            SelectedFeed.Enabled = dialog.feedEnable;
+            SelectedFeed.Category = dialog.Category;
+            SelectedFeed.PauseDownload = dialog.PauseDownload;
+            SelectedFeed.maxSimultaneousDownload = dialog.maxSimultaneousDownload;
+
+            MainConfig.Save();
+            UpdateRssFeedGUI(); 
 
         }
 

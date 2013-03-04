@@ -10,16 +10,29 @@ namespace tvu
 {
     public partial class EditFeedForm : Form
     {
-        public string category { private set; get; }
-        public bool pause { private set; get; }
+        public string Category { private set; get; }
+        public bool PauseDownload { private set; get; }
         public int maxSimultaneousDownload { private set; get; }
+        public bool feedEnable { private set; get; }
 
-        public EditFeedForm(string category, bool pause, int maxSimultaneousDownload)
+        public EditFeedForm(string Category, bool PauseDownload, bool feedEnable, int maxSimultaneousDownload)
         {
-            this.pause = pause;
-            this.category = category;
+            this.PauseDownload = PauseDownload;
+            this.Category = Category;
             this.maxSimultaneousDownload = maxSimultaneousDownload;
+            this.feedEnable = feedEnable;
             InitializeComponent();
+
+
+            // TODO: Add updated list category
+        }
+
+        private void EditFeedForm_Load(object sender, EventArgs e)
+        {
+            this.numericUpDown1.Value = this.maxSimultaneousDownload;
+            this.comboBoxCategory.Text = this.Category;
+            this.checkBoxDownloadinPause.Checked = this.PauseDownload;
+            this.checkBoxEnable.Checked = this.feedEnable;
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
@@ -30,11 +43,16 @@ namespace tvu
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            this.category = comboBoxCategory.Text;
-            this.pause = this.checkBoxDownloadinPause.Checked;
+            this.Category = comboBoxCategory.Text;
+            this.PauseDownload = this.checkBoxDownloadinPause.Checked;
+            this.feedEnable = this.checkBoxEnable.Checked;
             this.DialogResult = DialogResult.OK;
+            this.maxSimultaneousDownload = Convert.ToInt16(numericUpDown1.Value);
+            
             this.Close();
         }
+
+      
 
     }
 }

@@ -144,6 +144,7 @@
             this.MinimizeBox = false;
             this.Name = "EditFeedForm";
             this.Text = "Edit";
+            this.Load += new System.EventHandler(this.EditFeedForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
