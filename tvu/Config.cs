@@ -418,6 +418,11 @@ namespace tvu
                         newfeed.maxSimultaneousDownload = (int)Convert.ToInt32(t.FirstChild.Value);
                     }
 
+                    // to avoid error in upgrade from previous version
+                    if (newfeed.maxSimultaneousDownload < 1)
+                    {
+                        newfeed.maxSimultaneousDownload = MaxSimultaneousFeedDownloads;
+                    }
                 }
 
                 RssFeedList.Add(newfeed);

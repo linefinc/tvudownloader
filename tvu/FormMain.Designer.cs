@@ -35,7 +35,9 @@
             this.tabLog = new System.Windows.Forms.TabPage();
             this.LogTextBox = new System.Windows.Forms.TextBox();
             this.tabMain = new System.Windows.Forms.TabPage();
-            this.label16 = new System.Windows.Forms.Label();
+            this.labelMaxSimultaneousDownloads = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.labelTotalFiles = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -46,15 +48,15 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.listView2 = new System.Windows.Forms.ListView();
-            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemEdit = new System.Windows.Forms.ToolStripMenuItem();
@@ -115,8 +117,8 @@
             this.backgroundWorker1.WorkerReportsProgress = true;
             this.backgroundWorker1.WorkerSupportsCancellation = true;
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
             // timer2
             // 
@@ -146,7 +148,9 @@
             // 
             // tabMain
             // 
-            this.tabMain.Controls.Add(this.label16);
+            this.tabMain.Controls.Add(this.labelMaxSimultaneousDownloads);
+            this.tabMain.Controls.Add(this.label1);
+            this.tabMain.Controls.Add(this.labelTotalFiles);
             this.tabMain.Controls.Add(this.label15);
             this.tabMain.Controls.Add(this.label14);
             this.tabMain.Controls.Add(this.label13);
@@ -166,14 +170,32 @@
             this.tabMain.Text = "Feeds";
             this.tabMain.UseVisualStyleBackColor = true;
             // 
-            // label16
+            // labelMaxSimultaneousDownloads
             // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(106, 300);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(41, 13);
-            this.label16.TabIndex = 35;
-            this.label16.Text = "label16";
+            this.labelMaxSimultaneousDownloads.AutoSize = true;
+            this.labelMaxSimultaneousDownloads.Location = new System.Drawing.Point(498, 248);
+            this.labelMaxSimultaneousDownloads.Name = "labelMaxSimultaneousDownloads";
+            this.labelMaxSimultaneousDownloads.Size = new System.Drawing.Size(53, 13);
+            this.labelMaxSimultaneousDownloads.TabIndex = 37;
+            this.labelMaxSimultaneousDownloads.Text = "labelMSD";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(289, 248);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(145, 13);
+            this.label1.TabIndex = 36;
+            this.label1.Text = "Max simultaneous downloads";
+            // 
+            // labelTotalFiles
+            // 
+            this.labelTotalFiles.AutoSize = true;
+            this.labelTotalFiles.Location = new System.Drawing.Point(106, 300);
+            this.labelTotalFiles.Name = "labelTotalFiles";
+            this.labelTotalFiles.Size = new System.Drawing.Size(74, 13);
+            this.labelTotalFiles.TabIndex = 35;
+            this.labelTotalFiles.Text = "labelTotalFiles";
             // 
             // label15
             // 
@@ -307,8 +329,8 @@
             this.listView1.TabIndex = 23;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
-            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             this.listView1.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView1_ColumnClick);
+            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
             // columnHeader1
             // 
@@ -343,9 +365,9 @@
             this.toolStripMenuItemAdd.Text = "Add";
             this.toolStripMenuItemAdd.Click += new System.EventHandler(this.toolStripMenuItemAdd_Click);
             // 
-            // editToolStripMenuItem
+            // toolStripMenuItemEdit
             // 
-            this.toolStripMenuItemEdit.Name = "editToolStripMenuItem";
+            this.toolStripMenuItemEdit.Name = "toolStripMenuItemEdit";
             this.toolStripMenuItemEdit.Size = new System.Drawing.Size(107, 22);
             this.toolStripMenuItemEdit.Text = "Edit";
             this.toolStripMenuItemEdit.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
@@ -641,7 +663,7 @@
             this.timerAutoClose.Interval = 60000;
             this.timerAutoClose.Tick += new System.EventHandler(this.timerAutoClose_Tick);
             // 
-            // Form1
+            // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -651,10 +673,10 @@
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "Form1";
+            this.Name = "FormMain";
             this.Text = "TvUnderground Downloader";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.tabLog.ResumeLayout(false);
             this.tabLog.PerformLayout();
             this.tabMain.ResumeLayout(false);
@@ -680,7 +702,7 @@
         private System.Windows.Forms.TabPage tabLog;
         private System.Windows.Forms.TextBox LogTextBox;
         private System.Windows.Forms.TabPage tabMain;
-        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label labelTotalFiles;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label13;
@@ -740,6 +762,8 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem oPMLExportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemEdit;
+        private System.Windows.Forms.Label labelMaxSimultaneousDownloads;
+        private System.Windows.Forms.Label label1;
     }
 }
 

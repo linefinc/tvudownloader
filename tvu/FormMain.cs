@@ -115,7 +115,7 @@ namespace tvu
             label10.Text = "";
             label12.Text = "";
             label14.Text = "";
-            label16.Text = "";
+            labelTotalFiles.Text = "";
 
             // Create an instance of a ListView column sorter and assign it 
             // to the ListView control.
@@ -451,8 +451,8 @@ namespace tvu
             label12.Text = Feed.Url;
 
             label14.Text = MainHistory.LastDownloadDateByFeedSource(Feed.Url);
-            label16.Text = MainHistory.LinkCountByFeedSource(Feed.Url).ToString();
-
+            labelTotalFiles.Text = MainHistory.LinkCountByFeedSource(Feed.Url).ToString();
+            labelMaxSimultaneousDownloads.Text = Feed.maxSimultaneousDownload.ToString();
 
             // update list history
             listView2.Items.Clear();
