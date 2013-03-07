@@ -20,12 +20,14 @@ namespace tvu
 
         public List<fileHistory> fileHistoryList { get; private set; }
         private Hashtable HashtableGuid;
+        private List<RssSubscrission> RssFeedList;
 
-        public History()
+        public History(List<RssSubscrission> RssFeedList)
         {
             fileHistoryList = new List<fileHistory>();
             HashtableGuid = new Hashtable();
 
+            this.RssFeedList = RssFeedList;
             FileName = Application.LocalUserAppDataPath;
             int rc = FileName.LastIndexOf("\\");
             FileName = FileName.Substring(0, rc) + "\\History.xml";
@@ -82,11 +84,8 @@ namespace tvu
 
 
                 }
-                fileHistory fh = new fileHistory(strEd2k, strFeedLink, strFeedSource, strDate);
-                fileHistoryList.Add(fh);
+                this.Add(strEd2k, strFeedLink, strFeedSource, strDate);
 
-                if (!HashtableGuid.ContainsKey(strFeedLink))
-                    HashtableGuid.Add(strFeedLink, fh);
             }
         }
 
@@ -135,20 +134,53 @@ namespace tvu
         ///
         public void Add(string ed2k, string FeedLink, string FeedSource)
         {
+            fileHistory fh = new fileHistory(ed2k, FeedLink, FeedSource);
+            this.Add(fh);
+        }
+
+        ///
+        /// <summary>Add a element to list </summary>
+        /// <param name='ed2k'>ED2K Link</param>
+        /// <param name='FeedLink'>Link in Feed</param>
+        /// <param name='FeedSource'>Rss Feed Link</param>
+        /// <param name="Date">Date</param>
+        ///
+        public void Add(string ed2k, string FeedLink, string FeedSource, string Date)
+        {
+            fileHistory fh = new fileHistory(ed2k, FeedLink, FeedSource, Date);
+            this.Add(fh);
+        }
+
+        private void Add(fileHistory fh)
+        {
             // delete old file whit same ed2k name
             int index;
-            while ((index = ExistInHistoryByEd2k(ed2k)) != -1)
+            while ((index = ExistInHistoryByEd2k(fh.Ed2kLink)) != -1)
             {
                 fileHistoryList.Remove(fileHistoryList[index]);
-                HashtableGuid.Remove(FeedSource);
+                HashtableGuid.Remove(fh.FeedSource);
             }
 
-
-
-            fileHistory fh = new fileHistory(ed2k, FeedLink, FeedSource);
-            if (!HashtableGuid.ContainsKey(FeedLink))
-                HashtableGuid.Add(FeedLink, fh);
+            // add to hast table
+            if (!HashtableGuid.ContainsKey(fh.FeedLink)) // check collision
+            {
+                HashtableGuid.Add(fh.FeedLink, fh);
+            }
             fileHistoryList.Add(fh);
+
+            // check if RssFeedList is set
+            if (this.RssFeedList == null)
+            {
+                return;
+            }
+            // find by url
+            RssSubscrission subscrission = this.RssFeedList.Find(delegate(RssSubscrission temp) { return temp.Url == fh.FeedSource; });
+            // check if subscrission is in list
+            if (subscrission == null)
+            {
+                return;
+            }
+            subscrission.DownloadedFile.Add(fh);
         }
 
         public bool FileExistByFeedLink(string link)

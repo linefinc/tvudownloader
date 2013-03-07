@@ -77,7 +77,7 @@ namespace tvu
             MainConfig.Load();
 
             // load History
-            MainHistory = new History();
+            MainHistory = new History(MainConfig.RssFeedList);
             MainHistory.Read();
 
             InitializeComponent();
