@@ -140,6 +140,7 @@
             this.Controls.Add(this.checkBoxDownloadinPause);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.buttonCancel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "EditFeedForm";

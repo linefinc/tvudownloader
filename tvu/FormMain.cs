@@ -1665,6 +1665,7 @@ namespace tvu
                 RssSubscrission RssSubscrission = new RssSubscrission(rsschannel.Title, rsschannel.Url);
                 RssSubscrission.Category = rsschannel.Category;
                 RssSubscrission.PauseDownload = rsschannel.Pause;
+                RssSubscrission.maxSimultaneousDownload = MainConfig.MaxSimultaneousFeedDownloads;
                 MainConfig.RssFeedList.Add(RssSubscrission);
             }
             //
