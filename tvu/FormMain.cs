@@ -667,7 +667,6 @@ namespace tvu
 
                 //update rss feed
                 feed.LastUpgradeDate = MainHistory.LastDownloadDateByFeedSource(feed.Url);
-                feed.TotalDownloads = MainHistory.LinkCountByFeedSource(feed.Url);
                 int progress = (MainConfig.RssFeedList.IndexOf(feed) + 1) * 100;
                 progress = progress / MainConfig.RssFeedList.Count;
                 backgroundWorker1.ReportProgress(progress);

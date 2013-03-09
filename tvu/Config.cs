@@ -369,11 +369,6 @@ namespace tvu
                         newfeed.Category = t.FirstChild.Value;
                     }
 
-                    if ((t.Name == "TotalDownloads") & (t.FirstChild != null))
-                    {
-                        newfeed.TotalDownloads = (int) Convert.ToInt32( t.FirstChild.Value);
-                    }
-
                     if ((t.Name == "LastUpgradeDate") & (t.FirstChild != null))
                     {
                         newfeed.LastUpgradeDate = t.FirstChild.Value;

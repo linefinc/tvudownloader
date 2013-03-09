@@ -20,7 +20,7 @@ namespace tvu
     /// </summary>
     public class RssSubscrission
     {
-        public RssSubscrission (string Title, string Url)
+        public RssSubscrission(string Title, string Url)
         {
             this.Title = Title;
             this.Url = Url;
@@ -32,7 +32,7 @@ namespace tvu
         public string Category = "";
         public bool PauseDownload = false;
         public string LastUpgradeDate = "";
-        public int TotalDownloads;
+        public int TotalDownloads { get { return DownloadedFile.Count;}}
         public bool Enabled = true;
         public tvuStatus tvuStatus = tvuStatus.Unknow;
         public string LastTvUStatusUpgradeDate = "";
@@ -43,6 +43,6 @@ namespace tvu
 
         public List<fileHistory> DownloadedFile;
 
-        
+
     }
 }
