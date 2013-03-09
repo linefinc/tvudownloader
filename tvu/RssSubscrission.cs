@@ -25,6 +25,7 @@ namespace tvu
             this.Title = Title;
             this.Url = Url;
             DownloadedFile = new List<fileHistory>();
+            PendingDownload = new List<fileHistory>();
         }
 
         public string Title { set; get; }
@@ -42,6 +43,7 @@ namespace tvu
         public int maxSimultaneousDownload;
 
         public List<fileHistory> DownloadedFile;
+        public List<fileHistory> PendingDownload;
 
 
     }

@@ -204,8 +204,10 @@ namespace tvu
             return -1;
         }
 
+        [Obsolete()]//  TODO: remove LinkCountByFeedSource
         public int LinkCountByFeedSource(string FeedSource)
         {
+            
             int count = 0;
             foreach (fileHistory fh in fileHistoryList)
             {
@@ -218,6 +220,7 @@ namespace tvu
 
         }
 
+        
         public string LastDownloadDateByFeedSource(string FeedSource)
         {
             string date = "";
@@ -310,7 +313,7 @@ namespace tvu
         {
             int count = 0;
 
-
+            // extract hash data
             Regex Pattern = new Regex(@"\|\d{1,40}\|\w{1,40}\|");
 
             foreach (fileHistory p in fileHistoryList)

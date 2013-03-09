@@ -451,7 +451,7 @@ namespace tvu
             label12.Text = Feed.Url;
 
             label14.Text = MainHistory.LastDownloadDateByFeedSource(Feed.Url);
-            labelTotalFiles.Text = MainHistory.LinkCountByFeedSource(Feed.Url).ToString();
+            labelTotalFiles.Text = Feed.TotalDownloads.ToString();
             labelMaxSimultaneousDownloads.Text = Feed.maxSimultaneousDownload.ToString();
 
             // update list history
@@ -459,9 +459,7 @@ namespace tvu
 
 
             // extract file by feedLink
-            List<fileHistory> ListHistory;
-            ListHistory = MainHistory.fileHistoryList.FindAll(delegate(fileHistory fh) { return fh.FeedSource == Feed.Url; });
-
+            List<fileHistory> ListHistory = new List<fileHistory>(Feed.DownloadedFile);
             ListHistory.Sort((x, y) => (y.Date.CompareTo(x.Date)));
 
             foreach (fileHistory fh in ListHistory)
