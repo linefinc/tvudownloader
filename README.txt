@@ -17,6 +17,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
+##### Version 0.5.5 XX/XX/2013 [svn rev XXX] ##### 
++ Add On Hiatus status
++ Add Edit dialog
++ Add "limit for feed"
++ Add possibility to disable single feed
+* Fix incorrect sorting on rss list
+* Fix reduce memory foot print
+* Update project to vs2010es
+
+
+
 ##### Version 0.5.4 26/11/2012 [svn rev 176] ##### 
 * Fix bug when Ed2k link contains special characters
 * Improve register value mapping
