@@ -372,6 +372,14 @@ namespace tvu
 
                 }
 
+                if (t.Enabled == true)
+                {
+                    item.SubItems.Add("Enabled");
+                }
+                else
+                {
+                    item.SubItems.Add("Disabled");
+                }
                 listView1.Items.Add(item);
             }
             
@@ -517,7 +525,10 @@ namespace tvu
             FeedLinkCache feedLinkCache = new FeedLinkCache();
             feedLinkCache.Load();
 
-            foreach (RssSubscrission feed in MainConfig.RssFeedList)
+            // select only enabled rss
+            List<RssSubscrission> RssFeedList = MainConfig.RssFeedList.FindAll(delegate(RssSubscrission rss) { return rss.Enabled == true; });
+
+            foreach (RssSubscrission feed in RssFeedList)
             {
 
                 if (backgroundWorker1.CancellationPending)
@@ -791,7 +802,7 @@ namespace tvu
 
             
             // clean RssFeedList
-            List<RssSubscrission> RssFeedList = new List<RssSubscrission>();
+            RssFeedList = new List<RssSubscrission>();
             RssFeedList.AddRange(MainConfig.RssFeedList);
 
             Log.logInfo("MainConfig.MaxSimultaneousFeedDownloads = " + MainConfig.MaxSimultaneousFeedDownloads);
@@ -1662,6 +1673,7 @@ namespace tvu
                 RssSubscrission RssSubscrission = new RssSubscrission(rsschannel.Title, rsschannel.Url);
                 RssSubscrission.Category = rsschannel.Category;
                 RssSubscrission.PauseDownload = rsschannel.Pause;
+                RssSubscrission.Enabled = true;
                 RssSubscrission.maxSimultaneousDownload = MainConfig.MaxSimultaneousFeedDownloads;
                 MainConfig.RssFeedList.Add(RssSubscrission);
             }

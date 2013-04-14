@@ -97,6 +97,7 @@
             this.reportABugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.timerAutoClose = new System.Windows.Forms.Timer(this.components);
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
@@ -321,7 +322,8 @@
             this.columnHeader1,
             this.columnHeader3,
             this.columnHeader4,
-            this.columnHeader6});
+            this.columnHeader6,
+            this.columnHeader2});
             this.listView1.ContextMenuStrip = this.contextMenuStrip1;
             this.listView1.Location = new System.Drawing.Point(6, 6);
             this.listView1.Name = "listView1";
@@ -663,6 +665,10 @@
             this.timerAutoClose.Interval = 60000;
             this.timerAutoClose.Tick += new System.EventHandler(this.timerAutoClose_Tick);
             // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Enabled";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -764,6 +770,7 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemEdit;
         private System.Windows.Forms.Label labelMaxSimultaneousDownloads;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
     }
 }
 
