@@ -56,17 +56,29 @@ namespace tvu
             string strY = listviewY.SubItems[ColumnToSort].Text;
 
             // Compare the two items
-            compareResult = ObjectCompare.Compare(strX, strY);
-
-
-            if ((strX.IndexOf("days") > -1) & (strY.IndexOf("days") > -1))
+            switch (ColumnToSort)
             {
-                int integerX = Convert.ToInt32(RemoveAllExceptNotNumbers(strX));
-                int integerY = Convert.ToInt32(RemoveAllExceptNotNumbers(strY));
+                case 1: // only number
+                    {
+                        int integerX = Convert.ToInt32(strX);
+                        int integerY = Convert.ToInt32(strY);
+                        compareResult = ObjectCompare.Compare(integerX, integerY);
+                        break;
+                    }
+                case 2: // Column "xx days"
+                    {
+                        int integerX = Convert.ToInt32(RemoveAllExceptNotNumbers(strX));
+                        int integerY = Convert.ToInt32(RemoveAllExceptNotNumbers(strY));
+                        compareResult = ObjectCompare.Compare(integerX, integerY);
+                        break;
+                    }
+                default:    // generic string comparison
+                    {
+                        compareResult = ObjectCompare.Compare(strX, strY);
+                        break;
+                    }
 
-                compareResult = ObjectCompare.Compare(integerX, integerY);
             }
-            
 
             // Calculate correct return value based on object comparison
             if (OrderOfSort == SortOrder.Ascending)
