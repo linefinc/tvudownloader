@@ -14,6 +14,7 @@ namespace tvu
         public string ServiceUrl;
         public string Password;
         public int IntervalTime;
+        public int TotalDownloads;
         public bool StartMinimized;
         public bool CloseEmuleIfAllIsDone;
         public bool StartEmuleIfClose;
@@ -204,6 +205,9 @@ namespace tvu
             textWritter.WriteString(LastUpgradeCheck);
             textWritter.WriteEndElement();
 
+            textWritter.WriteStartElement("TotalDownloads");
+            textWritter.WriteString(TotalDownloads.ToString());
+            textWritter.WriteEndElement();
 
             textWritter.WriteStartElement("RSSChannel");
 
@@ -337,7 +341,8 @@ namespace tvu
             intervalBetweenUpgradeCheck = (int)Convert.ToInt32(ReadString(xDoc, "intervalBetweenUpgradeCheck", "15"));
 
             LastUpgradeCheck = ReadString(xDoc, "LastUpgradeCheck", DateTime.Now.ToString("yyyy-MM-dd"));
-            
+
+            TotalDownloads = (int)Convert.ToInt32(ReadString(xDoc, "TotalDownloads", "0"));
             //
             //  Load Channel
             //

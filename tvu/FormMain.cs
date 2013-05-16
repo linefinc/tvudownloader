@@ -890,6 +890,7 @@ namespace tvu
                 Ed2kfile parser = new Ed2kfile(DownloadFile.Ed2kLink);
                 Log.logInfo(string.Format("Add file to emule {0} \n", parser.GetFileName()));
                 SendMailDownload(parser.GetFileName(), DownloadFile.Ed2kLink);
+                MainConfig.TotalDownloads++;   //increase Total Downloads for statistic
 
                 { // progress bar
                     int progress = (DownloadFileList.IndexOf(DownloadFile) + 1) * 100;
