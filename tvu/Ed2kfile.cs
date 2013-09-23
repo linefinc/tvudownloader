@@ -31,7 +31,7 @@ namespace tvu
             }
 
             FileName = temp[2];
-            FileSize = uint.Parse(temp[3]);
+            FileSize = UInt64.Parse(temp[3]);
             HashMD4 = temp[4];
 
             for( int index = 5 ; index < temp.Length; index++)
