@@ -1,6 +1,6 @@
 TV Undergroud Downloader
 
-Copyright (C) 2011  linefinc[at]users.sourceforge.net
+Copyright (C) 2013  linefinc[at]users.sourceforge.net
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -17,15 +17,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
-##### Version 0.5.5 XX/XX/2013 [svn rev XXX] ##### 
+##### Version 0.5.5 17/10/2013 [git a3b048a] ##### 
 + Add On Hiatus status
-+ Add Edit dialog
++ Add Edit dialogue
 + Add "limit for feed"
++ Add customizable limit for feed
 + Add possibility to disable single feed
 * Fix incorrect sorting on rss list
 * Fix reduce memory foot print
 * Update project to vs2010es
-
 
 
 ##### Version 0.5.4 26/11/2012 [svn rev 176] ##### 
