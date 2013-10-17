@@ -10,7 +10,7 @@ namespace tvu
 {
     public class Config
     {
-        public const string Version = "0.05.4";
+        public const string Version = "0.05.5";
         public string ServiceUrl;
         public string Password;
         public int IntervalTime;
