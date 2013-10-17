@@ -89,11 +89,15 @@ namespace tvu
             RefreshList();
         }
 
+        /// <summary>
+        /// refresh gui with data ListRssChannel[index]
+        /// </summary>
         private void RefreshList()
         {
             RssChannel rsschannel = ListRssChannel[index];
             comboBoxCategory.Text = rsschannel.Category;
-            checkBoxPause.Checked = ListRssChannel[index].Pause;
+            checkBoxPause.Checked = rsschannel.Pause;
+            numericUpDownMaxSimulDown.Value = rsschannel.maxSimultaneousDownload;
 
             // add file
             checkedListBox1.Items.Clear();
@@ -114,7 +118,9 @@ namespace tvu
             buttonNext.Enabled = (ListRssChannel.Count-1) != index;
             buttonPrevious.Enabled = index != 0;
         }
-
+        /// <summary>
+        /// close dialog
+        /// </summary>
         private void buttonFinish_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.OK;
@@ -147,6 +153,11 @@ namespace tvu
         private void checkBoxPause_CheckedChanged(object sender, EventArgs e)
         {
             ListRssChannel[index].Pause = checkBoxPause.Checked;
+        }
+
+        private void numericUpDownMaxSimulDown_ValueChanged(object sender, EventArgs e)
+        {
+            ListRssChannel[index].maxSimultaneousDownload = Convert.ToInt16(numericUpDownMaxSimulDown.Value);
         }
 
    

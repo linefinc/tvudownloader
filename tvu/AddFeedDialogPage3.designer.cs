@@ -41,6 +41,9 @@
             this.buttonFinish = new System.Windows.Forms.Button();
             this.buttonPrevious = new System.Windows.Forms.Button();
             this.labelSelectedElement = new System.Windows.Forms.Label();
+            this.numericUpDownMaxSimulDown = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxSimulDown)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonCancel
@@ -164,11 +167,43 @@
             // labelSelectedElement
             // 
             this.labelSelectedElement.AutoSize = true;
-            this.labelSelectedElement.Location = new System.Drawing.Point(12, 408);
+            this.labelSelectedElement.Location = new System.Drawing.Point(12, 385);
             this.labelSelectedElement.Name = "labelSelectedElement";
             this.labelSelectedElement.Size = new System.Drawing.Size(98, 13);
             this.labelSelectedElement.TabIndex = 47;
             this.labelSelectedElement.Text = "Selected element 0";
+            // 
+            // numericUpDownMaxSimulDown
+            // 
+            this.numericUpDownMaxSimulDown.Location = new System.Drawing.Point(162, 406);
+            this.numericUpDownMaxSimulDown.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxSimulDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxSimulDown.Name = "numericUpDownMaxSimulDown";
+            this.numericUpDownMaxSimulDown.Size = new System.Drawing.Size(35, 20);
+            this.numericUpDownMaxSimulDown.TabIndex = 48;
+            this.numericUpDownMaxSimulDown.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxSimulDown.ValueChanged += new System.EventHandler(this.numericUpDownMaxSimulDown_ValueChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 408);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(144, 13);
+            this.label2.TabIndex = 49;
+            this.label2.Text = "Max Simultaneous Download";
             // 
             // AddFeedDialogPage3
             // 
@@ -176,6 +211,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(812, 469);
             this.ControlBox = false;
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.numericUpDownMaxSimulDown);
             this.Controls.Add(this.labelSelectedElement);
             this.Controls.Add(this.buttonPrevious);
             this.Controls.Add(this.buttonFinish);
@@ -196,6 +233,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add Feed";
             this.Load += new System.EventHandler(this.AddFeedDialogPage3_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxSimulDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -216,5 +254,7 @@
         private System.Windows.Forms.Button buttonFinish;
         private System.Windows.Forms.Button buttonPrevious;
         private System.Windows.Forms.Label labelSelectedElement;
+        private System.Windows.Forms.NumericUpDown numericUpDownMaxSimulDown;
+        private System.Windows.Forms.Label label2;
     }
 }

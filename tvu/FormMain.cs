@@ -1602,14 +1602,22 @@ namespace tvu
             listView2.Items.Clear();
             UpdateRssFeedGUI(); ///upgrade gui
         }
-
+        /// <summary>
+        /// wizard for add new feed
+        /// </summary>
         void AddRssChannel()
         {
 
             List<string> CurrentRssUrlList = new List<string>();
 
+            //
+            //  Get list of current feed url
+            //
             MainConfig.RssFeedList.ForEach(delegate(RssSubscrission t) { CurrentRssUrlList.Add(t.Url); });
 
+            //
+            //  Open dialog 1 to path the url
+            //
             AddFeedDialogPage1 dialogPage1 = new AddFeedDialogPage1(CurrentRssUrlList);
             dialogPage1.ShowDialog();
 
@@ -1625,22 +1633,25 @@ namespace tvu
             }
 
             List<string> RssUrlList = dialogPage1.RssUrlList;
-
+            dialogPage1.Dispose();
+            //
+            //  Open dialog 2 to get all ed2k from feed
+            //
             AddFeedDialogPage2 dialogPage2 = new AddFeedDialogPage2(RssUrlList,MainConfig.ServiceUrl,MainConfig.Password);
             dialogPage2.ShowDialog();
 
             if (dialogPage2.DialogResult != DialogResult.OK)
             {
-                dialogPage1.Dispose();
                 dialogPage2.Dispose();
                 return;
             }
 
-
+            // 
+            //  check file count
+            //
             if ((dialogPage2.RssChannelList.Count==0)^(dialogPage2.ListFileHistory.Count==0))
             {
                 MessageBox.Show("Nothing to downloads");
-                dialogPage1.Dispose();
                 dialogPage2.Dispose();
                 return;
             }
@@ -1648,20 +1659,22 @@ namespace tvu
             List<RssChannel> RssChannelList = dialogPage2.RssChannelList;
             List<fileHistory> ListFileHistory = dialogPage2.ListFileHistory;
 
+            dialogPage2.Dispose();  // free dialog
             // setup default 
             foreach (RssChannel rc in RssChannelList)
             {
                 rc.Category = MainConfig.DefaultCategory;
                 rc.Pause = false;
+                rc.maxSimultaneousDownload = MainConfig.MaxSimultaneousFeedDownloads;
             }
 
+            //
+            //  show Page 3 : choose single files to download.
+            //
             AddFeedDialogPage3 dialogPage3 = new AddFeedDialogPage3(RssChannelList, ListFileHistory);
             dialogPage3.ShowDialog();
-
             if (dialogPage3.DialogResult != DialogResult.OK)
             {
-                dialogPage1.Dispose();
-                dialogPage2.Dispose();
                 dialogPage3.Dispose();
                 return;
             }
@@ -1675,7 +1688,7 @@ namespace tvu
                 RssSubscrission.Category = rsschannel.Category;
                 RssSubscrission.PauseDownload = rsschannel.Pause;
                 RssSubscrission.Enabled = true;
-                RssSubscrission.maxSimultaneousDownload = MainConfig.MaxSimultaneousFeedDownloads;
+                RssSubscrission.maxSimultaneousDownload = rsschannel.maxSimultaneousDownload;
                 MainConfig.RssFeedList.Add(RssSubscrission);
             }
             //
@@ -1702,12 +1715,8 @@ namespace tvu
             MainConfig.Save();
             
             UpdateRssFeedGUI();
-            dialogPage1.Dispose();
-            dialogPage2.Dispose();
             dialogPage3.Dispose();
             StartDownloadThread();
-
-
         }
 
         private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)

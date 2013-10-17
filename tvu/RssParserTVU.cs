@@ -25,6 +25,7 @@ namespace tvu
         public string Link;
         public string Category = "";
         public bool Pause;
+        public int maxSimultaneousDownload;
     }
     
     public class RssItem
