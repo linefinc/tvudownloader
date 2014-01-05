@@ -40,13 +40,8 @@ namespace tvu
         public Config MainConfig;
         public History MainHistory;
 
-        delegate void SetTextCallback(string text, bool verbose);
-
         private DateTime DownloadDataTime;
         private DateTime AutoCloseDataTime;
-
-
-
 
         public class sDonwloadFile
         {
@@ -502,6 +497,8 @@ namespace tvu
 
             menuItemCheckNow.Enabled = false;
             cancelCheckToolStripMenuItem.Enabled = true;
+            listBoxPending.Items.Clear();
+            listBoxPending.Refresh();
             backgroundWorker1.RunWorkerAsync();
 
         }
@@ -572,7 +569,9 @@ namespace tvu
                             }
                         }
 
-
+                        //
+                        //  Update status last check is 15 days ago
+                        //
                         try
                         {
                             DateTime LastTvUStatusUpgradeDate = Convert.ToDateTime(feed.LastTvUStatusUpgradeDate);
@@ -606,10 +605,7 @@ namespace tvu
 
                     // reverse the list so the laft feed ( first temporal feed) became the first first feed in list
                     elemList.Reverse();
-
                     
-                    
-
                     foreach (string FeedLink in elemList)
                     {
                         string sEd2k = string.Empty;
@@ -644,6 +640,22 @@ namespace tvu
                             Log.logInfo(string.Format("Found new file {0}", parser.GetFileName()));
 
                             sDonwloadFile DL = new sDonwloadFile(sEd2k, FeedLink, feed.Url, feed.PauseDownload, feed.Category);
+
+                            Ed2kfile tempFile = new Ed2kfile(sEd2k);
+                            // add to pending list
+                            if (this.listBoxPending.InvokeRequired == true)
+                            {
+
+                                Invoke(new MethodInvoker(
+                                    delegate { this.AddItemToListBoxPending(tempFile.FileName); }
+                                ));
+
+                            }
+                            else
+                            {
+                                this.AddItemToListBoxPending(tempFile.FileName);
+                            }
+
 
                             // remove the comment:
                             //counter++;
@@ -1942,9 +1954,15 @@ namespace tvu
 
         }
 
-        
 
-    
+
+        void AddItemToListBoxPending(string text)
+        {
+            listBoxPending.Items.Add(text);
+            listBoxPending.Refresh();
+            return;
+
+        }
      
     
     }
