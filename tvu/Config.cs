@@ -13,6 +13,11 @@ namespace tvu
         public const string Version = "0.05.5";
         public string ServiceUrl;
         public string Password;
+        public string tvuUsername;
+        public string tvuPassword;
+        public string tvuCookieH;
+        public string tvuCookieI;
+        public string tvuCookieT;
         public int IntervalTime;
         public int TotalDownloads;
         public bool StartMinimized;
@@ -133,6 +138,27 @@ namespace tvu
             textWritter.WriteString(Password);
             textWritter.WriteEndElement();
             
+            textWritter.WriteStartElement("tvuUsername");
+            textWritter.WriteString(tvuUsername);
+            textWritter.WriteEndElement();
+
+            textWritter.WriteStartElement("tvuPassword");
+            textWritter.WriteString(tvuPassword);
+            textWritter.WriteEndElement();
+
+            
+            textWritter.WriteStartElement("tvuCookieH");
+            textWritter.WriteString(tvuPassword);
+            textWritter.WriteEndElement();
+
+            textWritter.WriteStartElement("tvuCookieI");
+            textWritter.WriteString(tvuPassword);
+            textWritter.WriteEndElement();
+
+            textWritter.WriteStartElement("tvuCookieT");
+            textWritter.WriteString(tvuPassword);
+            textWritter.WriteEndElement();
+
             textWritter.WriteStartElement("IntervalTime");
             textWritter.WriteString(IntervalTime.ToString());
             textWritter.WriteEndElement();
@@ -304,6 +330,16 @@ namespace tvu
 
             Password = ReadString(xDoc, "Password", "password");
 
+            tvuUsername = ReadString(xDoc, "tvuUsername", string.Empty);
+
+            tvuPassword = ReadString(xDoc, "tvuPassword", string.Empty);
+
+            tvuCookieH = ReadString(xDoc, "tvuCookieH", string.Empty);
+
+            tvuCookieI = ReadString(xDoc, "tvuCookieI", string.Empty);
+
+            tvuCookieT = ReadString(xDoc, "tvuCookieT", string.Empty);
+
             IntervalTime = (int)Convert.ToInt32(ReadString(xDoc, "IntervalTime", "30"));
 
             StartMinimized = (bool)Convert.ToBoolean(ReadString(xDoc, "StartMinimized", "false"));
@@ -317,7 +353,7 @@ namespace tvu
             MaxSimultaneousFeedDownloads = (int)Convert.ToInt32(ReadString(xDoc, "MaxSimultaneousFeedDownloads", "3"));
 
             MinToStartEmule = (int)Convert.ToInt32(ReadString(xDoc, "MinToStartEmule", "0"));
-            
+
             eMuleExe = ReadString(xDoc, "eMuleExe", "");
 
             DefaultCategory = ReadString(xDoc, "DefaultCategory", "");
@@ -351,7 +387,7 @@ namespace tvu
             for (int i = 0; i < Channels.Count; i++)
             {
                 XmlNodeList child = Channels[i].ChildNodes;
-                RssSubscrission newfeed = new RssSubscrission("",""); //empty
+                RssSubscrission newfeed = new RssSubscrission("", ""); //empty
                 foreach (XmlNode t in child)
                 {
                     if (t.Name == "Title")
@@ -381,16 +417,16 @@ namespace tvu
 
                     if ((t.Name == "Enabled") & (t.FirstChild != null))
                     {
-                        newfeed.Enabled = (bool) Convert.ToBoolean(t.FirstChild.Value);
+                        newfeed.Enabled = (bool)Convert.ToBoolean(t.FirstChild.Value);
                     }
 
-                    if((t.Name == "tvuStatus") & (t.FirstChild != null))
+                    if ((t.Name == "tvuStatus") & (t.FirstChild != null))
                     {
                         switch (t.FirstChild.Value)
                         {
                             case "Complete":
                                 newfeed.tvuStatus = tvuStatus.Complete;
-                               break;
+                                break;
                             case "StillIncomplete":
                                 newfeed.tvuStatus = tvuStatus.StillIncomplete;
                                 break;
