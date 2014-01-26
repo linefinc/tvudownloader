@@ -19,6 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ---- Change Log ----
 ##### Version 0.5.6 xx/xx/xxxx [git xxxxxxx] ##### 
 + Add pending List Box Penging file
++ Add support to Gzip in emule comunication
+* Update new tv undegroud site web
 
 ##### Version 0.5.5 17/10/2013 [git a3b048a] ##### 
 + Add On Hiatus status

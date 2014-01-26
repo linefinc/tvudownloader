@@ -527,7 +527,9 @@ namespace tvu
 
             foreach (RssSubscrission feed in RssFeedList)
             {
-
+                //
+                //  this code allow to block anytime the loop
+                //
                 if (backgroundWorker1.CancellationPending)
                 {
                     e.Cancel = true;
@@ -709,7 +711,7 @@ namespace tvu
 
 
             eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
-            bool? rc = Service.LogIn();
+            eMuleWebManager.LoginStatus returnCode = Service.LogIn();
 
 
             //
@@ -720,7 +722,7 @@ namespace tvu
             // the if work only if rc == null ad 
             if ((MainConfig.StartEmuleIfClose == true) & (DownloadFileList.Count > MainConfig.MinToStartEmule))
             {
-                for (int i = 1; (i <= 5) & (rc == null); i++)
+                for (int i = 1; (i <= 5) & (returnCode != eMuleWebManager.LoginStatus.Logged); i++)
                 {
                     if (backgroundWorker1.CancellationPending)
                     {
@@ -750,14 +752,14 @@ namespace tvu
                         
                         Thread.Sleep(500);
                     }
-                    
-                    rc = Service.LogIn();
+
+                    returnCode = Service.LogIn();
 
                 }
             }
 
             Log.logVerbose("Check min download");
-            if (rc == null)
+            if (returnCode != eMuleWebManager.LoginStatus.Logged)
             {
                 if (DownloadFileList.Count < MainConfig.MinToStartEmule)
                 {
@@ -767,8 +769,6 @@ namespace tvu
 
                 Log.logInfo("Unable to connect to eMule web server");
                 return;
-
-
             }
 
 
@@ -910,7 +910,12 @@ namespace tvu
                 }
             }
             MainHistory.Save();
+            Log.logInfo("logout Emule\n");
             Service.LogOut();
+            Log.logInfo("Statistics\n");
+            Log.logInfo(string.Format("Total file added {0} \n", MainConfig.TotalDownloads);
+            
+
         }
 
         /// <summary>
@@ -1252,6 +1257,9 @@ namespace tvu
 
                 MainConfig.ServiceUrl = OptDialog.ServiceUrl;
                 MainConfig.Password = OptDialog.Password;
+
+
+
                 MainConfig.DefaultCategory = OptDialog.DefaultCategory;
                 MainConfig.eMuleExe = OptDialog.eMuleExe;
                 MainConfig.IntervalTime = OptDialog.IntervalTime;
@@ -1348,11 +1356,11 @@ namespace tvu
 
             Log.logVerbose("[AutoClose Mule] Check Login");
             eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
-            bool? rc = Service.LogIn();
+            eMuleWebManager.LoginStatus returnCode = Service.LogIn();
 
 
             // if mule close ... end of game
-            if (rc == null)
+            if (returnCode != eMuleWebManager.LoginStatus.Logged)
             {
                 AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
                 Log.logVerbose("[AutoClose Mule] Login failed");
@@ -1642,6 +1650,7 @@ namespace tvu
             if (dialogPage1.RssUrlList.Count == 0)
             {
                 MessageBox.Show("Nothing to downloads");
+                return;
             }
 
             List<string> RssUrlList = dialogPage1.RssUrlList;
@@ -1843,6 +1852,11 @@ namespace tvu
             System.Diagnostics.Process.Start("http://tvudownloader.sourceforge.net/");
         }
 
+        private void forumToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://sourceforge.net/tracker/?group_id=357576&atid=1492909");
+        }
+
         private void oPMLExportToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog Dialog = new SaveFileDialog();
@@ -1963,7 +1977,6 @@ namespace tvu
             return;
 
         }
-     
     
     }
 

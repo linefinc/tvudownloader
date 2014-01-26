@@ -14,6 +14,7 @@ namespace tvu
         private string SesID;
         private List<string> CategoryCache;
 
+        public enum LoginStatus { Logged, PasswordError, ServiceNotAvailable };
 
         /// <summary>
         /// constructor
@@ -32,7 +33,7 @@ namespace tvu
         /// Login
         /// </summary>
         /// <returns></returns>
-        public bool? LogIn()
+        public LoginStatus LogIn()
         {
             int j, i;
             //
@@ -47,7 +48,7 @@ namespace tvu
             }
             catch
             {
-                return null;
+                return LoginStatus.ServiceNotAvailable;
             }
 
 
@@ -56,7 +57,7 @@ namespace tvu
             j = page.IndexOf("logout");
             if (j < 0)
             {
-                return false;
+                return LoginStatus.PasswordError;
             }
 
             // find sesion id
@@ -64,23 +65,23 @@ namespace tvu
             i = temp.IndexOf("&amp;w=logout");
             if (i == -1)
             {
-                return false;
+                return LoginStatus.PasswordError;
             }
 
             j = temp.LastIndexOf("ses=", i) + ("ses=").Length;
             if (j == -1)
             {
-                return false;
+                return LoginStatus.PasswordError;
             }
 
             SesID = temp.Substring(j, i - j);
 
             if (SesID.Length == 0)
             {
-                return false;
+                return LoginStatus.PasswordError;
             }
 
-            return true;
+            return LoginStatus.Logged;
         }
 
 

@@ -214,15 +214,15 @@ namespace tvu
         private void buttonCheckNow_Click(object sender, EventArgs e)
         {
             eMuleWebManager service = new eMuleWebManager(textBoxServiceUrl.Text, textBoxPassword.Text);
-            bool? rc = service.LogIn();
+            eMuleWebManager.LoginStatus rc = service.LogIn();
 
-            if (rc == null)
+            if (rc == eMuleWebManager.LoginStatus.ServiceNotAvailable)
             {
                 MessageBox.Show("Unable conncet with target URL");
                 return;
             }
 
-            if (rc == false)
+            if (rc == eMuleWebManager.LoginStatus.PasswordError)
             {
                 MessageBox.Show("Password error");
                 return;

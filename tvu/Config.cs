@@ -374,7 +374,7 @@ namespace tvu
 
             tvudwid = ReadString(xDoc, "tvudwid", RandomIDGenerator());
 
-            intervalBetweenUpgradeCheck = (int)Convert.ToInt32(ReadString(xDoc, "intervalBetweenUpgradeCheck", "15"));
+            intervalBetweenUpgradeCheck = (int)Convert.ToInt32(ReadString(xDoc, "intervalBetweenUpgradeCheck", "5"));
 
             LastUpgradeCheck = ReadString(xDoc, "LastUpgradeCheck", DateTime.Now.ToString("yyyy-MM-dd"));
 

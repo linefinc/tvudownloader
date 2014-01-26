@@ -19,7 +19,6 @@ class WebFetch
 
         System.Threading.Thread.Sleep(myDelay);
 
-
         try
         {
             // used to build entire input
@@ -28,11 +27,19 @@ class WebFetch
             // used on each read operation
             byte[] buf = new byte[8192];
 
+            CookieContainer cookieContainer = new CookieContainer();
+            Uri uriTvunderground = new Uri("http://tvunderground.org.ru/");
+            cookieContainer.Add(uriTvunderground, new Cookie("h", "91ace5b7bb757ae8fb8b5075369147d0"));
+            cookieContainer.Add(uriTvunderground, new Cookie("i", "138793"));
+            cookieContainer.Add(uriTvunderground, new Cookie("t", "db5b508b4da45e41ed6d51a460815e78"));
+
             // prepare the web page we will be asking for
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(page);
+            request.CookieContainer = cookieContainer;
 
             // execute the request
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            
 
             // we will read data via the response stream
             Stream resStream = response.GetResponseStream();

@@ -95,9 +95,9 @@ namespace tvu
             {
                 /// update category list from mule
                 eMuleWebManager Service = new eMuleWebManager(ServiceUrl, Password);
-                bool? returnCode = Service.LogIn();
+                eMuleWebManager.LoginStatus returnCode = Service.LogIn();
 
-                if ((returnCode == null) & (returnCode == false))
+                if (returnCode != eMuleWebManager.LoginStatus.Logged)
                 {
                     return;
                 }
