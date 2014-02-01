@@ -1982,6 +1982,16 @@ namespace tvu
         {
             FormLogin form = new FormLogin();
             form.ShowDialog();
+
+            if (form.DialogResult != DialogResult.OK)
+            {
+                return;
+            }
+
+            MainConfig.tvuCookieT = form.cookieT;
+            MainConfig.tvuCookieI = form.cookieI;
+            MainConfig.tvuCookieH = form.cookieH;
+            MainConfig.Save();
         }
     
     }

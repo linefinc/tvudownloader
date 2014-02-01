@@ -13,14 +13,20 @@ namespace tvu
         static char[] charsToTrim = { ' ', 't', 'h', 'i', '=' };
 
         public string cookieT { private set; get; }
-        public string cookieI = string.Empty;
-        public string cookieH = string.Empty;
+        public string cookieI { private set; get; }
+        public string cookieH { private set; get; }
 
         public FormLogin()
         {
             cookieT = string.Empty;
             cookieI = string.Empty;
             cookieH = string.Empty;
+
+            //
+            //  this avoid strang behaviour
+            //
+            this.DialogResult = DialogResult.Cancel;
+            
             InitializeComponent();
         }
 
@@ -106,7 +112,6 @@ namespace tvu
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
-
 
     }
 }
