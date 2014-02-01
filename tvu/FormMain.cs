@@ -913,7 +913,7 @@ namespace tvu
             Log.logInfo("logout Emule\n");
             Service.LogOut();
             Log.logInfo("Statistics\n");
-            Log.logInfo(string.Format("Total file added {0} \n", MainConfig.TotalDownloads);
+            Log.logInfo(string.Format("Total file added {0} \n", MainConfig.TotalDownloads));
             
 
         }
@@ -1976,6 +1976,12 @@ namespace tvu
             listBoxPending.Refresh();
             return;
 
+        }
+
+        private void loginToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormLogin form = new FormLogin();
+            form.ShowDialog();
         }
     
     }
