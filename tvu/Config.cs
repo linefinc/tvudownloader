@@ -10,11 +10,9 @@ namespace tvu
 {
     public class Config
     {
-        public const string Version = "0.05.5";
+        public const string Version = "0.05.6";
         public string ServiceUrl;
         public string Password;
-        public string tvuUsername;
-        public string tvuPassword;
         public string tvuCookieH;
         public string tvuCookieI;
         public string tvuCookieT;
@@ -139,15 +137,6 @@ namespace tvu
             writter.WriteStartElement("Password");
             writter.WriteString(Password);
             writter.WriteEndElement();
-            
-            writter.WriteStartElement("tvuUsername");
-            writter.WriteString(tvuUsername);
-            writter.WriteEndElement();
-
-            writter.WriteStartElement("tvuPassword");
-            writter.WriteString(tvuPassword);
-            writter.WriteEndElement();
-
             
             writter.WriteStartElement("tvuCookieH");
             writter.WriteString(this.tvuCookieH);
@@ -331,10 +320,6 @@ namespace tvu
             ServiceUrl = ReadString(xDoc, "ServiceUrl", "http://localhost:4000");
 
             Password = ReadString(xDoc, "Password", "password");
-
-            tvuUsername = ReadString(xDoc, "tvuUsername", string.Empty);
-
-            tvuPassword = ReadString(xDoc, "tvuPassword", string.Empty);
 
             tvuCookieH = ReadString(xDoc, "tvuCookieH", string.Empty);
 

@@ -77,17 +77,6 @@
             this.checkBoxSaveLogToFile = new System.Windows.Forms.CheckBox();
             this.checkBoxVerbose = new System.Windows.Forms.CheckBox();
             this.checkBoxAutoClear = new System.Windows.Forms.CheckBox();
-            this.tabPageTVUUSER = new System.Windows.Forms.TabPage();
-            this.textBoxTVUUsername = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.textBoxTVUPassword = new System.Windows.Forms.TextBox();
-            this.label18 = new System.Windows.Forms.Label();
-            this.textBoxCookieH = new System.Windows.Forms.TextBox();
-            this.label19 = new System.Windows.Forms.Label();
-            this.textBoxCookieI = new System.Windows.Forms.TextBox();
-            this.label20 = new System.Windows.Forms.Label();
-            this.textBoxCookieT = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.tabPageGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxSimultaneousDownloadForFeed)).BeginInit();
@@ -100,7 +89,6 @@
             this.tabPageUpdate.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIntervalCheck)).BeginInit();
             this.tabPageLog.SuspendLayout();
-            this.tabPageTVUUSER.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonSave
@@ -435,7 +423,6 @@
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPageGeneral);
-            this.tabControl1.Controls.Add(this.tabPageTVUUSER);
             this.tabControl1.Controls.Add(this.tabPageNetwork);
             this.tabControl1.Controls.Add(this.tabPageEmail);
             this.tabControl1.Controls.Add(this.tabPageUpdate);
@@ -603,106 +590,6 @@
             this.checkBoxAutoClear.Text = "Auto Clear Log";
             this.checkBoxAutoClear.UseVisualStyleBackColor = true;
             // 
-            // tabPageTVUUSER
-            // 
-            this.tabPageTVUUSER.Controls.Add(this.label20);
-            this.tabPageTVUUSER.Controls.Add(this.textBoxCookieT);
-            this.tabPageTVUUSER.Controls.Add(this.label19);
-            this.tabPageTVUUSER.Controls.Add(this.textBoxCookieI);
-            this.tabPageTVUUSER.Controls.Add(this.label18);
-            this.tabPageTVUUSER.Controls.Add(this.textBoxCookieH);
-            this.tabPageTVUUSER.Controls.Add(this.label16);
-            this.tabPageTVUUSER.Controls.Add(this.textBoxTVUPassword);
-            this.tabPageTVUUSER.Controls.Add(this.label15);
-            this.tabPageTVUUSER.Controls.Add(this.textBoxTVUUsername);
-            this.tabPageTVUUSER.Location = new System.Drawing.Point(4, 22);
-            this.tabPageTVUUSER.Name = "tabPageTVUUSER";
-            this.tabPageTVUUSER.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageTVUUSER.Size = new System.Drawing.Size(357, 248);
-            this.tabPageTVUUSER.TabIndex = 5;
-            this.tabPageTVUUSER.Text = "TVU User";
-            this.tabPageTVUUSER.UseVisualStyleBackColor = true;
-            // 
-            // textBoxTVUUsername
-            // 
-            this.textBoxTVUUsername.Location = new System.Drawing.Point(149, 6);
-            this.textBoxTVUUsername.Name = "textBoxTVUUsername";
-            this.textBoxTVUUsername.Size = new System.Drawing.Size(202, 20);
-            this.textBoxTVUUsername.TabIndex = 0;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(6, 9);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(137, 13);
-            this.label15.TabIndex = 1;
-            this.label15.Text = "TV Underground Username";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(6, 35);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(135, 13);
-            this.label16.TabIndex = 3;
-            this.label16.Text = "TV Underground Password";
-            // 
-            // textBoxTVUPassword
-            // 
-            this.textBoxTVUPassword.Location = new System.Drawing.Point(149, 32);
-            this.textBoxTVUPassword.Name = "textBoxTVUPassword";
-            this.textBoxTVUPassword.Size = new System.Drawing.Size(202, 20);
-            this.textBoxTVUPassword.TabIndex = 2;
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(6, 61);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(49, 13);
-            this.label18.TabIndex = 5;
-            this.label18.Text = "Cookie h";
-            // 
-            // textBoxCookieH
-            // 
-            this.textBoxCookieH.Location = new System.Drawing.Point(149, 58);
-            this.textBoxCookieH.Name = "textBoxCookieH";
-            this.textBoxCookieH.Size = new System.Drawing.Size(202, 20);
-            this.textBoxCookieH.TabIndex = 4;
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(6, 87);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(45, 13);
-            this.label19.TabIndex = 7;
-            this.label19.Text = "Cookie i";
-            // 
-            // textBoxCookieI
-            // 
-            this.textBoxCookieI.Location = new System.Drawing.Point(149, 84);
-            this.textBoxCookieI.Name = "textBoxCookieI";
-            this.textBoxCookieI.Size = new System.Drawing.Size(202, 20);
-            this.textBoxCookieI.TabIndex = 6;
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(6, 113);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(46, 13);
-            this.label20.TabIndex = 9;
-            this.label20.Text = "Cookie t";
-            // 
-            // textBoxCookieT
-            // 
-            this.textBoxCookieT.Location = new System.Drawing.Point(149, 110);
-            this.textBoxCookieT.Name = "textBoxCookieT";
-            this.textBoxCookieT.Size = new System.Drawing.Size(202, 20);
-            this.textBoxCookieT.TabIndex = 8;
-            // 
             // OptionsDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -735,8 +622,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIntervalCheck)).EndInit();
             this.tabPageLog.ResumeLayout(false);
             this.tabPageLog.PerformLayout();
-            this.tabPageTVUUSER.ResumeLayout(false);
-            this.tabPageTVUUSER.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -792,16 +677,5 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.NumericUpDown numericUpDownMaxSimultaneousDownloadForFeed;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.TabPage tabPageTVUUSER;
-        private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.TextBox textBoxCookieT;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.TextBox textBoxCookieI;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.TextBox textBoxCookieH;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.TextBox textBoxTVUPassword;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.TextBox textBoxTVUUsername;
     }
 }
