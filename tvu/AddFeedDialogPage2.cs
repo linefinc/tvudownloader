@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Net;
 
 namespace tvu
 {
@@ -17,13 +18,17 @@ namespace tvu
         private string ServiceUrl;
         private string Password;
 
-        public AddFeedDialogPage2(List<string> RssUrlList, string ServiceUrl, string Password)
+        private CookieContainer cookieContainer;
+
+        public AddFeedDialogPage2(List<string> RssUrlList, string ServiceUrl, string Password, CookieContainer cookieContainer)
         {
             InitializeComponent();
             this.RssUrlList = RssUrlList;
             this.RssChannelList = new List<RssChannel>();
             this.ListFileHistory = new List<fileHistory>();
             this.ListCategory = new List<string>();
+
+            this.cookieContainer = cookieContainer;
             this.ServiceUrl = ServiceUrl;
             this.Password = Password;
 
@@ -44,7 +49,7 @@ namespace tvu
                 try
                 {
                     RssChannel rc = new RssChannel();
-                    string WebPage = WebFetch.Fetch(url, true);
+                    string WebPage = WebFetch.Fetch(url, true, cookieContainer);
                     rc = RssParserTVU.Parse(WebPage);
                     rc.Url = url;
                     RssChannelList.Add(rc);
@@ -72,7 +77,7 @@ namespace tvu
                     try
                     {
                         // download page
-                        string page = WebFetch.Fetch(Item.Guid, true);
+                        string page = WebFetch.Fetch(Item.Guid, true, cookieContainer);
                         // find ed2k
                         string sEd2k = RssParserTVU.FindEd2kLink(page);
                         // add to history to avoid redonwload
