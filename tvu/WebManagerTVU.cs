@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Net;
 
 namespace tvu
 {
     class WebManagerTVU
     {
-        public static tvuStatus CheckComplete(string url)
+        public static tvuStatus CheckComplete(string url, CookieContainer cookieContainer)
         {
             tvuStatus status = tvuStatus.Unknow;
-            string WebPage = WebFetch.Fetch(url, true);
+            string WebPage = WebFetch.Fetch(url, true, cookieContainer);
 
             if (WebPage != null)
             {

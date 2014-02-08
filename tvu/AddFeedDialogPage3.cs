@@ -132,7 +132,8 @@ namespace tvu
             for (int index = 0; index < checkedListBox1.Items.Count; index++)
             {
                 // get item (fileHistory) form main list
-                fileHistory item = GlobalListFileHisotry.Find(delegate(fileHistory t) { return t.FileName == checkedListBox1.Items[index]; });
+                string strItem = checkedListBox1.Items[index].ToString();
+                fileHistory item = GlobalListFileHisotry.Find(delegate(fileHistory t) { return t.FileName == strItem; });
 
                 // remove all data 
                 UnselectedHistory.RemoveAll(delegate(fileHistory t) { return t == item; });

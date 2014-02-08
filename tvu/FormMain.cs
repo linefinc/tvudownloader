@@ -514,7 +514,18 @@ namespace tvu
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
+            //
+            //  Load Cookies from config 
+            //  
+            CookieContainer cookieContainer = new CookieContainer();
+            Uri uriTvunderground = new Uri("http://tvunderground.org.ru/");
+            cookieContainer.Add(uriTvunderground, new Cookie("h", MainConfig.tvuCookieH));
+            cookieContainer.Add(uriTvunderground, new Cookie("i", MainConfig.tvuCookieI));
+            cookieContainer.Add(uriTvunderground, new Cookie("t", MainConfig.tvuCookieT));
 
+            //
+            //  start rss Check
+            //
             Log.logInfo("Start RSS Check");
 
             List<sDonwloadFile> DownloadFileList = new List<sDonwloadFile>();
@@ -540,7 +551,7 @@ namespace tvu
 
                 try
                 {
-                    string WebPage = WebFetch.Fetch(feed.Url, true);
+                    string WebPage = WebFetch.Fetch(feed.Url, true, cookieContainer);
                    
                     List<string> elemList = new List<string>();
 
@@ -595,7 +606,7 @@ namespace tvu
                             Pattern = new Regex(@"http://tvunderground.org.ru/index.php\?show=episodes&sid=\d{1,10}");
                             Match Match = Pattern.Match(WebPage);
                             string url = Match.Value;
-                            feed.tvuStatus = WebManagerTVU.CheckComplete(url);
+                            feed.tvuStatus = WebManagerTVU.CheckComplete(url, cookieContainer);
                             feed.LastTvUStatusUpgradeDate = DateTime.Now.ToString();
                         }
 
@@ -626,7 +637,7 @@ namespace tvu
                             // download the page in FeedLink
                             Log.logVerbose(string.Format("try download page {0}", FeedLink));
 
-                            if ((page = WebFetch.Fetch(FeedLink, true)) == null)
+                            if ((page = WebFetch.Fetch(FeedLink, true, cookieContainer)) == null)
                             {
                                 continue;
                             }
@@ -679,7 +690,7 @@ namespace tvu
                 }
                 catch
                 {
-                    Log.logInfo("Some Error in rss parsing");
+                    Log.logInfo("Some Error in rss parsing (check login)");
                 }
 
                 if (backgroundWorker1.CancellationPending)
@@ -913,7 +924,7 @@ namespace tvu
             Log.logInfo("logout Emule\n");
             Service.LogOut();
             Log.logInfo("Statistics\n");
-            Log.logInfo(string.Format("Total file added {0} \n", MainConfig.TotalDownloads);
+            Log.logInfo(string.Format("Total file added {0} \n", MainConfig.TotalDownloads));
             
 
         }
@@ -1629,6 +1640,14 @@ namespace tvu
         {
 
             List<string> CurrentRssUrlList = new List<string>();
+            //
+            //  Load Cookies from config 
+            //  
+            CookieContainer cookieContainer = new CookieContainer();
+            Uri uriTvunderground = new Uri("http://tvunderground.org.ru/");
+            cookieContainer.Add(uriTvunderground, new Cookie("h", MainConfig.tvuCookieH));
+            cookieContainer.Add(uriTvunderground, new Cookie("i", MainConfig.tvuCookieI));
+            cookieContainer.Add(uriTvunderground, new Cookie("t", MainConfig.tvuCookieT));
 
             //
             //  Get list of current feed url
@@ -1658,7 +1677,7 @@ namespace tvu
             //
             //  Open dialog 2 to get all ed2k from feed
             //
-            AddFeedDialogPage2 dialogPage2 = new AddFeedDialogPage2(RssUrlList,MainConfig.ServiceUrl,MainConfig.Password);
+            AddFeedDialogPage2 dialogPage2 = new AddFeedDialogPage2(RssUrlList,MainConfig.ServiceUrl,MainConfig.Password, cookieContainer);
             dialogPage2.ShowDialog();
 
             if (dialogPage2.DialogResult != DialogResult.OK)
@@ -1976,6 +1995,22 @@ namespace tvu
             listBoxPending.Refresh();
             return;
 
+        }
+
+        private void loginToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormLogin form = new FormLogin();
+            form.ShowDialog();
+
+            if (form.DialogResult != DialogResult.OK)
+            {
+                return;
+            }
+
+            MainConfig.tvuCookieT = form.cookieT;
+            MainConfig.tvuCookieI = form.cookieI;
+            MainConfig.tvuCookieH = form.cookieH;
+            MainConfig.Save();
         }
     
     }

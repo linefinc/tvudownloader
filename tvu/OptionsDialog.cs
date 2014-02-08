@@ -48,13 +48,6 @@ namespace tvu
             textBoxServiceUrl.Text = ServiceUrl = inConfig.ServiceUrl;
             textBoxPassword.Text = Password = inConfig.Password;
 
-            textBoxTVUUsername.Text = tvuUsername = inConfig.tvuUsername;
-            textBoxTVUPassword.Text = tvuPassword = inConfig.tvuPassword;
-        
-            textBoxCookieH.Text = tvuCookieH = inConfig.tvuCookieH;
-            textBoxCookieI.Text = tvuCookieI = inConfig.tvuCookieI;
-            textBoxCookieT.Text = tvuCookieT = inConfig.tvuCookieT;
-
             textBoxEmuleExe.Text = eMuleExe = inConfig.eMuleExe;
             textBoxDefaultCategory.Text = DefaultCategory = inConfig.DefaultCategory;
             textBoxMailReceiver.Text = MailReceiver = inConfig.MailReceiver;
@@ -136,26 +129,6 @@ namespace tvu
             //  Password
             //
             Password = textBoxPassword.Text;
-            //
-            //  tvuUsername
-            //
-            tvuUsername = textBoxTVUUsername.Text;
-            //
-            //  tvuPassword
-            //
-            tvuPassword = textBoxTVUPassword.Text;
-            //
-            //  tvuCookieH
-            //
-            tvuCookieH =textBoxCookieH.Text;
-            //
-            //  tvuCookieI
-            //
-            tvuCookieI = textBoxCookieI.Text;
-            //
-            //  tvuCookieT
-            //
-            tvuCookieT = textBoxCookieT.Text;
             //
             // Default Category
             //
