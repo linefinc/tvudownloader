@@ -55,8 +55,8 @@ namespace tvu
 
 
             }
-
-            Regex Pattern = new Regex(@"http://(www\.)?tvunderground.org.ru/rss.php\?se_id=\d{1,10}");
+        
+            Regex Pattern = new Regex(@"http(s)?://(www\.)?tvunderground.org.ru/rss.php\?se_id=\d{1,10}");
             //
             MatchCollection mc = Pattern.Matches(textToParse);
             foreach (Match p in mc)
