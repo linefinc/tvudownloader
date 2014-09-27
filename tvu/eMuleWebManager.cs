@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net;
 using System.IO;
+using System.Text.RegularExpressions;
 
 
 namespace tvu
@@ -150,37 +151,6 @@ namespace tvu
 
         }
 
-        private void UpdateCategory(string text)
-        {
-            int i, j;
-            i = text.IndexOf("<select name=\"cat\" size=\"1\">");
-            text = text.Substring(i);
-            i = text.IndexOf("</select>");
-            text = text.Substring(0, i);
-
-            List<string> lsOut = new List<string>();
-
-            while (text.Length > 10)
-            {
-                i = text.IndexOf("value=\"") + ("value=\"").Length;
-                j = text.IndexOf("\">", i);
-
-                string sCatId = text.Substring(i, j - i);
-
-                text = text.Substring(j);
-
-                i = text.IndexOf(">") + ">".Length;
-                j = text.IndexOf("</option>");
-
-                string sValue = text.Substring(i, j - i);
-                lsOut.Add(sValue);
-                text = text.Substring(j);
-            }
-            //Category = lsOut;
-
-        }
-
-
         /// <summary>
         /// get available category from emule
         /// </summary>
@@ -242,23 +212,25 @@ namespace tvu
         {
             List<string> ListDownloads = new List<string>();
 
-            string temp = string.Format("{0}/?ses={1}&w=transfer&cat=0", Host, SesID);
-            temp = webSocketGET(temp);
+            // get download page
+            string temp = webSocketGET(string.Format("{0}/?ses={1}&w=transfer&showuploadqueue=false&cat=0", Host, SesID));
 
             if (temp == null)
             {
                 return ListDownloads;
             }
 
-            int p = temp.IndexOf("ed2k://|file|");
-            int m = temp.IndexOf("|/", p + 5);
-            while (p != -1)
-            {
+            //ed2k://\|file\|
 
-                string link = temp.Substring(p, m - p);
+            Regex Pattern = new Regex(@"ed2k://\|file\|.*\|/");
+
+            MatchCollection matchCollection = Pattern.Matches(temp);
+
+
+            foreach (Match value in matchCollection)
+            {
+                string link = value.ToString();
                 ListDownloads.Add(link);
-                p = temp.IndexOf("ed2k://|file|", m + 1);
-                m = temp.IndexOf("/'", p + 5);
             }
 
             return ListDownloads;
