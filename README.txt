@@ -17,6 +17,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
+##### Version 0.5.6 27/09/2014 [git 6cc9157] #####
+* Fix control on max simulations download
+* Fix delete file from history
+* Code clean up
+
+
+
+
 ##### Version 0.5.6 01/02/2014 [git 9315b10] #####
 * Update new tv undegroud site web
 + Add pending List Box Penging file

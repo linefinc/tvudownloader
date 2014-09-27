@@ -10,7 +10,7 @@ namespace tvu
 {
     public class Config
     {
-        public const string Version = "0.05.6";
+        public const string Version = "0.05.7";
         public string ServiceUrl;
         public string Password;
         public string tvuCookieH;
