@@ -211,7 +211,7 @@
             // 
             this.numericUpDownMaxSimultaneousDownloadForFeed.Location = new System.Drawing.Point(295, 181);
             this.numericUpDownMaxSimultaneousDownloadForFeed.Maximum = new decimal(new int[] {
-            30,
+            50,
             0,
             0,
             0});
