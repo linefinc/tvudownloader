@@ -177,7 +177,7 @@
             // 
             this.numericUpDownMaxSimulDown.Location = new System.Drawing.Point(162, 406);
             this.numericUpDownMaxSimulDown.Maximum = new decimal(new int[] {
-            10,
+            30,
             0,
             0,
             0});

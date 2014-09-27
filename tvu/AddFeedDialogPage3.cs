@@ -97,7 +97,12 @@ namespace tvu
             RssChannel rsschannel = ListRssChannel[index];
             comboBoxCategory.Text = rsschannel.Category;
             checkBoxPause.Checked = rsschannel.Pause;
-            numericUpDownMaxSimulDown.Value = rsschannel.maxSimultaneousDownload;
+
+            // check max and min value allowed to numericUpDownMaxSimulDown
+            decimal tempDec = Math.Max(rsschannel.maxSimultaneousDownload, numericUpDownMaxSimulDown.Minimum);
+            tempDec = Math.Min(tempDec, numericUpDownMaxSimulDown.Maximum);
+            numericUpDownMaxSimulDown.Value = tempDec;
+
 
             // add file
             checkedListBox1.Items.Clear();

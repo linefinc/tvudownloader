@@ -210,9 +210,24 @@
             // numericUpDownMaxSimultaneousDownloadForFeed
             // 
             this.numericUpDownMaxSimultaneousDownloadForFeed.Location = new System.Drawing.Point(295, 181);
+            this.numericUpDownMaxSimultaneousDownloadForFeed.Maximum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxSimultaneousDownloadForFeed.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.numericUpDownMaxSimultaneousDownloadForFeed.Name = "numericUpDownMaxSimultaneousDownloadForFeed";
             this.numericUpDownMaxSimultaneousDownloadForFeed.Size = new System.Drawing.Size(47, 20);
             this.numericUpDownMaxSimultaneousDownloadForFeed.TabIndex = 54;
+            this.numericUpDownMaxSimultaneousDownloadForFeed.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
             // 
             // label8
             // 
