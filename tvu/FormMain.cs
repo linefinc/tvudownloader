@@ -1805,14 +1805,9 @@ namespace tvu
         {
             try
             {
-                Log.logInfo("Open log file " + MainConfig.FileNameLog);
-
                 if (System.IO.File.Exists(MainConfig.FileNameLog) == true)
                 {
-
-                    Log.logInfo("File exist");
-                    string command = string.Format("notepad.exe {0}", MainConfig.FileNameLog);
-                    Process.Start(command);
+                    Process.Start("notepad.exe", MainConfig.FileNameLog);
                 }
             }
             catch(Exception exception)
