@@ -3,8 +3,11 @@
 ; "Tv Underground Downloader" installer script 
 ;
 ; 
-
 ;--------------------------------
+
+;Include Modern UI
+!include MUI2.nsh
+
 
 ; The name of the installer
 Name "Tv Underground Downloader"
@@ -25,15 +28,20 @@ RequestExecutionLevel admin
 ;--------------------------------
 
 ; Pages
+!insertmacro MUI_PAGE_WELCOME
+!insertmacro MUI_PAGE_LICENSE "..\license.txt"
+!insertmacro MUI_PAGE_DIRECTORY
+!insertmacro MUI_PAGE_COMPONENTS
+!insertmacro MUI_UNPAGE_INSTFILES
 
-Page components
-Page directory
-Page instfiles
+!insertmacro MUI_UNPAGE_CONFIRM
+!insertmacro MUI_UNPAGE_INSTFILES
 
-UninstPage uninstConfirm
-UninstPage instfiles
 
 ;--------------------------------
+
+!insertmacro MUI_LANGUAGE "English"
+
 
 ; The stuff to install
 Section "Tvunderground Downloader (required)"
@@ -46,7 +54,8 @@ Section "Tvunderground Downloader (required)"
   ; Put file there
   File ".\bin\Release\tvu.exe"
   File "..\README.txt"
-  
+  File "..\license.txt"
+    
   ; Write the installation path into the registry
   WriteRegStr HKLM SOFTWARE\TVUndergroundDownloader "Install_Dir" "$INSTDIR"
   
@@ -79,8 +88,10 @@ Section "Uninstall"
   DeleteRegKey HKLM SOFTWARE\TVUndergroundDownloader
 
   ; Remove files and uninstaller
+  
   Delete $INSTDIR\tvu.exe
   Delete $INSTDIR\README.txt
+  Delete $INSTDIR\license.txt
   Delete $INSTDIR\uninstall.exe
 
   ; Remove shortcuts, if any
