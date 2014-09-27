@@ -10,7 +10,7 @@
 Name "Tv Underground Downloader"
 
 ; The file to write
-OutFile ".\bin\Release\tvud_installer_0.5.6.exe"
+OutFile ".\bin\Release\tvud_installer_0.5.7.exe"
 
 ; The default installation directory
 InstallDir $PROGRAMFILES\Tvunderground_Downloader

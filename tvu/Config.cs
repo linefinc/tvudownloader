@@ -327,7 +327,7 @@ namespace tvu
 
             tvuCookieT = ReadString(xDoc, "tvuCookieT", string.Empty);
 
-            IntervalTime = (int)Convert.ToInt32(ReadString(xDoc, "IntervalTime", "30"));
+            IntervalTime = ReadInt(xDoc, "IntervalTime", 30, 1, 24 * 60 * 60);
 
             StartMinimized = (bool)Convert.ToBoolean(ReadString(xDoc, "StartMinimized", "false"));
 
@@ -337,9 +337,9 @@ namespace tvu
 
             AutoClearLog = (bool)Convert.ToBoolean(ReadString(xDoc, "AutoClearLog", "false"));
 
-            MaxSimultaneousFeedDownloads = (int)Convert.ToInt32(ReadString(xDoc, "MaxSimultaneousFeedDownloads", "3"));
+            MaxSimultaneousFeedDownloads = ReadInt(xDoc, "MaxSimultaneousFeedDownloads", 3,0,50);
 
-            MinToStartEmule = (int)Convert.ToInt32(ReadString(xDoc, "MinToStartEmule", "0"));
+            MinToStartEmule = ReadInt(xDoc, "MinToStartEmule", 0, 0, 50);
 
             eMuleExe = ReadString(xDoc, "eMuleExe", "");
 
@@ -361,11 +361,11 @@ namespace tvu
 
             tvudwid = ReadString(xDoc, "tvudwid", RandomIDGenerator());
 
-            intervalBetweenUpgradeCheck = (int)Convert.ToInt32(ReadString(xDoc, "intervalBetweenUpgradeCheck", "5"));
+            intervalBetweenUpgradeCheck = ReadInt(xDoc, "intervalBetweenUpgradeCheck", 5, 1, 15);
 
             LastUpgradeCheck = ReadString(xDoc, "LastUpgradeCheck", DateTime.Now.ToString("yyyy-MM-dd"));
 
-            TotalDownloads = (int)Convert.ToInt32(ReadString(xDoc, "TotalDownloads", "0"));
+            TotalDownloads = ReadInt(xDoc, "TotalDownloads", 0);
             //
             //  Load Channel
             //
@@ -466,6 +466,29 @@ namespace tvu
                 return t[0].InnerText;
             }
         }
+
+
+        private int ReadInt(XmlDocument xDoc, string NodeName, int defaultValue)
+        {
+            XmlNodeList t = xDoc.GetElementsByTagName(NodeName);
+            if (t.Count == 0)
+            {
+                return defaultValue;
+            }
+            else
+            {
+                return (int)Convert.ToInt32(t[0].InnerText);
+            }
+        }
+
+        private int ReadInt(XmlDocument xDoc, string NodeName, int defaultValue, int Min , int Max)
+        {
+            int val = ReadInt(xDoc, NodeName, defaultValue);
+            val = Math.Min(val, Max);
+            val = Math.Max(val, Min);
+            return val;
+        }
+
 
 
         private static string RandomIDGenerator()
