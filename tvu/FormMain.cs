@@ -106,10 +106,10 @@ namespace tvu
                 DisableAutoCloseEmule();
             }
 
-            label8.Text = "";
-            label10.Text = "";
-            label12.Text = "";
-            label14.Text = "";
+            labelFeedCategory.Text = "";
+            labelFeedPauseDownload.Text = "";
+            labelFeedUrl.Text = "";
+            labelLastDownloadDate.Text = "";
             labelTotalFiles.Text = "";
             labelMaxSimultaneousDownloads.Text = "";
 
@@ -449,16 +449,16 @@ namespace tvu
                 return;
             }
 
-            label8.Text = Feed.Category;
-            label10.Text = Feed.PauseDownload.ToString();
-            label12.Text = Feed.Url;
+            labelFeedCategory.Text = Feed.Category;
+            labelFeedPauseDownload.Text = Feed.PauseDownload.ToString();
+            labelFeedUrl.Text = Feed.Url;
 
-            label14.Text = MainHistory.LastDownloadDateByFeedSource(Feed.Url);
+            labelLastDownloadDate.Text = MainHistory.LastDownloadDateByFeedSource(Feed.Url);
             labelTotalFiles.Text = Feed.TotalDownloads.ToString();
             labelMaxSimultaneousDownloads.Text = Feed.maxSimultaneousDownload.ToString();
 
             // update list history
-            listView2.Items.Clear();
+            listViewFeedFilesList.Items.Clear();
 
 
             // extract file by feedLink
@@ -470,7 +470,7 @@ namespace tvu
                 ListViewItem item = new ListViewItem(fh.FileName);
                 string date = fh.Date.Substring(0,10);
                 item.SubItems.Add(date);
-                listView2.Items.Add(item);
+                listViewFeedFilesList.Items.Add(item);
             }
         }
 
@@ -1630,7 +1630,7 @@ namespace tvu
             MainConfig.RssFeedList.Remove(Feed);
             MainConfig.Save();
             MainHistory.Save();
-            listView2.Items.Clear();
+            listViewFeedFilesList.Items.Clear();
             UpdateRssFeedGUI(); ///upgrade gui
         }
         /// <summary>
@@ -1761,23 +1761,33 @@ namespace tvu
 
         private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if (listView2.Items.Count == 0)
+            if (listViewFeedFilesList.Items.Count == 0)
                 return;
 
-            if (listView2.SelectedItems.Count == 0)
+            if (listViewFeedFilesList.SelectedItems.Count == 0)
                 return;
 
-            ListViewItem temp = listView2.SelectedItems[0];
-            int i = listView2.Items.IndexOf(temp);
-            string str = listView2.Items[i].Text;
+            ListViewItem selectedItem = listViewFeedFilesList.SelectedItems[0];
+            string strSelectItemText = selectedItem.Text;   // this variable contain nome file
 
-            Log.logInfo(string.Format("DELETE {0}:{1}", i, str));
-            
-            MainHistory.DeleteFile(str);
-            listView2.Items.Remove(temp);
+            Log.logInfo(string.Format("Delete {0}", strSelectItemText));
+
+            // remove from list view
+            listViewFeedFilesList.Items.Remove(selectedItem);
+
+            // remove file from main history
+            MainHistory.DeleteFile(strSelectItemText);
             MainHistory.Save();
+
+            // remove all datafile from each feed 
+            foreach (RssSubscrission Feed in MainConfig.RssFeedList)
+            {
+                Feed.DownloadedFile.RemoveAll(delegate(fileHistory t) { return t.FileName == strSelectItemText; });
+            }
+
+            // finaly update GUI
             UpdateRssFeedGUI();
-            
+
         }
 
         private void deleteCompleteToolStripMenuItem_Click(object sender, EventArgs e)

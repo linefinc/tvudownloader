@@ -39,15 +39,15 @@
             this.label1 = new System.Windows.Forms.Label();
             this.labelTotalFiles = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
+            this.labelLastDownloadDate = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
+            this.labelFeedUrl = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
+            this.labelFeedPauseDownload = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
+            this.labelFeedCategory = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.listView2 = new System.Windows.Forms.ListView();
+            this.listViewFeedFilesList = new System.Windows.Forms.ListView();
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -158,15 +158,15 @@
             this.tabMain.Controls.Add(this.label1);
             this.tabMain.Controls.Add(this.labelTotalFiles);
             this.tabMain.Controls.Add(this.label15);
-            this.tabMain.Controls.Add(this.label14);
+            this.tabMain.Controls.Add(this.labelLastDownloadDate);
             this.tabMain.Controls.Add(this.label13);
-            this.tabMain.Controls.Add(this.label12);
+            this.tabMain.Controls.Add(this.labelFeedUrl);
             this.tabMain.Controls.Add(this.label11);
-            this.tabMain.Controls.Add(this.label10);
+            this.tabMain.Controls.Add(this.labelFeedPauseDownload);
             this.tabMain.Controls.Add(this.label9);
-            this.tabMain.Controls.Add(this.label8);
+            this.tabMain.Controls.Add(this.labelFeedCategory);
             this.tabMain.Controls.Add(this.label7);
-            this.tabMain.Controls.Add(this.listView2);
+            this.tabMain.Controls.Add(this.listViewFeedFilesList);
             this.tabMain.Controls.Add(this.listView1);
             this.tabMain.Location = new System.Drawing.Point(4, 22);
             this.tabMain.Name = "tabMain";
@@ -214,12 +214,12 @@
             // 
             // label14
             // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(106, 289);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(41, 13);
-            this.label14.TabIndex = 33;
-            this.label14.Text = "label14";
+            this.labelLastDownloadDate.AutoSize = true;
+            this.labelLastDownloadDate.Location = new System.Drawing.Point(106, 289);
+            this.labelLastDownloadDate.Name = "label14";
+            this.labelLastDownloadDate.Size = new System.Drawing.Size(41, 13);
+            this.labelLastDownloadDate.TabIndex = 33;
+            this.labelLastDownloadDate.Text = "label14";
             // 
             // label13
             // 
@@ -232,12 +232,12 @@
             // 
             // label12
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(106, 276);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(41, 13);
-            this.label12.TabIndex = 31;
-            this.label12.Text = "label12";
+            this.labelFeedUrl.AutoSize = true;
+            this.labelFeedUrl.Location = new System.Drawing.Point(106, 276);
+            this.labelFeedUrl.Name = "label12";
+            this.labelFeedUrl.Size = new System.Drawing.Size(41, 13);
+            this.labelFeedUrl.TabIndex = 31;
+            this.labelFeedUrl.Text = "label12";
             // 
             // label11
             // 
@@ -250,12 +250,12 @@
             // 
             // label10
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(106, 263);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(41, 13);
-            this.label10.TabIndex = 29;
-            this.label10.Text = "label10";
+            this.labelFeedPauseDownload.AutoSize = true;
+            this.labelFeedPauseDownload.Location = new System.Drawing.Point(106, 263);
+            this.labelFeedPauseDownload.Name = "label10";
+            this.labelFeedPauseDownload.Size = new System.Drawing.Size(41, 13);
+            this.labelFeedPauseDownload.TabIndex = 29;
+            this.labelFeedPauseDownload.Text = "label10";
             // 
             // label9
             // 
@@ -268,12 +268,12 @@
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(106, 248);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(35, 13);
-            this.label8.TabIndex = 27;
-            this.label8.Text = "label8";
+            this.labelFeedCategory.AutoSize = true;
+            this.labelFeedCategory.Location = new System.Drawing.Point(106, 248);
+            this.labelFeedCategory.Name = "label8";
+            this.labelFeedCategory.Size = new System.Drawing.Size(35, 13);
+            this.labelFeedCategory.TabIndex = 27;
+            this.labelFeedCategory.Text = "label8";
             // 
             // label7
             // 
@@ -286,16 +286,16 @@
             // 
             // listView2
             // 
-            this.listView2.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.listViewFeedFilesList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader5,
             this.columnHeader7});
-            this.listView2.ContextMenuStrip = this.contextMenuStrip2;
-            this.listView2.Location = new System.Drawing.Point(6, 330);
-            this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(527, 116);
-            this.listView2.TabIndex = 24;
-            this.listView2.UseCompatibleStateImageBehavior = false;
-            this.listView2.View = System.Windows.Forms.View.Details;
+            this.listViewFeedFilesList.ContextMenuStrip = this.contextMenuStrip2;
+            this.listViewFeedFilesList.Location = new System.Drawing.Point(6, 330);
+            this.listViewFeedFilesList.Name = "listView2";
+            this.listViewFeedFilesList.Size = new System.Drawing.Size(527, 116);
+            this.listViewFeedFilesList.TabIndex = 24;
+            this.listViewFeedFilesList.UseCompatibleStateImageBehavior = false;
+            this.listViewFeedFilesList.View = System.Windows.Forms.View.Details;
             // 
             // columnHeader5
             // 
@@ -753,15 +753,15 @@
         private System.Windows.Forms.TabPage tabMain;
         private System.Windows.Forms.Label labelTotalFiles;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label labelLastDownloadDate;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label labelFeedUrl;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label labelFeedPauseDownload;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label labelFeedCategory;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.ListView listView2;
+        private System.Windows.Forms.ListView listViewFeedFilesList;
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
