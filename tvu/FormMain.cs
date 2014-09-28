@@ -1061,7 +1061,7 @@ namespace tvu
                 MainConfig.LastUpgradeCheck = DateTime.Now.ToString("yyyy-MM-dd");
                 
                 XmlDocument doc = new XmlDocument();
-                doc.Load(string.Format("http://tvudownloader.sourceforge.net/version.php?tvuid={0}&TotalDownloads={1}", MainConfig.tvudwid, MainConfig.TotalDownloads));
+                doc.Load(string.Format("http://tvudownloader.sourceforge.net/version.php?ver={0}tvuid={1}&TotalDownloads={2}", Config.Version, MainConfig.tvudwid, MainConfig.TotalDownloads));
 
                 string lastVersion = "";
 
