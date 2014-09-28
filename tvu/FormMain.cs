@@ -911,7 +911,7 @@ namespace tvu
                 }
                 MainHistory.Add(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);
                 Ed2kfile parser = new Ed2kfile(DownloadFile.Ed2kLink);
-                Log.logInfo(string.Format("Add file to emule {0} \n", parser.GetFileName()));
+                Log.logInfo(string.Format("Add file to emule {0}", parser.GetFileName()));
                 SendMailDownload(parser.GetFileName(), DownloadFile.Ed2kLink);
                 MainConfig.TotalDownloads++;   //increase Total Downloads for statistic
 
@@ -921,10 +921,10 @@ namespace tvu
                 }
             }
             MainHistory.Save();
-            Log.logInfo("logout Emule\n");
+            Log.logInfo("logout Emule");
             Service.LogOut();
-            Log.logInfo("Statistics\n");
-            Log.logInfo(string.Format("Total file added {0} \n", MainConfig.TotalDownloads));
+            Log.logInfo("Statistics");
+            Log.logInfo(string.Format("Total file added {0}", MainConfig.TotalDownloads));
             
 
         }
