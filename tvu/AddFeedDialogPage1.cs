@@ -64,15 +64,16 @@ namespace tvu
                 RssUrlList.Add(p.Value);
             }
 
+            // remove duplicate, skipping source
             foreach (string rssUrl in RssUrlList)
             {
                 if (CurrentRssUrlList.IndexOf(rssUrl) != -1)
                 {
-                    MessageBox.Show(string.Format("Error: Rss url duplicate ({0})", rssUrl));
-                    return;
+                    MessageBox.Show(string.Format("Warning: Rss url duplicate ({0}), skipping source", rssUrl));
                 }
             }
-            
+
+            RssUrlList.RemoveAll(delegate(string temp) { return CurrentRssUrlList.IndexOf(temp) > -1; });
 
             this.DialogResult = DialogResult.OK;
             this.Close();
