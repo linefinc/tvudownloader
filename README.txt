@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * Fix control on max simulations download
 * Fix delete file from history
 * Code clean up
-
+* Change: now a duplicate feed is skipped by default
 
 
 
