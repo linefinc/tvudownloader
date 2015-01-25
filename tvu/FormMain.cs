@@ -495,8 +495,14 @@ namespace tvu
             toolStripMenuItemDelete.Enabled = false;
             toolStripMenuItemEdit.Enabled = false;
 
+            toolStripButtonCheckNow.Enabled = false;
+            toolStripButtonAddFeed.Enabled = false;
+
             menuItemCheckNow.Enabled = false;
+            
             cancelCheckToolStripMenuItem.Enabled = true;
+            toolStripButtonStop.Enabled = true;
+
             listBoxPending.Items.Clear();
             listBoxPending.Refresh();
             backgroundWorker1.RunWorkerAsync();
@@ -942,7 +948,6 @@ namespace tvu
             UpdateRecentActivity();
             UpdateRssFeedGUI();
             
-            cancelCheckToolStripMenuItem.Enabled = true;
             menuItemCheckNow.Enabled = true;
             
             deleteToolStripMenuItem.Enabled = true;
@@ -955,6 +960,12 @@ namespace tvu
             toolStripMenuItemAdd.Enabled = true;
             toolStripMenuItemDelete.Enabled = true;
             toolStripMenuItemEdit.Enabled = true;
+
+            toolStripButtonCheckNow.Enabled = true;
+            toolStripButtonAddFeed.Enabled = true;
+
+            toolStripButtonStop.Enabled = false;
+            cancelCheckToolStripMenuItem.Enabled = false;
         }
 
 
@@ -2016,6 +2027,21 @@ namespace tvu
             MainConfig.tvuCookieI = form.cookieI;
             MainConfig.tvuCookieH = form.cookieH;
             MainConfig.Save();
+        }
+
+        private void toolStripButtonAddFeed_Click(object sender, EventArgs e)
+        {
+            AddRssChannel();
+        }
+
+        private void toolStripButtonCheckNow_Click(object sender, EventArgs e)
+        {
+            StartDownloadThread();
+        }
+
+        private void toolStripButtonStop_Click(object sender, EventArgs e)
+        {
+            backgroundWorker1.CancelAsync();
         }
     
     }
