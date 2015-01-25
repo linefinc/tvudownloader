@@ -815,6 +815,23 @@ namespace tvu
                             ActualDownloadFileList.Add(newADFile);
 
                             Log.logInfo(string.Format("Found file ({0}) ,{1} ,{2}", newFile.FileName, fh.FeedLink, fh.FeedSource));
+
+
+
+
+                            // add to pending list
+                            if (this.listBoxPending.InvokeRequired == true)
+                            {
+
+                                Invoke(new MethodInvoker(
+                                    delegate { this.RemoveItemToListBoxPending(newFile.FileName); }
+                                ));
+
+                            }
+                            else
+                            {
+                                this.RemoveItemToListBoxPending(newFile.FileName);
+                            }
                         }
                     }
                 }
@@ -2011,6 +2028,18 @@ namespace tvu
             listBoxPending.Refresh();
             return;
 
+        }
+
+
+        void RemoveItemToListBoxPending(string text)
+        {
+
+            int index = listBoxPending.Items.IndexOf(text);
+            if(index > -1)
+            {
+                listBoxPending.Items.RemoveAt(index);
+            }
+            return;
         }
 
         private void loginToolStripMenuItem_Click(object sender, EventArgs e)
