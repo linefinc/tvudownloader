@@ -14,14 +14,14 @@ namespace tvu
 
         public Ed2kfile(string link)
         {
-            
+
             HashSHA1 = null;
 
-            if(link == null)
+            if (link == null)
             {
                 throw (new System.ApplicationException("Link error (missing ed2k://|file|)"));
             }
-             
+
             if (link.IndexOf("ed2k://|file|", 0) != 0)
             {
                 throw (new System.ApplicationException("Link error (missing ed2k://|file|)"));
@@ -38,20 +38,20 @@ namespace tvu
             int start = -1;
             int stop = -1;
 
-            start = link.IndexOf('|');
-            start = link.IndexOf('|', start + 1);   // skip first vertical bar and go directly to second bar
-            stop = link.IndexOf('|', start + 1);    // position of 3th vertical bar
+            start = link.IndexOf('|') + 1;
+            start = link.IndexOf('|', start) + 1;   // skip first vertical bar and go directly to second bar
+            stop = link.IndexOf('|', start);    // position of 3th vertical bar
 
-            FileName = link.Substring(start + 1, stop - start);
+            FileName = link.Substring(start, stop - start);
 
             start = stop + 1;
-            stop = link.IndexOf('|', start + 1);    // position of 4th vertical bar
+            stop = link.IndexOf('|', start);    // position of 4th vertical bar
             string tempo = link.Substring(start, stop - start);
             FileSize = UInt64.Parse(tempo);
 
 
             start = stop + 1;
-            stop = link.IndexOf('|', start + 1);    // position of 5th vertical bar
+            stop = link.IndexOf('|', start );    // position of 5th vertical bar
             HashMD4 = link.Substring(start, stop - start);
 
 
@@ -172,12 +172,12 @@ namespace tvu
             return 0;
         }
 
-        private int CountChar (string str, char c)
+        private int CountChar(string str, char c)
         {
             int count = 0;
-            foreach(char t in str)
+            foreach (char t in str)
             {
-                if(t == c)
+                if (t == c)
                 {
                     count++;
                 }
