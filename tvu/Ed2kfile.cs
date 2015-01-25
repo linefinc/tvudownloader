@@ -42,7 +42,7 @@ namespace tvu
             start = link.IndexOf('|', start + 1);   // skip first vertical bar and go directly to second bar
             stop = link.IndexOf('|', start + 1);    // position of 3th vertical bar
 
-            FileName = link.Substring(start, stop - start);
+            FileName = link.Substring(start + 1, stop - start);
 
             start = stop + 1;
             stop = link.IndexOf('|', start + 1);    // position of 4th vertical bar
