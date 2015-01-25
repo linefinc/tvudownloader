@@ -29,9 +29,8 @@ namespace tvu
         {
             get
             {
-                string temp = Application.LocalUserAppDataPath;
-                int rc = temp.LastIndexOf("\\");
-                return temp.Substring(0, rc) + "\\config.xml";
+                string temp = Directory.GetParent(Application.LocalUserAppDataPath).FullName;
+                return temp + "\\config.xml";
             }
         }
         public string DefaultCategory ;

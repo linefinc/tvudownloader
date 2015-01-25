@@ -16,7 +16,7 @@
     <ManifestCertificateThumbprint>9A83998307C9DCC2E43AD5287D15E279ACDA58E6</ManifestCertificateThumbprint>
     <ManifestKeyFile>tvu_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
     <ApplicationIcon>Resources\appicon1.ico</ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
