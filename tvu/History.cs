@@ -29,12 +29,6 @@ namespace tvu
             FileName = FileName.Substring(0, rc) + "\\History.xml";
 #endif
 
-            if (!File.Exists(FileName))
-            {
-                return;
-            }
-
-            SQLiteConnection.CreateFile(Config.FileNameDB);
             using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
             {
                 connection.Open();

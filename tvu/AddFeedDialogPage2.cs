@@ -62,7 +62,6 @@ namespace tvu
 
 
             FeedLinkCache feedLinkCache = new FeedLinkCache();
-            feedLinkCache.Load();
 
             foreach (RssChannel rssChannel in RssChannelList)
             {
@@ -85,7 +84,7 @@ namespace tvu
                         ListFileHistory.Add(file);
                         backgroundWorker1.ReportProgress(0);
                         // update feedLinkCache
-                        feedLinkCache.AddFeedLink(Item.Guid, sEd2k);
+                        FeedLinkCache.AddFeedLink(Item.Guid, sEd2k, DateTime.Now.ToString("s"));
                     }
                     catch
                     {
@@ -93,8 +92,6 @@ namespace tvu
                 }
 
             }
-
-            feedLinkCache.Save();
 
             try
             {

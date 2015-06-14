@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml;
-using System.IO;
-using System.Windows.Forms;
+﻿using System.Data;
+using System.Data.SQLite;
+using System.Text.RegularExpressions;
 
 namespace tvu
 {
@@ -12,177 +10,154 @@ namespace tvu
         public string Ed2kLink;
         public string Date;
     }
-    
+
     public class FeedLinkCache
     {
-        
-
-        public List<FeedLinkCacheRow> FeedLinkCacheTable;
-        public string FileName { get; private set; }
 
         public FeedLinkCache()
         {
-            FeedLinkCacheTable = new List<FeedLinkCacheRow>();
-#if DEBUG
-            FileName = "FeedLinkCache.xml";
-#else
-            FileName = Application.LocalUserAppDataPath;
-            int rc = FileName.LastIndexOf("\\");
-            FileName = FileName.Substring(0, rc) + "\\FeedLinkCache.xml";
-#endif
         }
 
-        public void AddFeedLink(string FeedLink, string Ed2kLink)
+
+        public static void MigrateFromXMLToDB()
+        {
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+            {
+                connection.Open();
+
+                string sql = @"CREATE TABLE FeedLinkCache (
+                                uuid INTEGER PRIMARY KEY AUTOINCREMENT,
+                                Ed2kLink TEXT,
+                                FeedLink TEXT,
+                                seasonID INTEGER,
+                                episodeID INTEGER,
+                                LastUpdate TEXT DEFAULT ('CURRENT_TIMESTAMP'));";
+                SQLiteCommand command = new SQLiteCommand(sql, connection);
+                command.ExecuteNonQuery();
+
+                connection.Close();
+            }
+            //
+            //  Note: no data will be imported
+            //
+        }
+
+
+     
+        public static void AddFeedLink(string FeedLink, string Ed2kLink, string Date)
         {
 
-            AddFeedLink(FeedLink, Ed2kLink, DateTime.Now.ToString("s"));
+            string seasonID = string.Empty;
+            string episodeID = string.Empty;
+
+            // http://tvunderground.org.ru/index.php?show=ed2k&season=73528&sid[815433]=1
+            Regex Pattern = new Regex(@"season.?(\d{3,6}).?sid.?(\d{3,6})");
+
+            MatchCollection matchCollection = Pattern.Matches(FeedLink);
+
+            if (matchCollection.Count > 0)
+            {
+                seasonID = matchCollection[0].Groups[1].ToString();
+                episodeID = matchCollection[0].Groups[2].ToString();
+            }
+
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+            {
+                connection.Open();
+                const string sqlTemplate = @"INSERT INTO FeedLinkCache ( Ed2kLink , FeedLink , seasonID , episodeID , LastUpdate )
+                                                VALUES
+                                                ( @Ed2kLink , @FeedLink  , @seasonID , @episodeID , @LastUpdate )";
+
+                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                command.CommandType = CommandType.Text;
+                command.Parameters.Add(new SQLiteParameter("@Ed2kLink", Ed2kLink));
+                command.Parameters.Add(new SQLiteParameter("@FeedLink", FeedLink));
+                command.Parameters.Add(new SQLiteParameter("@seasonID", seasonID));
+                command.Parameters.Add(new SQLiteParameter("@episodeID", episodeID));
+                command.Parameters.Add(new SQLiteParameter("@LastUpdate", Date));
+                command.ExecuteNonQuery();
+                connection.Close();
+
+
+
+            }
 
         }
 
-        public void AddFeedLink(string FeedLink,string Ed2kLink, string Date)
-        {
-            // to avoid duplicate
-            foreach (FeedLinkCacheRow t in FeedLinkCacheTable)
-            {
-                if (t.FeedLink == FeedLink)
-                {
-                    return;
-                }
-            }
-            
-            // add new item
-            FeedLinkCacheRow flcr = new FeedLinkCacheRow();
-            flcr.Ed2kLink = Ed2kLink;
-            flcr.FeedLink = FeedLink;
-            
-            flcr.Date = DateTime.Now.ToString("s");
-
-            FeedLinkCacheTable.Add(flcr);
-        }
-
-        private static string cacheStringOptimize(List<string> stringCache, string value)
-        {
-            int index = stringCache.IndexOf(value);
-            if (index >= 0)
-            {
-                return stringCache[index];
-            }
-            else
-            {
-                stringCache.Add(value);
-                return stringCache[stringCache.Count - 1];
-            }
-        }
+        
 
 
         public string FindFeedLink(string FeedLink)
         {
-            foreach (FeedLinkCacheRow flcr in FeedLinkCacheTable)
-            {
-                if (flcr.FeedLink == FeedLink)
-                {
-                    return flcr.Ed2kLink;
-                }
+            DataTable dt = new DataTable();
+            dt.Reset();
 
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+            {
+                connection.Open();
+                const string sqlTemplate = @"SELECT FeedLinkCache.Ed2kLink FROM FeedLinkCache WHERE FeedLinkCache.FeedLink = @FeedLink LIMIT 1;";
+
+                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                command.CommandType = CommandType.Text;
+                command.Parameters.Add(new SQLiteParameter("@FeedLink", FeedLink));
+                SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
+
+
+                dataAdapter.Fill(dt);
+
+                connection.Close();
             }
-            return string.Empty;
+
+            if(dt.Rows.Count == 0)
+            {
+                return string.Empty;
+            }
+
+            return dt.Rows[0][0].ToString();
+  
         }
 
-        public int CountFeedLink(string FeedLink)
+        public void DeleteFileByEd2kLink(string ed2kLink)
         {
-            int counter = 0;
-            foreach (FeedLinkCacheRow flcr in FeedLinkCacheTable)
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
             {
-                if (flcr.FeedLink == FeedLink)
-                {
-                    counter++;
-                }
+                connection.Open();
+                const string sqlTemplate = @"DELETE FROM FeedLinkCache WHERE FeedLinkCache.Ed2kLink = @Ed2kLink;";
 
+                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                command.CommandType = CommandType.Text;
+                command.Parameters.Add(new SQLiteParameter("@Ed2kLink", ed2kLink));
+                command.ExecuteNonQuery();
+                connection.Close();
             }
-            return counter;
         }
 
-        public void Load()
+        public void CleanUp()
         {
-            // Clear list
-            FeedLinkCacheTable.Clear();
-
-            if (!File.Exists(FileName))
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
             {
-                return;
+                connection.Open();
+                const string sqlTemplate = @"DELETE FROM FeedLinkCache WHERE FeedLinkCache.FeedLink IN (SELECT History.FeedLink FROM History);";
+
+
+                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                command.CommandType = CommandType.Text;
+                command.ExecuteNonQuery();
+                connection.Close();
             }
 
-            List<string> stringCache = new List<string>();
-
-            XmlDocument xDoc = new XmlDocument();
-            xDoc.Load(FileName);
-
-            XmlNodeList ItemList = xDoc.GetElementsByTagName("Item");
-
-            for (int i = 0; i < ItemList.Count; i++)
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
             {
+                connection.Open();
+                const string sqlTemplate = @"DELETE FROM FeedLinkCache WHERE FeedLinkCache.LastUpdate < DATE('now','-15 days');";
 
-                string strDate = DateTime.Now.ToString("s"); // to avoid compatibility with old history file
-                
-                string strFeedLink = "";
-                string strEd2k = "";
-                
-
-                XmlNode node = ItemList[i];
-                foreach (XmlNode t in node.ChildNodes)
-                {
-
-                    if (t.Name == "Ed2kLink")
-                    {
-                        strEd2k = cacheStringOptimize(stringCache, t.InnerText);
-                    }
-
-                    if (t.Name == "FeedLink")
-                    {
-                        strFeedLink = cacheStringOptimize(stringCache, t.InnerText);
-                    }
-
-                    if (t.Name == "Date")
-                    {
-                        strDate = cacheStringOptimize(stringCache, t.InnerText);
-                    }
-
-                    DateTime dateTimeLimit = DateTime.Now.AddDays(15.0);
-                    DateTime itemDateTime = DateTime.Parse(strDate);
-                    TimeSpan ts = dateTimeLimit - itemDateTime;
-                    if (ts.Days > 0)
-                    {
-                        AddFeedLink(strFeedLink, strEd2k, strDate);
-                       
-                    }
-
-                }
-        
+                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                command.CommandType = CommandType.Text;
+                command.ExecuteNonQuery();
+                connection.Close();
             }
-
+            
         }
-
-
-        public void Save()
-        {
-
-            XmlTextWriter textWritter = new XmlTextWriter(FileName, null);
-            textWritter.Formatting = Formatting.Indented;
-            textWritter.Indentation = 4;
-            textWritter.WriteStartDocument();
-            textWritter.WriteStartElement("FeedLinkCache");
-
-            foreach (FeedLinkCacheRow flcr in FeedLinkCacheTable)
-            {
-                textWritter.WriteStartElement("Item");// open Item
-                textWritter.WriteElementString("Ed2kLink", flcr.Ed2kLink);
-                textWritter.WriteElementString("FeedLink", flcr.FeedLink);
-                textWritter.WriteElementString("Date", flcr.Date);
-                textWritter.WriteEndElement(); // close Item
-
-            }
-
-            textWritter.Close();
-        }
+       
     }
 }

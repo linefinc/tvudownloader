@@ -469,8 +469,9 @@ namespace tvu
             // create db if not exit
             if (File.Exists(Config.FileNameDB) == false)
             {
-               
+                SQLiteConnection.CreateFile(Config.FileNameDB);
                 History.MigrateFromXMLToDB();
+                FeedLinkCache.MigrateFromXMLToDB();
             }
 
 

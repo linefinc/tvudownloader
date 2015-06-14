@@ -295,7 +295,6 @@ namespace tvu
             }
 
             FeedLinkCache feedLinkCache = new FeedLinkCache();
-            feedLinkCache.Load();
 
             List<RssSubscrission> myRssFeedList = new List<RssSubscrission>();
             myRssFeedList.AddRange(MainConfig.RssFeedList);
@@ -521,7 +520,6 @@ namespace tvu
             List<sDonwloadFile> DownloadFileList = new List<sDonwloadFile>();
 
             FeedLinkCache feedLinkCache = new FeedLinkCache();
-            feedLinkCache.Load();
 
             // select only enabled rss
             List<RssSubscrission> RssFeedList = MainConfig.RssFeedList.FindAll(delegate(RssSubscrission rss) { return rss.Enabled == true; });
@@ -617,26 +615,27 @@ namespace tvu
                             return;
                         }
 
-                        sEd2k = feedLinkCache.FindFeedLink(FeedLink);
-                        if (sEd2k == string.Empty)
+                        if (MainHistory.FileExistByFeedLink(FeedLink) == false)
                         {
-                            string page = null;
-
-                            // download the page in FeedLink
-                            Log.logVerbose(string.Format("try download page {0}", FeedLink));
-
-                            if ((page = WebFetch.Fetch(FeedLink, true, cookieContainer)) == null)
+                            sEd2k = feedLinkCache.FindFeedLink(FeedLink);
+                            if (sEd2k == string.Empty)
                             {
-                                continue;
+                                string page = null;
+
+                                // download the page in FeedLink
+                                Log.logVerbose(string.Format("try download page {0}", FeedLink));
+
+                                if ((page = WebFetch.Fetch(FeedLink, true, cookieContainer)) == null)
+                                {
+                                    continue;
+                                }
+                                // parse ed2k
+                                sEd2k = RssParserTVU.FindEd2kLink(page);
+                                FeedLinkCache.AddFeedLink(FeedLink, sEd2k, DateTime.Now.ToString("s"));
                             }
-                            // parse ed2k
-                            sEd2k = RssParserTVU.FindEd2kLink(page);
-                            feedLinkCache.AddFeedLink(FeedLink, sEd2k);
+                       
 
-                        }
-
-                        if (MainHistory.ExistInHistoryByEd2k(sEd2k) == false)
-                        {
+                       
                             Ed2kfile parser = new Ed2kfile(sEd2k);
                             Log.logInfo(string.Format("Found new file {0}", parser.GetFileName()));
 
@@ -696,7 +695,8 @@ namespace tvu
 
             }
 
-            feedLinkCache.Save();
+            
+            feedLinkCache.CleanUp();
 
             if (DownloadFileList.Count == 0)
             {
@@ -1614,17 +1614,7 @@ namespace tvu
                 return;
             }
 
-
-            List<string> FileToDelete = new List<string>();
-
             MainHistory.DeleteFileByFeedSource(Feed.Url);
-
-            FeedLinkCache newFeedLinkCache = new FeedLinkCache();
-            newFeedLinkCache.Load();
-            newFeedLinkCache.FeedLinkCacheTable.RemoveAll(delegate(FeedLinkCacheRow flcr) { return FileToDelete.IndexOf(flcr.Ed2kLink) > -1; });
-            newFeedLinkCache.Save();
-
-
 
             MainConfig.RssFeedList.Remove(Feed);
             MainConfig.Save();
