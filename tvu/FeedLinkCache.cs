@@ -23,9 +23,13 @@ namespace tvu
         public FeedLinkCache()
         {
             FeedLinkCacheTable = new List<FeedLinkCacheRow>();
+#if DEBUG
+            FileName = "FeedLinkCache.xml";
+#else
             FileName = Application.LocalUserAppDataPath;
             int rc = FileName.LastIndexOf("\\");
             FileName = FileName.Substring(0, rc) + "\\FeedLinkCache.xml";
+#endif
         }
 
         public void AddFeedLink(string FeedLink, string Ed2kLink)

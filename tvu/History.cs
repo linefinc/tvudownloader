@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections;
-using System.Text;
-using System.Xml;
+using System.Data;
+using System.Data.SQLite;
 using System.IO;
-using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using System.Xml;
 
 
 namespace tvu
@@ -13,32 +12,49 @@ namespace tvu
     public class History
     {
 
-
-
-
-        public string FileName { get; private set; }
-
-        public List<fileHistory> fileHistoryList { get; private set; }
-        private Hashtable HashtableGuid;
-        private List<RssSubscrission> RssFeedList;
-
-        public History(List<RssSubscrission> RssFeedList)
+        public History()
         {
-            fileHistoryList = new List<fileHistory>();
-            HashtableGuid = new Hashtable();
-
-            this.RssFeedList = RssFeedList;
-            FileName = Application.LocalUserAppDataPath;
-            int rc = FileName.LastIndexOf("\\");
-            FileName = FileName.Substring(0, rc) + "\\History.xml";
 
         }
 
-        public void Read()
+
+        public static void MigrateFromXMLToDB()
         {
+            string FileName;
+#if DEBUG
+            FileName = "History.xml";
+#else
+            FileName = Application.LocalUserAppDataPath;
+            int rc = FileName.LastIndexOf("\\");
+            FileName = FileName.Substring(0, rc) + "\\History.xml";
+#endif
+
             if (!File.Exists(FileName))
             {
                 return;
+            }
+
+            SQLiteConnection.CreateFile(Config.FileNameDB);
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+            {
+                connection.Open();
+
+                string sql = @"CREATE TABLE History (
+                                uuid INTEGER PRIMARY KEY AUTOINCREMENT,
+                                FileName TEXT,
+                                FileSize INTEGER,
+                                HashMD4 TEXT,
+                                HashSHA1 TEXT,
+                                Ed2kLink TEXT,
+                                FeedLink TEXT,
+                                FeedSource TEXT,
+                                seasonID INTEGER,
+                                episodeID INTEGER,
+                                LastUpdate TEXT DEFAULT ('CURRENT_TIMESTAMP'));";
+                SQLiteCommand command = new SQLiteCommand(sql, connection);
+                command.ExecuteNonQuery();
+
+                connection.Close();
             }
 
             XmlDocument xDoc = new XmlDocument();
@@ -63,66 +79,29 @@ namespace tvu
 
                     if (t.Name == "Ed2k")
                     {
-                        strEd2k = cacheStringOptimize(stringCache, t.InnerText);
+                        strEd2k = t.InnerText;
                     }
 
                     if (t.Name == "FeedLink")
                     {
-                        strFeedLink = cacheStringOptimize(stringCache, t.InnerText);
+                        strFeedLink = t.InnerText;
                     }
 
                     if (t.Name == "FeedSource")
                     {
 
-                        strFeedSource = cacheStringOptimize(stringCache, t.InnerText);
+                        strFeedSource = t.InnerText;
                     }
 
                     if (t.Name == "Date")
                     {
-                        strDate = cacheStringOptimize(stringCache, t.InnerText);
+                        strDate = t.InnerText;
                     }
 
 
                 }
-                this.Add(strEd2k, strFeedLink, strFeedSource, strDate);
 
-            }
-        }
-
-        public void Save()
-        {
-            XmlTextWriter textWritter = new XmlTextWriter(FileName, null);
-            textWritter.Formatting = Formatting.Indented;
-            textWritter.Indentation = 4;
-            textWritter.WriteStartDocument();
-            textWritter.WriteStartElement("History");
-
-            foreach (fileHistory fh in fileHistoryList)
-            {
-                textWritter.WriteStartElement("Item");// open Item
-                textWritter.WriteElementString("Ed2k", fh.GetLink());
-                textWritter.WriteElementString("FeedLink", fh.FeedLink);
-                textWritter.WriteElementString("FeedSource", fh.FeedSource);
-                textWritter.WriteElementString("Date", fh.Date);
-                textWritter.WriteEndElement(); // close Item
-
-            }
-
-            textWritter.Close();
-
-        }
-
-        private static string cacheStringOptimize(List<string> stringCache, string value)
-        {
-            int index = stringCache.IndexOf(value);
-            if (index >= 0)
-            {
-                return stringCache[index];
-            }
-            else
-            {
-                stringCache.Add(value);
-                return stringCache[stringCache.Count-1];
+                History.Add(strEd2k, strFeedLink, strFeedSource, strDate);
             }
         }
 
@@ -132,12 +111,11 @@ namespace tvu
         /// <param name='FeedLink'>Link in Feed</param>
         /// <param name='FeedSource'>Rss Feed Link</param>
         ///
-        public void Add(string ed2k, string FeedLink, string FeedSource)
+        public static void Add(string ed2k, string FeedLink, string FeedSource)
         {
-            fileHistory fh = new fileHistory(ed2k, FeedLink, FeedSource);
-            this.Add(fh);
-        }
+            Add(ed2k, FeedLink, FeedSource, string.Empty);
 
+        }
         ///
         /// <summary>Add a element to list </summary>
         /// <param name='ed2k'>ED2K Link</param>
@@ -145,201 +123,218 @@ namespace tvu
         /// <param name='FeedSource'>Rss Feed Link</param>
         /// <param name="Date">Date</param>
         ///
-        public void Add(string ed2k, string FeedLink, string FeedSource, string Date)
+        public static void Add(string ed2k, string FeedLink, string FeedSource, string Date)
         {
             fileHistory fh = new fileHistory(ed2k, FeedLink, FeedSource, Date);
-            this.Add(fh);
-        }
 
-        private void Add(fileHistory fh)
-        {
-            // delete old file whit same ed2k name
-            int index;
-            while ((index = ExistInHistoryByEd2k(fh.Ed2kLink)) != -1)
-            {
-                fileHistoryList.Remove(fileHistoryList[index]);
-                HashtableGuid.Remove(fh.FeedSource);
-            }
+            // http://tvunderground.org.ru/index.php?show=ed2k&season=73528&sid[815433]=1
 
-            // add to hast table
-            if (!HashtableGuid.ContainsKey(fh.FeedLink)) // check collision
-            {
-                HashtableGuid.Add(fh.FeedLink, fh);
-            }
-            fileHistoryList.Add(fh);
 
-            // check if RssFeedList is set
-            if (this.RssFeedList == null)
-            {
-                return;
-            }
-            // find by url
-            RssSubscrission subscrission = this.RssFeedList.Find(delegate(RssSubscrission temp) { return temp.Url == fh.FeedSource; });
-            // check if subscrission is in list
-            if (subscrission == null)
-            {
-                return;
-            }
-            subscrission.DownloadedFile.Add(fh);
-        }
+            string seasonID = string.Empty, episodeID = string.Empty;
 
-        public bool FileExistByFeedLink(string link)
-        {
-            return HashtableGuid.ContainsKey(link);
-        }
+            Regex Pattern = new Regex(@"season.?(\d{3,6}).?sid.?(\d{3,6})");
 
-        public int ExistInHistoryByEd2k(string Ed2kLink)
-        {
-            Ed2kfile A = new Ed2kfile(Ed2kLink);
-
-            for (int index = 0; index < fileHistoryList.Count; index++)
-            {
-                Ed2kfile B = new Ed2kfile(fileHistoryList[index].GetLink());
-
-                if (A == B)
-                {
-                    return index;
-                }
-            }
-            return -1;
-        }
-
-        [Obsolete()]//  TODO: remove LinkCountByFeedSource
-        public int LinkCountByFeedSource(string FeedSource)
-        {
+            MatchCollection matchCollection = Pattern.Matches(FeedLink);
             
-            int count = 0;
-            foreach (fileHistory fh in fileHistoryList)
+            if(matchCollection.Count > 0)
             {
-                if (fh.FeedSource == FeedSource)
-                {
-                    count++;
-                }
+                seasonID = matchCollection[0].Groups[1].ToString();
+                episodeID = matchCollection[0].Groups[2].ToString();
             }
-            return count;
 
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+            {
+                connection.Open();
+                const string sqlTemplate = @"INSERT INTO History (FileName , FileSize ,  HashMD4 , HashSHA1 , Ed2kLink , FeedLink , FeedSource, seasonID , episodeID , LastUpdate )
+                                                VALUES
+                                                (@FileName , @FileSize ,  @HashMD4 , @HashSHA1 , @Ed2kLink , @FeedLink , @FeedSource , @seasonID , @episodeID , @LastUpdate )";
+
+                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                command.CommandType = CommandType.Text;
+                command.Parameters.Add(new SQLiteParameter("@FileName", fh.FileName));
+                command.Parameters.Add(new SQLiteParameter("@FileSize", fh.FileSize));
+                command.Parameters.Add(new SQLiteParameter("@HashMD4", fh.HashMD4));
+                command.Parameters.Add(new SQLiteParameter("@HashSHA1", fh.HashSHA1));
+                command.Parameters.Add(new SQLiteParameter("@Ed2kLink", fh.Ed2kLink));
+                command.Parameters.Add(new SQLiteParameter("@FeedLink", fh.FeedLink));
+                command.Parameters.Add(new SQLiteParameter("@FeedSource", fh.FeedSource));
+                command.Parameters.Add(new SQLiteParameter("@seasonID", seasonID));
+                command.Parameters.Add(new SQLiteParameter("@episodeID", episodeID));
+                command.Parameters.Add(new SQLiteParameter("@LastUpdate", fh.Date));
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
         }
 
-        
+
+        public bool FileExist(string FileName)
+        {
+            DataTable dt = new DataTable();
+            dt.Reset();
+
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+            {
+                connection.Open();
+                const string sqlTemplate = @"SELECT uuid FROM History WHERE FileName = @FileName";
+
+                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                command.CommandType = CommandType.Text;
+                command.Parameters.Add(new SQLiteParameter("@FileName", FileName));
+                SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
+
+
+                dataAdapter.Fill(dt);
+
+                connection.Close();
+            }
+
+            return dt.Rows.Count > 0;
+        }
+
+        public bool FileExistByFeedLink(string feedlink)
+        {
+            DataTable dt = new DataTable();
+            dt.Reset();
+
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+            {
+                connection.Open();
+                const string sqlTemplate = @"SELECT uuid FROM History WHERE feedlink = @feedlink";
+
+                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                command.CommandType = CommandType.Text;
+                command.Parameters.Add(new SQLiteParameter("@feedlink", feedlink));
+                SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
+
+
+                dataAdapter.Fill(dt);
+
+                connection.Close();
+            }
+
+            return dt.Rows.Count > 0;
+        }
+
+        public bool ExistInHistoryByEd2k(string Ed2kLink)
+        {
+            DataTable dt = new DataTable();
+            dt.Reset();
+
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+            {
+                connection.Open();
+                const string sqlTemplate = @"SELECT uuid FROM History WHERE Ed2kLink = @Ed2kLink";
+
+                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                command.CommandType = CommandType.Text;
+                command.Parameters.Add(new SQLiteParameter("@Ed2kLink", Ed2kLink));
+                SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
+
+
+                dataAdapter.Fill(dt);
+
+                connection.Close();
+            }
+
+            return dt.Rows.Count > 0;
+        }
+
+
+
         public string LastDownloadDateByFeedSource(string FeedSource)
         {
-            string date = "";
-            foreach (fileHistory fh in fileHistoryList)
+            DataTable dt = new DataTable();
+            dt.Reset();
+
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
             {
-                if (fh.FeedSource == FeedSource)
-                {
-                    if (date.Length == 0)
-                    {
-                        date = fh.Date;
-                    }
+                connection.Open();
+                const string sqlTemplate = @"SELECT MAX(History.LastUpdate) FROM History WHERE FeedSource = @FeedSource";
 
-                    if (date.CompareTo(fh.Date) == -1)
-                    {
-                        date = fh.Date;
-                    }
-                }
-            }
-            return date;
+                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                command.CommandType = CommandType.Text;
+                command.Parameters.Add(new SQLiteParameter("@FeedSource", FeedSource));
+                SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
 
-        }
 
-        public void DeleteFile(string FileNameED2k)
-        {
-            fileHistoryList.RemoveAll(delegate(fileHistory temp) { return temp.FileName == FileNameED2k; });
-        }
+                dataAdapter.Fill(dt);
 
-        public void DeleteFileByFeedSource(string FeedSource)
-        {
-
-            List<fileHistory> fileToDelete = new List<fileHistory>();
-
-            foreach (fileHistory fh in fileHistoryList)
-            {
-                if (fh.FeedSource == FeedSource)
-                {
-                    fileToDelete.Add(fh);
-                }
+                connection.Close();
             }
 
-            foreach (fileHistory fh in fileToDelete)
+            if (dt.Rows.Count == 0)
             {
-                fileHistoryList.Remove(fh);
+                return string.Empty;
             }
-        }
+            return dt.Rows[0][0].ToString();
 
-        public List<fileHistory> GetRecentActivity(int size)
-        {
-            List<fileHistory> myFileHistoryList = new List<fileHistory>();
-
-            myFileHistoryList.AddRange(fileHistoryList);
-
-
-
-            int index = 0;
-            while (index < myFileHistoryList.Count - 1)
-            {
-
-                string str1 = myFileHistoryList[index].Date;
-                string str2 = myFileHistoryList[index + 1].Date;
-
-                if (str1.CompareTo(str2) == -1)
-                {
-                    fileHistory t = myFileHistoryList[index];
-                    myFileHistoryList[index] = myFileHistoryList[index + 1];
-                    myFileHistoryList[index + 1] = t;
-                    index = 0;
-                }
-                else
-                {
-                    index++;
-                }
-
-            }
-
-            if (myFileHistoryList.Count > size)
-            {
-                myFileHistoryList.RemoveRange(size, myFileHistoryList.Count - size);
-            }
-            return myFileHistoryList;
         }
 
         /// <summary>
-        /// Return the number of active download from FeedSoruce
+        /// Delete entry by fila name
         /// </summary>
-        /// <param name="list">List of ed2k in active download from GetActualDownloads()</param>
-        /// <param name="FeedSource">Feed soruce</param>
-        /// <returns></returns>
-        public int GetFeedByDownload(List<string> list, string FeedSource)
+        /// <param name="FileName"></param>
+        public void DeleteFile(string FileName)
         {
-            int count = 0;
 
-            // extract hash data
-            Regex Pattern = new Regex(@"\|\d{1,40}\|\w{1,40}\|");
-
-            foreach (fileHistory p in fileHistoryList)
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
             {
-                if (p.FeedSource == FeedSource)
-                {
-                    Match match1 = Pattern.Match(p.GetLink());
-                    if (match1.Success == true)
-                    {
-                        foreach (string t in list)
-                        {
-                            Match match2 = Pattern.Match(t);
-                            if (match2.Success == true)
-                            {
-                                if (match1.ToString() == match2.ToString())
-                                {
-                                    count++;
-                                }
-                            }
-                        }
-                    }
-                }
+                connection.Open();
+                const string sqlTemplate = @"DELETE FROM History WHERE History.FileName = @FileName";
+
+                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                command.CommandType = CommandType.Text;
+                command.Parameters.Add(new SQLiteParameter("@FileName", FileName));
+                command.ExecuteNonQuery();
+                connection.Close();
             }
 
-            return count;
+        }
+        /// <summary>
+        /// Delete entry by Feed Source
+        /// </summary>
+        /// <param name="FeedSource"></param>
+        public void DeleteFileByFeedSource(string FeedSource)
+        {
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+            {
+                connection.Open();
+                const string sqlTemplate = @"DELETE FROM History WHERE History.FeedSource = @FeedSource";
+
+                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                command.CommandType = CommandType.Text;
+                command.Parameters.Add(new SQLiteParameter("@FeedSource", FeedSource));
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
 
         }
+
+        public DataTable GetRecentActivity()
+        {
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3; UseUTF16Encoding=True;", Config.FileNameDB)))
+            {
+                DataTable table;
+
+
+                connection.Open();
+                const string sqlTemplate = @"SELECT  History.FileName, History.LastUpdate FROM History ORDER BY LastUpdate DESC LIMIT 32";
+
+                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
+
+                DataSet ds = new DataSet();
+                dataAdapter.Fill(ds);
+
+
+                table = ds.Tables[0];
+                connection.Close();
+
+                return table;
+            }
+
+        }
+
+
     }
 }

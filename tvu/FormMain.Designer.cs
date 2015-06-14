@@ -64,7 +64,6 @@
             this.toolStripMenuItemDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.tabActivity = new System.Windows.Forms.TabPage();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPending = new System.Windows.Forms.TabPage();
             this.listBoxPending = new System.Windows.Forms.ListBox();
@@ -106,6 +105,9 @@
             this.toolStripButtonAddFeed = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonCheckNow = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.FileNameDataGridColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastUpdateDataGridColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
@@ -115,6 +117,7 @@
             this.tabPending.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // timerRssCheck
@@ -397,8 +400,8 @@
             // 
             // tabActivity
             // 
+            this.tabActivity.Controls.Add(this.dataGridView1);
             this.tabActivity.Controls.Add(this.progressBar1);
-            this.tabActivity.Controls.Add(this.listBox1);
             this.tabActivity.Location = new System.Drawing.Point(4, 22);
             this.tabActivity.Name = "tabActivity";
             this.tabActivity.Size = new System.Drawing.Size(539, 427);
@@ -412,14 +415,6 @@
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(535, 23);
             this.progressBar1.TabIndex = 36;
-            // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(4, 3);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(532, 420);
-            this.listBox1.TabIndex = 19;
             // 
             // tabControl1
             // 
@@ -761,6 +756,39 @@
             this.toolStripButtonStop.Text = "Stop";
             this.toolStripButtonStop.Click += new System.EventHandler(this.toolStripButtonStop_Click);
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.FileNameDataGridColumn,
+            this.LastUpdateDataGridColumn});
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.Size = new System.Drawing.Size(539, 427);
+            this.dataGridView1.TabIndex = 37;
+            // 
+            // FileNameDataGridColumn
+            // 
+            this.FileNameDataGridColumn.DataPropertyName = "FileName";
+            this.FileNameDataGridColumn.HeaderText = "FileName";
+            this.FileNameDataGridColumn.Name = "FileNameDataGridColumn";
+            this.FileNameDataGridColumn.ReadOnly = true;
+            this.FileNameDataGridColumn.Width = 400;
+            // 
+            // LastUpdateDataGridColumn
+            // 
+            this.LastUpdateDataGridColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.LastUpdateDataGridColumn.DataPropertyName = "LastUpdate";
+            this.LastUpdateDataGridColumn.HeaderText = "Last Update";
+            this.LastUpdateDataGridColumn.Name = "LastUpdateDataGridColumn";
+            this.LastUpdateDataGridColumn.ReadOnly = true;
+            this.LastUpdateDataGridColumn.Width = 90;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -789,6 +817,7 @@
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -819,7 +848,6 @@
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.TabPage tabActivity;
-        private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
@@ -875,6 +903,9 @@
         private System.Windows.Forms.ToolStripButton toolStripButtonAddFeed;
         private System.Windows.Forms.ToolStripButton toolStripButtonCheckNow;
         private System.Windows.Forms.ToolStripButton toolStripButtonStop;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FileNameDataGridColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LastUpdateDataGridColumn;
     }
 }
 

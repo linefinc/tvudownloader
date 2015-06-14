@@ -5,6 +5,7 @@ using System.Xml;
 using System.IO;
 using Microsoft.Win32;
 using System.Windows.Forms;
+using System.Data.SQLite;
 
 namespace tvu
 {
@@ -22,46 +23,69 @@ namespace tvu
         public bool CloseEmuleIfAllIsDone;
         public bool StartEmuleIfClose;
         public bool AutoClearLog;
-        public List<RssSubscrission> RssFeedList ;
+        public List<RssSubscrission> RssFeedList;
         public string eMuleExe;
         public bool debug;
-        public string FileName
+        public static string FileName
         {
             get
             {
+#if DEBUG
+                return "config.xml";
+#else
                 string temp = Directory.GetParent(Application.LocalUserAppDataPath).FullName;
                 return temp + "\\config.xml";
+#endif
             }
         }
-        public string DefaultCategory ;
-        public bool Enebled ;
-        public int MaxSimultaneousFeedDownloads ;
-        public int MinToStartEmule ;
-        public string tvudwid ; //Unique id
-        public bool Verbose ;
-        public bool EmailNotification ;
-        public string ServerSMTP ;
-        public string MailReceiver ;
-        public string MailSender ;
-        public int intervalBetweenUpgradeCheck ;
-        public string LastUpgradeCheck ;
-        public string FileNameLog
+        public string DefaultCategory;
+        public bool Enebled;
+        public int MaxSimultaneousFeedDownloads;
+        public int MinToStartEmule;
+        public string tvudwid; //Unique id
+        public bool Verbose;
+        public bool EmailNotification;
+        public string ServerSMTP;
+        public string MailReceiver;
+        public string MailSender;
+        public int intervalBetweenUpgradeCheck;
+        public string LastUpgradeCheck;
+        public static string FileNameLog
         {
             get
             {
+#if DEBUG
+                return "log.txt";
+#else
                 string temp = Application.LocalUserAppDataPath;
                 int rc = temp.LastIndexOf("\\");
                 return temp.Substring(0, rc) + "\\log.txt";
+#endif
             }
         }
-        public bool saveLog  ;
+
+        public static string FileNameDB
+        {
+            get
+            {
+#if DEBUG
+                return "storage.db";
+#else
+                string FileName = Application.LocalUserAppDataPath;
+                int rc = FileName.LastIndexOf("\\");
+                return FileName.Substring(0, rc) + "\\storage.db";
+#endif
+            }
+        }
+
+        public bool saveLog;
         public static bool StartWithWindows
         {
             get
             {
                 RegistryKey hkcu = Registry.CurrentUser;
                 hkcu = hkcu.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", RegistryKeyPermissionCheck.ReadWriteSubTree);
-                
+
                 List<string> RegValueNames = new List<string>();
                 foreach (string valueName in hkcu.GetValueNames())
                 {
@@ -85,7 +109,7 @@ namespace tvu
                     hkcu.SetValue(Application.ProductName, Environment.CommandLine, RegistryValueKind.String);
                     return;
                 }
-                
+
                 List<string> RegValueNames = new List<string>();
                 foreach (string valueName in hkcu.GetValueNames())
                 {
@@ -106,13 +130,13 @@ namespace tvu
             // get Local USer App data Path, remove version direcorty and add config.xml
             //
 
-            
+
 
             RssFeedList = new List<RssSubscrission>();
-            if (!File.Exists(this.FileName))
+            if (!File.Exists(Config.FileName))
             {
                 // empty config file
-                XmlTextWriter textWritter = new XmlTextWriter(this.FileName, null);
+                XmlTextWriter textWritter = new XmlTextWriter(Config.FileName, null);
                 textWritter.WriteStartDocument();
                 textWritter.WriteStartElement("Config");
                 textWritter.WriteEndElement();
@@ -123,12 +147,16 @@ namespace tvu
 
         public void Save()
         {
-            XmlTextWriter writter = new XmlTextWriter(this.FileName, null);
+            XmlTextWriter writter = new XmlTextWriter(Config.FileName, null);
             writter.Formatting = Formatting.Indented;
 
             writter.WriteStartDocument();
             writter.WriteStartElement("Config");
-            
+
+            writter.WriteStartElement("version");
+            writter.WriteString(Version);
+            writter.WriteEndElement();
+
             writter.WriteStartElement("ServiceUrl");
             writter.WriteString(ServiceUrl);
             writter.WriteEndElement();
@@ -136,7 +164,7 @@ namespace tvu
             writter.WriteStartElement("Password");
             writter.WriteString(Password);
             writter.WriteEndElement();
-            
+
             writter.WriteStartElement("tvuCookieH");
             writter.WriteString(this.tvuCookieH);
             writter.WriteEndElement();
@@ -152,7 +180,7 @@ namespace tvu
             writter.WriteStartElement("IntervalTime");
             writter.WriteString(IntervalTime.ToString());
             writter.WriteEndElement();
-            
+
             writter.WriteStartElement("StartMinimized");
             writter.WriteString(StartMinimized.ToString());
             writter.WriteEndElement();
@@ -300,7 +328,7 @@ namespace tvu
                 writter.WriteStartElement("LastTvUStatusUpgradeDate");//Last Tv Undergraund Status Upgrade Date
                 writter.WriteString(feed.LastTvUStatusUpgradeDate);
                 writter.WriteEndElement();
-                
+
                 writter.WriteEndElement();// end channel
 
             }
@@ -314,7 +342,7 @@ namespace tvu
             RssFeedList.Clear();
 
             XmlDocument xDoc = new XmlDocument();
-            xDoc.Load(this.FileName);
+            xDoc.Load(Config.FileName);
 
             ServiceUrl = ReadString(xDoc, "ServiceUrl", "http://localhost:4000");
 
@@ -336,7 +364,7 @@ namespace tvu
 
             AutoClearLog = (bool)Convert.ToBoolean(ReadString(xDoc, "AutoClearLog", "false"));
 
-            MaxSimultaneousFeedDownloads = ReadInt(xDoc, "MaxSimultaneousFeedDownloads", 3,0,50);
+            MaxSimultaneousFeedDownloads = ReadInt(xDoc, "MaxSimultaneousFeedDownloads", 3, 0, 50);
 
             MinToStartEmule = ReadInt(xDoc, "MinToStartEmule", 0, 0, 50);
 
@@ -451,6 +479,14 @@ namespace tvu
             }
 
 
+            // create db if not exit
+            if (File.Exists(Config.FileNameDB) == false)
+            {
+               
+                History.MigrateFromXMLToDB();
+            }
+
+
         }
 
         private static string ReadString(XmlDocument xDoc, string NodeName, string defaultValue)
@@ -480,7 +516,7 @@ namespace tvu
             }
         }
 
-        private int ReadInt(XmlDocument xDoc, string NodeName, int defaultValue, int Min , int Max)
+        private int ReadInt(XmlDocument xDoc, string NodeName, int defaultValue, int Min, int Max)
         {
             int val = ReadInt(xDoc, NodeName, defaultValue);
             val = Math.Min(val, Max);
@@ -497,7 +533,7 @@ namespace tvu
             Random rand = new Random();
             for (int i = 0; i < 24; i++)
             {
-                temp += string.Format("{0:X}",rand.Next(0, 15));
+                temp += string.Format("{0:X}", rand.Next(0, 15));
             }
             return temp;
         }

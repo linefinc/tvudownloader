@@ -46,13 +46,13 @@ namespace tvu
         public class sDonwloadFile
         {
 
-            public string FeedSource{get; private set;}
-            public string FeedLink{get; private set;}
-            public string Ed2kLink{get; private set;}
+            public string FeedSource { get; private set; }
+            public string FeedLink { get; private set; }
+            public string Ed2kLink { get; private set; }
 
-            public bool PauseDownload{get; private set;}
-            public string Category {get; private set;}
-            
+            public bool PauseDownload { get; private set; }
+            public string Category { get; private set; }
+
             public sDonwloadFile(string Ed2kLink, string FeedLink, string FeedSource, bool PauseDownload, string Category)
             {
                 this.Ed2kLink = Ed2kLink;
@@ -61,8 +61,8 @@ namespace tvu
                 this.PauseDownload = PauseDownload;
                 this.Category = Category;
             }
-            
-            
+
+
         };
 
         public FormMain()
@@ -72,8 +72,7 @@ namespace tvu
             MainConfig.Load();
 
             // load History
-            MainHistory = new History(MainConfig.RssFeedList);
-            MainHistory.Read();
+            MainHistory = new History();
 
             InitializeComponent();
             SetupNotify();
@@ -82,7 +81,7 @@ namespace tvu
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+
             if (MainConfig.AutoClearLog == true)
             {
                 autoClearToolStripMenuItem.Checked = true;
@@ -122,9 +121,9 @@ namespace tvu
             UpdateRssFeedGUI();
 
             Log.Instance.AddLogTarget(new LogTargetTextBox(this, LogTextBox));
-            Log.Instance.AddLogTarget(new LogTargetFile(MainConfig.FileNameLog));
+            Log.Instance.AddLogTarget(new LogTargetFile(Config.FileNameLog));
             Log.Instance.SetVerboseMode(MainConfig.Verbose);
-            
+
         }
 
 
@@ -313,23 +312,26 @@ namespace tvu
                 ListViewItem item = new ListViewItem(title);
 
                 // total downloads
-                int counter =feedLinkCache.CountFeedLink(t.Url);
-                
-                
-                if(counter >0)
-                {
-                    item.SubItems.Add(string.Format("{0}+{1}",t.TotalDownloads,counter));
-                }
-                else
-                {
-                    item.SubItems.Add(t.TotalDownloads.ToString());
-                }
+
+                item.SubItems.Add(t.TotalDownloads.ToString());
+
                 // last upgrade
                 uint days = 0;
 
                 if (t.LastTvUStatusUpgradeDate == string.Empty)
                 {
+
                     t.LastUpgradeDate = MainHistory.LastDownloadDateByFeedSource(t.Url);
+                    if (t.LastUpgradeDate == string.Empty)
+                    {
+                        if (Log.Instance != null)
+                        {
+                            Log.logDebug("error LastUpgradeDate empty ");
+                            Log.logDebug("error > " + t.TitleCompact);
+                            Log.logDebug("error > " + t.LastUpgradeDate);
+                            Log.logDebug("error > " + t.Url);
+                        }
+                    }
                 }
 
                 if (t.LastUpgradeDate.Equals("") == false)
@@ -377,7 +379,7 @@ namespace tvu
                 }
                 listView1.Items.Add(item);
             }
-            
+
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -468,7 +470,7 @@ namespace tvu
             foreach (fileHistory fh in ListHistory)
             {
                 ListViewItem item = new ListViewItem(fh.FileName);
-                string date = fh.Date.Substring(0,10);
+                string date = fh.Date.Substring(0, 10);
                 item.SubItems.Add(date);
                 listViewFeedFilesList.Items.Add(item);
             }
@@ -499,7 +501,7 @@ namespace tvu
             toolStripButtonAddFeed.Enabled = false;
 
             menuItemCheckNow.Enabled = false;
-            
+
             cancelCheckToolStripMenuItem.Enabled = true;
             toolStripButtonStop.Enabled = true;
 
@@ -552,13 +554,12 @@ namespace tvu
                     e.Cancel = true;
                     return;
                 }
-
-                Log.logVerbose("Read RSS " + feed.Url);
+                Log.logInfo("Read RSS " + feed.TitleCompact);
 
                 try
                 {
                     string WebPage = WebFetch.Fetch(feed.Url, true, cookieContainer);
-                   
+
                     List<string> elemList = new List<string>();
 
                     if (WebPage != null)
@@ -624,11 +625,11 @@ namespace tvu
 
                     // reverse the list so the laft feed ( first temporal feed) became the first first feed in list
                     elemList.Reverse();
-                    
+
                     foreach (string FeedLink in elemList)
                     {
                         string sEd2k = string.Empty;
-                        
+
                         if (backgroundWorker1.CancellationPending)
                         {
                             e.Cancel = true;
@@ -653,7 +654,7 @@ namespace tvu
 
                         }
 
-                        if (MainHistory.ExistInHistoryByEd2k(sEd2k) == -1)
+                        if (MainHistory.ExistInHistoryByEd2k(sEd2k) == false)
                         {
                             Ed2kfile parser = new Ed2kfile(sEd2k);
                             Log.logInfo(string.Format("Found new file {0}", parser.GetFileName()));
@@ -685,12 +686,12 @@ namespace tvu
                         {
                             // link ed2k just download bat not correct registred
                             // to avoid rendondance of link
-                            MainHistory.Add(sEd2k, FeedLink, feed.Url);
+                            History.Add(sEd2k, FeedLink, feed.Url);
                         }
 
 
                     }
-                   
+
 
 
                 }
@@ -766,7 +767,7 @@ namespace tvu
                             e.Cancel = true;
                             return;
                         }
-                        
+
                         Thread.Sleep(500);
                     }
 
@@ -807,63 +808,60 @@ namespace tvu
                 {
                     Ed2kfile newFile = new Ed2kfile(ad);
 
-                    foreach (fileHistory fh in MainHistory.fileHistoryList)
+                    if (MainHistory.FileExist(newFile.FileName) == true)
                     {
-                        if (fh == newFile)
+                        // sDonwloadFile newADFile = new sDonwloadFile(ad, fh.FeedLink, fh.FeedSource, false, "");
+                        // ActualDownloadFileList.Add(newADFile);
+
+                        // Log.logInfo(string.Format("Found file ({0}) ,{1} ,{2}", newFile.FileName, fh.FeedLink, fh.FeedSource));
+
+
+
+                        // add to pending list
+                        if (this.listBoxPending.InvokeRequired == true)
                         {
-                            sDonwloadFile newADFile = newADFile = new sDonwloadFile(ad, fh.FeedLink, fh.FeedSource, false, "");
-                            ActualDownloadFileList.Add(newADFile);
 
-                            Log.logInfo(string.Format("Found file ({0}) ,{1} ,{2}", newFile.FileName, fh.FeedLink, fh.FeedSource));
+                            Invoke(new MethodInvoker(
+                                delegate { this.RemoveItemToListBoxPending(newFile.FileName); }
+                            ));
 
-
-
-
-                            // add to pending list
-                            if (this.listBoxPending.InvokeRequired == true)
-                            {
-
-                                Invoke(new MethodInvoker(
-                                    delegate { this.RemoveItemToListBoxPending(newFile.FileName); }
-                                ));
-
-                            }
-                            else
-                            {
-                                this.RemoveItemToListBoxPending(newFile.FileName);
-                            }
+                        }
+                        else
+                        {
+                            this.RemoveItemToListBoxPending(newFile.FileName);
                         }
                     }
+
                 }
                 catch (Exception exception)
                 {
                     Log.logInfo("Error in ckeck file \"" + ad);
                     Log.logInfo("Error message error: \"" + exception.Message + "\"");
-                    
+
                 }
             }
 
             Log.logInfo("ActualDownloadFileList.Count = " + ActualDownloadFileList.Count);
             Log.logInfo("Clean download list (step 2) check limit for each channel");
 
-            
+
             // clean RssFeedList
             RssFeedList = new List<RssSubscrission>();
             RssFeedList.AddRange(MainConfig.RssFeedList);
 
             Log.logInfo("MainConfig.MaxSimultaneousFeedDownloads = " + MainConfig.MaxSimultaneousFeedDownloads);
 
-            foreach(RssSubscrission RssFeed in MainConfig.RssFeedList)
+            foreach (RssSubscrission RssFeed in MainConfig.RssFeedList)
             {
 
                 Log.logInfo("check feed = \"" + RssFeed.Title + "\"");
                 string FeedURL = RssFeed.Url;
-            
-    
+
+
                 // calcolo il numero di file che ho con quel feed;
                 List<sDonwloadFile> CurrentlyDownloadingFileFromEmuleByFeed;
                 CurrentlyDownloadingFileFromEmuleByFeed = ActualDownloadFileList.FindAll(delegate(sDonwloadFile t)
-                                { return (t.FeedLink == FeedURL)^(t.FeedSource == FeedURL); });
+                                { return (t.FeedLink == FeedURL) ^ (t.FeedSource == FeedURL); });
 
                 // estraggo i file da scaricare del feed
                 List<sDonwloadFile> PendingFileFromRssFeed;
@@ -877,19 +875,19 @@ namespace tvu
                 {
                     if (dif <= 0)
                     {
-                        Log.logVerbose(string.Format("Limit reached ({0}), remove all pending element",RssFeed.maxSimultaneousDownload));
+                        Log.logVerbose(string.Format("Limit reached ({0}), remove all pending element", RssFeed.maxSimultaneousDownload));
 
                         // nothing to download
                         foreach (sDonwloadFile file in PendingFileFromRssFeed)
                         {
                             DownloadFileList.Remove(file);
                         }
-                       
+
                     }
                     else
                     {
                         int delta = PendingFileFromRssFeed.Count - dif;
-                        Log.logVerbose(string.Format("Limit reached ({0}), remove {0} pending element",RssFeed.maxSimultaneousDownload, delta));
+                        Log.logVerbose(string.Format("Limit reached ({0}), remove {0} pending element", RssFeed.maxSimultaneousDownload, delta));
 
                         PendingFileFromRssFeed.Sort(delegate(sDonwloadFile A, sDonwloadFile B)
                                                         { return A.Ed2kLink.CompareTo(B.Ed2kLink); });
@@ -917,14 +915,14 @@ namespace tvu
                     e.Cancel = true;
                     return;
                 }
-                        
+
                 Ed2kfile ed2klink = new Ed2kfile(DownloadFile.Ed2kLink);
-                Log.logVerbose("Add file to download" );
+                Log.logVerbose("Add file to download");
                 Service.AddToDownload(ed2klink, DownloadFile.Category);
 
                 if (DownloadFile.PauseDownload == true)
                 {
-                    Log.logVerbose("Pause download" );
+                    Log.logVerbose("Pause download");
                     Service.StopDownload(ed2klink);
                 }
                 else
@@ -932,7 +930,7 @@ namespace tvu
                     Log.logVerbose("Resume download");
                     Service.StartDownload(ed2klink);
                 }
-                MainHistory.Add(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);
+                History.Add(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);
                 Ed2kfile parser = new Ed2kfile(DownloadFile.Ed2kLink);
                 Log.logInfo(string.Format("Add file to emule {0}", parser.GetFileName()));
                 SendMailDownload(parser.GetFileName(), DownloadFile.Ed2kLink);
@@ -943,12 +941,12 @@ namespace tvu
                     backgroundWorker1.ReportProgress(progress / DownloadFileList.Count);
                 }
             }
-            MainHistory.Save();
+
             Log.logInfo("logout Emule");
             Service.LogOut();
             Log.logInfo("Statistics");
             Log.logInfo(string.Format("Total file added {0}", MainConfig.TotalDownloads));
-            
+
 
         }
 
@@ -961,12 +959,12 @@ namespace tvu
             {
                 Log.logInfo("Background Worker Cancelled");
             }
-            
+
             UpdateRecentActivity();
             UpdateRssFeedGUI();
-            
+
             menuItemCheckNow.Enabled = true;
-            
+
             deleteToolStripMenuItem.Enabled = true;
             addToolStripMenuItem.Enabled = true;
 
@@ -1043,7 +1041,7 @@ namespace tvu
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            Log.logInfo("Config loaded " + MainConfig.FileName);
+            Log.logInfo("Config loaded " + Config.FileName);
             timer2.Enabled = false;
 
             if (MainConfig.StartMinimized == true)
@@ -1073,7 +1071,7 @@ namespace tvu
             {
                 string lastCheck = MainConfig.LastUpgradeCheck;
                 string[] lastCheckSplit = lastCheck.Split('-');
-                
+
                 int year = Convert.ToInt32(lastCheckSplit[0]);
                 int month = Convert.ToInt32(lastCheckSplit[1]);
                 int day = Convert.ToInt32(lastCheckSplit[2]);
@@ -1087,7 +1085,7 @@ namespace tvu
                 }
 
                 MainConfig.LastUpgradeCheck = DateTime.Now.ToString("yyyy-MM-dd");
-                
+
                 XmlDocument doc = new XmlDocument();
                 doc.Load(string.Format("http://tvudownloader.sourceforge.net/version.php?ver={0}&tvuid={1}&TotalDownloads={2}", Config.Version, MainConfig.tvudwid, MainConfig.TotalDownloads));
 
@@ -1142,7 +1140,7 @@ namespace tvu
             {
                 return false;
             }
-           
+
         }
 
 
@@ -1156,16 +1154,16 @@ namespace tvu
 
         public void UpdateRecentActivity()
         {
-            listBox1.Items.Clear();
-            List<fileHistory> myFileHistoryList = MainHistory.GetRecentActivity(32);
+            dataGridView1.Rows.Clear();
+            DataTable list = MainHistory.GetRecentActivity();
 
-            foreach (fileHistory fh in myFileHistoryList)
+            foreach (DataRow row in list.Rows)
             {
-                string date = fh.Date.Replace('T', ' ');
-                string t = string.Format("{0}:{1}", date, fh.GetFileName());
-                listBox1.Items.Add(t);
-            }
+                row["LastUpdate"] = ((string)row["LastUpdate"]).Replace('T', ' ');
 
+                //listBox1.Items.Add(t);
+            }
+            dataGridView1.DataSource = list;
         }
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -1244,7 +1242,7 @@ namespace tvu
         private void addToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AddRssChannel();
-       
+
         }
 
         private void toolStripMenuItemAdd_Click(object sender, EventArgs e)
@@ -1257,12 +1255,12 @@ namespace tvu
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DeleteRssChannel();
-            
+
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           
+
 
         }
 
@@ -1290,7 +1288,7 @@ namespace tvu
                 MainConfig.CloseEmuleIfAllIsDone = OptDialog.CloseEmuleIfAllIsDone;
 
                 Config.StartWithWindows = OptDialog.StartWithWindows;
-                
+
                 MainConfig.Verbose = OptDialog.Verbose;
                 Log.Instance.SetVerboseMode(MainConfig.Verbose);
 
@@ -1311,10 +1309,10 @@ namespace tvu
                 MainConfig.intervalBetweenUpgradeCheck = OptDialog.intervalBetweenUpgradeCheck;
                 MainConfig.MaxSimultaneousFeedDownloads = OptDialog.MaxSimultaneousFeedDownloads;
                 MainConfig.saveLog = OptDialog.saveLog;
-                
-                
 
-               
+
+
+
 
                 if (MainConfig.CloseEmuleIfAllIsDone == true)
                 {
@@ -1336,7 +1334,7 @@ namespace tvu
 
                 MainConfig.Save();
             }
-            
+
 
             OptDialog.Dispose();
             return;
@@ -1572,7 +1570,7 @@ namespace tvu
             autoclose();
         }
 
-     
+
         private void testAutoStartToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -1589,7 +1587,7 @@ namespace tvu
         {
 
             DeleteRssChannel();
-            
+
         }
 
         void DeleteRssChannel()
@@ -1638,16 +1636,8 @@ namespace tvu
 
             List<string> FileToDelete = new List<string>();
 
-            foreach (fileHistory fh in MainHistory.fileHistoryList)
-            {
-                if (fh.FeedSource == Feed.Url)
-                {
-                    FileToDelete.Add(fh.Ed2kLink);
-                }
-            }
+            MainHistory.DeleteFileByFeedSource(Feed.Url);
 
-
-            MainHistory.fileHistoryList.RemoveAll(delegate(fileHistory fh) { return FileToDelete.IndexOf(fh.Ed2kLink) > -1; });
             FeedLinkCache newFeedLinkCache = new FeedLinkCache();
             newFeedLinkCache.Load();
             newFeedLinkCache.FeedLinkCacheTable.RemoveAll(delegate(FeedLinkCacheRow flcr) { return FileToDelete.IndexOf(flcr.Ed2kLink) > -1; });
@@ -1657,7 +1647,7 @@ namespace tvu
 
             MainConfig.RssFeedList.Remove(Feed);
             MainConfig.Save();
-            MainHistory.Save();
+
             listViewFeedFilesList.Items.Clear();
             UpdateRssFeedGUI(); ///upgrade gui
         }
@@ -1705,7 +1695,7 @@ namespace tvu
             //
             //  Open dialog 2 to get all ed2k from feed
             //
-            AddFeedDialogPage2 dialogPage2 = new AddFeedDialogPage2(RssUrlList,MainConfig.ServiceUrl,MainConfig.Password, cookieContainer);
+            AddFeedDialogPage2 dialogPage2 = new AddFeedDialogPage2(RssUrlList, MainConfig.ServiceUrl, MainConfig.Password, cookieContainer);
             dialogPage2.ShowDialog();
 
             if (dialogPage2.DialogResult != DialogResult.OK)
@@ -1717,7 +1707,7 @@ namespace tvu
             // 
             //  check file count
             //
-            if ((dialogPage2.RssChannelList.Count==0)^(dialogPage2.ListFileHistory.Count==0))
+            if ((dialogPage2.RssChannelList.Count == 0) ^ (dialogPage2.ListFileHistory.Count == 0))
             {
                 MessageBox.Show("Nothing to downloads");
                 dialogPage2.Dispose();
@@ -1761,10 +1751,11 @@ namespace tvu
             }
             //
             //  remove all data from history
+            //  note: this is important when you re add a old serie
             //
             foreach (fileHistory fh in dialogPage3.GlobalListFileHisotry)
             {
-                MainHistory.fileHistoryList.RemoveAll(delegate(fileHistory t) { return t == fh; });
+                MainHistory.DeleteFile(fh.FileName);
             }
 
             //
@@ -1774,14 +1765,15 @@ namespace tvu
             temp.ForEach(delegate(fileHistory fh) { Log.logDebug("UnselectedHistory " + fh.FileName); });
 
             // update data
-            temp.ForEach(delegate(fileHistory fh) { fh.Date = DateTime.Now.AddYears(-1).ToString("s");});
-            MainHistory.fileHistoryList.AddRange(temp);
-            
-            
+            foreach (fileHistory fh in temp)
+            {
+                History.Add(fh.Ed2kLink, fh.FeedLink, fh.FeedSource, DateTime.MinValue.ToString("s"));
+            }
 
-            MainHistory.Save();
+
+
             MainConfig.Save();
-            
+
             UpdateRssFeedGUI();
             dialogPage3.Dispose();
             StartDownloadThread();
@@ -1805,7 +1797,6 @@ namespace tvu
 
             // remove file from main history
             MainHistory.DeleteFile(strSelectItemText);
-            MainHistory.Save();
 
             // remove all datafile from each feed 
             foreach (RssSubscrission Feed in MainConfig.RssFeedList)
@@ -1820,22 +1811,16 @@ namespace tvu
 
         private void deleteCompleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-                        
-            List<RssSubscrission> channelToDelete = MainConfig.RssFeedList.FindAll(delegate(RssSubscrission t) { return t.tvuStatus == tvuStatus.Complete ;});
 
-            List<string> ListUrl = new List<string>();
-
-            foreach (RssSubscrission t in channelToDelete)
+            List<RssSubscrission> channelToDelete = MainConfig.RssFeedList.FindAll(delegate(RssSubscrission t) { return t.tvuStatus == tvuStatus.Complete; });
+            foreach (RssSubscrission subscrission in channelToDelete)
             {
-                ListUrl.Add(t.Url);
+                MainHistory.DeleteFileByFeedSource(subscrission.Url);
             }
 
             MainConfig.RssFeedList.RemoveAll(delegate(RssSubscrission t) { return t.tvuStatus == tvuStatus.Complete; });
-            MainHistory.fileHistoryList.RemoveAll(delegate(fileHistory t) { return ListUrl.IndexOf(t.FeedLink) > -1; });
-            MainHistory.fileHistoryList.RemoveAll(delegate(fileHistory t) { return ListUrl.IndexOf(t.FeedSource) > -1; });
 
             MainConfig.Save();
-            MainHistory.Save();
             UpdateRssFeedGUI(); ///upgrade gui
         }
 
@@ -1843,12 +1828,12 @@ namespace tvu
         {
             try
             {
-                if (System.IO.File.Exists(MainConfig.FileNameLog) == true)
+                if (System.IO.File.Exists(Config.FileNameLog) == true)
                 {
-                    Process.Start("notepad.exe", MainConfig.FileNameLog);
+                    Process.Start("notepad.exe", Config.FileNameLog);
                 }
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 Log.logInfo("Exception \"" + exception.Message + "\"");
             }
@@ -1970,7 +1955,7 @@ namespace tvu
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-         
+
             if (listView1.Items.Count == 0)
                 return;
 
@@ -2001,7 +1986,7 @@ namespace tvu
                 return;
             }
 
-            EditFeedForm dialog = new EditFeedForm(SelectedFeed.Category, SelectedFeed.PauseDownload, SelectedFeed.Enabled,SelectedFeed.maxSimultaneousDownload);
+            EditFeedForm dialog = new EditFeedForm(SelectedFeed.Category, SelectedFeed.PauseDownload, SelectedFeed.Enabled, SelectedFeed.maxSimultaneousDownload);
             dialog.ShowDialog();
 
             if (dialog.DialogResult != DialogResult.OK)
@@ -2016,7 +2001,7 @@ namespace tvu
             SelectedFeed.maxSimultaneousDownload = dialog.maxSimultaneousDownload;
 
             MainConfig.Save();
-            UpdateRssFeedGUI(); 
+            UpdateRssFeedGUI();
 
         }
 
@@ -2035,7 +2020,7 @@ namespace tvu
         {
 
             int index = listBoxPending.Items.IndexOf(text);
-            if(index > -1)
+            if (index > -1)
             {
                 listBoxPending.Items.RemoveAt(index);
             }
@@ -2072,8 +2057,8 @@ namespace tvu
         {
             backgroundWorker1.CancelAsync();
         }
-    
+
     }
 
-   
+
 }
