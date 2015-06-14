@@ -47,6 +47,9 @@
             this.label9 = new System.Windows.Forms.Label();
             this.labelFeedCategory = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.listViewFeedFilesList = new System.Windows.Forms.ListView();
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.listView1 = new System.Windows.Forms.ListView();
@@ -105,9 +108,6 @@
             this.toolStripButtonAddFeed = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonCheckNow = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.listViewFeedFilesList = new System.Windows.Forms.ListView();
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
@@ -146,18 +146,19 @@
             this.tabLog.Location = new System.Drawing.Point(4, 22);
             this.tabLog.Name = "tabLog";
             this.tabLog.Padding = new System.Windows.Forms.Padding(3);
-            this.tabLog.Size = new System.Drawing.Size(539, 427);
+            this.tabLog.Size = new System.Drawing.Size(563, 441);
             this.tabLog.TabIndex = 1;
             this.tabLog.Text = "Log";
             this.tabLog.UseVisualStyleBackColor = true;
             // 
             // LogTextBox
             // 
-            this.LogTextBox.Location = new System.Drawing.Point(6, 6);
+            this.LogTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LogTextBox.Location = new System.Drawing.Point(3, 3);
             this.LogTextBox.Multiline = true;
             this.LogTextBox.Name = "LogTextBox";
             this.LogTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.LogTextBox.Size = new System.Drawing.Size(527, 439);
+            this.LogTextBox.Size = new System.Drawing.Size(557, 435);
             this.LogTextBox.TabIndex = 3;
             // 
             // tabMain
@@ -179,7 +180,7 @@
             this.tabMain.Location = new System.Drawing.Point(4, 22);
             this.tabMain.Name = "tabMain";
             this.tabMain.Padding = new System.Windows.Forms.Padding(3);
-            this.tabMain.Size = new System.Drawing.Size(539, 427);
+            this.tabMain.Size = new System.Drawing.Size(563, 441);
             this.tabMain.TabIndex = 0;
             this.tabMain.Text = "Feeds";
             this.tabMain.UseVisualStyleBackColor = true;
@@ -292,6 +293,30 @@
             this.label7.TabIndex = 26;
             this.label7.Text = "Category";
             // 
+            // listViewFeedFilesList
+            // 
+            this.listViewFeedFilesList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader5,
+            this.columnHeader7});
+            this.listViewFeedFilesList.ContextMenuStrip = this.contextMenuStrip2;
+            this.listViewFeedFilesList.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.listViewFeedFilesList.Location = new System.Drawing.Point(3, 319);
+            this.listViewFeedFilesList.Name = "listViewFeedFilesList";
+            this.listViewFeedFilesList.Size = new System.Drawing.Size(557, 119);
+            this.listViewFeedFilesList.TabIndex = 24;
+            this.listViewFeedFilesList.UseCompatibleStateImageBehavior = false;
+            this.listViewFeedFilesList.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "File";
+            this.columnHeader5.Width = 400;
+            // 
+            // columnHeader7
+            // 
+            this.columnHeader7.Text = "Date";
+            this.columnHeader7.Width = 100;
+            // 
             // contextMenuStrip2
             // 
             this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -315,9 +340,10 @@
             this.columnHeader6,
             this.columnHeader2});
             this.listView1.ContextMenuStrip = this.contextMenuStrip1;
-            this.listView1.Location = new System.Drawing.Point(6, 6);
+            this.listView1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.listView1.Location = new System.Drawing.Point(3, 3);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(527, 236);
+            this.listView1.Size = new System.Drawing.Size(557, 236);
             this.listView1.TabIndex = 23;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -381,7 +407,7 @@
             this.tabActivity.Controls.Add(this.progressBar1);
             this.tabActivity.Location = new System.Drawing.Point(4, 22);
             this.tabActivity.Name = "tabActivity";
-            this.tabActivity.Size = new System.Drawing.Size(539, 427);
+            this.tabActivity.Size = new System.Drawing.Size(563, 441);
             this.tabActivity.TabIndex = 4;
             this.tabActivity.Text = "Activity";
             this.tabActivity.UseVisualStyleBackColor = true;
@@ -399,7 +425,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(539, 427);
+            this.dataGridView1.Size = new System.Drawing.Size(563, 441);
             this.dataGridView1.TabIndex = 37;
             // 
             // FileNameDataGridColumn
@@ -432,11 +458,12 @@
             this.tabControl1.Controls.Add(this.tabMain);
             this.tabControl1.Controls.Add(this.tabLog);
             this.tabControl1.Controls.Add(this.tabPending);
-            this.tabControl1.Location = new System.Drawing.Point(12, 51);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 49);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(3, 27, 3, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(547, 453);
+            this.tabControl1.Size = new System.Drawing.Size(571, 467);
             this.tabControl1.TabIndex = 21;
             // 
             // tabPending
@@ -445,7 +472,7 @@
             this.tabPending.Location = new System.Drawing.Point(4, 22);
             this.tabPending.Name = "tabPending";
             this.tabPending.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPending.Size = new System.Drawing.Size(539, 427);
+            this.tabPending.Size = new System.Drawing.Size(563, 441);
             this.tabPending.TabIndex = 5;
             this.tabPending.Text = "Pending";
             this.tabPending.UseVisualStyleBackColor = true;
@@ -456,7 +483,7 @@
             this.listBoxPending.FormattingEnabled = true;
             this.listBoxPending.Location = new System.Drawing.Point(3, 3);
             this.listBoxPending.Name = "listBoxPending";
-            this.listBoxPending.Size = new System.Drawing.Size(533, 421);
+            this.listBoxPending.Size = new System.Drawing.Size(557, 435);
             this.listBoxPending.TabIndex = 0;
             // 
             // menuStrip1
@@ -766,36 +793,13 @@
             this.toolStripButtonStop.Text = "Stop";
             this.toolStripButtonStop.Click += new System.EventHandler(this.toolStripButtonStop_Click);
             // 
-            // columnHeader5
-            // 
-            this.columnHeader5.Text = "File";
-            this.columnHeader5.Width = 400;
-            // 
-            // columnHeader7
-            // 
-            this.columnHeader7.Text = "Date";
-            this.columnHeader7.Width = 100;
-            // 
-            // listViewFeedFilesList
-            // 
-            this.listViewFeedFilesList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader5,
-            this.columnHeader7});
-            this.listViewFeedFilesList.ContextMenuStrip = this.contextMenuStrip2;
-            this.listViewFeedFilesList.Location = new System.Drawing.Point(6, 316);
-            this.listViewFeedFilesList.Name = "listViewFeedFilesList";
-            this.listViewFeedFilesList.Size = new System.Drawing.Size(527, 105);
-            this.listViewFeedFilesList.TabIndex = 24;
-            this.listViewFeedFilesList.UseCompatibleStateImageBehavior = false;
-            this.listViewFeedFilesList.View = System.Windows.Forms.View.Details;
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(571, 516);
-            this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
