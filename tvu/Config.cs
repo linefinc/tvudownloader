@@ -321,10 +321,6 @@ namespace tvu
                     writter.WriteEndElement();
                 }
 
-                writter.WriteStartElement("LastTvUStatusUpgradeDate");//Last Tv Undergraund Status Upgrade Date
-                writter.WriteString(feed.LastTvUStatusUpgradeDate);
-                writter.WriteEndElement();
-
                 writter.WriteEndElement();// end channel
 
             }
@@ -452,11 +448,6 @@ namespace tvu
                                 break;
                         }
 
-                    }
-
-                    if ((t.Name == "LastTvUStatusUpgradeDate") & (t.FirstChild != null))
-                    {
-                        newfeed.LastTvUStatusUpgradeDate = t.FirstChild.Value;
                     }
 
                     if ((t.Name == "maxSimultaneousDownload") & (t.FirstChild != null))

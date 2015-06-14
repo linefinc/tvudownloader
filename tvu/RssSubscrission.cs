@@ -24,7 +24,6 @@ namespace tvu
         {
             this.Title = Title;
             this.Url = Url;
-            PendingDownload = new List<fileHistory>();
         }
 
         public string Title { set; get; }
@@ -34,13 +33,10 @@ namespace tvu
         public string LastUpgradeDate = "";
         public bool Enabled = true;
         public tvuStatus tvuStatus = tvuStatus.Unknow;
-        public string LastTvUStatusUpgradeDate = "";
 
         public string TitleCompact { get { return this.Title.Replace("[ed2k] tvunderground.org.ru:", ""); } }
 
         public int maxSimultaneousDownload;
-
-        public List<fileHistory> PendingDownload;
 
 
     }

@@ -318,23 +318,7 @@ namespace tvu
                 // last upgrade
                 uint days = 0;
 
-                if (t.LastTvUStatusUpgradeDate == string.Empty)
-                {
-
-                    t.LastUpgradeDate = MainHistory.LastDownloadDateByFeedSource(t.Url);
-                    if (t.LastUpgradeDate == string.Empty)
-                    {
-                        if (Log.Instance != null)
-                        {
-                            Log.logDebug("error LastUpgradeDate empty ");
-                            Log.logDebug("error > " + t.TitleCompact);
-                            Log.logDebug("error > " + t.LastUpgradeDate);
-                            Log.logDebug("error > " + t.Url);
-                        }
-                    }
-                }
-
-                if (t.LastUpgradeDate.Equals("") == false)
+                if (MainHistory.LastDownloadDateByFeedSource(t.Url) != string.Empty)
                 {
 
                     DateTime LastDownloadTime = Convert.ToDateTime(t.LastUpgradeDate);
@@ -592,7 +576,7 @@ namespace tvu
                         //
                         try
                         {
-                            DateTime LastTvUStatusUpgradeDate = Convert.ToDateTime(feed.LastTvUStatusUpgradeDate);
+                            DateTime LastTvUStatusUpgradeDate = Convert.ToDateTime(MainHistory.LastDownloadDateByFeedSource(feed.Url));
                             TimeSpan ts = DateTime.Now - LastTvUStatusUpgradeDate;
                             if (ts.TotalDays > 15)
                             {
@@ -612,7 +596,6 @@ namespace tvu
                             Match Match = Pattern.Match(WebPage);
                             string url = Match.Value;
                             feed.tvuStatus = WebManagerTVU.CheckComplete(url, cookieContainer);
-                            feed.LastTvUStatusUpgradeDate = DateTime.Now.ToString();
                         }
 
 
