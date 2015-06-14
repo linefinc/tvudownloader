@@ -541,9 +541,7 @@ namespace tvu
                     {
                         //get GUID page
 
-                        WebPage.Replace("http://www.tvunderground.org.ru/", "http://tvunderground.org.ru/");
-
-                        Regex Pattern = new Regex(@"http://tvunderground.org.ru/index.php\?show=ed2k&season=\d{1,10}&sid\[\d{1,10}\]=\d{1,10}");
+                        Regex Pattern = new Regex(@"https?://(www\.)?tvunderground.org.ru/index.php\?show=ed2k&season=\d{1,10}&sid\[\d{1,10}\]=\d{1,10}");
 
                         MatchCollection matchCollection = Pattern.Matches(WebPage);
 
