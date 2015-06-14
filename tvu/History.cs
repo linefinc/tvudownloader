@@ -336,5 +336,63 @@ namespace tvu
         }
 
 
+        public DataTable GetDownloadedFileByFeedSoruce(string FeedSource)
+        {
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3; UseUTF16Encoding=True;", Config.FileNameDB)))
+            {
+                DataTable table;
+
+
+                connection.Open();
+                const string sqlTemplate = @"SELECT  History.FileName, History.LastUpdate FROM History WHERE FeedSource = @FeedSource ORDER BY LastUpdate DESC ";
+
+                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                command.Parameters.Add(new SQLiteParameter("@FeedSource", FeedSource));
+                SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
+
+                DataSet ds = new DataSet();
+                dataAdapter.Fill(ds);
+
+
+                table = ds.Tables[0];
+                connection.Close();
+
+                return table;
+            }
+        }
+
+        public int GetDownloadedFileCountByFeedSoruce(string FeedSoruce)
+        {
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3; UseUTF16Encoding=True;", Config.FileNameDB)))
+            {
+                connection.Open();
+                const string sqlTemplate = @"SELECT  count(*) FROM History WHERE History.FeedSource = @FeedSource ";
+
+                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                command.Parameters.Add(new SQLiteParameter("@FeedSource", FeedSoruce));
+                SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
+
+                DataTable table = new DataTable();
+                table.Reset();
+                dataAdapter.Fill(table);
+                connection.Close();
+
+                if(table.Rows.Count == 0)
+                {
+                    return -1;
+                }
+                
+                int count;
+                if(int.TryParse(table.Rows[0][0].ToString() , out count) == false)
+                {
+                    return -1;
+                }
+
+                return count;
+            }
+
+        }
+
+
     }
 }

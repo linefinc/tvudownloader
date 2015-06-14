@@ -285,10 +285,6 @@ namespace tvu
                     writter.WriteString(feed.Category);
                     writter.WriteEndElement();
 
-                    writter.WriteStartElement("TotalDownloads");//Total Downloads
-                    writter.WriteString(feed.TotalDownloads.ToString());
-                    writter.WriteEndElement();
-
                     writter.WriteStartElement("LastUpgradeDate");//Last Upgrade Date
                     writter.WriteString(feed.LastUpgradeDate);
                     writter.WriteEndElement();

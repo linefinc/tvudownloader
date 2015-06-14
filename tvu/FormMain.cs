@@ -313,7 +313,7 @@ namespace tvu
 
                 // total downloads
 
-                item.SubItems.Add(t.TotalDownloads.ToString());
+                item.SubItems.Add(MainHistory.GetDownloadedFileCountByFeedSoruce(t.Url).ToString());
 
                 // last upgrade
                 uint days = 0;
@@ -456,7 +456,7 @@ namespace tvu
             labelFeedUrl.Text = Feed.Url;
 
             labelLastDownloadDate.Text = MainHistory.LastDownloadDateByFeedSource(Feed.Url);
-            labelTotalFiles.Text = Feed.TotalDownloads.ToString();
+            labelTotalFiles.Text = MainHistory.GetDownloadedFileCountByFeedSoruce(Feed.Url).ToString();
             labelMaxSimultaneousDownloads.Text = Feed.maxSimultaneousDownload.ToString();
 
             // update list history
@@ -464,13 +464,11 @@ namespace tvu
 
 
             // extract file by feedLink
-            List<fileHistory> ListHistory = new List<fileHistory>(Feed.DownloadedFile);
-            ListHistory.Sort((x, y) => (y.Date.CompareTo(x.Date)));
 
-            foreach (fileHistory fh in ListHistory)
+            foreach (DataRow row in MainHistory.GetDownloadedFileByFeedSoruce(Feed.Url).Rows)
             {
-                ListViewItem item = new ListViewItem(fh.FileName);
-                string date = fh.Date.Substring(0, 10);
+                ListViewItem item = new ListViewItem(row[0].ToString());
+                string date = row[1].ToString().Substring(0, 10);
                 item.SubItems.Add(date);
                 listViewFeedFilesList.Items.Add(item);
             }
@@ -1797,12 +1795,6 @@ namespace tvu
 
             // remove file from main history
             MainHistory.DeleteFile(strSelectItemText);
-
-            // remove all datafile from each feed 
-            foreach (RssSubscrission Feed in MainConfig.RssFeedList)
-            {
-                Feed.DownloadedFile.RemoveAll(delegate(fileHistory t) { return t.FileName == strSelectItemText; });
-            }
 
             // finaly update GUI
             UpdateRssFeedGUI();

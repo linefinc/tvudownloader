@@ -24,7 +24,6 @@ namespace tvu
         {
             this.Title = Title;
             this.Url = Url;
-            DownloadedFile = new List<fileHistory>();
             PendingDownload = new List<fileHistory>();
         }
 
@@ -33,7 +32,6 @@ namespace tvu
         public string Category = "";
         public bool PauseDownload = false;
         public string LastUpgradeDate = "";
-        public int TotalDownloads { get { return DownloadedFile.Count;}}
         public bool Enabled = true;
         public tvuStatus tvuStatus = tvuStatus.Unknow;
         public string LastTvUStatusUpgradeDate = "";
@@ -42,7 +40,6 @@ namespace tvu
 
         public int maxSimultaneousDownload;
 
-        public List<fileHistory> DownloadedFile;
         public List<fileHistory> PendingDownload;
 
 

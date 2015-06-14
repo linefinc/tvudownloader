@@ -47,9 +47,6 @@
             this.label9 = new System.Windows.Forms.Label();
             this.labelFeedCategory = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.listViewFeedFilesList = new System.Windows.Forms.ListView();
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.listView1 = new System.Windows.Forms.ListView();
@@ -63,6 +60,9 @@
             this.toolStripMenuItemEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.tabActivity = new System.Windows.Forms.TabPage();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.FileNameDataGridColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastUpdateDataGridColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPending = new System.Windows.Forms.TabPage();
@@ -105,19 +105,19 @@
             this.toolStripButtonAddFeed = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonCheckNow = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.FileNameDataGridColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LastUpdateDataGridColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.listViewFeedFilesList = new System.Windows.Forms.ListView();
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.tabActivity.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPending.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // timerRssCheck
@@ -292,29 +292,6 @@
             this.label7.TabIndex = 26;
             this.label7.Text = "Category";
             // 
-            // listViewFeedFilesList
-            // 
-            this.listViewFeedFilesList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader5,
-            this.columnHeader7});
-            this.listViewFeedFilesList.ContextMenuStrip = this.contextMenuStrip2;
-            this.listViewFeedFilesList.Location = new System.Drawing.Point(6, 316);
-            this.listViewFeedFilesList.Name = "listViewFeedFilesList";
-            this.listViewFeedFilesList.Size = new System.Drawing.Size(527, 105);
-            this.listViewFeedFilesList.TabIndex = 24;
-            this.listViewFeedFilesList.UseCompatibleStateImageBehavior = false;
-            this.listViewFeedFilesList.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader5
-            // 
-            this.columnHeader5.Text = "File";
-            this.columnHeader5.Width = 400;
-            // 
-            // columnHeader7
-            // 
-            this.columnHeader7.Text = "Date";
-            this.columnHeader7.Width = 100;
-            // 
             // contextMenuStrip2
             // 
             this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -408,6 +385,39 @@
             this.tabActivity.TabIndex = 4;
             this.tabActivity.Text = "Activity";
             this.tabActivity.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.FileNameDataGridColumn,
+            this.LastUpdateDataGridColumn});
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.Size = new System.Drawing.Size(539, 427);
+            this.dataGridView1.TabIndex = 37;
+            // 
+            // FileNameDataGridColumn
+            // 
+            this.FileNameDataGridColumn.DataPropertyName = "FileName";
+            this.FileNameDataGridColumn.HeaderText = "FileName";
+            this.FileNameDataGridColumn.Name = "FileNameDataGridColumn";
+            this.FileNameDataGridColumn.ReadOnly = true;
+            this.FileNameDataGridColumn.Width = 400;
+            // 
+            // LastUpdateDataGridColumn
+            // 
+            this.LastUpdateDataGridColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.LastUpdateDataGridColumn.DataPropertyName = "LastUpdate";
+            this.LastUpdateDataGridColumn.HeaderText = "Last Update";
+            this.LastUpdateDataGridColumn.Name = "LastUpdateDataGridColumn";
+            this.LastUpdateDataGridColumn.ReadOnly = true;
+            this.LastUpdateDataGridColumn.Width = 90;
             // 
             // progressBar1
             // 
@@ -756,38 +766,28 @@
             this.toolStripButtonStop.Text = "Stop";
             this.toolStripButtonStop.Click += new System.EventHandler(this.toolStripButtonStop_Click);
             // 
-            // dataGridView1
+            // columnHeader5
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.FileNameDataGridColumn,
-            this.LastUpdateDataGridColumn});
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(539, 427);
-            this.dataGridView1.TabIndex = 37;
+            this.columnHeader5.Text = "File";
+            this.columnHeader5.Width = 400;
             // 
-            // FileNameDataGridColumn
+            // columnHeader7
             // 
-            this.FileNameDataGridColumn.DataPropertyName = "FileName";
-            this.FileNameDataGridColumn.HeaderText = "FileName";
-            this.FileNameDataGridColumn.Name = "FileNameDataGridColumn";
-            this.FileNameDataGridColumn.ReadOnly = true;
-            this.FileNameDataGridColumn.Width = 400;
+            this.columnHeader7.Text = "Date";
+            this.columnHeader7.Width = 100;
             // 
-            // LastUpdateDataGridColumn
+            // listViewFeedFilesList
             // 
-            this.LastUpdateDataGridColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.LastUpdateDataGridColumn.DataPropertyName = "LastUpdate";
-            this.LastUpdateDataGridColumn.HeaderText = "Last Update";
-            this.LastUpdateDataGridColumn.Name = "LastUpdateDataGridColumn";
-            this.LastUpdateDataGridColumn.ReadOnly = true;
-            this.LastUpdateDataGridColumn.Width = 90;
+            this.listViewFeedFilesList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader5,
+            this.columnHeader7});
+            this.listViewFeedFilesList.ContextMenuStrip = this.contextMenuStrip2;
+            this.listViewFeedFilesList.Location = new System.Drawing.Point(6, 316);
+            this.listViewFeedFilesList.Name = "listViewFeedFilesList";
+            this.listViewFeedFilesList.Size = new System.Drawing.Size(527, 105);
+            this.listViewFeedFilesList.TabIndex = 24;
+            this.listViewFeedFilesList.UseCompatibleStateImageBehavior = false;
+            this.listViewFeedFilesList.View = System.Windows.Forms.View.Details;
             // 
             // FormMain
             // 
@@ -811,13 +811,13 @@
             this.contextMenuStrip2.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
             this.tabActivity.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPending.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -843,8 +843,6 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label labelFeedCategory;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.ListView listViewFeedFilesList;
-        private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.TabPage tabActivity;
@@ -877,7 +875,6 @@
         private System.Windows.Forms.ToolStripMenuItem sendLogToEmailToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testAutoCloseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testAutoStartToolStripMenuItem;
-        private System.Windows.Forms.ColumnHeader columnHeader7;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemDelete;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAdd;
@@ -906,6 +903,9 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DataGridViewTextBoxColumn FileNameDataGridColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn LastUpdateDataGridColumn;
+        private System.Windows.Forms.ListView listViewFeedFilesList;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.ColumnHeader columnHeader7;
     }
 }
 
