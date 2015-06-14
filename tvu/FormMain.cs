@@ -1,21 +1,16 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.Net;
-using System.Xml;
-using System.Xml.Schema;
-using System.Threading;
-using System.Configuration;
 using System.Diagnostics;
-using Microsoft.Win32;
+using System.Drawing;
+using System.IO;
+using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Windows.Forms;
+using System.Xml;
 
-using tvu;
 
 namespace tvu
 {
@@ -1135,15 +1130,13 @@ namespace tvu
 
         public void UpdateRecentActivity()
         {
-            dataGridView1.Rows.Clear();
             DataTable list = MainHistory.GetRecentActivity();
 
             foreach (DataRow row in list.Rows)
             {
                 row["LastUpdate"] = ((string)row["LastUpdate"]).Replace('T', ' ');
-
-                //listBox1.Items.Add(t);
             }
+
             dataGridView1.DataSource = list;
         }
 
