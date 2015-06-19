@@ -626,9 +626,9 @@ namespace tvu
                                 sEd2k = RssParserTVU.FindEd2kLink(page);
                                 FeedLinkCache.AddFeedLink(FeedLink, sEd2k, DateTime.Now.ToString("s"));
                             }
-                       
 
-                       
+
+
                             Ed2kfile parser = new Ed2kfile(sEd2k);
                             Log.logInfo(string.Format("Found new file {0}", parser.GetFileName()));
 
@@ -659,7 +659,7 @@ namespace tvu
                         {
                             // link ed2k just download bat not correct registred
                             // to avoid rendondance of link
-                            History.Add(sEd2k, FeedLink, feed.Url);
+                            History.Add(sEd2k, FeedLink, feed.Url, DateTime.Now.ToString("s"));
                         }
 
 
@@ -688,7 +688,7 @@ namespace tvu
 
             }
 
-            
+
             feedLinkCache.CleanUp();
 
             if (DownloadFileList.Count == 0)
@@ -904,7 +904,7 @@ namespace tvu
                     Log.logVerbose("Resume download");
                     Service.StartDownload(ed2klink);
                 }
-                History.Add(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource);
+                History.Add(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource, DateTime.Now.ToString("s"));
                 Ed2kfile parser = new Ed2kfile(DownloadFile.Ed2kLink);
                 Log.logInfo(string.Format("Add file to emule {0}", parser.GetFileName()));
                 SendMailDownload(parser.GetFileName(), DownloadFile.Ed2kLink);
