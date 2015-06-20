@@ -51,44 +51,52 @@ namespace tvu
 
             List<string> stringCache = new List<string>();
 
-
-            for (int i = 0; i < ItemList.Count; i++)
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
             {
-
-                string strDate = DateTime.Now.ToString("s"); // to avoid compatibility with old history file
-                string strFeedLink = "";
-                string strEd2k = "";
-                string strFeedSource = "";
-
-                XmlNode node = ItemList[i];
-                foreach (XmlNode t in node.ChildNodes)
+                connection.Open();
+                int counter = 0;
+                using (SQLiteTransaction transaction = connection.BeginTransaction())
                 {
 
-                    if (t.Name == "Ed2k")
-                    {
-                        strEd2k = t.InnerText;
-                    }
-
-                    if (t.Name == "FeedLink")
-                    {
-                        strFeedLink = t.InnerText;
-                    }
-
-                    if (t.Name == "FeedSource")
+                    for (int i = 0; i < ItemList.Count; i++)
                     {
 
-                        strFeedSource = t.InnerText;
+                        string strDate = DateTime.Now.ToString("s"); // to avoid compatibility with old history file
+                        string strFeedLink = "";
+                        string strEd2k = "";
+                        string strFeedSource = "";
+
+                        XmlNode node = ItemList[i];
+                        foreach (XmlNode t in node.ChildNodes)
+                        {
+
+                            if (t.Name == "Ed2k")
+                            {
+                                strEd2k = t.InnerText;
+                            }
+
+                            if (t.Name == "FeedLink")
+                            {
+                                strFeedLink = t.InnerText;
+                            }
+
+                            if (t.Name == "FeedSource")
+                            {
+
+                                strFeedSource = t.InnerText;
+                            }
+
+                            if (t.Name == "Date")
+                            {
+                                strDate = t.InnerText;
+                            }
+
+
+                        }
+                        History.Add(transaction, strEd2k, strFeedLink, strFeedSource, strDate);
                     }
-
-                    if (t.Name == "Date")
-                    {
-                        strDate = t.InnerText;
-                    }
-
-
+                    transaction.Commit();
                 }
-
-                History.Add(strEd2k, strFeedLink, strFeedSource, strDate);
             }
         }
 
@@ -137,10 +145,59 @@ namespace tvu
                 command.Parameters.Add(new SQLiteParameter("@seasonID", seasonID));
                 command.Parameters.Add(new SQLiteParameter("@episodeID", episodeID));
                 command.Parameters.Add(new SQLiteParameter("@LastUpdate", fh.Date));
-                
+
                 command.ExecuteNonQuery();
                 connection.Close();
             }
+        }
+
+        ///
+        /// <summary>Add a element to list </summary>
+        /// <param name='ed2k'>ED2K Link</param>
+        /// <param name='FeedLink'>Link in Feed</param>
+        /// <param name='FeedSource'>Rss Feed Link</param>
+        /// <param name="Date">Date</param>
+        /// <param name="SQLiteTransaction">transaction</param>
+        ///
+        public static void Add(SQLiteTransaction transaction, string ed2k, string FeedLink, string FeedSource, string Date)
+        {
+            fileHistory fh = new fileHistory(ed2k, FeedLink, FeedSource, Date);
+
+            // http://tvunderground.org.ru/index.php?show=ed2k&season=73528&sid[815433]=1
+
+
+            string seasonID = string.Empty, episodeID = string.Empty;
+
+            Regex Pattern = new Regex(@"season.?(\d{3,6}).?sid.?(\d{3,6})");
+
+            MatchCollection matchCollection = Pattern.Matches(FeedLink);
+
+            if (matchCollection.Count > 0)
+            {
+                seasonID = matchCollection[0].Groups[1].ToString();
+                episodeID = matchCollection[0].Groups[2].ToString();
+            }
+
+
+            const string sqlTemplate = @"INSERT INTO History (FileName , FileSize ,  HashMD4 , HashSHA1 , Ed2kLink , FeedLink , FeedSource, seasonID , episodeID , LastUpdate )
+                                                VALUES
+                                                (@FileName , @FileSize ,  @HashMD4 , @HashSHA1 , @Ed2kLink , @FeedLink , @FeedSource , @seasonID , @episodeID , @LastUpdate )";
+
+            SQLiteCommand command = new SQLiteCommand(sqlTemplate);
+            command.CommandType = CommandType.Text;
+            command.Transaction = transaction;
+            command.Parameters.Add(new SQLiteParameter("@FileName", fh.FileName));
+            command.Parameters.Add(new SQLiteParameter("@FileSize", fh.FileSize));
+            command.Parameters.Add(new SQLiteParameter("@HashMD4", fh.HashMD4));
+            command.Parameters.Add(new SQLiteParameter("@HashSHA1", fh.HashSHA1));
+            command.Parameters.Add(new SQLiteParameter("@Ed2kLink", fh.Ed2kLink));
+            command.Parameters.Add(new SQLiteParameter("@FeedLink", fh.FeedLink));
+            command.Parameters.Add(new SQLiteParameter("@FeedSource", fh.FeedSource));
+            command.Parameters.Add(new SQLiteParameter("@seasonID", seasonID));
+            command.Parameters.Add(new SQLiteParameter("@episodeID", episodeID));
+            command.Parameters.Add(new SQLiteParameter("@LastUpdate", fh.Date));
+            command.ExecuteNonQuery();
+
         }
 
 
