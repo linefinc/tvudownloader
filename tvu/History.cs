@@ -17,23 +17,13 @@ namespace tvu
 
         }
 
-
-        public static void MigrateFromXMLToDB()
+        public static void InitDB()
         {
-            string FileName;
-#if DEBUG
-            FileName = "History.xml";
-#else
-            FileName = Application.LocalUserAppDataPath;
-            int rc = FileName.LastIndexOf("\\");
-            FileName = FileName.Substring(0, rc) + "\\History.xml";
-#endif
-
             using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
             {
                 connection.Open();
 
-                string sql = @"CREATE TABLE History (
+                string sql = @"CREATE TABLE IF NOT EXISTS History (
                                 uuid INTEGER PRIMARY KEY AUTOINCREMENT,
                                 FileName TEXT,
                                 FileSize INTEGER,
@@ -50,9 +40,12 @@ namespace tvu
 
                 connection.Close();
             }
+        }
 
+        public static void MigrateFromXMLToDB()
+        {
             XmlDocument xDoc = new XmlDocument();
-            xDoc.Load(FileName);
+            xDoc.Load(Config.FileNameHistory);
 
             XmlNodeList ItemList = xDoc.GetElementsByTagName("Item");
 
@@ -143,8 +136,6 @@ namespace tvu
                 command.Parameters.Add(new SQLiteParameter("@FeedSource", fh.FeedSource));
                 command.Parameters.Add(new SQLiteParameter("@seasonID", seasonID));
                 command.Parameters.Add(new SQLiteParameter("@episodeID", episodeID));
-
-                
                 command.Parameters.Add(new SQLiteParameter("@LastUpdate", fh.Date));
                 
                 command.ExecuteNonQuery();

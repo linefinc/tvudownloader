@@ -1015,7 +1015,7 @@ namespace tvu
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            Log.logInfo("Config loaded " + Config.FileName);
+            Log.logInfo("Config loaded " + Config.FileNameConfig);
             timer2.Enabled = false;
 
             if (MainConfig.StartMinimized == true)

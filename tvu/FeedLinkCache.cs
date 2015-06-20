@@ -19,13 +19,13 @@ namespace tvu
         }
 
 
-        public static void MigrateFromXMLToDB()
+        public static void InitDB()
         {
             using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
             {
                 connection.Open();
 
-                string sql = @"CREATE TABLE FeedLinkCache (
+                string sql = @"CREATE TABLE IF NOT EXISTS FeedLinkCache (
                                 uuid INTEGER PRIMARY KEY AUTOINCREMENT,
                                 Ed2kLink TEXT,
                                 FeedLink TEXT,

@@ -17,10 +17,10 @@ namespace tvu
             get
             {
                 Assembly temp = typeof(Config).Assembly;
-                return temp.GetName().Version.ToString();              
+                return temp.GetName().Version.ToString();
             }
         }
-           public static string VersionFull
+        public static string VersionFull
         {
             get
             {
@@ -42,18 +42,6 @@ namespace tvu
         public List<RssSubscrission> RssFeedList;
         public string eMuleExe;
         public bool debug;
-        public static string FileName
-        {
-            get
-            {
-#if DEBUG
-                return "config.xml";
-#else
-                string temp = Directory.GetParent(Application.LocalUserAppDataPath).FullName;
-                return temp + "\\config.xml";
-#endif
-            }
-        }
         public string DefaultCategory;
         public bool Enebled;
         public int MaxSimultaneousFeedDownloads;
@@ -66,6 +54,18 @@ namespace tvu
         public string MailSender;
         public int intervalBetweenUpgradeCheck;
         public string LastUpgradeCheck;
+        public static string FileNameConfig
+        {
+            get
+            {
+#if DEBUG
+                return "config.xml";
+#else
+                string temp = Directory.GetParent(Application.LocalUserAppDataPath).FullName;
+                return temp + "\\config.xml";
+#endif
+            }
+        }
         public static string FileNameLog
         {
             get
@@ -76,6 +76,20 @@ namespace tvu
                 string temp = Application.LocalUserAppDataPath;
                 int rc = temp.LastIndexOf("\\");
                 return temp.Substring(0, rc) + "\\log.txt";
+#endif
+            }
+        }
+
+        public static string FileNameHistory
+        {
+            get
+            {
+#if DEBUG
+                return "History.xml";
+#else
+                string temp = Application.LocalUserAppDataPath;
+                int rc = temp.LastIndexOf("\\");
+                return temp.Substring(0, rc) + "\\History.xml";
 #endif
             }
         }
@@ -149,10 +163,10 @@ namespace tvu
 
 
             RssFeedList = new List<RssSubscrission>();
-            if (!File.Exists(Config.FileName))
+            if (!File.Exists(Config.FileNameConfig))
             {
                 // empty config file
-                XmlTextWriter textWritter = new XmlTextWriter(Config.FileName, null);
+                XmlTextWriter textWritter = new XmlTextWriter(Config.FileNameConfig, null);
                 textWritter.WriteStartDocument();
                 textWritter.WriteStartElement("Config");
                 textWritter.WriteEndElement();
@@ -163,7 +177,7 @@ namespace tvu
 
         public void Save()
         {
-            XmlTextWriter writter = new XmlTextWriter(Config.FileName, null);
+            XmlTextWriter writter = new XmlTextWriter(Config.FileNameConfig, null);
             writter.Formatting = Formatting.Indented;
 
             writter.WriteStartDocument();
@@ -350,7 +364,7 @@ namespace tvu
             RssFeedList.Clear();
 
             XmlDocument xDoc = new XmlDocument();
-            xDoc.Load(Config.FileName);
+            xDoc.Load(Config.FileNameConfig);
 
             ServiceUrl = ReadString(xDoc, "ServiceUrl", "http://localhost:4000");
 
@@ -480,16 +494,6 @@ namespace tvu
 
                 RssFeedList.Add(newfeed);
             }
-
-
-            // create db if not exit
-            if (File.Exists(Config.FileNameDB) == false)
-            {
-                SQLiteConnection.CreateFile(Config.FileNameDB);
-                History.MigrateFromXMLToDB();
-                FeedLinkCache.MigrateFromXMLToDB();
-            }
-
 
         }
 

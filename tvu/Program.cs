@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.IO;
+using System.Data.SQLite;
 
 namespace tvu
 {
@@ -23,11 +25,26 @@ namespace tvu
                 return;
             }
 
+
+            // create db if not exit
+            if (File.Exists(Config.FileNameDB) == false)
+            {
+                SQLiteConnection.CreateFile(Config.FileNameDB);
+
+                History.InitDB();
+                FeedLinkCache.InitDB();
+                if (File.Exists(Config.FileNameHistory))
+                {
+                    History.MigrateFromXMLToDB();
+                    File.Move(Config.FileNameHistory, Config.FileNameHistory + ".old");
+                }
+            }
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormMain());
         }
 
-        
+
     }
 }
