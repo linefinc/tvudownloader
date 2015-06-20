@@ -6,12 +6,28 @@ using System.IO;
 using Microsoft.Win32;
 using System.Windows.Forms;
 using System.Data.SQLite;
+using System.Reflection;
 
 namespace tvu
 {
     public class Config
     {
-        public const string Version = "0.05.7";
+        public static string Version
+        {
+            get
+            {
+                Assembly temp = typeof(Config).Assembly;
+                return temp.GetName().Version.ToString();              
+            }
+        }
+           public static string VersionFull
+        {
+            get
+            {
+                return ((AssemblyInformationalVersionAttribute)Assembly.GetAssembly(typeof(Config))
+                                .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false)[0]).InformationalVersion;
+            }
+        }
         public string ServiceUrl;
         public string Password;
         public string tvuCookieH;
