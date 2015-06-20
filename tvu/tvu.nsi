@@ -53,6 +53,11 @@ Section "Tvunderground Downloader (required)"
   
   ; Put file there
   File ".\bin\Release\tvu.exe"
+  File ".\bin\Release\x64\SQLite.Interop.dll"
+  File ".\bin\Release\x86\SQLite.Interop.dll"
+  File ".\bin\Release\System.Data.SQLite.dll"
+  File ".\bin\Release\System.Data.SQLite.Linq.dll"
+  
   File "..\README.txt"
   File "..\license.txt"
     

@@ -54,7 +54,6 @@ namespace tvu
             using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
             {
                 connection.Open();
-                int counter = 0;
                 using (SQLiteTransaction transaction = connection.BeginTransaction())
                 {
 

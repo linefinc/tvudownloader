@@ -312,10 +312,10 @@ namespace tvu
                 // last upgrade
                 uint days = 0;
 
-                if (MainHistory.LastDownloadDateByFeedSource(t.Url) != string.Empty)
+                string LastDownloadDate = MainHistory.LastDownloadDateByFeedSource(t.Url);
+                if (LastDownloadDate != string.Empty)
                 {
-
-                    DateTime LastDownloadTime = Convert.ToDateTime(t.LastUpgradeDate);
+                    DateTime LastDownloadTime = Convert.ToDateTime(LastDownloadDate);
 
                     TimeSpan diff = DateTime.Now.Subtract(LastDownloadTime);
                     days = (uint)diff.TotalDays;
