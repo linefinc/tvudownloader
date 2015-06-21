@@ -224,6 +224,41 @@ namespace tvu
             return dt.Rows.Count > 0;
         }
 
+        public fileHistory FileExist(Ed2kfile file)
+        {
+            DataTable dt = new DataTable();
+            dt.Reset();
+
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+            {
+                connection.Open();
+                const string sqlTemplate = @"SELECT uuid, FeedLink, FeedSource, LastUpdate 
+                                                    FROM History 
+                                             WHERE 
+                                                    History.HashMD4 = @HashMD4 AND 
+                                                    History.FileSize = @FileSize AND
+                                                    ((History.HashSHA1 = "") OR (@HashSHA1 = "" ) OR (History.HashSHA1 = @HashSHA1));";
+                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                command.CommandType = CommandType.Text;
+                command.Parameters.Add(new SQLiteParameter("@HashMD4", file.FileSize));
+                command.Parameters.Add(new SQLiteParameter("@FileSize", file.HashMD4));
+                command.Parameters.Add(new SQLiteParameter("@HashSHA1", file.HashSHA1));
+                SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
+                dataAdapter.Fill(dt);
+                connection.Close();
+            }
+
+            if (dt.Rows.Count == 0)
+            {
+                return null;
+            }
+
+            DataRow row = dt.Rows[0];
+            return new fileHistory(file, row["FeedLink"].ToString(),
+                                         row["FeedSource"].ToString(),
+                                         row["LastUpdate"].ToString());
+        }
+
         public bool FileExistByFeedLink(string feedlink)
         {
             DataTable dt = new DataTable();

@@ -68,6 +68,15 @@ namespace tvu
 
         }
 
+        public Ed2kfile(Ed2kfile file)
+        {
+            this.Ed2kLink = file.Ed2kLink;
+            this.FileName = file.FileName;
+            this.HashMD4 = file.HashMD4;
+            this.HashSHA1 = file.HashSHA1;
+            this.FileSize = file.FileSize;
+        }
+
         public string GetLink()
         {
             return Ed2kLink;

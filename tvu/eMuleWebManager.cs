@@ -45,7 +45,7 @@ namespace tvu
             string page;
             try
             {
-                 page = webSocketGET(request);
+                page = webSocketGET(request);
             }
             catch
             {
@@ -95,7 +95,7 @@ namespace tvu
             string temp = string.Format("{0}/?ses={1}&w=logout", Host, SesID);
             webSocketGET(temp);
         }
-        
+
 
         /// <summary>
         /// Close mule
@@ -208,9 +208,9 @@ namespace tvu
         /// get list of actual file in download
         /// </summary>
         /// <returns></returns>
-        public List<string> GetActualDownloads()
+        public List<Ed2kfile> GetActualDownloads()
         {
-            List<string> ListDownloads = new List<string>();
+            List<Ed2kfile> ListDownloads = new List<Ed2kfile>();
 
             // get download page
             string temp = webSocketGET(string.Format("{0}/?ses={1}&w=transfer&showuploadqueue=false&cat=0", Host, SesID));
@@ -225,13 +225,12 @@ namespace tvu
             Regex Pattern = new Regex(@"ed2k://\|file\|.*\|/");
 
             MatchCollection matchCollection = Pattern.Matches(temp);
-
-
             foreach (Match value in matchCollection)
             {
-                string link = value.ToString();
-                ListDownloads.Add(link);
+                ListDownloads.Add(new Ed2kfile(value.ToString()));
             }
+
+
 
             return ListDownloads;
         }

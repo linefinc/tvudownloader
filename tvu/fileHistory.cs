@@ -32,7 +32,13 @@ namespace tvu
 
         }
 
-
+        public fileHistory(Ed2kfile file, string FeedLink, string FeedSource, string Date)
+            :base(file)
+        {
+            this.FeedLink = FeedLink;
+            this.FeedSource = FeedSource;
+            this.Date = Date;
+        }
 
 
         /// <summary>
@@ -44,8 +50,8 @@ namespace tvu
         /// </summary>
 
         public string FeedSource { get; private set; }
-        public string Date { get;  set; }
+        public string Date { get; set; }
     }
 
-    
+
 }

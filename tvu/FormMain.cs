@@ -770,31 +770,21 @@ namespace tvu
             Log.logVerbose("Clean download list (step 1) Find channel from ed2k");
 
 
-            List<string> CourrentDownloadsFormEmule = Service.GetActualDownloads();/// file downloaded with this program and now in download in emule
+            List<Ed2kfile> CourrentDownloadsFormEmule = Service.GetActualDownloads();/// file downloaded with this program and now in download in emule
 
             Log.logVerbose("Courrent Download Form Emule " + CourrentDownloadsFormEmule.Count);
+
+
             List<sDonwloadFile> ActualDownloadFileList = new List<sDonwloadFile>();
-
-
-            foreach (string ad in CourrentDownloadsFormEmule)
+            foreach (Ed2kfile newFile in CourrentDownloadsFormEmule)
             {
                 try
                 {
-                    Ed2kfile newFile = new Ed2kfile(ad);
-
-                    if (MainHistory.FileExist(newFile.FileName) == true)
+                    if (MainHistory.FileExist(newFile) != null)
                     {
-                        // sDonwloadFile newADFile = new sDonwloadFile(ad, fh.FeedLink, fh.FeedSource, false, "");
-                        // ActualDownloadFileList.Add(newADFile);
-
-                        // Log.logInfo(string.Format("Found file ({0}) ,{1} ,{2}", newFile.FileName, fh.FeedLink, fh.FeedSource));
-
-
-
                         // add to pending list
                         if (this.listBoxPending.InvokeRequired == true)
                         {
-
                             Invoke(new MethodInvoker(
                                 delegate { this.RemoveItemToListBoxPending(newFile.FileName); }
                             ));
@@ -809,7 +799,7 @@ namespace tvu
                 }
                 catch (Exception exception)
                 {
-                    Log.logInfo("Error in ckeck file \"" + ad);
+                    Log.logInfo("Error in ckeck file \"" + newFile.FileName);
                     Log.logInfo("Error message error: \"" + exception.Message + "\"");
 
                 }
@@ -820,6 +810,7 @@ namespace tvu
 
 
             // clean RssFeedList
+            
             RssFeedList = new List<RssSubscrission>();
             RssFeedList.AddRange(MainConfig.RssFeedList);
 
