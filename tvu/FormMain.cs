@@ -701,7 +701,6 @@ namespace tvu
                 Log.logVerbose("Total File Found " + DownloadFileList.Count);
             }
 
-
             eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
 
             //
@@ -716,8 +715,8 @@ namespace tvu
                 Log.logInfo("Min file download not reached");
                 return;
             }
-            
-            for (int cont = 1; (cont <= 5) & ( Service.Connect() != eMuleWebManager.LoginStatus.Logged); cont++)
+
+            for (int cont = 1; (cont <= 5) & (Service.Connect() != eMuleWebManager.LoginStatus.Logged); cont++)
             {
                 if (backgroundWorker1.CancellationPending)
                 {
@@ -750,7 +749,6 @@ namespace tvu
 
             }
 
-
             Log.logVerbose("Check min download");
             if (Service.isConnected == false)
             {
@@ -758,110 +756,51 @@ namespace tvu
                 return;
             }
 
-
             Log.logVerbose("Retrive list Category");
             Service.GetCategory(true);  // force upgrade category list 
 
             Log.logVerbose("Clean download list (step 1) Find channel from ed2k");
 
-
             List<Ed2kfile> CourrentDownloadsFormEmule = Service.GetActualDownloads();/// file downloaded with this program and now in download in emule
-
             Log.logVerbose("Courrent Download Form Emule " + CourrentDownloadsFormEmule.Count);
 
-
-            List<sDonwloadFile> ActualDownloadFileList = new List<sDonwloadFile>();
-            foreach (Ed2kfile newFile in CourrentDownloadsFormEmule)
+            List<fileHistory> ActualDownloadFileList = new List<fileHistory>();
+            foreach (Ed2kfile file in CourrentDownloadsFormEmule)
             {
-                try
+
+                if (MainHistory.FileExist(file.Ed2kLink))
                 {
-                    if (MainHistory.FileExist(newFile) != null)
-                    {
-                        // add to pending list
-                        if (this.listBoxPending.InvokeRequired == true)
-                        {
-                            Invoke(new MethodInvoker(
-                                delegate { this.RemoveItemToListBoxPending(newFile.FileName); }
-                            ));
-
-                        }
-                        else
-                        {
-                            this.RemoveItemToListBoxPending(newFile.FileName);
-                        }
-                    }
-
-                }
-                catch (Exception exception)
-                {
-                    Log.logInfo("Error in ckeck file \"" + newFile.FileName);
-                    Log.logInfo("Error message error: \"" + exception.Message + "\"");
-
+                    fileHistory fh = MainHistory.FileExist(file);
+                    ActualDownloadFileList.Add(fh);
                 }
             }
+
 
             Log.logInfo("ActualDownloadFileList.Count = " + ActualDownloadFileList.Count);
-            Log.logInfo("Clean download list (step 2) check limit for each channel");
-
 
             // clean RssFeedList
-
-            RssFeedList = new List<RssSubscrission>();
-            RssFeedList.AddRange(MainConfig.RssFeedList);
-
             Log.logInfo("MainConfig.MaxSimultaneousFeedDownloads = " + MainConfig.MaxSimultaneousFeedDownloads);
 
+            // create a dictionary to count 
+            Dictionary<string, int> MaxSimultaneousDownloadsDictionary = new Dictionary<string, int>();
+            // set starting point for each feed
             foreach (RssSubscrission RssFeed in MainConfig.RssFeedList)
             {
-
-                Log.logInfo("check feed = \"" + RssFeed.Title + "\"");
-                string FeedURL = RssFeed.Url;
-
-
-                // calcolo il numero di file che ho con quel feed;
-                List<sDonwloadFile> CurrentlyDownloadingFileFromEmuleByFeed;
-                CurrentlyDownloadingFileFromEmuleByFeed = ActualDownloadFileList.FindAll(delegate(sDonwloadFile t)
-                                { return (t.FeedLink == FeedURL) ^ (t.FeedSource == FeedURL); });
-
-                // estraggo i file da scaricare del feed
-                List<sDonwloadFile> PendingFileFromRssFeed;
-                PendingFileFromRssFeed = DownloadFileList.FindAll(delegate(sDonwloadFile file)
-                                                        { return (file.FeedLink == FeedURL) ^ (file.FeedSource == FeedURL); });
-
-                // calcolo il numero di file da scaricare:
-                int dif = RssFeed.maxSimultaneousDownload - CurrentlyDownloadingFileFromEmuleByFeed.Count;
-
-                if (PendingFileFromRssFeed.Count > 0)
-                {
-                    if (dif <= 0)
-                    {
-                        Log.logVerbose(string.Format("Limit reached ({0}), remove all pending element", RssFeed.maxSimultaneousDownload));
-
-                        // nothing to download
-                        foreach (sDonwloadFile file in PendingFileFromRssFeed)
-                        {
-                            DownloadFileList.Remove(file);
-                        }
-
-                    }
-                    else
-                    {
-                        int delta = PendingFileFromRssFeed.Count - dif;
-                        Log.logVerbose(string.Format("Limit reached ({0}), remove {0} pending element", RssFeed.maxSimultaneousDownload, delta));
-
-                        PendingFileFromRssFeed.Sort(delegate(sDonwloadFile A, sDonwloadFile B)
-                                                        { return A.Ed2kLink.CompareTo(B.Ed2kLink); });
-
-                        for (int index = dif; index < PendingFileFromRssFeed.Count; index++)
-                        {
-                            sDonwloadFile temp = PendingFileFromRssFeed[index];
-                            DownloadFileList.Remove(temp);
-                        }
-                    }
-                }
+                MaxSimultaneousDownloadsDictionary.Add(RssFeed.Url, RssFeed.maxSimultaneousDownload);
             }
 
-            Log.logVerbose("DownloadFileList  = " + DownloadFileList.Count);
+            // 
+            //  remove all file already in download
+            //
+            foreach (fileHistory fh in ActualDownloadFileList)
+            {
+                if (MaxSimultaneousDownloadsDictionary.ContainsKey(fh.FeedSource) == true)
+                {
+                    int x = MaxSimultaneousDownloadsDictionary[fh.FeedSource];
+                    x = Math.Max(0, x - 1);
+                    MaxSimultaneousDownloadsDictionary[fh.FeedSource] = x;
+                }
+            }
 
             Log.logVerbose("Download file");
             //
@@ -869,12 +808,34 @@ namespace tvu
             // 
             foreach (sDonwloadFile DownloadFile in DownloadFileList)
             {
-
+                //  this code allow to block anytime the loop
                 if (backgroundWorker1.CancellationPending)
                 {
                     e.Cancel = true;
                     return;
                 }
+
+                int MSDD = MaxSimultaneousDownloadsDictionary[DownloadFile.FeedSource];
+                if (MSDD == 0)
+                {
+                    Log.logInfo(string.Format("File skipped {0}", DownloadFile.Ed2kLink));
+                    if (this.listBoxPending.InvokeRequired == true)
+                    {
+
+                        Invoke(new MethodInvoker(
+                            delegate { this.AddItemToListBoxPending(new Ed2kfile(DownloadFile.Ed2kLink).FileName); }
+                        ));
+
+                    }
+                    else
+                    {
+                        this.AddItemToListBoxPending(new Ed2kfile(DownloadFile.Ed2kLink).FileName);
+                    }
+
+                    continue;
+                }
+
+                MaxSimultaneousDownloadsDictionary[DownloadFile.FeedSource] = Math.Max(0, MSDD - 1);
 
                 Ed2kfile ed2klink = new Ed2kfile(DownloadFile.Ed2kLink);
                 Log.logVerbose("Add file to download");
@@ -1604,6 +1565,19 @@ namespace tvu
         /// </summary>
         void AddRssChannel()
         {
+
+            if ((MainConfig.tvuCookieH == string.Empty) | (MainConfig.tvuCookieI == string.Empty) | (MainConfig.tvuCookieT == string.Empty))
+            {
+                MessageBox.Show("Please login before add new RSS feed (File>Login");
+                return;
+            }
+
+
+            if ((MainConfig.Password == string.Empty) | (MainConfig.ServiceUrl == string.Empty) )
+            {
+                MessageBox.Show("Please config eMule web interface (File > Option > Global Option > Network");
+                return;
+            }
 
             List<string> CurrentRssUrlList = new List<string>();
             //

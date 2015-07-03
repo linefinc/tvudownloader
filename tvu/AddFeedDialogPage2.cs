@@ -11,7 +11,7 @@ namespace tvu
 {
     public partial class AddFeedDialogPage2 : Form
     {
-        public List<RssChannel> RssChannelList {private set; get;}
+        public List<RssChannel> RssChannelList { private set; get; }
         public List<string> RssUrlList { private set; get; }
         public List<fileHistory> ListFileHistory { private set; get; }
         public List<string> ListCategory { private set; get; }
@@ -36,16 +36,16 @@ namespace tvu
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-           
+
             foreach (string url in RssUrlList)
             {
 
-                if (backgroundWorker1.CancellationPending) 
-                { 
-                    e.Cancel = true; 
-                    return; 
+                if (backgroundWorker1.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
                 }
-                
+
                 try
                 {
                     RssChannel rc = new RssChannel();
@@ -55,8 +55,8 @@ namespace tvu
                     RssChannelList.Add(rc);
                     backgroundWorker1.ReportProgress(0);
                 }
-                catch 
-                { 
+                catch
+                {
                 }
             }
 
@@ -97,7 +97,7 @@ namespace tvu
             {
                 /// update category list from mule
                 eMuleWebManager Service = new eMuleWebManager(ServiceUrl, Password);
-                eMuleWebManager.LoginStatus returnCode = Service.LogIn();
+                eMuleWebManager.LoginStatus returnCode = Service.Connect();
 
                 if (returnCode != eMuleWebManager.LoginStatus.Logged)
                 {
@@ -106,14 +106,14 @@ namespace tvu
 
                 ListCategory.AddRange(Service.GetCategory(true));
 
-                Service.LogOut();
+                Service.Close();
             }
             catch
             {
 
             }
-    
-            
+
+
         }
 
         private void AddFeedDialogPage2_Load(object sender, EventArgs e)
@@ -141,7 +141,7 @@ namespace tvu
             {
                 this.DialogResult = DialogResult.OK;
             }
-            
+
             this.Close();
         }
     }

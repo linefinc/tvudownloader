@@ -187,7 +187,7 @@ namespace tvu
         private void buttonCheckNow_Click(object sender, EventArgs e)
         {
             eMuleWebManager service = new eMuleWebManager(textBoxServiceUrl.Text, textBoxPassword.Text);
-            eMuleWebManager.LoginStatus rc = service.LogIn();
+            eMuleWebManager.LoginStatus rc = service.Connect();
 
             if (rc == eMuleWebManager.LoginStatus.ServiceNotAvailable)
             {
