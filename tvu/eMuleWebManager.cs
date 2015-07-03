@@ -17,6 +17,8 @@ namespace tvu
 
         public enum LoginStatus { Logged, PasswordError, ServiceNotAvailable };
 
+        public bool isConnected { private set; get; }
+
         /// <summary>
         /// constructor
         /// </summary>
@@ -27,6 +29,7 @@ namespace tvu
             this.Host = Host;
             this.Password = Password;
             this.CategoryCache = new List<string>();
+            this.isConnected = false;
         }
 
 
@@ -34,13 +37,15 @@ namespace tvu
         /// Login
         /// </summary>
         /// <returns></returns>
-        public LoginStatus LogIn()
+        public LoginStatus Connect()
         {
             int j, i;
             //
             // generate login uri
             //ex: http://localhost:4000/?w=password&p=PASSWORD
             //
+            this.isConnected = false;   // reset connection status
+
             string request = string.Format("{0}/?w=password&p={1}", Host, Password);
             string page;
             try
@@ -49,9 +54,9 @@ namespace tvu
             }
             catch
             {
+                
                 return LoginStatus.ServiceNotAvailable;
             }
-
 
             // check login 
             // if we not found logout, there's a password error
@@ -81,7 +86,8 @@ namespace tvu
             {
                 return LoginStatus.PasswordError;
             }
-
+            
+            this.isConnected = true;
             return LoginStatus.Logged;
         }
 
@@ -90,21 +96,11 @@ namespace tvu
         /// Close connection with emule
         /// </summary>
         /// <remarks>reset Session ID</remarks>
-        public void LogOut()
+        public void Close()
         {
             string temp = string.Format("{0}/?ses={1}&w=logout", Host, SesID);
             webSocketGET(temp);
-        }
-
-
-        /// <summary>
-        /// Close mule
-        /// </summary>
-        /// <remarks>close mule ( require special permis)</remarks>
-        public void Close()
-        {
-            string temp = string.Format("{0}/?ses={1}&w=close", Host, SesID);
-            webSocketGET(temp);
+            this.isConnected = false;
         }
 
 
