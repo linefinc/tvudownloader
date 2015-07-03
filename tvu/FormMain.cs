@@ -703,8 +703,6 @@ namespace tvu
 
 
             eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
-            eMuleWebManager.LoginStatus returnCode = Service.LogIn();
-
 
             //
             //  if emule is close and new file < min to start not do null
@@ -712,9 +710,34 @@ namespace tvu
             //
             // try to start emule
             // the if work only if rc == null ad 
-            if ((MainConfig.StartEmuleIfClose == true) & (DownloadFileList.Count > MainConfig.MinToStartEmule))
+            if ((MainConfig.StartEmuleIfClose != true) & (DownloadFileList.Count <= MainConfig.MinToStartEmule))
             {
-                for (int i = 1; (i <= 5) & (returnCode != eMuleWebManager.LoginStatus.Logged); i++)
+                Log.logInfo("Emule off line");
+                Log.logInfo("Min file download not reached");
+                return;
+            }
+            
+            for (int cont = 1; (cont <= 5) & ( Service.Connect() != eMuleWebManager.LoginStatus.Logged); cont++)
+            {
+                if (backgroundWorker1.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+
+                Log.logInfo(string.Format("start eMule Now (try {0}/5)", cont));
+                Log.logInfo("Wait 60 sec");
+                try
+                {
+                    Process.Start(MainConfig.eMuleExe);
+                }
+                catch
+                {
+                    Log.logInfo("Unable start application");
+                }
+
+                // avoid blocking douring delay
+                for (int n = 0; n < 10; n++)
                 {
                     if (backgroundWorker1.CancellationPending)
                     {
@@ -722,43 +745,15 @@ namespace tvu
                         return;
                     }
 
-
-                    Log.logInfo(string.Format("start eMule Now (try {0}/5)", i));
-                    Log.logInfo("Wait 60 sec");
-                    try
-                    {
-                        Process.Start(MainConfig.eMuleExe);
-                    }
-                    catch
-                    {
-                        Log.logInfo("Unable start application");
-                    }
-
-                    for (int n = 0; n < 10; n++)
-                    {
-                        if (backgroundWorker1.CancellationPending)
-                        {
-                            e.Cancel = true;
-                            return;
-                        }
-
-                        Thread.Sleep(500);
-                    }
-
-                    returnCode = Service.LogIn();
-
+                    Thread.Sleep(500);
                 }
+
             }
 
-            Log.logVerbose("Check min download");
-            if (returnCode != eMuleWebManager.LoginStatus.Logged)
-            {
-                if (DownloadFileList.Count < MainConfig.MinToStartEmule)
-                {
-                    Log.logInfo("Min file download not reached");
-                    return;
-                }
 
+            Log.logVerbose("Check min download");
+            if (Service.isConnected == false)
+            {
                 Log.logInfo("Unable to connect to eMule web server");
                 return;
             }
@@ -810,7 +805,7 @@ namespace tvu
 
 
             // clean RssFeedList
-            
+
             RssFeedList = new List<RssSubscrission>();
             RssFeedList.AddRange(MainConfig.RssFeedList);
 
@@ -908,7 +903,7 @@ namespace tvu
             }
 
             Log.logInfo("logout Emule");
-            Service.LogOut();
+            Service.Close();
             Log.logInfo("Statistics");
             Log.logInfo(string.Format("Total file added {0}", MainConfig.TotalDownloads));
 
@@ -1356,7 +1351,7 @@ namespace tvu
 
             Log.logVerbose("[AutoClose Mule] Check Login");
             eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
-            eMuleWebManager.LoginStatus returnCode = Service.LogIn();
+            eMuleWebManager.LoginStatus returnCode = Service.Connect();
 
 
             // if mule close ... end of game
@@ -1375,7 +1370,7 @@ namespace tvu
                 Log.logVerbose("[AutoClose Mule] GetActualDownloads return >0");
                 AutoCloseDataTime = DateTime.Now.AddMinutes(30);
                 Log.logVerbose("[AutoClose Mule] LogOut");
-                Service.LogOut();
+                Service.Close();
                 return;
             }
 
@@ -1400,14 +1395,14 @@ namespace tvu
                     Log.logVerbose("[AutoClose Mule: SKIP] Next Tock " + AutoCloseDataTime.ToString());
                     Dialog.Dispose();
                     Log.logVerbose("[AutoClose Mule] LogOut");
-                    Service.LogOut();
+                    Service.Close();
                     timerAutoClose.Enabled = true;  // enable timer 
                     break;
                 case AlertChoiceEnum.Disable:    // disable autoclose
                     Log.logVerbose("[AutoClose Mule: DISABLE] Disable");
                     Dialog.Dispose();
                     Log.logVerbose("[AutoClose Mule] LogOut");
-                    Service.LogOut();
+                    Service.Close();
                     DisableAutoCloseEmule();
                     timerAutoClose.Enabled = true;  // enable timer 
                     break;
