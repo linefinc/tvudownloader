@@ -634,25 +634,6 @@ namespace tvu
 
                             sDonwloadFile DL = new sDonwloadFile(sEd2k, FeedLink, feed.Url, feed.PauseDownload, feed.Category);
 
-                            Ed2kfile tempFile = new Ed2kfile(sEd2k);
-                            // add to pending list
-                            if (this.listBoxPending.InvokeRequired == true)
-                            {
-
-                                Invoke(new MethodInvoker(
-                                    delegate { this.AddItemToListBoxPending(tempFile.FileName); }
-                                ));
-
-                            }
-                            else
-                            {
-                                this.AddItemToListBoxPending(tempFile.FileName);
-                            }
-
-
-                            // remove the comment:
-                            //counter++;
-
                             DownloadFileList.Add(DL);
                         }
                         else
@@ -817,7 +798,8 @@ namespace tvu
                 int MSDD = MaxSimultaneousDownloadsDictionary[DownloadFile.FeedSource];
                 if (MSDD == 0)
                 {
-                    Log.logInfo(string.Format("File skipped {0}", DownloadFile.Ed2kLink));
+                    string fileName = new Ed2kfile(DownloadFile.Ed2kLink).FileName;
+                    Log.logInfo(string.Format("File skipped {0}", fileName));
                     //
                     //  Use invoke to avoid thread issue
                     //
@@ -825,13 +807,13 @@ namespace tvu
                     {
 
                         Invoke(new MethodInvoker(
-                            delegate { this.AddItemToListBoxPending(new Ed2kfile(DownloadFile.Ed2kLink).FileName); }
+                            delegate { this.AddItemToListBoxPending(fileName); }
                         ));
 
                     }
                     else
                     {
-                        this.AddItemToListBoxPending(new Ed2kfile(DownloadFile.Ed2kLink).FileName);
+                        this.AddItemToListBoxPending(fileName);
                     }
 
                     continue;
