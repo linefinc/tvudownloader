@@ -1883,7 +1883,7 @@ namespace tvu
                 return;
             }
 
-            EditFeedForm dialog = new EditFeedForm(SelectedFeed.Category, SelectedFeed.PauseDownload, SelectedFeed.Enabled, SelectedFeed.maxSimultaneousDownload);
+            EditFeedForm dialog = new EditFeedForm(MainConfig, SelectedFeed.Category, SelectedFeed.PauseDownload, SelectedFeed.Enabled, SelectedFeed.maxSimultaneousDownload);
             dialog.ShowDialog();
 
             if (dialog.DialogResult != DialogResult.OK)

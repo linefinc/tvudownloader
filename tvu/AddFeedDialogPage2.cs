@@ -34,6 +34,11 @@ namespace tvu
 
         }
 
+        private void AddFeedDialogPage2_Load(object sender, EventArgs e)
+        {
+            backgroundWorker1.RunWorkerAsync();
+        }
+
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
 
@@ -118,10 +123,7 @@ namespace tvu
 
         }
 
-        private void AddFeedDialogPage2_Load(object sender, EventArgs e)
-        {
-            backgroundWorker1.RunWorkerAsync();
-        }
+ 
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
