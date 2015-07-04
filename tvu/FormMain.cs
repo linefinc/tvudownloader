@@ -768,9 +768,9 @@ namespace tvu
             foreach (Ed2kfile file in CourrentDownloadsFormEmule)
             {
 
-                if (MainHistory.FileExist(file.Ed2kLink))
+                if (MainHistory.FileExist(file) == true)
                 {
-                    fileHistory fh = MainHistory.FileExist(file);
+                    fileHistory fh = MainHistory.getFileHistoryFromDB(file);
                     ActualDownloadFileList.Add(fh);
                 }
             }
@@ -788,7 +788,6 @@ namespace tvu
             {
                 MaxSimultaneousDownloadsDictionary.Add(RssFeed.Url, RssFeed.maxSimultaneousDownload);
             }
-
             // 
             //  remove all file already in download
             //
@@ -819,6 +818,9 @@ namespace tvu
                 if (MSDD == 0)
                 {
                     Log.logInfo(string.Format("File skipped {0}", DownloadFile.Ed2kLink));
+                    //
+                    //  Use invoke to avoid thread issue
+                    //
                     if (this.listBoxPending.InvokeRequired == true)
                     {
 
@@ -1573,10 +1575,9 @@ namespace tvu
             }
 
 
-            if ((MainConfig.Password == string.Empty) | (MainConfig.ServiceUrl == string.Empty) )
+            if (MainConfig.Password == string.Empty)
             {
                 MessageBox.Show("Please config eMule web interface (File > Option > Global Option > Network");
-                return;
             }
 
             List<string> CurrentRssUrlList = new List<string>();

@@ -200,7 +200,7 @@ namespace tvu
         }
 
 
-        public bool FileExist(string FileName)
+        public bool FileExist(Ed2kfile file)
         {
             DataTable dt = new DataTable();
             dt.Reset();
@@ -208,23 +208,26 @@ namespace tvu
             using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
             {
                 connection.Open();
-                const string sqlTemplate = @"SELECT uuid FROM History WHERE FileName = @FileName";
-
+                const string sqlTemplate = @"SELECT uuid, FeedLink, FeedSource, LastUpdate 
+                                                                    FROM History 
+                                                             WHERE 
+                                                                    History.HashMD4 = @HashMD4 AND 
+                                                                    History.FileSize = @FileSize AND
+                                                                    ((History.HashSHA1 = "") OR (@HashSHA1 = "" ) OR (History.HashSHA1 = @HashSHA1));";
                 SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
                 command.CommandType = CommandType.Text;
-                command.Parameters.Add(new SQLiteParameter("@FileName", FileName));
+                command.Parameters.Add(new SQLiteParameter("@FileSize", file.FileSize));
+                command.Parameters.Add(new SQLiteParameter("@HashMD4", file.HashMD4));
+                command.Parameters.Add(new SQLiteParameter("@HashSHA1", file.HashSHA1));
                 SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
-
-
                 dataAdapter.Fill(dt);
-
                 connection.Close();
             }
 
             return dt.Rows.Count > 0;
         }
 
-        public fileHistory FileExist(Ed2kfile file)
+        public fileHistory getFileHistoryFromDB(Ed2kfile file)
         {
             DataTable dt = new DataTable();
             dt.Reset();
@@ -238,10 +241,11 @@ namespace tvu
                                                     History.HashMD4 = @HashMD4 AND 
                                                     History.FileSize = @FileSize AND
                                                     ((History.HashSHA1 = "") OR (@HashSHA1 = "" ) OR (History.HashSHA1 = @HashSHA1));";
+        
                 SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
                 command.CommandType = CommandType.Text;
-                command.Parameters.Add(new SQLiteParameter("@HashMD4", file.FileSize));
-                command.Parameters.Add(new SQLiteParameter("@FileSize", file.HashMD4));
+                command.Parameters.Add(new SQLiteParameter("@FileSize", file.FileSize));
+                command.Parameters.Add(new SQLiteParameter("@HashMD4", file.HashMD4));
                 command.Parameters.Add(new SQLiteParameter("@HashSHA1", file.HashSHA1));
                 SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
                 dataAdapter.Fill(dt);
@@ -463,6 +467,6 @@ namespace tvu
 
 
 
-   
+
     }
 }
