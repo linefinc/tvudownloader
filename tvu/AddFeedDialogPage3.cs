@@ -17,7 +17,7 @@ namespace tvu
         public List<fileHistory> GlobalListFileHisotry { get; private set; }
         public List<RssChannel> ListRssChannel { get; private set; }
 
-        public AddFeedDialogPage3(List<RssChannel> ListRssChannel, List<fileHistory> GlobalListFileHisotry)
+        public AddFeedDialogPage3(List<RssChannel> ListRssChannel, List<fileHistory> GlobalListFileHisotry, List<string> ListCategory)
         {
             InitializeComponent();
 
@@ -26,6 +26,12 @@ namespace tvu
             this.UnselectedHistory = new List<fileHistory>(); // select all input file
             labelSelectedElement.Text = string.Format("Selected elements {0}", this.GlobalListFileHisotry.Count);
             index = 0;
+
+
+            foreach(var str in ListCategory)
+            {
+                comboBoxCategory.Items.Add(str);
+            }
         }     
 
         private void AddFeedDialogPage3_Load(object sender, EventArgs e)

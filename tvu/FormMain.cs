@@ -756,10 +756,7 @@ namespace tvu
                 }
             }
 
-
             Log.logInfo("ActualDownloadFileList.Count = " + ActualDownloadFileList.Count);
-
-            // clean RssFeedList
             Log.logInfo("MainConfig.MaxSimultaneousFeedDownloads = " + MainConfig.MaxSimultaneousFeedDownloads);
 
             // create a dictionary to count 
@@ -1621,6 +1618,7 @@ namespace tvu
 
             List<RssChannel> RssChannelList = dialogPage2.RssChannelList;
             List<fileHistory> ListFileHistory = dialogPage2.ListFileHistory;
+            List<string> ListCategory = dialogPage2.ListCategory;
 
             dialogPage2.Dispose();  // free dialog
             // setup default 
@@ -1634,7 +1632,7 @@ namespace tvu
             //
             //  show Page 3 : choose single files to download.
             //
-            AddFeedDialogPage3 dialogPage3 = new AddFeedDialogPage3(RssChannelList, ListFileHistory);
+            AddFeedDialogPage3 dialogPage3 = new AddFeedDialogPage3(RssChannelList, ListFileHistory, ListCategory);
             dialogPage3.ShowDialog();
             if (dialogPage3.DialogResult != DialogResult.OK)
             {

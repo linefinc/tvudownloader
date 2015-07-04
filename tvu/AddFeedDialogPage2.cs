@@ -93,13 +93,15 @@ namespace tvu
 
             }
 
+            //
+            // update category list from mule
+            //
             try
             {
-                /// update category list from mule
                 eMuleWebManager Service = new eMuleWebManager(ServiceUrl, Password);
-                eMuleWebManager.LoginStatus returnCode = Service.Connect();
+                Service.Connect();
 
-                if (returnCode != eMuleWebManager.LoginStatus.Logged)
+                if (Service.isConnected == false)
                 {
                     return;
                 }
