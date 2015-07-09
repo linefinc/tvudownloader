@@ -24,6 +24,31 @@ namespace TvUndergroundDownloader
                 return;
             }
 
+            // copy file from old position to new position
+            try
+            {
+                if (!File.Exists(Config.FileNameConfig))
+                {
+                    // generate old path
+                    string basePath = Environment.GetEnvironmentVariable("LocalAppData");
+
+                    // check if old config exist
+                    if (File.Exists(basePath + @"\tvu\tvu\config.xml"))
+                    {
+                        // copy file
+                        File.Copy(basePath + @"\tvu\tvu\config.xml", basePath + @"\TvUndergroundDownloader\config.xml");
+                        File.Copy(basePath + @"\tvu\tvu\History.xml", basePath + @"\TvUndergroundDownloader\History.xml");
+                        File.Copy(basePath + @"\tvu\tvu\log.txt", basePath + @"\TvUndergroundDownloader\log.txt");
+                    }
+
+                }
+            }
+            catch
+            {
+
+            }
+
+
 
             // create db if not exit
             if (File.Exists(Config.FileNameDB) == false)

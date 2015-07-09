@@ -61,8 +61,7 @@ namespace TvUndergroundDownloader
 #if DEBUG
                 return "config.xml";
 #else
-                string temp = Directory.GetParent(Application.LocalUserAppDataPath).FullName;
-                return temp + "\\config.xml";
+                return Environment.GetEnvironmentVariable("LocalAppData") + @"\TvUndergroundDownloader\config.xml";
 #endif
             }
         }
@@ -73,9 +72,7 @@ namespace TvUndergroundDownloader
 #if DEBUG
                 return "log.txt";
 #else
-                string temp = Application.LocalUserAppDataPath;
-                int rc = temp.LastIndexOf("\\");
-                return temp.Substring(0, rc) + "\\log.txt";
+                return Environment.GetEnvironmentVariable("LocalAppData") + @"\TvUndergroundDownloader\log.xml";
 #endif
             }
         }
@@ -87,9 +84,9 @@ namespace TvUndergroundDownloader
 #if DEBUG
                 return "History.xml";
 #else
-                string temp = Application.LocalUserAppDataPath;
-                int rc = temp.LastIndexOf("\\");
-                return temp.Substring(0, rc) + "\\History.xml";
+
+                return Environment.GetEnvironmentVariable("LocalAppData") + @"\TvUndergroundDownloader\History.xml";
+
 #endif
             }
         }
@@ -101,9 +98,8 @@ namespace TvUndergroundDownloader
 #if DEBUG
                 return "storage.db";
 #else
-                string FileName = Application.LocalUserAppDataPath;
-                int rc = FileName.LastIndexOf("\\");
-                return FileName.Substring(0, rc) + "\\storage.db";
+                return Environment.GetEnvironmentVariable("LocalAppData") + @"\TvUndergroundDownloader\storage.xml";
+
 #endif
             }
         }
