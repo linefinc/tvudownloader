@@ -6,7 +6,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 
 
-namespace tvu
+namespace TvUndergroundDownloader
 {
     class eMuleWebManager
     {
@@ -32,7 +32,6 @@ namespace tvu
             this.isConnected = false;
         }
 
-
         /// <summary>
         /// Login
         /// </summary>
@@ -54,7 +53,7 @@ namespace tvu
             }
             catch
             {
-                
+
                 return LoginStatus.ServiceNotAvailable;
             }
 
@@ -86,11 +85,10 @@ namespace tvu
             {
                 return LoginStatus.PasswordError;
             }
-            
+
             this.isConnected = true;
             return LoginStatus.Logged;
         }
-
 
         /// <summary>
         /// Close connection with emule
@@ -102,7 +100,6 @@ namespace tvu
             webSocketGET(temp);
             this.isConnected = false;
         }
-
 
         /// <summary>
         /// Add a file to download
@@ -117,11 +114,7 @@ namespace tvu
                 CategoryId = 0;
             }
 
-            string temp;
-
-            temp = string.Format("{0}/?ses={1}&w=transfer&ed2k={2}&cat={3}", Host, SesID, Ed2kLink.GetEscapedLink(), CategoryId);
-
-            webSocketGET(temp);
+            webSocketGET(string.Format("{0}/?ses={1}&w=transfer&ed2k={2}&cat={3}", Host, SesID, Ed2kLink.GetEscapedLink(), CategoryId));
         }
 
 
@@ -131,8 +124,7 @@ namespace tvu
         /// <param name="Ed2kLink"></param>
         public void StartDownload(Ed2kfile Ed2kLink)
         {
-            string temp = string.Format("{0}/?ses={1}&w=transfer&op=resume&file={2}", Host, SesID, Ed2kLink.GetHash());
-            webSocketGET(temp);
+            webSocketGET(string.Format("{0}/?ses={1}&w=transfer&op=resume&file={2}", Host, SesID, Ed2kLink.GetHash()));
         }
 
 
@@ -142,15 +134,14 @@ namespace tvu
         /// <param name="Ed2kLink"></param>
         public void StopDownload(Ed2kfile Ed2kLink)
         {
-            string temp = string.Format("{0}/?ses={1}&w=transfer&op=stop&file={2}", Host, SesID, Ed2kLink.GetHash());
-            webSocketGET(temp);
+            webSocketGET(string.Format("{0}/?ses={1}&w=transfer&op=stop&file={2}", Host, SesID, Ed2kLink.GetHash()));
 
         }
 
         /// <summary>
         /// get available category from emule
         /// </summary>
-        /// <param name="forceUpdate"></param>
+        /// <param name="forceUpdate">Force upgrade</param>
         /// <returns></returns>
         public List<string> GetCategory(bool forceUpdate)
         {
@@ -225,8 +216,6 @@ namespace tvu
             {
                 ListDownloads.Add(new Ed2kfile(value.ToString()));
             }
-
-
 
             return ListDownloads;
         }

@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Net;
-using System.Net.Sockets;
-using System.Windows.Forms;
-
-
-namespace tvu
+﻿namespace TvUndergroundDownloader
 {
     class SmtpClient
     {

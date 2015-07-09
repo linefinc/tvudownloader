@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace tvu
+namespace TvUndergroundDownloader
 {
     public class Ed2kfile
     {

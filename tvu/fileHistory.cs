@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.Text.RegularExpressions;
 
 
-namespace tvu
+namespace TvUndergroundDownloader
 {
     public class fileHistory : Ed2kfile
     {

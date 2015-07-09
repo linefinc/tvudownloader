@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using System.Xml;
 using System.Text.RegularExpressions;
 using System.IO;
 
-namespace tvu
+namespace TvUndergroundDownloader
 {
     public partial class AddFeedDialogPage1 : Form
     {

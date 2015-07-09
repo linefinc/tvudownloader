@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
 using System.Data.SQLite;
 
-namespace tvu
+namespace TvUndergroundDownloader
 {
     static class Program
     {

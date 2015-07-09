@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using System.Xml;
 
 
-namespace tvu
+namespace TvUndergroundDownloader
 {
     public class History
     {

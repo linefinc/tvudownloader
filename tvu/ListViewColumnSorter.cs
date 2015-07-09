@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Windows.Forms;
 
-namespace tvu
+namespace TvUndergroundDownloader
 {
     /// <summary>
     /// This class is an implementation of the 'IComparer' interface.

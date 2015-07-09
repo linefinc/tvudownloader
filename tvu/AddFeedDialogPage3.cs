@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using System.Xml;
 
-namespace tvu
+namespace TvUndergroundDownloader
 {
     public partial class AddFeedDialogPage3 : Form
     {

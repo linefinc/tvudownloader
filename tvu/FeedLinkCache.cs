@@ -2,7 +2,7 @@
 using System.Data.SQLite;
 using System.Text.RegularExpressions;
 
-namespace tvu
+namespace TvUndergroundDownloader
 {
     public class FeedLinkCacheRow
     {

@@ -12,7 +12,7 @@ using System.Windows.Forms;
 using System.Xml;
 
 
-namespace tvu
+namespace TvUndergroundDownloader
 {
     public partial class FormMain : Form
     {
@@ -125,9 +125,9 @@ namespace tvu
         private void SetupNotify()
         {
 
-            IconUp = tvu.Properties.Resources.appicon1;
+            IconUp = TvUndergroundDownloader.Properties.Resources.appicon1;
 
-            IconDown = tvu.Properties.Resources.appicon2;
+            IconDown = TvUndergroundDownloader.Properties.Resources.appicon2;
 
             this.components = new System.ComponentModel.Container();
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();

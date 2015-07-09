@@ -1,4 +1,4 @@
-﻿namespace tvu
+﻿namespace TvUndergroundDownloader
 {
     partial class EditFeedForm
     {

@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace tvu
+﻿namespace TvUndergroundDownloader
 {
-
-
     public enum tvuStatus
     {
         Complete,

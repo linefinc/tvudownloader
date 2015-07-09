@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.Data.SQLite;
 using System.Reflection;
 
-namespace tvu
+namespace TvUndergroundDownloader
 {
     public class Config
     {

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace tvu.Properties {
+namespace TvUndergroundDownloader.Properties {
     using System;
     
     
