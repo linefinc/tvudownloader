@@ -24,35 +24,56 @@ namespace TvUndergroundDownloader
                 return;
             }
 
-            // copy file from old position to new position
-            try
+            //
+            // enable file logging
+            //
+            Log.Instance.AddLogTarget(new LogTargetFile(Config.FileNameLog));
+
+
+            //
+            //  try to resotre old config from previus foulder
+            //
+            #region update old folder
+            if (!File.Exists(Config.FileNameConfig))
             {
-                if (!File.Exists(Config.FileNameConfig))
+                Log.logInfo("Migration old config file");
+                // generate old path
+                string basePath = Application.LocalUserAppDataPath;
+                basePath = Directory.GetParent(basePath).FullName;
+                basePath = Directory.GetParent(basePath).FullName;
+                basePath = Directory.GetParent(basePath).FullName;
+                //
+                // old path
+                //      C:\Users\User\AppData\Local\tvu\tvu\config.xml
+                // new path
+                //      C:\Users\User\AppData\Local\TvUndergroundDownloader\TvUndergroundDownloader\config.xml
+                //
+
+                // check if old config exist
+
+                if (File.Exists(basePath + @"\tvu\tvu\config.xml"))
                 {
-                    // generate old path
-                    string basePath = Environment.GetEnvironmentVariable("LocalAppData");
-
-                    // check if old config exist
-                    if (File.Exists(basePath + @"\tvu\tvu\config.xml"))
-                    {
-                        // copy file
-                        File.Copy(basePath + @"\tvu\tvu\config.xml", basePath + @"\TvUndergroundDownloader\config.xml");
-                        File.Copy(basePath + @"\tvu\tvu\History.xml", basePath + @"\TvUndergroundDownloader\History.xml");
-                        File.Copy(basePath + @"\tvu\tvu\log.txt", basePath + @"\TvUndergroundDownloader\log.txt");
-                    }
-
+                    Log.logInfo("config.xml founded");
+                    File.Copy(basePath + @"\tvu\tvu\config.xml", Config.FileNameConfig);
+                    File.Copy(basePath + @"\tvu\tvu\config.xml", Config.FileNameConfig + ".old");
                 }
-            }
-            catch
-            {
+
+
+                if (File.Exists(basePath + @"\tvu\tvu\History.xml"))
+                {
+                    Log.logInfo("History.xml founded");
+                    File.Copy(basePath + @"\tvu\tvu\History.xml", Config.FileNameHistory);
+                }
+
 
             }
+            #endregion
 
-
-
+            #region initialize db
             // create db if not exit
             if (File.Exists(Config.FileNameDB) == false)
             {
+                Log.logInfo("Initialize new database");
                 SQLiteConnection.CreateFile(Config.FileNameDB);
 
                 History.InitDB();
@@ -63,6 +84,7 @@ namespace TvUndergroundDownloader
                     File.Move(Config.FileNameHistory, Config.FileNameHistory + ".old");
                 }
             }
+            #endregion
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

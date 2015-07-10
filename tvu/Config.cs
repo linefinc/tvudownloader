@@ -54,26 +54,31 @@ namespace TvUndergroundDownloader
         public string MailSender;
         public int intervalBetweenUpgradeCheck;
         public string LastUpgradeCheck;
+
+        public static string ConfigFolder
+        {
+            get
+            {
+                // base path = C:\Users\User\AppData\Local\TvUndergroundDownloader\TvUndergroundDownloader\version
+                // return  C:\Users\User\AppData\Local\TvUndergroundDownloader
+                string basePath = Application.LocalUserAppDataPath;
+                basePath = Directory.GetParent(basePath).FullName;
+                basePath = Directory.GetParent(basePath).FullName;
+                return basePath;
+            }
+        }
         public static string FileNameConfig
         {
             get
             {
-#if DEBUG
-                return "config.xml";
-#else
-                return Environment.GetEnvironmentVariable("LocalAppData") + @"\TvUndergroundDownloader\config.xml";
-#endif
+                return Path.Combine(ConfigFolder, "config.xml");
             }
         }
         public static string FileNameLog
         {
             get
             {
-#if DEBUG
-                return "log.txt";
-#else
-                return Environment.GetEnvironmentVariable("LocalAppData") + @"\TvUndergroundDownloader\log.xml";
-#endif
+                return Path.Combine(ConfigFolder, "log.txt");
             }
         }
 
@@ -81,13 +86,7 @@ namespace TvUndergroundDownloader
         {
             get
             {
-#if DEBUG
-                return "History.xml";
-#else
-
-                return Environment.GetEnvironmentVariable("LocalAppData") + @"\TvUndergroundDownloader\History.xml";
-
-#endif
+                return Path.Combine(ConfigFolder, "History.xml");
             }
         }
 
@@ -95,12 +94,7 @@ namespace TvUndergroundDownloader
         {
             get
             {
-#if DEBUG
-                return "storage.db";
-#else
-                return Environment.GetEnvironmentVariable("LocalAppData") + @"\TvUndergroundDownloader\storage.xml";
-
-#endif
+                return Path.Combine(ConfigFolder, "storage.sqlitedb");
             }
         }
 

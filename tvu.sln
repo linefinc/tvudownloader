@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.22823.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TvUndergroundDownloader", "tvu\TvUndergroundDownloader.csproj", "{FBE9E70D-4056-4140-8468-90555E6B5F32}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tvu", "tvu\tvu.csproj", "{FBE9E70D-4056-4140-8468-90555E6B5F32}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{DE326027-A6DE-412F-A6E1-E2C52AC02AFE}"
 	ProjectSection(SolutionItems) = preProject

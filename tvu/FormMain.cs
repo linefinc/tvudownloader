@@ -115,8 +115,8 @@ namespace TvUndergroundDownloader
             UpdateRecentActivity();
             UpdateRssFeedGUI();
 
+            // attach textBox to the logger
             Log.Instance.AddLogTarget(new LogTargetTextBox(this, LogTextBox));
-            Log.Instance.AddLogTarget(new LogTargetFile(Config.FileNameLog));
             Log.Instance.SetVerboseMode(MainConfig.Verbose);
 
         }
