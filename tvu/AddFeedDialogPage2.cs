@@ -82,7 +82,7 @@ namespace TvUndergroundDownloader
                         // find ed2k
                         string sEd2k = RssParserTVU.FindEd2kLink(page);
                         // add to history to avoid redonwload
-                        fileHistory file = new fileHistory(sEd2k, rssChannel.Link, rssChannel.Url);
+                        fileHistory file = new fileHistory(sEd2k, Item.Guid, rssChannel.Url);
                         ListFileHistory.Add(file);
                         backgroundWorker1.ReportProgress(0);
                         // update feedLinkCache
