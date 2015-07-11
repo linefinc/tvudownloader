@@ -81,6 +81,22 @@ namespace TvUndergroundDownloader
 
                 connection.Close();
             }
+
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+            {
+                connection.Open();
+                string sql = @"CREATE VIEW IF NOT EXISTS vwRssSubscrission AS
+                                    SELECT *, 
+                                    (SELECT COUNT(*) from History WHERE History.seasonID = RssSubscrission.seasonID  ) AS Downloaded ,
+                                    (SELECT COUNT(*) from FeedLinkCache WHERE FeedLinkCache.seasonID = RssSubscrission.seasonID  ) AS Pending
+                                    FROM RssSubscrission;";
+                SQLiteCommand command = new SQLiteCommand(sql, connection);
+                command.ExecuteNonQuery();
+
+                connection.Close();
+            }
+
+
         }
         public static void CleanUp()
         {
