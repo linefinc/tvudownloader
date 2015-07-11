@@ -1662,7 +1662,7 @@ namespace TvUndergroundDownloader
             //
             foreach (fileHistory fh in dialogPage3.GlobalListFileHisotry)
             {
-                MainHistory.DeleteFile(fh.FileName);
+                MainHistory.DeleteFile(fh);
             }
 
             //

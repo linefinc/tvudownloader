@@ -137,14 +137,13 @@ namespace TvUndergroundDownloader
 
             string seasonID = string.Empty, episodeID = string.Empty;
 
-            Regex Pattern = new Regex(@"season.?(\d{3,6}).?sid.?(\d{3,6})");
-
-            MatchCollection matchCollection = Pattern.Matches(FeedLink);
+            // Static Regex "https?://(www\.)?tvunderground.org.ru/index.php\?show=ed2k&season=(\d{1,10})&sid\[(\d{1,10})\]=\d{1,10}"
+            MatchCollection matchCollection = fileHistory.regexFeedLink.Matches(FeedLink);
 
             if (matchCollection.Count > 0)
             {
-                seasonID = matchCollection[0].Groups[1].ToString();
-                episodeID = matchCollection[0].Groups[2].ToString();
+                seasonID = matchCollection[0].Groups[2].ToString();
+                episodeID = matchCollection[0].Groups[3].ToString();
             }
 
             using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
@@ -180,7 +179,7 @@ namespace TvUndergroundDownloader
         /// <param name="Date">Date</param>
         /// <param name="SQLiteTransaction">transaction</param>
         ///
-        public static void Add(SQLiteTransaction transaction, string ed2k, string FeedLink, string FeedSource, string Date)
+        private static void Add(SQLiteTransaction transaction, string ed2k, string FeedLink, string FeedSource, string Date)
         {
             fileHistory fh = new fileHistory(ed2k, FeedLink, FeedSource, Date);
 
@@ -188,15 +187,13 @@ namespace TvUndergroundDownloader
 
 
             string seasonID = string.Empty, episodeID = string.Empty;
-
-            Regex Pattern = new Regex(@"season.?(\d{3,6}).?sid.?(\d{3,6})");
-
-            MatchCollection matchCollection = Pattern.Matches(FeedLink);
+            // Static Regex "https?://(www\.)?tvunderground.org.ru/index.php\?show=ed2k&season=(\d{1,10})&sid\[(\d{1,10})\]=\d{1,10}"
+            MatchCollection matchCollection = fileHistory.regexFeedLink.Matches(FeedLink);
 
             if (matchCollection.Count > 0)
             {
-                seasonID = matchCollection[0].Groups[1].ToString();
-                episodeID = matchCollection[0].Groups[2].ToString();
+                seasonID = matchCollection[0].Groups[2].ToString();
+                episodeID = matchCollection[0].Groups[3].ToString();
             }
 
 
@@ -263,7 +260,7 @@ namespace TvUndergroundDownloader
                                                     History.HashMD4 = @HashMD4 AND 
                                                     History.FileSize = @FileSize AND
                                                     ((History.HashSHA1 = "") OR (@HashSHA1 = "" ) OR (History.HashSHA1 = @HashSHA1));";
-        
+
                 SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
                 command.CommandType = CommandType.Text;
                 command.Parameters.Add(new SQLiteParameter("@FileSize", file.FileSize));
@@ -368,6 +365,32 @@ namespace TvUndergroundDownloader
         /// Delete entry by fila name
         /// </summary>
         /// <param name="FileName"></param>
+        public void DeleteFile(Ed2kfile file)
+        {
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+            {
+                connection.Open();
+                const string sqlTemplate = @"DELETE FROM History WHERE 
+                                                    History.HashMD4 = @HashMD4 AND 
+                                                    History.FileSize = @FileSize AND
+                                                    ((History.HashSHA1 = "") OR (@HashSHA1 = "" ) OR (History.HashSHA1 = @HashSHA1));";
+
+                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                command.CommandType = CommandType.Text;
+                command.Parameters.Add(new SQLiteParameter("@FileSize", file.FileSize));
+                command.Parameters.Add(new SQLiteParameter("@HashMD4", file.HashMD4));
+                command.Parameters.Add(new SQLiteParameter("@HashSHA1", file.HashSHA1));
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+
+        }
+
+        /// <summary>
+        /// Delete entry by fila name
+        /// </summary>
+        /// <param name="FileName"></param>
+        [Obsolete]
         public void DeleteFile(string FileName)
         {
 

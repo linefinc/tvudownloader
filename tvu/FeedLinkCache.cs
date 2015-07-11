@@ -51,14 +51,14 @@ namespace TvUndergroundDownloader
             string episodeID = string.Empty;
 
             // http://tvunderground.org.ru/index.php?show=ed2k&season=73528&sid[815433]=1
-            Regex Pattern = new Regex(@"season.?(\d{3,6}).?sid.?(\d{3,6})");
+            
 
-            MatchCollection matchCollection = Pattern.Matches(FeedLink);
+            MatchCollection matchCollection = fileHistory.regexFeedLink.Matches(FeedLink);
 
             if (matchCollection.Count > 0)
             {
-                seasonID = matchCollection[0].Groups[1].ToString();
-                episodeID = matchCollection[0].Groups[2].ToString();
+                seasonID = matchCollection[0].Groups[2].ToString();
+                episodeID = matchCollection[0].Groups[3].ToString();
             }
 
             using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
