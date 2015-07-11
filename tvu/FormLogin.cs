@@ -59,25 +59,26 @@ namespace TvUndergroundDownloader
                 //
                 //  search T
                 //
-                if (cookie.IndexOf("t=") > 0)
+                if (cookie.IndexOf("t=") > -1)
                 {
                     tempT = cookie.Trim(charsToTrim);
+                    continue;
                 }
                 //
                 //  search I
                 //
-                if (cookie.IndexOf("i=") > 0)
+                if (cookie.IndexOf("i=") > -1)
                 {
                     tempI = cookie.Trim(charsToTrim);
-                 
+                    continue;
                 }
                 //
                 //  search H
                 //
-                if (cookie.IndexOf("h=") > 0)
+                if (cookie.IndexOf("h=") > -1)
                 {
                     tempH = cookie.Trim(charsToTrim);
-                 
+                    continue;
                 }
             }
 
