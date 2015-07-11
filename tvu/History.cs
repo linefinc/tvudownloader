@@ -39,6 +39,29 @@ namespace TvUndergroundDownloader
 
                 connection.Close();
             }
+
+
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+            {
+                connection.Open();
+
+                string sql = @"CREATE TABLE IF NOT EXISTS GlobalHistory (
+                                uuid INTEGER PRIMARY KEY AUTOINCREMENT,
+                                FileName TEXT,
+                                FileSize INTEGER,
+                                HashMD4 TEXT,
+                                HashSHA1 TEXT,
+                                Ed2kLink TEXT,
+                                FeedLink TEXT,
+                                FeedSource TEXT,
+                                seasonID INTEGER,
+                                episodeID INTEGER,
+                                LastUpdate TEXT DEFAULT ('CURRENT_TIMESTAMP'));";
+                SQLiteCommand command = new SQLiteCommand(sql, connection);
+                command.ExecuteNonQuery();
+
+                connection.Close();
+            }
         }
 
         public static void MigrateFromXMLToDB()
