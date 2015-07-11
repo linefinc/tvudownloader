@@ -132,7 +132,7 @@ namespace TvUndergroundDownloader
             }
         }
 
-        public void CleanUp()
+        public static void CleanUp()
         {
             using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
             {

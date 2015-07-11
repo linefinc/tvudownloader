@@ -533,6 +533,12 @@ namespace TvUndergroundDownloader
 
                 try
                 {
+                    string webPageUrl = feed.Url;
+                    if(MainConfig.useHttpInsteadOfHttps == true)
+                    {
+                        webPageUrl = webPageUrl.Replace("https", "http");
+                    }
+                    
                     string WebPage = WebFetch.Fetch(feed.Url, true, cookieContainer);
 
                     List<string> elemList = new List<string>();
@@ -541,9 +547,8 @@ namespace TvUndergroundDownloader
                     {
                         //get GUID page
 
-                        Regex Pattern = new Regex(@"https?://(www\.)?tvunderground.org.ru/index.php\?show=ed2k&season=\d{1,10}&sid\[\d{1,10}\]=\d{1,10}");
-
-                        MatchCollection matchCollection = Pattern.Matches(WebPage);
+                        //static Regex "https?://(www\.)?tvunderground.org.ru/index.php\?show=ed2k&season=\d{1,10}&sid\[\d{1,10}\]=\d{1,10}"
+                        MatchCollection matchCollection = fileHistory.regexFeedLink.Matches(WebPage);
 
 
                         foreach (Match value in matchCollection)
@@ -583,7 +588,7 @@ namespace TvUndergroundDownloader
                         // 
                         if (feed.tvuStatus == tvuStatus.Unknow)
                         {
-                            Pattern = new Regex(@"http://tvunderground.org.ru/index.php\?show=episodes&sid=\d{1,10}");
+                            Regex Pattern = new Regex(@"http://tvunderground.org.ru/index.php\?show=episodes&sid=\d{1,10}");
                             Match Match = Pattern.Match(WebPage);
                             string url = Match.Value;
                             feed.tvuStatus = WebManagerTVU.CheckComplete(url, cookieContainer);
@@ -669,9 +674,8 @@ namespace TvUndergroundDownloader
 
             }
 
-
-            feedLinkCache.CleanUp();
-
+            FeedLinkCache.CleanUp();
+            
             if (DownloadFileList.Count == 0)
             {
                 Log.logVerbose("Nothing to download");
@@ -1673,7 +1677,7 @@ namespace TvUndergroundDownloader
                 History.Add(fh.Ed2kLink, fh.FeedLink, fh.FeedSource, DateTime.MinValue.ToString("s"));
             }
 
-
+            FeedLinkCache.CleanUp();
 
             MainConfig.Save();
 
@@ -1953,6 +1957,11 @@ namespace TvUndergroundDownloader
         private void toolStripButtonStop_Click(object sender, EventArgs e)
         {
             backgroundWorker1.CancelAsync();
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
 
     }

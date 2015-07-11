@@ -54,6 +54,7 @@ namespace TvUndergroundDownloader
         public string MailSender;
         public int intervalBetweenUpgradeCheck;
         public string LastUpgradeCheck;
+        public bool useHttpInsteadOfHttps;
 
         public static string ConfigFolder
         {
@@ -273,6 +274,10 @@ namespace TvUndergroundDownloader
             writter.WriteString(TotalDownloads.ToString());
             writter.WriteEndElement();
 
+            writter.WriteStartElement("useHttpInsteadOfHttps");
+            writter.WriteString(useHttpInsteadOfHttps.ToString());
+            writter.WriteEndElement();
+            
             writter.WriteStartElement("RSSChannel");
 
             List<RssSubscrission> myRssFeedList = new List<RssSubscrission>();
@@ -405,6 +410,8 @@ namespace TvUndergroundDownloader
             LastUpgradeCheck = ReadString(xDoc, "LastUpgradeCheck", DateTime.Now.ToString("yyyy-MM-dd"));
 
             TotalDownloads = ReadInt(xDoc, "TotalDownloads", 0);
+
+            useHttpInsteadOfHttps = (bool)Convert.ToBoolean(ReadString(xDoc, "useHttpInsteadOfHttps", "false"));
 
             //
             //  Initialize db
