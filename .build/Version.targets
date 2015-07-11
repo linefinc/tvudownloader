@@ -38,8 +38,8 @@
               AssemblyVersion="$(AssemblyVersion)"
               AssemblyFileVersion="$(AssemblyVersion)"
               AssemblyInformationalVersion="$(AssemblyVersion)-$(AssemblyVersionCommitHash) [$(BuildTime)]"
-			        AssemblyTitle ="TvUnderground Downloader"
-              AssemblyProduct ="TvUnderground Downloader"/>
+			        AssemblyTitle ="TvUndergroundDownloader"
+              AssemblyProduct ="TvUndergroundDownloader"/>
 
   </Target>
 </Project>

@@ -405,6 +405,11 @@ namespace TvUndergroundDownloader
             LastUpgradeCheck = ReadString(xDoc, "LastUpgradeCheck", DateTime.Now.ToString("yyyy-MM-dd"));
 
             TotalDownloads = ReadInt(xDoc, "TotalDownloads", 0);
+
+            //
+            //  Initialize db
+            //
+            RssSubscrissionList.InitDB();
             //
             //  Load Channel
             //
@@ -413,19 +418,37 @@ namespace TvUndergroundDownloader
             for (int i = 0; i < Channels.Count; i++)
             {
                 XmlNodeList child = Channels[i].ChildNodes;
-                RssSubscrission newfeed = new RssSubscrission("", ""); //empty
+
+
+                string newFeedTitle = string.Empty;
+                string newFeedUrl = string.Empty; ;
+
+                //
+                //  first serach constructor data
+                //
+
                 foreach (XmlNode t in child)
                 {
                     if (t.Name == "Title")
                     {
-                        newfeed.Title = t.FirstChild.Value;
+                        newFeedTitle = t.FirstChild.Value;
                     }
 
                     if (t.Name == "Url")
                     {
-                        newfeed.Url = t.FirstChild.Value;
+                        newFeedUrl = t.FirstChild.Value;
                     }
 
+                }
+
+                RssSubscrission newfeed = new RssSubscrission(newFeedTitle, newFeedUrl); 
+                
+
+                //
+                //  load secondary field
+                //
+                foreach (XmlNode t in child)
+                {
                     if (t.Name == "Pause")
                     {
                         newfeed.PauseDownload = Convert.ToBoolean(t.FirstChild.Value);
@@ -480,12 +503,16 @@ namespace TvUndergroundDownloader
                     {
                         newfeed.maxSimultaneousDownload = MaxSimultaneousFeedDownloads;
                     }
+
                 }
 
                 RssFeedList.Add(newfeed);
+                RssSubscrissionList.AddOrUpgrade(newfeed);
             }
 
         }
+
+
 
         private static string ReadString(XmlDocument xDoc, string NodeName, string defaultValue)
         {
@@ -535,6 +562,9 @@ namespace TvUndergroundDownloader
             }
             return temp;
         }
+
+
+
 
     }
 }
