@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.Security;
 using System.Text.RegularExpressions;
 using System.Xml;
 
@@ -509,8 +510,47 @@ namespace TvUndergroundDownloader
             }
 
         }
+        //
+        //legacy function to maintain back compatibility
+        //
+        public void Save()
+        {
+            DataTable dt = new DataTable();
+            dt.Reset();
+
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+            {
+                connection.Open();
+                const string sqlTemplate = @"SELECT Ed2kLink , FeedLink, FeedSource , LastUpdate FROM History ORDER BY History.LastUpdate ASC;";
 
 
+                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                command.CommandType = CommandType.Text;
+
+                SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
+                dataAdapter.Fill(dt);
+                connection.Close();
+            }
+
+            XmlTextWriter textWritter = new XmlTextWriter(Config.FileNameHistory, null);
+            textWritter.Formatting = Formatting.Indented;
+            textWritter.Indentation = 4;
+            textWritter.WriteStartDocument();
+            textWritter.WriteStartElement("History");
+
+            foreach (DataRow row in dt.Rows)
+            {
+                textWritter.WriteStartElement("Item");// open Item
+                textWritter.WriteElementString("Ed2k", SecurityElement.Escape(row["Ed2kLink"].ToString()));
+                textWritter.WriteElementString("FeedLink", SecurityElement.Escape(row["FeedLink"].ToString()));
+                textWritter.WriteElementString("FeedSource", SecurityElement.Escape(row["FeedSource"].ToString()));
+                textWritter.WriteElementString("Date", row["LastUpdate"].ToString());
+                textWritter.WriteEndElement(); // close Item
+            }
+
+            textWritter.Close();
+
+        }
 
 
     }

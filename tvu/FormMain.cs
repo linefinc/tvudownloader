@@ -852,6 +852,7 @@ namespace TvUndergroundDownloader
             Service.Close();
             Log.logInfo("Statistics");
             Log.logInfo(string.Format("Total file added {0}", MainConfig.TotalDownloads));
+            MainHistory.Save();
 
 
         }
