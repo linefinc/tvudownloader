@@ -91,7 +91,7 @@ namespace TvUndergroundDownloader
         }
 
         /// <summary>
-        /// Close connection with emule
+        /// Close connection with emule (Logout)
         /// </summary>
         /// <remarks>reset Session ID</remarks>
         public void Close()
@@ -220,6 +220,11 @@ namespace TvUndergroundDownloader
             return ListDownloads;
         }
 
+
+        public void CloseEmuleApp()
+        {
+            webSocketGET(string.Format("{0}/?ses={1}&w=close", Host, SesID));
+        }
 
         /// <summary>
         /// Web socket

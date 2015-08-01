@@ -1332,6 +1332,7 @@ namespace TvUndergroundDownloader
                 case AlertChoiceEnum.Close:// Close
                     Log.logVerbose("[AutoClose Mule: CLOSE] Close Service");
                     Dialog.Dispose();
+                    Service.CloseEmuleApp();
                     Service.Close();
                     timerAutoClose.Enabled = true;  // enable timer 
                     break;
