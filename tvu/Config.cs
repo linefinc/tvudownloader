@@ -390,9 +390,11 @@ namespace TvUndergroundDownloader
             DefaultCategory = ReadString(xDoc, "DefaultCategory", "");
 
             debug = (bool)Convert.ToBoolean(ReadString(xDoc, "Debug", "false"));
-
+#if DEBUG
+            Verbose = true;
+#else
             Verbose = (bool)Convert.ToBoolean(ReadString(xDoc, "Verbose", "false"));
-
+#endif
             saveLog = (bool)Convert.ToBoolean(ReadString(xDoc, "SaveLog", "false"));
 
             EmailNotification = (bool)Convert.ToBoolean(ReadString(xDoc, "EmailNotification", "false"));

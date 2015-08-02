@@ -534,11 +534,11 @@ namespace TvUndergroundDownloader
                 try
                 {
                     string webPageUrl = feed.Url;
-                    if(MainConfig.useHttpInsteadOfHttps == true)
+                    if (MainConfig.useHttpInsteadOfHttps == true)
                     {
                         webPageUrl = webPageUrl.Replace("https", "http");
                     }
-                    
+
                     string WebPage = WebFetch.Fetch(feed.Url, true, cookieContainer);
 
                     List<string> elemList = new List<string>();
@@ -675,7 +675,7 @@ namespace TvUndergroundDownloader
             }
 
             FeedLinkCache.CleanUp();
-            
+
             if (DownloadFileList.Count == 0)
             {
                 Log.logVerbose("Nothing to download");
@@ -1504,44 +1504,33 @@ namespace TvUndergroundDownloader
             if (listView1.SelectedItems.Count == 0)
                 return;
 
-            ListViewItem temp = listView1.SelectedItems[0];
-            int i = listView1.Items.IndexOf(temp);
-            string feedTitle = listView1.Items[i].Text;
-
             // check user 
-            string message = "Delete " + feedTitle;
             DialogResult rc;
-            rc = MessageBox.Show(message, "", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk);
+            rc = MessageBox.Show("Confirm delete", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk);
             if (rc != DialogResult.OK)
             {
                 return;
             }
 
 
-
-            RssSubscrission Feed = MainConfig.RssFeedList[0];
-            bool found = false;
-            for (i = 0; i < listView1.Items.Count; i++)
+            foreach (ListViewItem selectedItem in listView1.SelectedItems)
             {
-                //string Title1 = MainConfig.RssFeedList[i].Title.Replace("[ed2k] tvunderground.org.ru:", "");
-                string Title1 = MainConfig.RssFeedList[i].TitleCompact;
-                string Title2 = feedTitle.Replace("[ed2k] tvunderground.org.ru:", "");
-                if (Title1 == Title2)
+                string feedTitle = selectedItem.Text;
+
+                RssSubscrission Feed = null;
+
+                Feed = MainConfig.RssFeedList.Find(delegate(RssSubscrission t)
                 {
-                    Feed = MainConfig.RssFeedList[i];
-                    found = true;
-                    break;
+                    return t.TitleCompact.IndexOf(feedTitle) > -1;
+                });
+
+
+                if (Feed != null)
+                {
+                    MainHistory.DeleteFileByFeedSource(Feed.Url);
+                    MainConfig.RssFeedList.Remove(Feed);
                 }
             }
-
-            if (found == false)
-            {
-                return;
-            }
-
-            MainHistory.DeleteFileByFeedSource(Feed.Url);
-
-            MainConfig.RssFeedList.Remove(Feed);
             MainConfig.Save();
 
             listViewFeedFilesList.Items.Clear();
@@ -1961,9 +1950,56 @@ namespace TvUndergroundDownloader
             backgroundWorker1.CancelAsync();
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void enableToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            foreach (ListViewItem selectedItem in listView1.SelectedItems)
+            {
+                string feedTitle = selectedItem.Text;
 
+                RssSubscrission Feed = null;
+
+                Feed = MainConfig.RssFeedList.Find(delegate(RssSubscrission t)
+                {
+                    return t.TitleCompact.IndexOf(feedTitle) > -1;
+                });
+
+
+                if (Feed != null)
+                {
+                    Feed.Enabled = true;
+                    
+                }
+            }
+            MainConfig.Save();
+
+            listViewFeedFilesList.Items.Clear();
+            UpdateRssFeedGUI(); ///upgrade gui
+        }
+
+        private void disableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem selectedItem in listView1.SelectedItems)
+            {
+                string feedTitle = selectedItem.Text;
+
+                RssSubscrission Feed = null;
+
+                Feed = MainConfig.RssFeedList.Find(delegate(RssSubscrission t)
+                {
+                    return t.TitleCompact.IndexOf(feedTitle) > -1;
+                });
+
+
+                if (Feed != null)
+                {
+                    Feed.Enabled = false;
+
+                }
+            }
+            MainConfig.Save();
+
+            listViewFeedFilesList.Items.Clear();
+            UpdateRssFeedGUI(); ///upgrade gui
         }
 
     }
