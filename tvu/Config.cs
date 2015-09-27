@@ -275,7 +275,7 @@ namespace TvUndergroundDownloader
             writter.WriteStartElement("useHttpInsteadOfHttps");
             writter.WriteString(useHttpInsteadOfHttps.ToString());
             writter.WriteEndElement();
-            
+
             writter.WriteStartElement("RSSChannel");
 
             List<RssSubscrission> myRssFeedList = new List<RssSubscrission>();
@@ -416,7 +416,7 @@ namespace TvUndergroundDownloader
             //
             //  Initialize db
             //
-            RssSubscrissionList.InitDB();
+            DataBaseHelper.RssSubscrissionList.InitDB();
             //
             //  Load Channel
             //
@@ -448,8 +448,8 @@ namespace TvUndergroundDownloader
 
                 }
 
-                RssSubscrission newfeed = new RssSubscrission(newFeedTitle, newFeedUrl); 
-                
+                RssSubscrission newfeed = new RssSubscrission(newFeedTitle, newFeedUrl);
+
 
                 //
                 //  load secondary field
@@ -514,14 +514,14 @@ namespace TvUndergroundDownloader
                 }
 
                 RssFeedList.Add(newfeed);
-                RssSubscrissionList.AddOrUpgrade(newfeed);
+                DataBaseHelper.RssSubscrissionList.AddOrUpgrade(newfeed);
             }
 
 
             //
             //  remove difference between xml and db
             //
-            RssSubscrissionList.CleanUp(RssFeedList);
+            DataBaseHelper.RssSubscrissionList.CleanUp(RssFeedList);
 
 
         }

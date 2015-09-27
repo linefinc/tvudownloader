@@ -254,14 +254,11 @@ namespace TvUndergroundDownloader
                 {
                     writer.WriteLine("<!-- {0} -->", uri);
                     writer.Write(tempBuffer);
-                    writer.Close();
                 }
-                reader.Close();
                 response.Close();
                 return tempBuffer;
 #else
                 string tempBuffer = reader.ReadToEnd();
-                reader.Close();
                 response.Close();
                 return tempBuffer;
 

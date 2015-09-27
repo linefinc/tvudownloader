@@ -34,8 +34,6 @@ namespace TvUndergroundDownloader
                                 LastUpdate TEXT DEFAULT ('CURRENT_TIMESTAMP'));";
                 SQLiteCommand command = new SQLiteCommand(sql, connection);
                 command.ExecuteNonQuery();
-
-                connection.Close();
             }
             //
             //  Note: no data will be imported
@@ -76,10 +74,6 @@ namespace TvUndergroundDownloader
                 command.Parameters.Add(new SQLiteParameter("@episodeID", episodeID));
                 command.Parameters.Add(new SQLiteParameter("@LastUpdate", Date));
                 command.ExecuteNonQuery();
-                connection.Close();
-
-
-
             }
 
         }
@@ -102,10 +96,7 @@ namespace TvUndergroundDownloader
                 command.Parameters.Add(new SQLiteParameter("@FeedLink", FeedLink));
                 SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
 
-
                 dataAdapter.Fill(dt);
-
-                connection.Close();
             }
 
             if(dt.Rows.Count == 0)
@@ -128,7 +119,6 @@ namespace TvUndergroundDownloader
                 command.CommandType = CommandType.Text;
                 command.Parameters.Add(new SQLiteParameter("@Ed2kLink", ed2kLink));
                 command.ExecuteNonQuery();
-                connection.Close();
             }
         }
 
@@ -143,7 +133,6 @@ namespace TvUndergroundDownloader
                 SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
                 command.CommandType = CommandType.Text;
                 command.ExecuteNonQuery();
-                connection.Close();
             }
 
             using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
@@ -154,7 +143,6 @@ namespace TvUndergroundDownloader
                 SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
                 command.CommandType = CommandType.Text;
                 command.ExecuteNonQuery();
-                connection.Close();
             }
             
         }

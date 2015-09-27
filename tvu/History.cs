@@ -37,8 +37,6 @@ namespace TvUndergroundDownloader
                                 LastUpdate TEXT DEFAULT ('CURRENT_TIMESTAMP'));";
                 SQLiteCommand command = new SQLiteCommand(sql, connection);
                 command.ExecuteNonQuery();
-
-                connection.Close();
             }
 
 
@@ -60,8 +58,6 @@ namespace TvUndergroundDownloader
                                 LastUpdate TEXT DEFAULT ('CURRENT_TIMESTAMP'));";
                 SQLiteCommand command = new SQLiteCommand(sql, connection);
                 command.ExecuteNonQuery();
-
-                connection.Close();
             }
         }
 
@@ -166,9 +162,7 @@ namespace TvUndergroundDownloader
                 command.Parameters.Add(new SQLiteParameter("@seasonID", seasonID));
                 command.Parameters.Add(new SQLiteParameter("@episodeID", episodeID));
                 command.Parameters.Add(new SQLiteParameter("@LastUpdate", fh.Date));
-
                 command.ExecuteNonQuery();
-                connection.Close();
             }
         }
 
@@ -241,7 +235,6 @@ namespace TvUndergroundDownloader
                 command.Parameters.Add(new SQLiteParameter("@HashSHA1", file.HashSHA1));
                 SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
                 dataAdapter.Fill(dt);
-                connection.Close();
             }
 
             return dt.Rows.Count > 0;
@@ -269,7 +262,6 @@ namespace TvUndergroundDownloader
                 command.Parameters.Add(new SQLiteParameter("@HashSHA1", file.HashSHA1));
                 SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
                 dataAdapter.Fill(dt);
-                connection.Close();
             }
 
             if (dt.Rows.Count == 0)
@@ -298,10 +290,7 @@ namespace TvUndergroundDownloader
                 command.Parameters.Add(new SQLiteParameter("@feedlink", feedlink));
                 SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
 
-
                 dataAdapter.Fill(dt);
-
-                connection.Close();
             }
 
             return dt.Rows.Count > 0;
@@ -324,8 +313,6 @@ namespace TvUndergroundDownloader
 
 
                 dataAdapter.Fill(dt);
-
-                connection.Close();
             }
 
             return dt.Rows.Count > 0;
@@ -350,8 +337,6 @@ namespace TvUndergroundDownloader
 
 
                 dataAdapter.Fill(dt);
-
-                connection.Close();
             }
 
             if (dt.Rows.Count == 0)
@@ -382,7 +367,6 @@ namespace TvUndergroundDownloader
                 command.Parameters.Add(new SQLiteParameter("@HashMD4", file.HashMD4));
                 command.Parameters.Add(new SQLiteParameter("@HashSHA1", file.HashSHA1));
                 command.ExecuteNonQuery();
-                connection.Close();
             }
 
         }
@@ -404,7 +388,6 @@ namespace TvUndergroundDownloader
                 command.CommandType = CommandType.Text;
                 command.Parameters.Add(new SQLiteParameter("@FileName", FileName));
                 command.ExecuteNonQuery();
-                connection.Close();
             }
 
         }
@@ -423,7 +406,6 @@ namespace TvUndergroundDownloader
                 command.CommandType = CommandType.Text;
                 command.Parameters.Add(new SQLiteParameter("@FeedSource", FeedSource));
                 command.ExecuteNonQuery();
-                connection.Close();
             }
 
         }
@@ -443,11 +425,8 @@ namespace TvUndergroundDownloader
 
                 DataSet ds = new DataSet();
                 dataAdapter.Fill(ds);
-
-
                 table = ds.Tables[0];
-                connection.Close();
-
+                
                 return table;
             }
 
@@ -460,7 +439,6 @@ namespace TvUndergroundDownloader
             {
                 DataTable table;
 
-
                 connection.Open();
                 const string sqlTemplate = @"SELECT  History.FileName, History.LastUpdate FROM History WHERE FeedSource = @FeedSource ORDER BY LastUpdate DESC ";
 
@@ -471,10 +449,7 @@ namespace TvUndergroundDownloader
                 DataSet ds = new DataSet();
                 dataAdapter.Fill(ds);
 
-
                 table = ds.Tables[0];
-                connection.Close();
-
                 return table;
             }
         }
@@ -493,7 +468,6 @@ namespace TvUndergroundDownloader
                 DataTable table = new DataTable();
                 table.Reset();
                 dataAdapter.Fill(table);
-                connection.Close();
 
                 if (table.Rows.Count == 0)
                 {
@@ -529,7 +503,6 @@ namespace TvUndergroundDownloader
 
                 SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
                 dataAdapter.Fill(dt);
-                connection.Close();
             }
 
             XmlTextWriter textWritter = new XmlTextWriter(Config.FileNameHistory, null);
