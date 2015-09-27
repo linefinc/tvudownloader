@@ -789,7 +789,7 @@
             // toolStripButtonAddFeed
             // 
             this.toolStripButtonAddFeed.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonAddFeed.Image = global::tvu.Properties.Resources.icon_add;
+            this.toolStripButtonAddFeed.Image = global::TvUndergroundDownloader.Properties.Resources.icon_add;
             this.toolStripButtonAddFeed.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonAddFeed.Name = "toolStripButtonAddFeed";
             this.toolStripButtonAddFeed.Size = new System.Drawing.Size(23, 22);
@@ -800,7 +800,7 @@
             // toolStripButtonCheckNow
             // 
             this.toolStripButtonCheckNow.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonCheckNow.Image = global::tvu.Properties.Resources.icon_update;
+            this.toolStripButtonCheckNow.Image = global::TvUndergroundDownloader.Properties.Resources.icon_update;
             this.toolStripButtonCheckNow.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonCheckNow.Name = "toolStripButtonCheckNow";
             this.toolStripButtonCheckNow.Size = new System.Drawing.Size(23, 22);
@@ -812,7 +812,7 @@
             // 
             this.toolStripButtonStop.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButtonStop.Enabled = false;
-            this.toolStripButtonStop.Image = global::tvu.Properties.Resources.icon_stop;
+            this.toolStripButtonStop.Image = global::TvUndergroundDownloader.Properties.Resources.icon_stop;
             this.toolStripButtonStop.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonStop.Name = "toolStripButtonStop";
             this.toolStripButtonStop.Size = new System.Drawing.Size(23, 22);

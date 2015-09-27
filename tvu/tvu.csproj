@@ -8,8 +8,8 @@
     <ProjectGuid>{FBE9E70D-4056-4140-8468-90555E6B5F32}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>tvu</RootNamespace>
-    <AssemblyName>tvu</AssemblyName>
+    <RootNamespace>TvUndergroundDownloader</RootNamespace>
+    <AssemblyName>TvUndergroundDownloader</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>

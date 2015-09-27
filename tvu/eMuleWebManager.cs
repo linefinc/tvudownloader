@@ -245,30 +245,28 @@ namespace TvUndergroundDownloader
             // grab te response and print it out to the console along with the status code
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
-            StreamReader reader = new StreamReader(response.GetResponseStream(), new UTF8Encoding());
-
-#if DEBUG   // save log file
-            string tempBuffer = reader.ReadToEnd();
-            string fileName = string.Format("emule-{0:yyyy-MM-dd-HH-mm-ss-ff}.html", DateTime.Now);
-            using (System.IO.TextWriter writer = System.IO.File.CreateText(fileName))
+            using (StreamReader reader = new StreamReader(response.GetResponseStream(), new UTF8Encoding()))
             {
-                writer.WriteLine("<!-- {0} -->", uri);
-                writer.Write(tempBuffer);
-                writer.Close();
-            }
-            reader.Close();
-            reader.Dispose();
-            response.Close();
-            return tempBuffer;
+#if DEBUG   // save log file
+                string tempBuffer = reader.ReadToEnd();
+                string fileName = string.Format("emule-{0:yyyy-MM-dd-HH-mm-ss-ff}.html", DateTime.Now);
+                using (System.IO.TextWriter writer = System.IO.File.CreateText(fileName))
+                {
+                    writer.WriteLine("<!-- {0} -->", uri);
+                    writer.Write(tempBuffer);
+                    writer.Close();
+                }
+                reader.Close();
+                response.Close();
+                return tempBuffer;
 #else
-            string tempBuffer = reader.ReadToEnd();
-            reader.Close();
-            reader.Dispose();
-            response.Close();
-            return tempBuffer;
+                string tempBuffer = reader.ReadToEnd();
+                reader.Close();
+                response.Close();
+                return tempBuffer;
 
 #endif
-
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Data.SQLite;
+using System.Text;
 using System.Text.RegularExpressions;
 namespace TvUndergroundDownloader
 {
@@ -101,6 +103,33 @@ namespace TvUndergroundDownloader
         {
 
         }
+
+        public static void CleanUp(List<RssSubscrission> RssFeedList)
+        {
+
+            StringBuilder filterSB = new StringBuilder();
+
+            foreach (var rssSubscrission in RssFeedList)
+            {
+                filterSB.AppendFormat("{0},", rssSubscrission.seasonID);
+            }
+
+            char[] charsToTrim = { ',', ' ' };
+
+
+            string temp = filterSB.ToString().TrimEnd(charsToTrim);
+
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+            {
+                connection.Open();
+                const string sqlTemplate = @"DELETE FROM RssSubscrission WHERE RssSubscrission.seasonID NOT IN ({0});";
+                SQLiteCommand command = new SQLiteCommand(string.Format(sqlTemplate, temp), connection);
+                command.CommandType = CommandType.Text;
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+
 
         public static void AddOrUpgrade(RssSubscrission rssSubscrission)
         {

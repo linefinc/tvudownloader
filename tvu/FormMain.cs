@@ -1529,6 +1529,7 @@ namespace TvUndergroundDownloader
                 {
                     MainHistory.DeleteFileByFeedSource(Feed.Url);
                     MainConfig.RssFeedList.Remove(Feed);
+                    RssSubscrissionList.Delete(Feed);
                 }
             }
             MainConfig.Save();

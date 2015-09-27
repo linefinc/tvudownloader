@@ -46,11 +46,6 @@ namespace  TvUndergroundDownloader
             VerboseMode = value;
         }
 
-        ~Log()
-        {
-            
-        }
-
         public static void logInfo (string text)
         {
 

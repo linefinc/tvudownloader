@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Xml;
 using System.IO;
 using Microsoft.Win32;
 using System.Windows.Forms;
-using System.Data.SQLite;
 using System.Reflection;
 
 namespace TvUndergroundDownloader
@@ -518,6 +516,13 @@ namespace TvUndergroundDownloader
                 RssFeedList.Add(newfeed);
                 RssSubscrissionList.AddOrUpgrade(newfeed);
             }
+
+
+            //
+            //  remove difference between xml and db
+            //
+            RssSubscrissionList.CleanUp(RssFeedList);
+
 
         }
 
