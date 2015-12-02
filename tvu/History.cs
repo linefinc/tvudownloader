@@ -252,14 +252,12 @@ namespace TvUndergroundDownloader
                                                     FROM History 
                                              WHERE 
                                                     History.HashMD4 = @HashMD4 AND 
-                                                    History.FileSize = @FileSize AND
-                                                    ((History.HashSHA1 = "") OR (@HashSHA1 = "" ) OR (History.HashSHA1 = @HashSHA1));";
+                                                    History.FileSize = @FileSize;";
 
                 SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
                 command.CommandType = CommandType.Text;
                 command.Parameters.Add(new SQLiteParameter("@FileSize", file.FileSize));
                 command.Parameters.Add(new SQLiteParameter("@HashMD4", file.HashMD4));
-                command.Parameters.Add(new SQLiteParameter("@HashSHA1", file.HashSHA1));
                 SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
                 dataAdapter.Fill(dt);
             }
