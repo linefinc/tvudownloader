@@ -588,7 +588,7 @@ namespace TvUndergroundDownloader
                         // 
                         if (feed.tvuStatus == tvuStatus.Unknow)
                         {
-                            Regex Pattern = new Regex(@"http://tvunderground.org.ru/index.php\?show=episodes&sid=\d{1,10}");
+                            Regex Pattern = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=episodes&sid=\d{1,10}");
                             Match Match = Pattern.Match(WebPage);
                             string url = Match.Value;
                             feed.tvuStatus = WebManagerTVU.CheckComplete(url, cookieContainer);

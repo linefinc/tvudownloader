@@ -12,8 +12,8 @@ namespace TvUndergroundDownloader
 {
     public class fileHistory : Ed2kfile
     {
-        static public Regex regexFeedLink = new Regex(@"https?://(www\.)?tvunderground.org.ru/index.php\?show=ed2k&season=(\d{1,10})&sid\[(\d{1,10})\]=\d{1,10}");
-        static public Regex regexFeedSource = new Regex(@"http(s)?://(www\.)?tvunderground.org.ru/rss.php\?se_id=(\d{1,10})");
+        static public Regex regexFeedLink = new Regex(@"https(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=ed2k&season=(\d{1,10})&sid\[(\d{1,10})\]=\d{1,10}");
+        static public Regex regexFeedSource = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/rss.php\?se_id=(\d{1,10})");
         
         public fileHistory(string link, string FeedLink, string FeedSource, string Date)
             : base(link)
