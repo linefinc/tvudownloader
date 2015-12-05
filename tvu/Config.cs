@@ -517,7 +517,7 @@ namespace TvUndergroundDownloader
                 DataBaseHelper.RssSubscrissionList.AddOrUpgrade(newfeed);
             }
 
-
+            RssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title));
             //
             //  remove difference between xml and db
             //

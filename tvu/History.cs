@@ -137,11 +137,10 @@ namespace TvUndergroundDownloader
             // Static Regex "https?://(www\.)?tvunderground.org.ru/index.php\?show=ed2k&season=(\d{1,10})&sid\[(\d{1,10})\]=\d{1,10}"
             MatchCollection matchCollection = fileHistory.regexFeedLink.Matches(FeedLink);
 
-            if (matchCollection.Count > 0)
-            {
-                seasonID = matchCollection[0].Groups[2].ToString();
-                episodeID = matchCollection[0].Groups[3].ToString();
-            }
+
+            seasonID = matchCollection[0].Groups["season"].ToString();
+            episodeID = matchCollection[0].Groups["sid"].ToString();
+
 
             using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
             {
@@ -424,7 +423,7 @@ namespace TvUndergroundDownloader
                 DataSet ds = new DataSet();
                 dataAdapter.Fill(ds);
                 table = ds.Tables[0];
-                
+
                 return table;
             }
 

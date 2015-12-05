@@ -26,7 +26,13 @@ InstallDirRegKey HKLM "Software\TVUndergroundDownloader" "Install_Dir"
 RequestExecutionLevel admin
 
 ;--------------------------------
+;Interface Settings
 
+	!define MUI_ABORTWARNING
+	!define MUI_FINISHPAGE_RUN "$INSTDIR\TvUndergroundDownloader.exe"
+	!define MUI_FINISHPAGE_RUN_TEXT "Start application"
+
+;--------------------------------
 ; Pages
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "..\license.txt"
@@ -36,6 +42,7 @@ RequestExecutionLevel admin
 
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
+!insertmacro MUI_PAGE_FINISH
 
 
 ;--------------------------------
@@ -52,7 +59,7 @@ Section "Tvunderground Downloader (required)"
   SetOutPath $INSTDIR
   
   ; Put file there
-  File ".\bin\Release\tvu.exe"
+  File ".\bin\Release\TvUndergroundDownloader.exe"
   File ".\bin\Release\x64\SQLite.Interop.dll"
   File ".\bin\Release\x86\SQLite.Interop.dll"
   File ".\bin\Release\System.Data.SQLite.dll"
@@ -78,7 +85,7 @@ Section "Start Menu Shortcuts"
 
   CreateDirectory "$SMPROGRAMS\TVUnderground Downloader"
   CreateShortCut "$SMPROGRAMS\TVUnderground Downloader\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-  CreateShortCut "$SMPROGRAMS\TVUnderground Downloader\TVUndergroundDownloader.lnk" "$INSTDIR\tvu.exe" "" "$INSTDIR\tvu.exe" 0
+  CreateShortCut "$SMPROGRAMS\TVUnderground Downloader\TVUndergroundDownloader.lnk" "$INSTDIR\TvUndergroundDownloader.exe" "" "$INSTDIR\TvUndergroundDownloader.exe" 0
   
 SectionEnd
 
@@ -94,7 +101,7 @@ Section "Uninstall"
 
   ; Remove files and uninstaller
   
-  Delete $INSTDIR\tvu.exe
+  Delete $INSTDIR\TvUndergroundDownloader.exe
   Delete $INSTDIR\README.txt
   Delete $INSTDIR\license.txt
   Delete $INSTDIR\uninstall.exe

@@ -103,6 +103,7 @@
       <DependentUpon>AddFeedDialogPage3.cs</DependentUpon>
     </Compile>
     <Compile Include="Config.cs" />
+    <Compile Include="core.cs" />
     <Compile Include="Ed2kfile.cs" />
     <Compile Include="EditFeedForm.cs">
       <SubType>Form</SubType>

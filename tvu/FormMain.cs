@@ -283,79 +283,72 @@ namespace TvUndergroundDownloader
 
         private void UpdateRssFeedGUI()
         {
-
-            while (listView1.Items.Count > 0)
+            foreach (RssSubscrission subscrission in MainConfig.RssFeedList)
             {
-                listView1.Items.Remove(listView1.Items[0]);
-            }
+                if (subscrission.listViewItem == null)
+                {
+                    string title = subscrission.Title.Replace("[ed2k] tvunderground.org.ru:", "");
+                    subscrission.listViewItem = new ListViewItem(title);
+                    subscrission.listViewItem.SubItems.Add("Total downloads");
+                    subscrission.listViewItem.SubItems.Add("Last upgrade");
+                    subscrission.listViewItem.SubItems.Add("Status");
+                    subscrission.listViewItem.SubItems.Add("Enabled");
+                    listView1.Items.Add(subscrission.listViewItem);
+                }
 
-            FeedLinkCache feedLinkCache = new FeedLinkCache();
-
-            List<RssSubscrission> myRssFeedList = new List<RssSubscrission>();
-            myRssFeedList.AddRange(MainConfig.RssFeedList);
-            //
-            //people.Sort((x, y) => string.Compare(x.LastName, y.LastName));
-            //
-            myRssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title));
+                ListViewItem item = subscrission.listViewItem;
 
 
+                // total downloads      coloumn 1
+                item.SubItems[1].Text = MainHistory.GetDownloadedFileCountByFeedSoruce(subscrission.Url).ToString();
 
-            foreach (RssSubscrission t in myRssFeedList)
-            {
-                string title = t.Title.Replace("[ed2k] tvunderground.org.ru:", "");
-                ListViewItem item = new ListViewItem(title);
-
-                // total downloads
-
-                item.SubItems.Add(MainHistory.GetDownloadedFileCountByFeedSoruce(t.Url).ToString());
-
-                // last upgrade
+                // last upgrade      coloumn 2
                 uint days = 0;
 
-                string LastDownloadDate = MainHistory.LastDownloadDateByFeedSource(t.Url);
+                string LastDownloadDate = MainHistory.LastDownloadDateByFeedSource(subscrission.Url);
                 if (LastDownloadDate != string.Empty)
                 {
                     DateTime LastDownloadTime = Convert.ToDateTime(LastDownloadDate);
 
                     TimeSpan diff = DateTime.Now.Subtract(LastDownloadTime);
                     days = (uint)diff.TotalDays;
-                    item.SubItems.Add(days.ToString() + " days");
+                    item.SubItems[2].Text = days.ToString() + " days";
                 }
                 else
                 {
-                    item.SubItems.Add("");
+                    item.SubItems[2].Text = string.Empty;
                 }
 
-                // tvunder status
-                switch (t.tvuStatus)
+                // tvunder status      coloumn 3
+                switch (subscrission.tvuStatus)
                 {
                     default:
-                        item.SubItems.Add("Unknow");
+                        item.SubItems[3].Text = "Unknow";
                         break;
                     case tvuStatus.Complete:
-                        item.SubItems.Add("Complete");
+                        item.SubItems[3].Text = "Complete";
                         break;
                     case tvuStatus.StillRunning:
-                        item.SubItems.Add("Still Running");
+                        item.SubItems[3].Text = "Still Running";
                         break;
                     case tvuStatus.StillIncomplete:
-                        item.SubItems.Add("Still Incomplete");
+                        item.SubItems[3].Text = "Still Incomplete";
                         break;
                     case tvuStatus.OnHiatus:
-                        item.SubItems.Add("On Hiatus");
+                        item.SubItems[3].Text = "On Hiatus";
                         break;
-
                 }
 
-                if (t.Enabled == true)
+                // tv status
+                if (subscrission.Enabled == true)
                 {
-                    item.SubItems.Add("Enabled");
+                    item.SubItems[4].Text = "Enabled";
                 }
                 else
                 {
-                    item.SubItems.Add("Disabled");
+                    item.SubItems[4].Text = "Disabled";
                 }
-                listView1.Items.Add(item);
+
             }
 
         }
@@ -749,6 +742,14 @@ namespace TvUndergroundDownloader
             List<Ed2kfile> CourrentDownloadsFormEmule = Service.GetActualDownloads();/// file downloaded with this program and now in download in emule
             Log.logVerbose("Courrent Download Form Emule " + CourrentDownloadsFormEmule.Count);
 
+            //for debug
+            CourrentDownloadsFormEmule.ForEach(delegate(Ed2kfile file) { Log.logVerbose(file.FileName); });
+
+
+            //
+            //  note move this function in MainHistory class
+            //
+            Log.logVerbose("Start Serach in history");
             List<fileHistory> ActualDownloadFileList = new List<fileHistory>();
             foreach (Ed2kfile file in CourrentDownloadsFormEmule)
             {
@@ -757,6 +758,11 @@ namespace TvUndergroundDownloader
                 {
                     fileHistory fh = MainHistory.getFileHistoryFromDB(file);
                     ActualDownloadFileList.Add(fh);
+                    Log.logVerbose("File founded" + fh.FileName);
+                }
+                else
+                {
+                    Log.logVerbose("File NOT founded:" + file.FileName);
                 }
             }
 
@@ -1519,14 +1525,15 @@ namespace TvUndergroundDownloader
 
                 RssSubscrission Feed = null;
 
-                Feed = MainConfig.RssFeedList.Find(delegate(RssSubscrission t)
+                Feed = MainConfig.RssFeedList.Find(delegate(RssSubscrission subscrission)
                 {
-                    return t.TitleCompact.IndexOf(feedTitle) > -1;
+                    return subscrission.listViewItem == selectedItem;
                 });
 
 
                 if (Feed != null)
                 {
+                    listView1.Items.Remove(Feed.listViewItem);
                     MainHistory.DeleteFileByFeedSource(Feed.Url);
                     MainConfig.RssFeedList.Remove(Feed);
                     DataBaseHelper.RssSubscrissionList.Delete(Feed);
@@ -1968,7 +1975,7 @@ namespace TvUndergroundDownloader
                 if (Feed != null)
                 {
                     Feed.Enabled = true;
-                    
+
                 }
             }
             MainConfig.Save();

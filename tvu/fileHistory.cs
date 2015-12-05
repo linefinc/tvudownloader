@@ -12,9 +12,20 @@ namespace TvUndergroundDownloader
 {
     public class fileHistory : Ed2kfile
     {
-        static public Regex regexFeedLink = new Regex(@"https(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=ed2k&season=(\d{1,10})&sid\[(\d{1,10})\]=\d{1,10}");
-        static public Regex regexFeedSource = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/rss.php\?se_id=(\d{1,10})");
-        
+        static public Regex regexFeedLink = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=ed2k&season=(?<season>\d{1,10})&sid\[(?<sid>\d{1,10})\]=\d{1,10}");
+        static public Regex regexFeedSource = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/rss.php\?se_id=(?<seid>\d{1,10})");
+
+        /// <summary>
+        /// link of page than contain ed2k link
+        /// </summary>
+        public string FeedLink { get; private set; }
+        /// <summary>
+        /// url of feed
+        /// </summary>
+        public string FeedSource { get; private set; }
+        public string Date { get; set; }
+
+
         public fileHistory(string link, string FeedLink, string FeedSource, string Date)
             : base(link)
         {
@@ -24,7 +35,7 @@ namespace TvUndergroundDownloader
             }
 
 
-            if (regexFeedLink.IsMatch(FeedLink) == false)
+            if (regexFeedSource.IsMatch(FeedSource) == false)
             {
                 throw (new System.ApplicationException("Wrong FeedSource"));
             }
@@ -48,7 +59,7 @@ namespace TvUndergroundDownloader
             }
 
 
-            if (regexFeedLink.IsMatch(FeedLink) == false)
+            if (regexFeedSource.IsMatch(FeedSource) == false)
             {
                 throw (new System.ApplicationException("Wrong FeedSource"));
             }
@@ -58,16 +69,7 @@ namespace TvUndergroundDownloader
         }
 
 
-        /// <summary>
-        /// link of page than contain ed2k link
-        /// </summary>
-        public string FeedLink { get; private set; }
-        /// <summary>
-        /// url of feed
-        /// </summary>
-
-        public string FeedSource { get; private set; }
-        public string Date { get; set; }
+      
     }
 
 

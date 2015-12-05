@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.SQLite;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 namespace TvUndergroundDownloader
 {
     public enum tvuStatus
@@ -34,7 +35,7 @@ namespace TvUndergroundDownloader
             }
 
             int integerBuffer;
-            if (int.TryParse(matchCollection[0].Groups[3].ToString(), out integerBuffer) == false)
+            if (int.TryParse(matchCollection[0].Groups["seid"].ToString(), out integerBuffer) == false)
             {
                 System.ApplicationException ex = new System.ApplicationException("Wrong URL");
                 throw ex;
@@ -56,6 +57,8 @@ namespace TvUndergroundDownloader
         public string TitleCompact { get { return this.Title.Replace("[ed2k] tvunderground.org.ru:", ""); } }
 
         public int maxSimultaneousDownload = 3;
+
+        public ListViewItem listViewItem = null;
 
     }
 
