@@ -13,7 +13,7 @@
 Name "Tv Underground Downloader"
 
 ; The file to write
-OutFile ".\bin\Release\tvud_installer_0.5.7.exe"
+OutFile ".\bin\Release\tvud_installer_0.6.0.exe"
 
 ; The default installation directory
 InstallDir $PROGRAMFILES\Tvunderground_Downloader
@@ -28,21 +28,22 @@ RequestExecutionLevel admin
 ;--------------------------------
 ;Interface Settings
 
-	!define MUI_ABORTWARNING
-	!define MUI_FINISHPAGE_RUN "$INSTDIR\TvUndergroundDownloader.exe"
-	!define MUI_FINISHPAGE_RUN_TEXT "Start application"
+!define MUI_ABORTWARNING
+!define MUI_FINISHPAGE_RUN "$INSTDIR\TvUndergroundDownloader.exe"
+!define MUI_FINISHPAGE_RUN_TEXT "Start application"
 
 ;--------------------------------
 ; Pages
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "..\license.txt"
-!insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_COMPONENTS
-!insertmacro MUI_UNPAGE_INSTFILES
+!insertmacro MUI_PAGE_DIRECTORY
+!insertmacro MUI_PAGE_INSTFILES
+!insertmacro MUI_PAGE_FINISH
 
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
-!insertmacro MUI_PAGE_FINISH
+
 
 
 ;--------------------------------
@@ -62,9 +63,7 @@ Section "Tvunderground Downloader (required)"
   File ".\bin\Release\TvUndergroundDownloader.exe"
   File ".\bin\Release\x64\SQLite.Interop.dll"
   File ".\bin\Release\x86\SQLite.Interop.dll"
-  File ".\bin\Release\System.Data.SQLite.dll"
-  File ".\bin\Release\System.Data.SQLite.Linq.dll"
-  
+  File /r ".\bin\Release\*.dll"
   File "..\README.txt"
   File "..\license.txt"
     
@@ -84,7 +83,6 @@ SectionEnd
 Section "Start Menu Shortcuts"
 
   CreateDirectory "$SMPROGRAMS\TVUnderground Downloader"
-  CreateShortCut "$SMPROGRAMS\TVUnderground Downloader\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
   CreateShortCut "$SMPROGRAMS\TVUnderground Downloader\TVUndergroundDownloader.lnk" "$INSTDIR\TvUndergroundDownloader.exe" "" "$INSTDIR\TvUndergroundDownloader.exe" 0
   
 SectionEnd
@@ -102,6 +100,7 @@ Section "Uninstall"
   ; Remove files and uninstaller
   
   Delete $INSTDIR\TvUndergroundDownloader.exe
+  Delete $INSTDIR\*.dll
   Delete $INSTDIR\README.txt
   Delete $INSTDIR\license.txt
   Delete $INSTDIR\uninstall.exe
@@ -110,8 +109,8 @@ Section "Uninstall"
   Delete "$SMPROGRAMS\TVUnderground Downloader\*.*"
 
   ; Remove directories used
-  RMDir "$SMPROGRAMS\TVUnderground Downloader"
-  RMDir "$INSTDIR"
+  RMDir /r "$SMPROGRAMS\TVUnderground Downloader"
+  RMDir /r "$INSTDIR"
 
 SectionEnd
 
