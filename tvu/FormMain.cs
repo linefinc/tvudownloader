@@ -750,21 +750,8 @@ namespace TvUndergroundDownloader
             //  note move this function in MainHistory class
             //
             Log.logVerbose("Start Serach in history");
-            List<fileHistory> ActualDownloadFileList = new List<fileHistory>();
-            foreach (Ed2kfile file in CourrentDownloadsFormEmule)
-            {
-
-                if (MainHistory.FileExist(file) == true)
-                {
-                    fileHistory fh = MainHistory.getFileHistoryFromDB(file);
-                    ActualDownloadFileList.Add(fh);
-                    Log.logVerbose("File founded" + fh.FileName);
-                }
-                else
-                {
-                    Log.logVerbose("File NOT founded:" + file.FileName);
-                }
-            }
+            List<fileHistory> ActualDownloadFileList = MainHistory.getFileHistoryFromDB(CourrentDownloadsFormEmule);
+            ActualDownloadFileList.ForEach(delegate(fileHistory file) { Log.logVerbose("Found :" + file.FileName); });
 
             Log.logInfo("ActualDownloadFileList.Count = " + ActualDownloadFileList.Count);
             Log.logInfo("MainConfig.MaxSimultaneousFeedDownloads = " + MainConfig.MaxSimultaneousFeedDownloads);
@@ -788,6 +775,8 @@ namespace TvUndergroundDownloader
                     MaxSimultaneousDownloadsDictionary[fh.FeedSource] = x;
                 }
             }
+
+            
 
             Log.logVerbose("Download file");
             //

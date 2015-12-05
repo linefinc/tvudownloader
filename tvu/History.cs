@@ -239,6 +239,21 @@ namespace TvUndergroundDownloader
             return dt.Rows.Count > 0;
         }
 
+        public List<fileHistory> getFileHistoryFromDB(List<Ed2kfile> files)
+        {
+            List<fileHistory> listFileHistory = new List<fileHistory>();
+            foreach (Ed2kfile file in files)
+            {
+                fileHistory fh = getFileHistoryFromDB(file);
+                if (System.Object.ReferenceEquals(fh, null) == false)
+                {
+                    listFileHistory.Add(fh);
+                }
+            }
+
+            return listFileHistory;
+        }
+
         public fileHistory getFileHistoryFromDB(Ed2kfile file)
         {
             DataTable dt = new DataTable();

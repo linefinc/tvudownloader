@@ -1,0 +1,7 @@
+﻿
+namespace TvUndergroundDownloader
+{
+    class core
+    {
+    }
+}
