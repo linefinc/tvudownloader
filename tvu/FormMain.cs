@@ -589,13 +589,6 @@ namespace TvUndergroundDownloader
                     // reverse the list so the laft feed ( first temporal feed) became the first first feed in list
                     elemList.Reverse();
 
-                    // remove all feed that exeede the max Simultaneous Download limit 
-                    if (elemList.Count > feed.maxSimultaneousDownload)
-                    {
-                        int count = elemList.Count - feed.maxSimultaneousDownload - 1;
-                        elemList.RemoveRange(feed.maxSimultaneousDownload - 1, 0);
-                    }
-
                     // download 
                     foreach (string FeedLink in elemList)
                     {
@@ -626,13 +619,36 @@ namespace TvUndergroundDownloader
                         }
 
 
+
+
                         Ed2kfile parser = new Ed2kfile(sEd2k);
                         Log.logInfo(string.Format("Found new file {0}", parser.GetFileName()));
 
-                        // add file to Donwload list 
-                        sDonwloadFile DL = new sDonwloadFile(sEd2k, FeedLink, feed.Url, feed.PauseDownload, feed.Category);
-                        DownloadFileList.Add(DL);
+                        if (elemList.IndexOf(FeedLink) < feed.maxSimultaneousDownload)
+                        {
+                            // add file to Donwload list 
+                            sDonwloadFile DL = new sDonwloadFile(sEd2k, FeedLink, feed.Url, feed.PauseDownload, feed.Category);
+                            DownloadFileList.Add(DL);
+                        }
+                        else
+                        {
+                            Log.logInfo(string.Format("Found new file end skipped {0}", parser.GetFileName()));
+                            //
+                            //  Use invoke to avoid thread issue
+                            //
+                            if (this.listBoxPending.InvokeRequired == true)
+                            {
 
+                                Invoke(new MethodInvoker(
+                                    delegate { this.AddItemToListBoxPending(parser.GetFileName()); }
+                                ));
+
+                            }
+                            else
+                            {
+                                this.AddItemToListBoxPending(parser.GetFileName());
+                            }
+                        }
                     }
 
 
