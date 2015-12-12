@@ -10,7 +10,7 @@ namespace TvUndergroundDownloader
             InitializeComponent();
             
             this.labelProductName.Text = "TV Underground Downloader";
-            this.labelVersion.Text = Config.Version.ToString();
+            this.labelVersion.Text = Config.VersionFull.ToString();
             this.labelCopyright.Text = "GNU General Public License 3";
 
             this.textBoxDescription.Text = @"TV Undergroud Downloader

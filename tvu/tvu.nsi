@@ -15,6 +15,9 @@ Name "Tv Underground Downloader"
 ; The file to write
 OutFile ".\bin\Release\tvud_installer_0.6.0.exe"
 
+SetCompress force
+SetCompressor /SOLID LZMA
+
 ; The default installation directory
 InstallDir $PROGRAMFILES\Tvunderground_Downloader
 

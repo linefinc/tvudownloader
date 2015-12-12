@@ -37,7 +37,7 @@
               OutputFile="$(SolutionDirectory)\tvudownloader\tvu\Properties\AssemblyInfo.cs"
               AssemblyVersion="$(AssemblyVersion)"
               AssemblyFileVersion="$(AssemblyVersion)"
-              AssemblyInformationalVersion="$(AssemblyVersion)-$(AssemblyVersionCommitHash) [$(BuildTime)]"
+              AssemblyInformationalVersion="$(AssemblyVersion) $(AssemblyVersionCommitHash) [$(BuildTime)]"
 			        AssemblyTitle ="TvUndergroundDownloader"
               AssemblyProduct ="TvUndergroundDownloader"/>
 
