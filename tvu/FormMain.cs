@@ -561,24 +561,22 @@ namespace TvUndergroundDownloader
                         }
 
                         //
-                        //  Update status last check is 15 days ago
-                        //
-                        try
+                        //  force status check if more than 15 days ago
+                        DateTime LastTvUStatusUpgradeDate;
+                        if (DateTime.TryParse(MainHistory.LastDownloadDateByFeedSource(feed.Url), out LastTvUStatusUpgradeDate) == true)
                         {
-                            DateTime LastTvUStatusUpgradeDate = Convert.ToDateTime(MainHistory.LastDownloadDateByFeedSource(feed.Url));
                             TimeSpan ts = DateTime.Now - LastTvUStatusUpgradeDate;
                             if (ts.TotalDays > 15)
                             {
                                 feed.tvuStatus = tvuStatus.Unknow;
                             }
                         }
-                        catch
+                        else
                         {
                             feed.tvuStatus = tvuStatus.Unknow;
                         }
-                        // 
-                        //  Start check of complete element 
-                        // 
+
+                        //  Start check complete element 
                         if (feed.tvuStatus == tvuStatus.Unknow)
                         {
                             Regex Pattern = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=episodes&sid=\d{1,10}");
@@ -586,16 +584,19 @@ namespace TvUndergroundDownloader
                             string url = Match.Value;
                             feed.tvuStatus = WebManagerTVU.CheckComplete(url, cookieContainer);
                         }
-
-
                     }
-                    //
-                    // end check compelte element
-                    //
 
                     // reverse the list so the laft feed ( first temporal feed) became the first first feed in list
                     elemList.Reverse();
 
+                    // remove all feed that exeede the max Simultaneous Download limit 
+                    if (elemList.Count > feed.maxSimultaneousDownload)
+                    {
+                        int count = elemList.Count - feed.maxSimultaneousDownload - 1;
+                        elemList.RemoveRange(feed.maxSimultaneousDownload - 1, 0);
+                    }
+
+                    // download 
                     foreach (string FeedLink in elemList)
                     {
                         string sEd2k = string.Empty;
@@ -606,41 +607,31 @@ namespace TvUndergroundDownloader
                             return;
                         }
 
-                        if (MainHistory.FileExistByFeedLink(FeedLink) == false)
+                        // check is the feed is already present in feed link cache
+                        sEd2k = feedLinkCache.FindFeedLink(FeedLink);
+                        if (sEd2k == string.Empty)
                         {
-                            sEd2k = feedLinkCache.FindFeedLink(FeedLink);
-                            if (sEd2k == string.Empty)
+                            string page = null;
+
+                            // download the page in FeedLink
+                            Log.logVerbose(string.Format("try download page {0}", FeedLink));
+
+                            if ((page = WebFetch.Fetch(FeedLink, true, cookieContainer)) == null)
                             {
-                                string page = null;
-
-                                // download the page in FeedLink
-                                Log.logVerbose(string.Format("try download page {0}", FeedLink));
-
-                                if ((page = WebFetch.Fetch(FeedLink, true, cookieContainer)) == null)
-                                {
-                                    continue;
-                                }
-                                // parse ed2k
-                                sEd2k = RssParserTVU.FindEd2kLink(page);
-                                FeedLinkCache.AddFeedLink(FeedLink, sEd2k, DateTime.Now.ToString("s"));
+                                continue;
                             }
-
-
-
-                            Ed2kfile parser = new Ed2kfile(sEd2k);
-                            Log.logInfo(string.Format("Found new file {0}", parser.GetFileName()));
-
-                            sDonwloadFile DL = new sDonwloadFile(sEd2k, FeedLink, feed.Url, feed.PauseDownload, feed.Category);
-
-                            DownloadFileList.Add(DL);
-                        }
-                        else
-                        {
-                            // link ed2k just download bat not correct registred
-                            // to avoid rendondance of link
-                            History.Add(sEd2k, FeedLink, feed.Url, DateTime.Now.ToString("s"));
+                            // parse ed2k
+                            sEd2k = RssParserTVU.FindEd2kLink(page);
+                            FeedLinkCache.AddFeedLink(FeedLink, sEd2k, DateTime.Now.ToString("s"));
                         }
 
+
+                        Ed2kfile parser = new Ed2kfile(sEd2k);
+                        Log.logInfo(string.Format("Found new file {0}", parser.GetFileName()));
+
+                        // add file to Donwload list 
+                        sDonwloadFile DL = new sDonwloadFile(sEd2k, FeedLink, feed.Url, feed.PauseDownload, feed.Category);
+                        DownloadFileList.Add(DL);
 
                     }
 
@@ -776,7 +767,7 @@ namespace TvUndergroundDownloader
                 }
             }
 
-            
+
 
             Log.logVerbose("Download file");
             //
