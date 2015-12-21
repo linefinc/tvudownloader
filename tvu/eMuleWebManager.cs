@@ -226,6 +226,12 @@ namespace TvUndergroundDownloader
             webSocketGET(string.Format("{0}/?ses={1}&w=close", Host, SesID));
         }
 
+        public void ForceRefreshSharedFileList()
+        {
+            //  "self.location.href='/?ses=-1051561950&w=shared&reload=true'
+            webSocketGET(string.Format("{0}/?ses={1}&w=shared&reload=true", Host, SesID));
+        }
+
         /// <summary>
         /// Web socket
         /// </summary>

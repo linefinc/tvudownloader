@@ -850,8 +850,13 @@ namespace TvUndergroundDownloader
                 }
             }
 
+            
+            Log.logInfo("Force Refresh Shared File List");
+            Service.ForceRefreshSharedFileList();
+
             Log.logInfo("logout Emule");
             Service.Close();
+            
             Log.logInfo("Statistics");
             Log.logInfo(string.Format("Total file added {0}", MainConfig.TotalDownloads));
             MainHistory.Save();
