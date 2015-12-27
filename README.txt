@@ -17,6 +17,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
+##### Version 0.6.0 beta 27/12/2015  #####
++ add sqlite instead of xml database
++ add support for http://tvunderground.org.ru and http://www.tvunderground.org.ru as link
+* improve memory usage
+* improve preformance
+* better list view handling
+* some clean up code
+
+
 ##### Version 0.5.6 27/09/2014 [git 6cc9157] #####
 * Fix control on max simulations download
 * Fix delete file from history
