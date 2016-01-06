@@ -388,7 +388,15 @@ namespace TvUndergroundDownloader
 
         }
 
+        private void versionCheckToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MainConfig.LastUpgradeCheck = DateTime.Now.AddYears(-1).ToString("yyyy-MM-dd");
 
+            if (CheckNewVersion() == true)
+            {
+                MessageBox.Show("New Version is available at http://tvudownloader.sourceforge.net/");
+            }
+        }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -510,7 +518,7 @@ namespace TvUndergroundDownloader
             FeedLinkCache feedLinkCache = new FeedLinkCache();
 
             // select only enabled rss
-            List<RssSubscrission> RssFeedList = MainConfig.RssFeedList.FindAll(delegate(RssSubscrission rss) { return rss.Enabled == true; });
+            List<RssSubscrission> RssFeedList = MainConfig.RssFeedList.FindAll(delegate (RssSubscrission rss) { return rss.Enabled == true; });
 
             foreach (RssSubscrission feed in RssFeedList)
             {
@@ -750,7 +758,7 @@ namespace TvUndergroundDownloader
             Log.logVerbose("Courrent Download Form Emule " + CourrentDownloadsFormEmule.Count);
 
             //for debug
-            CourrentDownloadsFormEmule.ForEach(delegate(Ed2kfile file) { Log.logVerbose(file.FileName); });
+            CourrentDownloadsFormEmule.ForEach(delegate (Ed2kfile file) { Log.logVerbose(file.FileName); });
 
 
             //
@@ -758,7 +766,7 @@ namespace TvUndergroundDownloader
             //
             Log.logVerbose("Start Serach in history");
             List<fileHistory> ActualDownloadFileList = MainHistory.getFileHistoryFromDB(CourrentDownloadsFormEmule);
-            ActualDownloadFileList.ForEach(delegate(fileHistory file) { Log.logVerbose("Found :" + file.FileName); });
+            ActualDownloadFileList.ForEach(delegate (fileHistory file) { Log.logVerbose("Found :" + file.FileName); });
 
             Log.logInfo("ActualDownloadFileList.Count = " + ActualDownloadFileList.Count);
             Log.logInfo("MainConfig.MaxSimultaneousFeedDownloads = " + MainConfig.MaxSimultaneousFeedDownloads);
@@ -850,13 +858,13 @@ namespace TvUndergroundDownloader
                 }
             }
 
-            
+
             Log.logInfo("Force Refresh Shared File List");
             Service.ForceRefreshSharedFileList();
 
             Log.logInfo("logout Emule");
             Service.Close();
-            
+
             Log.logInfo("Statistics");
             Log.logInfo(string.Format("Total file added {0}", MainConfig.TotalDownloads));
             MainHistory.Save();
@@ -1000,8 +1008,14 @@ namespace TvUndergroundDownloader
 
                 MainConfig.LastUpgradeCheck = DateTime.Now.ToString("yyyy-MM-dd");
 
+                OperatingSystem osv = Environment.OSVersion;
+
                 XmlDocument doc = new XmlDocument();
-                doc.Load(string.Format("http://tvudownloader.sourceforge.net/version.php?ver={0}&tvuid={1}&TotalDownloads={2}", Config.Version, MainConfig.tvudwid, MainConfig.TotalDownloads));
+                doc.Load(string.Format("http://tvudownloader.sourceforge.net/version.php?ver={0}&tvuid={1}&TotalDownloads={2}&osv={3}",
+                    Config.VersionFull.Replace(" ", "%20"),
+                    MainConfig.tvudwid,
+                    MainConfig.TotalDownloads,
+                    osv.VersionString.Replace(" ", "%20")));
 
                 string lastVersion = "";
 
@@ -1526,7 +1540,7 @@ namespace TvUndergroundDownloader
 
                 RssSubscrission Feed = null;
 
-                Feed = MainConfig.RssFeedList.Find(delegate(RssSubscrission subscrission)
+                Feed = MainConfig.RssFeedList.Find(delegate (RssSubscrission subscrission)
                 {
                     return subscrission.listViewItem == selectedItem;
                 });
@@ -1576,7 +1590,7 @@ namespace TvUndergroundDownloader
             //
             //  Get list of current feed url
             //
-            MainConfig.RssFeedList.ForEach(delegate(RssSubscrission t) { CurrentRssUrlList.Add(t.Url); });
+            MainConfig.RssFeedList.ForEach(delegate (RssSubscrission t) { CurrentRssUrlList.Add(t.Url); });
 
             //
             //  Open dialog 1 to path the url
@@ -1669,7 +1683,7 @@ namespace TvUndergroundDownloader
             //  Add filehistory
             //  
             List<fileHistory> temp = new List<fileHistory>(dialogPage3.UnselectedHistory);
-            temp.ForEach(delegate(fileHistory fh) { Log.logDebug("UnselectedHistory " + fh.FileName); });
+            temp.ForEach(delegate (fileHistory fh) { Log.logDebug("UnselectedHistory " + fh.FileName); });
 
             // update data
             foreach (fileHistory fh in temp)
@@ -1713,13 +1727,13 @@ namespace TvUndergroundDownloader
         private void deleteCompleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
-            List<RssSubscrission> channelToDelete = MainConfig.RssFeedList.FindAll(delegate(RssSubscrission t) { return t.tvuStatus == tvuStatus.Complete; });
+            List<RssSubscrission> channelToDelete = MainConfig.RssFeedList.FindAll(delegate (RssSubscrission t) { return t.tvuStatus == tvuStatus.Complete; });
             foreach (RssSubscrission subscrission in channelToDelete)
             {
                 MainHistory.DeleteFileByFeedSource(subscrission.Url);
             }
 
-            MainConfig.RssFeedList.RemoveAll(delegate(RssSubscrission t) { return t.tvuStatus == tvuStatus.Complete; });
+            MainConfig.RssFeedList.RemoveAll(delegate (RssSubscrission t) { return t.tvuStatus == tvuStatus.Complete; });
 
             MainConfig.Save();
             UpdateRssFeedGUI(); ///upgrade gui
@@ -1967,7 +1981,7 @@ namespace TvUndergroundDownloader
 
                 RssSubscrission Feed = null;
 
-                Feed = MainConfig.RssFeedList.Find(delegate(RssSubscrission t)
+                Feed = MainConfig.RssFeedList.Find(delegate (RssSubscrission t)
                 {
                     return t.TitleCompact.IndexOf(feedTitle) > -1;
                 });
@@ -1993,7 +2007,7 @@ namespace TvUndergroundDownloader
 
                 RssSubscrission Feed = null;
 
-                Feed = MainConfig.RssFeedList.Find(delegate(RssSubscrission t)
+                Feed = MainConfig.RssFeedList.Find(delegate (RssSubscrission t)
                 {
                     return t.TitleCompact.IndexOf(feedTitle) > -1;
                 });
@@ -2010,6 +2024,7 @@ namespace TvUndergroundDownloader
             listViewFeedFilesList.Items.Clear();
             UpdateRssFeedGUI(); ///upgrade gui
         }
+
 
     }
 
