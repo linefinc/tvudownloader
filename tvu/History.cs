@@ -63,59 +63,67 @@ namespace TvUndergroundDownloader
 
         public static void MigrateFromXMLToDB()
         {
-            XmlDocument xDoc = new XmlDocument();
-            xDoc.Load(Config.FileNameHistory);
-
-            XmlNodeList ItemList = xDoc.GetElementsByTagName("Item");
-
-            List<string> stringCache = new List<string>();
-
-            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+            try
             {
-                connection.Open();
-                using (SQLiteTransaction transaction = connection.BeginTransaction())
-                {
+                XmlDocument xDoc = new XmlDocument();
+                xDoc.Load(Config.FileNameHistory);
 
-                    for (int i = 0; i < ItemList.Count; i++)
+                XmlNodeList ItemList = xDoc.GetElementsByTagName("Item");
+
+                List<string> stringCache = new List<string>();
+
+                using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+                {
+                    connection.Open();
+                    using (SQLiteTransaction transaction = connection.BeginTransaction())
                     {
 
-                        string strDate = DateTime.Now.ToString("s"); // to avoid compatibility with old history file
-                        string strFeedLink = "";
-                        string strEd2k = "";
-                        string strFeedSource = "";
-
-                        XmlNode node = ItemList[i];
-                        foreach (XmlNode t in node.ChildNodes)
+                        for (int i = 0; i < ItemList.Count; i++)
                         {
 
-                            if (t.Name == "Ed2k")
-                            {
-                                strEd2k = t.InnerText;
-                            }
+                            string strDate = DateTime.Now.ToString("s"); // to avoid compatibility with old history file
+                            string strFeedLink = "";
+                            string strEd2k = "";
+                            string strFeedSource = "";
 
-                            if (t.Name == "FeedLink")
-                            {
-                                strFeedLink = t.InnerText;
-                            }
-
-                            if (t.Name == "FeedSource")
+                            XmlNode node = ItemList[i];
+                            foreach (XmlNode t in node.ChildNodes)
                             {
 
-                                strFeedSource = t.InnerText;
+                                if (t.Name == "Ed2k")
+                                {
+                                    strEd2k = t.InnerText;
+                                }
+
+                                if (t.Name == "FeedLink")
+                                {
+                                    strFeedLink = t.InnerText;
+                                }
+
+                                if (t.Name == "FeedSource")
+                                {
+
+                                    strFeedSource = t.InnerText;
+                                }
+
+                                if (t.Name == "Date")
+                                {
+                                    strDate = t.InnerText;
+                                }
+
+
                             }
-
-                            if (t.Name == "Date")
-                            {
-                                strDate = t.InnerText;
-                            }
-
-
+                            History.Add(transaction, strEd2k, strFeedLink, strFeedSource, strDate);
                         }
-                        History.Add(transaction, strEd2k, strFeedLink, strFeedSource, strDate);
+                        transaction.Commit();
                     }
-                    transaction.Commit();
                 }
             }
+            catch
+            {
+                // some wrong 
+            }
+
         }
 
         ///
