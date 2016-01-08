@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -384,7 +385,10 @@ namespace TvUndergroundDownloader
             {
                 MessageBox.Show("New Version is available at http://tvudownloader.sourceforge.net/");
             }
-
+            else
+            {
+                MessageBox.Show("Software is already update");
+            }
 
         }
 
@@ -991,15 +995,12 @@ namespace TvUndergroundDownloader
 
             try
             {
-                string lastCheck = MainConfig.LastUpgradeCheck;
-                string[] lastCheckSplit = lastCheck.Split('-');
+                CultureInfo provider = CultureInfo.InvariantCulture;
 
-                int year = Convert.ToInt32(lastCheckSplit[0]);
-                int month = Convert.ToInt32(lastCheckSplit[1]);
-                int day = Convert.ToInt32(lastCheckSplit[2]);
-
-                DateTime lastCheckDateTime = new DateTime(year, month, day);
+                DateTime lastCheckDateTime = DateTime.ParseExact(MainConfig.LastUpgradeCheck, "yyyy-MM-dd", provider);
                 DateTime nextCheck = lastCheckDateTime.AddDays(MainConfig.intervalBetweenUpgradeCheck);
+
+                lastCheckDateTime = DateTime.ParseExact(MainConfig.LastUpgradeCheck, "yyyy-MM-dd", provider);
 
                 if (DateTime.Now < nextCheck)
                 {
@@ -1010,6 +1011,7 @@ namespace TvUndergroundDownloader
 
                 OperatingSystem osv = Environment.OSVersion;
 
+                // require update statu
                 XmlDocument doc = new XmlDocument();
                 doc.Load(string.Format("http://tvudownloader.sourceforge.net/version.php?ver={0}&tvuid={1}&TotalDownloads={2}&osv={3}",
                     Config.VersionFull.Replace(" ", "%20"),
@@ -1017,49 +1019,28 @@ namespace TvUndergroundDownloader
                     MainConfig.TotalDownloads,
                     osv.VersionString.Replace(" ", "%20")));
 
-                string lastVersion = "";
+                string lastVersionStr = "";
 
                 foreach (XmlNode t in doc.GetElementsByTagName("last"))
                 {
-                    lastVersion = t.InnerText;
+                    lastVersionStr = t.InnerText;
                 }
 
-                List<int> lastVersionInt = new List<int>();
-                List<int> currentVersionInt = new List<int>();
 
-                string[] strSplit = lastVersion.Split('.');
-                foreach (string t in strSplit)
+                Regex rg = new Regex(@"\d+\.\d+.\d+");
+
+                Match match = rg.Match(lastVersionStr);
+                Version lastVersion = new Version(match.Value);
+
+                // convert
+                match = rg.Match(Config.VersionFull);
+                Version currentVersion = new Version(match.Value);
+
+                if (currentVersion < lastVersion)
                 {
-                    lastVersionInt.Add(Convert.ToInt16(t));
+                    return true;
                 }
 
-                strSplit = Config.Version.Split('.');
-                foreach (string t in strSplit)
-                {
-                    currentVersionInt.Add(Convert.ToInt16(t));
-                }
-
-                while (currentVersionInt.Count != lastVersionInt.Count)
-                {
-
-                    if (currentVersionInt.Count > lastVersionInt.Count)
-                    {
-                        lastVersionInt.Add(0);
-                    }
-                    if (currentVersionInt.Count < lastVersionInt.Count)
-                    {
-                        lastVersionInt.Add(0);
-                    }
-                }
-
-                for (int index = 0; index < currentVersionInt.Count; index++)
-                {
-                    if (lastVersionInt[index] > currentVersionInt[index])
-                    {
-                        return true;
-                    }
-
-                }
 
                 return false;
 
