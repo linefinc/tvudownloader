@@ -37,6 +37,7 @@
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.buttonBrowse = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.buttonFinish = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ButClose
@@ -128,12 +129,23 @@
             this.textBox1.Size = new System.Drawing.Size(704, 20);
             this.textBox1.TabIndex = 45;
             // 
+            // buttonFinish
+            // 
+            this.buttonFinish.Location = new System.Drawing.Point(563, 242);
+            this.buttonFinish.Name = "buttonFinish";
+            this.buttonFinish.Size = new System.Drawing.Size(75, 23);
+            this.buttonFinish.TabIndex = 46;
+            this.buttonFinish.Text = "Finish";
+            this.buttonFinish.UseVisualStyleBackColor = true;
+            this.buttonFinish.Click += new System.EventHandler(this.buttonFinish_Click);
+            // 
             // AddFeedDialogPage1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(812, 277);
             this.ControlBox = false;
+            this.Controls.Add(this.buttonFinish);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.buttonBrowse);
             this.Controls.Add(this.radioButton2);
@@ -165,5 +177,6 @@
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.Button buttonBrowse;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button buttonFinish;
     }
 }

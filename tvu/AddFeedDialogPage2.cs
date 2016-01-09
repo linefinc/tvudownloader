@@ -8,26 +8,28 @@ namespace TvUndergroundDownloader
 {
     public partial class AddFeedDialogPage2 : Form
     {
-        public List<RssChannel> RssChannelList { private set; get; }
+        public List<RssChannel> rssChannelList { private set; get; }
         public List<string> RssUrlList { private set; get; }
-        public List<fileHistory> ListFileHistory { private set; get; }
+        public List<fileHistory> newFilesList { private set; get; }
         public List<string> ListCategory { private set; get; }
         private string ServiceUrl;
         private string Password;
+        private bool FastAdd;
 
         private CookieContainer cookieContainer;
 
-        public AddFeedDialogPage2(List<string> RssUrlList, string ServiceUrl, string Password, CookieContainer cookieContainer)
+        public AddFeedDialogPage2(List<string> RssUrlList, string ServiceUrl, string Password, CookieContainer cookieContainer, bool FastAdd)
         {
             InitializeComponent();
             this.RssUrlList = RssUrlList;
-            this.RssChannelList = new List<RssChannel>();
-            this.ListFileHistory = new List<fileHistory>();
+            this.rssChannelList = new List<RssChannel>();
+            this.newFilesList = new List<fileHistory>();
             this.ListCategory = new List<string>();
 
             this.cookieContainer = cookieContainer;
             this.ServiceUrl = ServiceUrl;
             this.Password = Password;
+            this.FastAdd = FastAdd;
 
         }
 
@@ -54,7 +56,7 @@ namespace TvUndergroundDownloader
                     string WebPage = WebFetch.Fetch(url, true, cookieContainer);
                     rc = RssParserTVU.Parse(WebPage);
                     rc.Url = url;
-                    RssChannelList.Add(rc);
+                    rssChannelList.Add(rc);
                     backgroundWorker1.ReportProgress(0);
                 }
                 catch
@@ -62,37 +64,39 @@ namespace TvUndergroundDownloader
                 }
             }
 
-
-            FeedLinkCache feedLinkCache = new FeedLinkCache();
-
-            foreach (RssChannel rssChannel in RssChannelList)
+            if (this.FastAdd == false)
             {
-                foreach (RssItem Item in rssChannel.ListItem)
+                FeedLinkCache feedLinkCache = new FeedLinkCache();
+
+                foreach (RssChannel rssChannel in rssChannelList)
                 {
-                    if (backgroundWorker1.CancellationPending)
+                    foreach (RssItem Item in rssChannel.ListItem)
                     {
-                        e.Cancel = true;
-                        return;
+                        if (backgroundWorker1.CancellationPending)
+                        {
+                            e.Cancel = true;
+                            return;
+                        }
+
+                        try
+                        {
+                            // download page
+                            string page = WebFetch.Fetch(Item.Guid, true, cookieContainer);
+                            // find ed2k
+                            string sEd2k = RssParserTVU.FindEd2kLink(page);
+                            // add to history to avoid redonwload
+                            fileHistory file = new fileHistory(sEd2k, Item.Guid, rssChannel.Url);
+                            newFilesList.Add(file);
+                            backgroundWorker1.ReportProgress(0);
+                            // update feedLinkCache
+                            FeedLinkCache.AddFeedLink(Item.Guid, sEd2k, DateTime.Now.ToString("s"));
+                        }
+                        catch
+                        {
+                        }
                     }
 
-                    try
-                    {
-                        // download page
-                        string page = WebFetch.Fetch(Item.Guid, true, cookieContainer);
-                        // find ed2k
-                        string sEd2k = RssParserTVU.FindEd2kLink(page);
-                        // add to history to avoid redonwload
-                        fileHistory file = new fileHistory(sEd2k, Item.Guid, rssChannel.Url);
-                        ListFileHistory.Add(file);
-                        backgroundWorker1.ReportProgress(0);
-                        // update feedLinkCache
-                        FeedLinkCache.AddFeedLink(Item.Guid, sEd2k, DateTime.Now.ToString("s"));
-                    }
-                    catch
-                    {
-                    }
                 }
-
             }
 
             //

@@ -8,7 +8,7 @@ namespace TvUndergroundDownloader
     {
         private int index;
 
-        public List<fileHistory> UnselectedHistory { get; private set; }
+        public List<fileHistory> UnselectedFile { get; private set; }
         public List<fileHistory> GlobalListFileHisotry { get; private set; }
         public List<RssChannel> ListRssChannel { get; private set; }
 
@@ -18,7 +18,7 @@ namespace TvUndergroundDownloader
 
             this.ListRssChannel = ListRssChannel;
             this.GlobalListFileHisotry = GlobalListFileHisotry;
-            this.UnselectedHistory = new List<fileHistory>(); // select all input file
+            this.UnselectedFile = new List<fileHistory>(); // select all input file
             labelSelectedElement.Text = string.Format("Selected elements {0}", this.GlobalListFileHisotry.Count);
             index = 0;
 
@@ -54,10 +54,10 @@ namespace TvUndergroundDownloader
 
             foreach (fileHistory fh in ListFH)
             {
-                UnselectedHistory.RemoveAll(delegate(fileHistory t) { return t == fh; });
+                UnselectedFile.RemoveAll(delegate(fileHistory t) { return t == fh; });
             }
 
-            labelSelectedElement.Text = string.Format("Selected elements {0}", this.GlobalListFileHisotry.Count - this.UnselectedHistory.Count);
+            labelSelectedElement.Text = string.Format("Selected elements {0}", this.GlobalListFileHisotry.Count - this.UnselectedFile.Count);
             
         }
         /// <summary>
@@ -71,10 +71,10 @@ namespace TvUndergroundDownloader
             List<fileHistory> ListFH = GlobalListFileHisotry.FindAll(delegate(fileHistory t) { return t.FeedSource == ListRssChannel[index].Url; });
             foreach (fileHistory fh in ListFH)
             {
-                UnselectedHistory.RemoveAll(delegate(fileHistory t) { return t == fh; });
+                UnselectedFile.RemoveAll(delegate(fileHistory t) { return t == fh; });
             }
             
-            labelSelectedElement.Text = string.Format("Selected elements {0}", this.GlobalListFileHisotry.Count - this.UnselectedHistory.Count);
+            labelSelectedElement.Text = string.Format("Selected elements {0}", this.GlobalListFileHisotry.Count - this.UnselectedFile.Count);
         }
 
 
@@ -115,7 +115,7 @@ namespace TvUndergroundDownloader
             {
                 bool selected = true;
 
-                if (UnselectedHistory.IndexOf(file) > -1)
+                if (UnselectedFile.IndexOf(file) > -1)
                 {
                     selected = false;
                 }
@@ -142,14 +142,14 @@ namespace TvUndergroundDownloader
                 fileHistory item = GlobalListFileHisotry.Find(delegate(fileHistory t) { return t.FileName == strItem; });
 
                 // remove all data 
-                UnselectedHistory.RemoveAll(delegate(fileHistory t) { return t == item; });
+                UnselectedFile.RemoveAll(delegate(fileHistory t) { return t == item; });
 
                 if (checkedListBox1.GetItemChecked(index) == false)
                 {
-                    UnselectedHistory.Add(item);
+                    UnselectedFile.Add(item);
                 }
             }
-            labelSelectedElement.Text = string.Format("Selected elements {0}", this.GlobalListFileHisotry.Count - this.UnselectedHistory.Count);
+            labelSelectedElement.Text = string.Format("Selected elements {0}", this.GlobalListFileHisotry.Count - this.UnselectedFile.Count);
         }
 
         private void comboBoxCategory_SelectedIndexChanged(object sender, EventArgs e)

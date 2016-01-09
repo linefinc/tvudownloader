@@ -11,12 +11,20 @@ namespace TvUndergroundDownloader
 
         public List<string> RssUrlList { private set; get; }
         private List<string> CurrentRssUrlList ;
+        public bool FastAdd { private set; get; }
 
         public AddFeedDialogPage1(List<string> CurrentRssUrlList)
         {
             InitializeComponent();
             this.RssUrlList = new List<string>();
             this.CurrentRssUrlList = CurrentRssUrlList;
+            this.FastAdd = false;
+        }
+
+        private void buttonFinish_Click(object sender, EventArgs e)
+        {
+            this.FastAdd = true;
+            buttonNext_Click(sender, e);
         }
 
         private void buttonNext_Click(object sender, EventArgs e)
@@ -114,6 +122,8 @@ namespace TvUndergroundDownloader
             return;
             
         }
+
+      
 
        
 
