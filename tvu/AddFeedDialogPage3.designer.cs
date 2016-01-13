@@ -103,7 +103,10 @@
             this.checkedListBox1.ScrollAlwaysVisible = true;
             this.checkedListBox1.Size = new System.Drawing.Size(788, 349);
             this.checkedListBox1.TabIndex = 38;
+            this.checkedListBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.checkedListBox1_MouseClick);
+            this.checkedListBox1.SelectedIndexChanged += new System.EventHandler(this.checkedListBox1_SelectedIndexChanged);
             this.checkedListBox1.SelectedValueChanged += new System.EventHandler(this.checkedListBox1_SelectedValueChanged);
+            this.checkedListBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.checkedListBox1_KeyUp);
             // 
             // label1
             // 

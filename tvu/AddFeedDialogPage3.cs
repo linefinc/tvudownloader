@@ -129,9 +129,27 @@ namespace TvUndergroundDownloader
         /// </summary>
         private void buttonFinish_Click(object sender, EventArgs e)
         {
+            
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
+
+
+        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            checkedListBox1_SelectedValueChanged(sender, e);
+        }
+
+        private void checkedListBox1_MouseClick(object sender, MouseEventArgs e)
+        {
+            checkedListBox1_SelectedValueChanged(sender, e);
+        }
+
+        private void checkedListBox1_KeyUp(object sender, KeyEventArgs e)
+        {
+            checkedListBox1_SelectedValueChanged(sender, e);
+        }
+
 
         private void checkedListBox1_SelectedValueChanged(object sender, EventArgs e)
         {
@@ -139,7 +157,7 @@ namespace TvUndergroundDownloader
             {
                 // get item (fileHistory) form main list
                 string strItem = checkedListBox1.Items[index].ToString();
-                fileHistory item = GlobalListFileHisotry.Find(delegate(fileHistory t) { return t.FileName == strItem; });
+                fileHistory item = GlobalListFileHisotry.Find(x => x.FileName == strItem);
 
                 // remove all data 
                 UnselectedFile.RemoveAll(delegate(fileHistory t) { return t == item; });
@@ -166,6 +184,9 @@ namespace TvUndergroundDownloader
         {
             ListRssChannel[index].maxSimultaneousDownload = Convert.ToInt16(numericUpDownMaxSimulDown.Value);
         }
+
+       
+      
 
    
     }
