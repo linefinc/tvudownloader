@@ -1542,7 +1542,7 @@ namespace TvUndergroundDownloader
 
             if ((MainConfig.tvuCookieH == string.Empty) | (MainConfig.tvuCookieI == string.Empty) | (MainConfig.tvuCookieT == string.Empty))
             {
-                MessageBox.Show("Please login before add new RSS feed (File>Login");
+                MessageBox.Show("Please login before add new RSS feed (File > Login)");
                 return;
             }
 
