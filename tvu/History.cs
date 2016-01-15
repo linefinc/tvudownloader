@@ -63,6 +63,8 @@ namespace TvUndergroundDownloader
 
         public static bool MigrateFromXMLToDB()
         {
+            List<fileHistory> tempFileHistory = new List<fileHistory>();
+
             try
             {
                 XmlDocument xDoc = new XmlDocument();
@@ -70,50 +72,67 @@ namespace TvUndergroundDownloader
 
                 XmlNodeList ItemList = xDoc.GetElementsByTagName("Item");
 
-                List<string> stringCache = new List<string>();
+                for (int i = 0; i < ItemList.Count; i++)
+                {
+                    try
+                    {
+                        string strDate = DateTime.Now.ToString("s"); // to avoid compatibility with old history file
+                        string strFeedLink = string.Empty;
+                        string strEd2k = string.Empty;
+                        string strFeedSource = string.Empty;
 
+                        XmlNode node = ItemList[i];
+                        foreach (XmlNode t in node.ChildNodes)
+                        {
+
+                            if (t.Name == "Ed2k")
+                            {
+                                strEd2k = t.InnerText;
+                            }
+
+                            if (t.Name == "FeedLink")
+                            {
+                                strFeedLink = t.InnerText;
+                            }
+
+                            if (t.Name == "FeedSource")
+                            {
+
+                                strFeedSource = t.InnerText;
+                            }
+
+                            if (t.Name == "Date")
+                            {
+                                strDate = t.InnerText;
+                            }
+                        }
+                        tempFileHistory.Add(new fileHistory(strEd2k, strFeedLink, strFeedSource, strDate));
+                    }
+                    catch
+                    {
+                        // unable to parse this row
+                    }
+
+                }
+
+
+            }
+            catch
+            {
+                // some wrong in xml file
+                return false;
+            }
+
+            try
+            {
                 using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
                 {
                     connection.Open();
                     using (SQLiteTransaction transaction = connection.BeginTransaction())
                     {
-
-                        for (int i = 0; i < ItemList.Count; i++)
+                        foreach (var fh in tempFileHistory)
                         {
-
-                            string strDate = DateTime.Now.ToString("s"); // to avoid compatibility with old history file
-                            string strFeedLink = "";
-                            string strEd2k = "";
-                            string strFeedSource = "";
-
-                            XmlNode node = ItemList[i];
-                            foreach (XmlNode t in node.ChildNodes)
-                            {
-
-                                if (t.Name == "Ed2k")
-                                {
-                                    strEd2k = t.InnerText;
-                                }
-
-                                if (t.Name == "FeedLink")
-                                {
-                                    strFeedLink = t.InnerText;
-                                }
-
-                                if (t.Name == "FeedSource")
-                                {
-
-                                    strFeedSource = t.InnerText;
-                                }
-
-                                if (t.Name == "Date")
-                                {
-                                    strDate = t.InnerText;
-                                }
-
-
-                            }
-                            History.Add(transaction, strEd2k, strFeedLink, strFeedSource, strDate);
+                            History.Add(transaction, fh.Ed2kLink, fh.FeedLink, fh.FeedSource, fh.Date);
                         }
                         transaction.Commit();
                     }
@@ -122,7 +141,7 @@ namespace TvUndergroundDownloader
             }
             catch
             {
-                // some wrong 
+                // some wrong in db commit
                 return false;
             }
 
