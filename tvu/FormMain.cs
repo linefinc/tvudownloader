@@ -1064,7 +1064,7 @@ namespace TvUndergroundDownloader
                 row["LastUpdate"] = ((string)row["LastUpdate"]).Replace('T', ' ');
             }
 
-            dataGridView1.DataSource = list;
+            dataGridViewRecentActivity.DataSource = list;
         }
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)

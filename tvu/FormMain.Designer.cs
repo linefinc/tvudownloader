@@ -66,10 +66,8 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.enableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabActivity = new System.Windows.Forms.TabPage();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.FileNameDataGridColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LastUpdateDataGridColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabRecentActivity = new System.Windows.Forms.TabPage();
+            this.dataGridViewRecentActivity = new System.Windows.Forms.DataGridView();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPending = new System.Windows.Forms.TabPage();
@@ -113,12 +111,14 @@
             this.toolStripButtonAddFeed = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonCheckNow = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
+            this.FileNameDataGridColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastUpdateDataGridColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
-            this.tabActivity.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.tabRecentActivity.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRecentActivity)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPending.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -428,49 +428,32 @@
             this.disableToolStripMenuItem.Text = "Disable";
             this.disableToolStripMenuItem.Click += new System.EventHandler(this.disableToolStripMenuItem_Click);
             // 
-            // tabActivity
+            // tabRecentActivity
             // 
-            this.tabActivity.Controls.Add(this.dataGridView1);
-            this.tabActivity.Controls.Add(this.progressBar1);
-            this.tabActivity.Location = new System.Drawing.Point(4, 22);
-            this.tabActivity.Name = "tabActivity";
-            this.tabActivity.Size = new System.Drawing.Size(563, 441);
-            this.tabActivity.TabIndex = 4;
-            this.tabActivity.Text = "Activity";
-            this.tabActivity.UseVisualStyleBackColor = true;
+            this.tabRecentActivity.Controls.Add(this.dataGridViewRecentActivity);
+            this.tabRecentActivity.Controls.Add(this.progressBar1);
+            this.tabRecentActivity.Location = new System.Drawing.Point(4, 22);
+            this.tabRecentActivity.Name = "tabRecentActivity";
+            this.tabRecentActivity.Size = new System.Drawing.Size(563, 441);
+            this.tabRecentActivity.TabIndex = 4;
+            this.tabRecentActivity.Text = "Recent Activity";
+            this.tabRecentActivity.UseVisualStyleBackColor = true;
             // 
-            // dataGridView1
+            // dataGridViewRecentActivity
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewRecentActivity.AllowUserToAddRows = false;
+            this.dataGridViewRecentActivity.AllowUserToDeleteRows = false;
+            this.dataGridViewRecentActivity.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewRecentActivity.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.FileNameDataGridColumn,
             this.LastUpdateDataGridColumn});
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(563, 441);
-            this.dataGridView1.TabIndex = 37;
-            // 
-            // FileNameDataGridColumn
-            // 
-            this.FileNameDataGridColumn.DataPropertyName = "FileName";
-            this.FileNameDataGridColumn.HeaderText = "FileName";
-            this.FileNameDataGridColumn.Name = "FileNameDataGridColumn";
-            this.FileNameDataGridColumn.ReadOnly = true;
-            this.FileNameDataGridColumn.Width = 400;
-            // 
-            // LastUpdateDataGridColumn
-            // 
-            this.LastUpdateDataGridColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.LastUpdateDataGridColumn.DataPropertyName = "LastUpdate";
-            this.LastUpdateDataGridColumn.HeaderText = "Last Update";
-            this.LastUpdateDataGridColumn.Name = "LastUpdateDataGridColumn";
-            this.LastUpdateDataGridColumn.ReadOnly = true;
-            this.LastUpdateDataGridColumn.Width = 90;
+            this.dataGridViewRecentActivity.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewRecentActivity.Location = new System.Drawing.Point(0, 0);
+            this.dataGridViewRecentActivity.Name = "dataGridViewRecentActivity";
+            this.dataGridViewRecentActivity.ReadOnly = true;
+            this.dataGridViewRecentActivity.RowHeadersVisible = false;
+            this.dataGridViewRecentActivity.Size = new System.Drawing.Size(563, 441);
+            this.dataGridViewRecentActivity.TabIndex = 37;
             // 
             // progressBar1
             // 
@@ -481,7 +464,7 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabActivity);
+            this.tabControl1.Controls.Add(this.tabRecentActivity);
             this.tabControl1.Controls.Add(this.tabMain);
             this.tabControl1.Controls.Add(this.tabLog);
             this.tabControl1.Controls.Add(this.tabPending);
@@ -696,40 +679,40 @@
             // clearToolStripMenuItem
             // 
             this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.clearToolStripMenuItem.Text = "Clear";
             this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
             // 
             // autoClearToolStripMenuItem
             // 
             this.autoClearToolStripMenuItem.Name = "autoClearToolStripMenuItem";
-            this.autoClearToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.autoClearToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.autoClearToolStripMenuItem.Text = "AutoClear";
             this.autoClearToolStripMenuItem.Click += new System.EventHandler(this.autoClearToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(168, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(169, 6);
             // 
             // verboseToolStripMenuItem
             // 
             this.verboseToolStripMenuItem.Name = "verboseToolStripMenuItem";
-            this.verboseToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.verboseToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.verboseToolStripMenuItem.Text = "Verbose";
             this.verboseToolStripMenuItem.Click += new System.EventHandler(this.verboseToolStripMenuItem_Click);
             // 
             // sendLogToEmailToolStripMenuItem
             // 
             this.sendLogToEmailToolStripMenuItem.Name = "sendLogToEmailToolStripMenuItem";
-            this.sendLogToEmailToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.sendLogToEmailToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.sendLogToEmailToolStripMenuItem.Text = "Send Log To Email";
             this.sendLogToEmailToolStripMenuItem.Click += new System.EventHandler(this.sendLogToEmailToolStripMenuItem_Click);
             // 
             // openLogFileToolStripMenuItem
             // 
             this.openLogFileToolStripMenuItem.Name = "openLogFileToolStripMenuItem";
-            this.openLogFileToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.openLogFileToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.openLogFileToolStripMenuItem.Text = "Open Log File";
             this.openLogFileToolStripMenuItem.Click += new System.EventHandler(this.openLogFileToolStripMenuItem_Click);
             // 
@@ -748,35 +731,35 @@
             // helpToolStripMenuItem1
             // 
             this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
-            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(148, 22);
+            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(149, 22);
             this.helpToolStripMenuItem1.Text = "Help";
             this.helpToolStripMenuItem1.Click += new System.EventHandler(this.helpToolStripMenuItem1_Click);
             // 
             // reportABugToolStripMenuItem
             // 
             this.reportABugToolStripMenuItem.Name = "reportABugToolStripMenuItem";
-            this.reportABugToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.reportABugToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.reportABugToolStripMenuItem.Text = "Report a Bug";
             this.reportABugToolStripMenuItem.Click += new System.EventHandler(this.reportABugToolStripMenuItem_Click);
             // 
             // forumToolStripMenuItem
             // 
             this.forumToolStripMenuItem.Name = "forumToolStripMenuItem";
-            this.forumToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.forumToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.forumToolStripMenuItem.Text = "Forum";
             this.forumToolStripMenuItem.Click += new System.EventHandler(this.forumToolStripMenuItem_Click);
             // 
             // versionCheckToolStripMenuItem
             // 
             this.versionCheckToolStripMenuItem.Name = "versionCheckToolStripMenuItem";
-            this.versionCheckToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.versionCheckToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.versionCheckToolStripMenuItem.Text = "Version Check";
             this.versionCheckToolStripMenuItem.Click += new System.EventHandler(this.versionCheckToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem1
             // 
             this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
-            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(148, 22);
+            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(149, 22);
             this.aboutToolStripMenuItem1.Text = "About";
             this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.aboutToolStripMenuItem1_Click);
             // 
@@ -830,6 +813,23 @@
             this.toolStripButtonStop.Text = "Stop";
             this.toolStripButtonStop.Click += new System.EventHandler(this.toolStripButtonStop_Click);
             // 
+            // FileNameDataGridColumn
+            // 
+            this.FileNameDataGridColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.FileNameDataGridColumn.DataPropertyName = "FileName";
+            this.FileNameDataGridColumn.HeaderText = "FileName";
+            this.FileNameDataGridColumn.Name = "FileNameDataGridColumn";
+            this.FileNameDataGridColumn.ReadOnly = true;
+            // 
+            // LastUpdateDataGridColumn
+            // 
+            this.LastUpdateDataGridColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.LastUpdateDataGridColumn.DataPropertyName = "LastUpdate";
+            this.LastUpdateDataGridColumn.HeaderText = "Last Update";
+            this.LastUpdateDataGridColumn.Name = "LastUpdateDataGridColumn";
+            this.LastUpdateDataGridColumn.ReadOnly = true;
+            this.LastUpdateDataGridColumn.Width = 90;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -852,8 +852,8 @@
             this.tabMain.PerformLayout();
             this.contextMenuStrip2.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
-            this.tabActivity.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.tabRecentActivity.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRecentActivity)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPending.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
@@ -887,7 +887,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.TabPage tabActivity;
+        private System.Windows.Forms.TabPage tabRecentActivity;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
@@ -942,9 +942,7 @@
         private System.Windows.Forms.ToolStripButton toolStripButtonAddFeed;
         private System.Windows.Forms.ToolStripButton toolStripButtonCheckNow;
         private System.Windows.Forms.ToolStripButton toolStripButtonStop;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FileNameDataGridColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LastUpdateDataGridColumn;
+        private System.Windows.Forms.DataGridView dataGridViewRecentActivity;
         private System.Windows.Forms.ListView listViewFeedFilesList;
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ColumnHeader columnHeader7;
@@ -952,6 +950,8 @@
         private System.Windows.Forms.ToolStripMenuItem enableToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem disableToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem versionCheckToolStripMenuItem;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FileNameDataGridColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LastUpdateDataGridColumn;
     }
 }
 
