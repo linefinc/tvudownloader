@@ -73,6 +73,8 @@ namespace TvUndergroundDownloader
             {
                 UnselectedFile.RemoveAll(delegate(fileHistory t) { return t == fh; });
             }
+
+            UnselectedFile.AddRange(ListFH);
             
             labelSelectedElement.Text = string.Format("Selected elements {0}", this.GlobalListFileHisotry.Count - this.UnselectedFile.Count);
         }
