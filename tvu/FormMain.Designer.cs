@@ -53,7 +53,7 @@
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.listViewFeed = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -181,7 +181,7 @@
             this.tabMain.Controls.Add(this.labelFeedCategory);
             this.tabMain.Controls.Add(this.label7);
             this.tabMain.Controls.Add(this.listViewFeedFilesList);
-            this.tabMain.Controls.Add(this.listView1);
+            this.tabMain.Controls.Add(this.listViewFeed);
             this.tabMain.Location = new System.Drawing.Point(4, 22);
             this.tabMain.Name = "tabMain";
             this.tabMain.Padding = new System.Windows.Forms.Padding(3);
@@ -336,24 +336,24 @@
             this.deleteToolStripMenuItem1.Text = "Redownload";
             this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.deleteToolStripMenuItem1_Click);
             // 
-            // listView1
+            // listViewFeed
             // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.listViewFeed.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader3,
             this.columnHeader4,
             this.columnHeader6,
             this.columnHeader2});
-            this.listView1.ContextMenuStrip = this.contextMenuStrip1;
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.listView1.Location = new System.Drawing.Point(3, 3);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(557, 236);
-            this.listView1.TabIndex = 23;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
-            this.listView1.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView1_ColumnClick);
-            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            this.listViewFeed.ContextMenuStrip = this.contextMenuStrip1;
+            this.listViewFeed.Dock = System.Windows.Forms.DockStyle.Top;
+            this.listViewFeed.Location = new System.Drawing.Point(3, 3);
+            this.listViewFeed.Name = "listViewFeed";
+            this.listViewFeed.Size = new System.Drawing.Size(557, 236);
+            this.listViewFeed.TabIndex = 23;
+            this.listViewFeed.UseCompatibleStateImageBehavior = false;
+            this.listViewFeed.View = System.Windows.Forms.View.Details;
+            this.listViewFeed.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listViewFeed_ColumnClick);
+            this.listViewFeed.SelectedIndexChanged += new System.EventHandler(this.listViewFeed_SelectedIndexChanged);
             // 
             // columnHeader1
             // 
@@ -885,7 +885,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label labelFeedCategory;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView listViewFeed;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.TabPage tabRecentActivity;
         private System.Windows.Forms.TabControl tabControl1;

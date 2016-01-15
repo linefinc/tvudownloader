@@ -111,7 +111,7 @@ namespace TvUndergroundDownloader
             // Create an instance of a ListView column sorter and assign it 
             // to the ListView control.
             lvwColumnSorter = new ListViewColumnSorter();
-            this.listView1.ListViewItemSorter = lvwColumnSorter;
+            this.listViewFeed.ListViewItemSorter = lvwColumnSorter;
 
             UpdateRecentActivity();
             UpdateRssFeedGUI();
@@ -294,7 +294,7 @@ namespace TvUndergroundDownloader
                     subscrission.listViewItem.SubItems.Add("Last upgrade");
                     subscrission.listViewItem.SubItems.Add("Status");
                     subscrission.listViewItem.SubItems.Add("Enabled");
-                    listView1.Items.Add(subscrission.listViewItem);
+                    listViewFeed.Items.Add(subscrission.listViewItem);
                 }
 
                 ListViewItem item = subscrission.listViewItem;
@@ -404,10 +404,10 @@ namespace TvUndergroundDownloader
             }
         }
 
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        private void listViewFeed_SelectedIndexChanged(object sender, EventArgs e)
         {
             
-            if ((listView1.Items.Count == 0) ^ (listView1.SelectedItems.Count == 0) ^ (MainConfig.RssFeedList.Count == 0))
+            if ((listViewFeed.Items.Count == 0) ^ (listViewFeed.SelectedItems.Count == 0) ^ (MainConfig.RssFeedList.Count == 0))
             {
                 labelFeedCategory.Text = string.Empty;
                 labelFeedPauseDownload.Text = string.Empty;
@@ -421,7 +421,7 @@ namespace TvUndergroundDownloader
             }
 
 
-            var Feed = MainConfig.RssFeedList.Find(x => (x.listViewItem == listView1.SelectedItems[0]));
+            var Feed = MainConfig.RssFeedList.Find(x => (x.listViewItem == listViewFeed.SelectedItems[0]));
 
             if (Feed == null)
             {
@@ -1494,10 +1494,10 @@ namespace TvUndergroundDownloader
 
         void DeleteRssChannel()
         {
-            if (listView1.Items.Count == 0)
+            if (listViewFeed.Items.Count == 0)
                 return;
 
-            if (listView1.SelectedItems.Count == 0)
+            if (listViewFeed.SelectedItems.Count == 0)
                 return;
 
             // check user 
@@ -1509,7 +1509,7 @@ namespace TvUndergroundDownloader
             }
 
 
-            foreach (ListViewItem selectedItem in listView1.SelectedItems)
+            foreach (ListViewItem selectedItem in listViewFeed.SelectedItems)
             {
                 string feedTitle = selectedItem.Text;
 
@@ -1523,7 +1523,7 @@ namespace TvUndergroundDownloader
 
                 if (Feed != null)
                 {
-                    listView1.Items.Remove(Feed.listViewItem);
+                    listViewFeed.Items.Remove(Feed.listViewItem);
                     MainHistory.DeleteFileByFeedSource(Feed.Url);
                     MainConfig.RssFeedList.Remove(Feed);
                     DataBaseHelper.RssSubscrissionList.Delete(Feed);
@@ -1737,7 +1737,7 @@ namespace TvUndergroundDownloader
             backgroundWorker1.CancelAsync();
         }
 
-        private void listView1_ColumnClick(object sender, ColumnClickEventArgs e)
+        private void listViewFeed_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             //http://support.microsoft.com/kb/319401
 
@@ -1762,7 +1762,7 @@ namespace TvUndergroundDownloader
             }
 
             // Perform the sort with these new sort options.
-            this.listView1.Sort();
+            this.listViewFeed.Sort();
         }
 
         private void aboutToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -1848,20 +1848,20 @@ namespace TvUndergroundDownloader
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
-            if (listView1.Items.Count == 0)
+            if (listViewFeed.Items.Count == 0)
                 return;
 
-            if (listView1.SelectedItems.Count == 0)
+            if (listViewFeed.SelectedItems.Count == 0)
                 return;
 
-            ListViewItem temp = listView1.SelectedItems[0];
-            int i = listView1.Items.IndexOf(temp);
-            string feedTitle = listView1.Items[i].Text;
+            ListViewItem temp = listViewFeed.SelectedItems[0];
+            int i = listViewFeed.Items.IndexOf(temp);
+            string feedTitle = listViewFeed.Items[i].Text;
 
             RssSubscrission SelectedFeed = MainConfig.RssFeedList[0];
 
             bool found = false;
-            for (i = 0; i < listView1.Items.Count; i++)
+            for (i = 0; i < listViewFeed.Items.Count; i++)
             {
                 string Title1 = MainConfig.RssFeedList[i].Title.Replace("[ed2k] tvunderground.org.ru:", "");
                 string Title2 = feedTitle.Replace("[ed2k] tvunderground.org.ru:", "");
@@ -1952,7 +1952,7 @@ namespace TvUndergroundDownloader
 
         private void enableToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem selectedItem in listView1.SelectedItems)
+            foreach (ListViewItem selectedItem in listViewFeed.SelectedItems)
             {
                 string feedTitle = selectedItem.Text;
 
@@ -1978,7 +1978,7 @@ namespace TvUndergroundDownloader
 
         private void disableToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem selectedItem in listView1.SelectedItems)
+            foreach (ListViewItem selectedItem in listViewFeed.SelectedItems)
             {
                 string feedTitle = selectedItem.Text;
 

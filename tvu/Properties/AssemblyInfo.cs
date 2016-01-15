@@ -10,7 +10,7 @@
 
 [assembly: System.Reflection.AssemblyVersion("0.6.0")]
 [assembly: System.Reflection.AssemblyFileVersion("0.6.0")]
-[assembly: System.Reflection.AssemblyInformationalVersion("0.6.0 db0895e [2016-01-15]")]
+[assembly: System.Reflection.AssemblyInformationalVersion("0.6.0 4d6cf4b [2016-01-15]")]
 [assembly: System.Reflection.AssemblyTitle("TvUndergroundDownloader")]
 [assembly: System.Reflection.AssemblyProduct("TvUndergroundDownloader")]
 
