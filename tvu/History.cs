@@ -61,12 +61,12 @@ namespace TvUndergroundDownloader
             }
         }
 
-        public static void MigrateFromXMLToDB()
+        public static bool MigrateFromXMLToDB()
         {
             try
             {
                 XmlDocument xDoc = new XmlDocument();
-                xDoc.Load(Config.FileNameHistory);
+                xDoc.Load(Config.FileNameHistory + ".old");
 
                 XmlNodeList ItemList = xDoc.GetElementsByTagName("Item");
 
@@ -118,10 +118,12 @@ namespace TvUndergroundDownloader
                         transaction.Commit();
                     }
                 }
+                return true;
             }
             catch
             {
                 // some wrong 
+                return false;
             }
 
         }
@@ -194,8 +196,8 @@ namespace TvUndergroundDownloader
 
             if (matchCollection.Count > 0)
             {
-                seasonID = matchCollection[0].Groups[2].ToString();
-                episodeID = matchCollection[0].Groups[3].ToString();
+                seasonID = matchCollection[0].Groups["season"].ToString();
+                episodeID = matchCollection[0].Groups["sid"].ToString();
             }
 
 
