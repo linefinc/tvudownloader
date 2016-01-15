@@ -33,7 +33,11 @@ namespace TvUndergroundDownloader
 
         private void EditFeedForm_Load(object sender, EventArgs e)
         {
-            this.numericUpDown1.Value = this.maxSimultaneousDownload;
+            // check max and min value allowed to numericUpDownMaxSimulDown
+            decimal tempDec = Math.Max(this.maxSimultaneousDownload, numericUpDown1.Minimum);
+            tempDec = Math.Min(tempDec, numericUpDown1.Maximum);
+
+            this.numericUpDown1.Value = tempDec;
             this.comboBoxCategory.Text = this.Category;
             this.checkBoxDownloadinPause.Checked = this.PauseDownload;
             this.checkBoxEnable.Checked = this.feedEnable;
