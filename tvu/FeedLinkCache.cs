@@ -49,14 +49,13 @@ namespace TvUndergroundDownloader
             string episodeID = string.Empty;
 
             // http://tvunderground.org.ru/index.php?show=ed2k&season=73528&sid[815433]=1
-            
-
+            // http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=ed2k&season=(?<season>\d{1,10})&sid\[(?<sid>\d{1,10})\]=\d{1,10}
             MatchCollection matchCollection = fileHistory.regexFeedLink.Matches(FeedLink);
 
             if (matchCollection.Count > 0)
             {
-                seasonID = matchCollection[0].Groups[2].ToString();
-                episodeID = matchCollection[0].Groups[3].ToString();
+                seasonID = matchCollection[0].Groups["season"].ToString();
+                episodeID = matchCollection[0].Groups["sid"].ToString();
             }
 
             using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
