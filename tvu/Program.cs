@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Windows.Forms;
+using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
-using System.Data.SQLite;
+using System.Windows.Forms;
 
 namespace TvUndergroundDownloader
 {
@@ -62,10 +62,9 @@ namespace TvUndergroundDownloader
                 if (File.Exists(basePath + @"\tvu\tvu\History.xml"))
                 {
                     Log.logInfo("History.xml founded");
-                    File.Copy(basePath + @"\tvu\tvu\History.xml", Config.FileNameHistory);
+                    //File.Copy(basePath + @"\tvu\tvu\History.xml", Config.FileNameHistory);
+                    File.Copy(basePath + @"\tvu\tvu\History.xml", Config.FileNameHistory + ".old");
                 }
-
-
             }
             #endregion
 
@@ -78,10 +77,13 @@ namespace TvUndergroundDownloader
 
                 History.InitDB();
                 FeedLinkCache.InitDB();
-                if (File.Exists(Config.FileNameHistory))
+                if (File.Exists(Config.FileNameHistory + ".old"))
                 {
-                    History.MigrateFromXMLToDB();
-                    File.Move(Config.FileNameHistory, Config.FileNameHistory + ".old");
+                    bool rc = History.MigrateFromXMLToDB();
+                    if (rc == false)
+                    {
+                        MessageBox.Show("An error occurred during migration to new data system");
+                    }
                 }
             }
             #endregion
@@ -90,7 +92,6 @@ namespace TvUndergroundDownloader
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormMain());
         }
-
 
     }
 }

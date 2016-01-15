@@ -2009,6 +2009,16 @@ namespace TvUndergroundDownloader
             UpdateRssFeedGUI(); ///upgrade gui
         }
 
+        private void excludeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach(var item in listBoxPending.SelectedItems)
+            {
+                Log.logVerbose("selected item " + item.ToString());
+
+                
+            }
+        }
+
 
     }
 
