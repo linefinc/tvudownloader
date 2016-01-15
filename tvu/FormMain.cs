@@ -1696,6 +1696,8 @@ namespace TvUndergroundDownloader
             // remove file from main history
             MainHistory.DeleteFile(strSelectItemText);
 
+            //force clean up of listViewFeed
+            listViewFeed.Items.Clear();
             // finaly update GUI
             UpdateRssFeedGUI();
 
@@ -1709,11 +1711,16 @@ namespace TvUndergroundDownloader
             {
                 MainHistory.DeleteFileByFeedSource(subscrission.Url);
             }
-
+            // remove from main cofing
             MainConfig.RssFeedList.RemoveAll(delegate(RssSubscrission t) { return t.tvuStatus == tvuStatus.Complete; });
-
+            
+            // save chenges
             MainConfig.Save();
-            UpdateRssFeedGUI(); ///upgrade gui
+
+            //force clean up of listViewFeed
+            listViewFeed.Items.Clear();
+            ///upgrade gui
+            UpdateRssFeedGUI();
         }
 
         private void openLogFileToolStripMenuItem_Click(object sender, EventArgs e)
