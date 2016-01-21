@@ -194,7 +194,7 @@ namespace  TvUndergroundDownloader
 
         private void AppendText(string text)
         {
-            this.LogTextBox.Text += text;
+            this.LogTextBox.Text += "[" + text.Substring(12); 
             this.LogTextBox.SelectionStart = this.LogTextBox.Text.Length;
             this.LogTextBox.ScrollToCaret();
             this.LogTextBox.Refresh();
