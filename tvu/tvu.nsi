@@ -36,6 +36,13 @@ RequestExecutionLevel admin
 !define MUI_FINISHPAGE_RUN_TEXT "Start application"
 
 ;--------------------------------
+;Interface logo and icon
+!define MUI_ICON ".\Resources\appicon1.ico"
+!define MUI_HEADERIMAGE
+!define MUI_HEADERIMAGE_BITMAP ".\Resources\logo.png"
+!define MUI_HEADERIMAGE_RIGHT
+
+;--------------------------------
 ; Pages
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "..\license.txt"
