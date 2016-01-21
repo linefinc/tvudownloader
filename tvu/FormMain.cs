@@ -311,9 +311,17 @@ namespace TvUndergroundDownloader
                 {
                     DateTime LastDownloadTime = Convert.ToDateTime(LastDownloadDate);
 
-                    TimeSpan diff = DateTime.Now.Subtract(LastDownloadTime);
-                    days = (uint)diff.TotalDays;
-                    item.SubItems[2].Text = days.ToString() + " days";
+                    if (LastDownloadTime > DateTime.MinValue)
+                    {
+                        TimeSpan diff = DateTime.Now.Subtract(LastDownloadTime);
+                        days = (uint)diff.TotalDays;
+
+                        item.SubItems[2].Text = days.ToString() + " days";
+                    }
+                    else
+                    {
+                        item.SubItems[2].Text = string.Empty;
+                    }
                 }
                 else
                 {
@@ -406,7 +414,7 @@ namespace TvUndergroundDownloader
 
         private void listViewFeed_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+
             if ((listViewFeed.Items.Count == 0) ^ (listViewFeed.SelectedItems.Count == 0) ^ (MainConfig.RssFeedList.Count == 0))
             {
                 labelFeedCategory.Text = string.Empty;
@@ -432,7 +440,15 @@ namespace TvUndergroundDownloader
             labelFeedPauseDownload.Text = Feed.PauseDownload.ToString();
             labelFeedUrl.Text = Feed.Url;
 
-            labelLastDownloadDate.Text = MainHistory.LastDownloadDateByFeedSource(Feed.Url);
+            string temp = MainHistory.LastDownloadDateByFeedSource(Feed.Url);
+            if (temp.IndexOf("0001-01-01") > -1)
+            {
+                labelLastDownloadDate.Text = "-";
+            }
+            else
+            {
+                labelLastDownloadDate.Text = temp.Replace('T', ' ');
+            }
             labelTotalFiles.Text = MainHistory.GetDownloadedFileCountByFeedSoruce(Feed.Url).ToString();
             labelMaxSimultaneousDownloads.Text = Feed.maxSimultaneousDownload.ToString();
 
@@ -446,7 +462,14 @@ namespace TvUndergroundDownloader
             {
                 ListViewItem item = new ListViewItem(row[0].ToString());
                 string date = row[1].ToString().Substring(0, 10);
-                item.SubItems.Add(date);
+                if(date == "0001-01-01")
+                {
+                    item.SubItems.Add("Skipped");
+                }
+                else
+                {
+                    item.SubItems.Add(date);
+                }
                 listViewFeedFilesList.Items.Add(item);
             }
         }
@@ -1061,7 +1084,17 @@ namespace TvUndergroundDownloader
 
             foreach (DataRow row in list.Rows)
             {
-                row["LastUpdate"] = ((string)row["LastUpdate"]).Replace('T', ' ');
+                string temp = (string)row["LastUpdate"];
+
+                if (temp.IndexOf("0001-01-01") > -1)
+                {
+                    row.Delete();
+                }
+                else
+                {
+                    row["LastUpdate"] = temp.Replace('T', ' ');
+                }
+
             }
 
             dataGridViewRecentActivity.DataSource = list;
@@ -1713,7 +1746,7 @@ namespace TvUndergroundDownloader
             }
             // remove from main cofing
             MainConfig.RssFeedList.RemoveAll(delegate(RssSubscrission t) { return t.tvuStatus == tvuStatus.Complete; });
-            
+
             // save chenges
             MainConfig.Save();
 
@@ -2011,11 +2044,11 @@ namespace TvUndergroundDownloader
 
         private void excludeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach(var item in listBoxPending.SelectedItems)
+            foreach (var item in listBoxPending.SelectedItems)
             {
                 Log.logVerbose("selected item " + item.ToString());
 
-                
+
             }
         }
 
