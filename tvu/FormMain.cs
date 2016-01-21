@@ -1520,9 +1520,7 @@ namespace TvUndergroundDownloader
 
         private void toolStripMenuItemDelete_Click(object sender, EventArgs e)
         {
-
             DeleteRssChannel();
-
         }
 
         void DeleteRssChannel()
@@ -1729,8 +1727,6 @@ namespace TvUndergroundDownloader
             // remove file from main history
             MainHistory.DeleteFile(strSelectItemText);
 
-            //force clean up of listViewFeed
-            listViewFeed.Items.Clear();
             // finaly update GUI
             UpdateRssFeedGUI();
 
@@ -1744,14 +1740,30 @@ namespace TvUndergroundDownloader
             {
                 MainHistory.DeleteFileByFeedSource(subscrission.Url);
             }
-            // remove from main cofing
-            MainConfig.RssFeedList.RemoveAll(delegate(RssSubscrission t) { return t.tvuStatus == tvuStatus.Complete; });
 
+            // check user 
+            DialogResult rc;
+            rc = MessageBox.Show("Delete all complete feed", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk);
+            if (rc != DialogResult.OK)
+            {
+                return;
+            }
+            
+            List<RssSubscrission> completeFeed = new List<RssSubscrission>();
+            completeFeed = MainConfig.RssFeedList.FindAll(delegate(RssSubscrission t) { return t.tvuStatus == tvuStatus.Complete; });
+
+            foreach (RssSubscrission feed in completeFeed)
+            {
+                // remove from main cofing
+                MainConfig.RssFeedList.Remove(feed);
+
+                // remove from list view
+                if (feed.listViewItem != null)
+                    listViewFeed.Items.Remove(feed.listViewItem);
+            }
             // save chenges
             MainConfig.Save();
-
-            //force clean up of listViewFeed
-            listViewFeed.Items.Clear();
+            
             ///upgrade gui
             UpdateRssFeedGUI();
         }
