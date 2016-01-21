@@ -67,10 +67,16 @@ namespace TvUndergroundDownloader
 
             try
             {
+                Log.logInfo("Open the file " + Config.FileNameHistory + ".old");
+
                 XmlDocument xDoc = new XmlDocument();
                 xDoc.Load(Config.FileNameHistory + ".old");
 
+                Log.logInfo("Scan for item");
+
                 XmlNodeList ItemList = xDoc.GetElementsByTagName("Item");
+
+                Log.logInfo("Found " + ItemList.Count + " items");
 
                 for (int i = 0; i < ItemList.Count; i++)
                 {
@@ -107,9 +113,11 @@ namespace TvUndergroundDownloader
                             }
                         }
                         tempFileHistory.Add(new fileHistory(strEd2k, strFeedLink, strFeedSource, strDate));
+                        Log.logInfo("load successefuly item " + i);
                     }
                     catch
                     {
+                        Log.logInfo("some errors during parsing item" + i);
                         // unable to parse this row
                     }
 
@@ -125,6 +133,7 @@ namespace TvUndergroundDownloader
 
             try
             {
+                Log.logInfo("open sql connection");
                 using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
                 {
                     connection.Open();
@@ -133,18 +142,23 @@ namespace TvUndergroundDownloader
                         foreach (var fh in tempFileHistory)
                         {
                             History.Add(transaction, fh.Ed2kLink, fh.FeedLink, fh.FeedSource, fh.Date);
+                            Log.logInfo("add item to transaction");
                         }
+                        Log.logInfo("all items are ready to commit");
                         transaction.Commit();
+                        Log.logInfo("Transaction Committed");
                     }
                 }
+                Log.logInfo("Inport complite");
                 return true;
             }
             catch
             {
+                Log.logInfo("some sql error");
                 // some wrong in db commit
                 return false;
             }
-
+            
         }
 
         ///
@@ -409,8 +423,11 @@ namespace TvUndergroundDownloader
                 command.Parameters.Add(new SQLiteParameter("@HashSHA1", file.HashSHA1));
                 command.ExecuteNonQuery();
             }
+            Vacuum();
 
         }
+
+       
 
         /// <summary>
         /// Delete entry by fila name
@@ -430,6 +447,9 @@ namespace TvUndergroundDownloader
                 command.Parameters.Add(new SQLiteParameter("@FileName", FileName));
                 command.ExecuteNonQuery();
             }
+            Vacuum();
+
+           
 
         }
         /// <summary>
@@ -448,6 +468,8 @@ namespace TvUndergroundDownloader
                 command.Parameters.Add(new SQLiteParameter("@FeedSource", FeedSource));
                 command.ExecuteNonQuery();
             }
+
+            Vacuum();
 
         }
 
@@ -565,7 +587,20 @@ namespace TvUndergroundDownloader
             textWritter.Close();
 
         }
+        public void Vacuum()
+        {
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+            {
+                connection.Open();
+                const string sqlTemplate = @"VACUUM";
 
+                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                command.CommandType = CommandType.Text;
+                command.ExecuteNonQuery();
+            }
+
+        }
+            
 
     }
 }
