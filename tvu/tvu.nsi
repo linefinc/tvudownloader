@@ -71,8 +71,11 @@ Section "Tvunderground Downloader (required)"
   
   ; Put file there
   File ".\bin\Release\TvUndergroundDownloader.exe"
-  File ".\bin\Release\x64\SQLite.Interop.dll"
-  File ".\bin\Release\x86\SQLite.Interop.dll"
+  File ".\bin\Release\TvUndergroundDownloader.exe.manifest"
+  File ".\bin\Release\TvUndergroundDownloader.exe.config"
+  File ".\bin\Release\System.Data.SQLite.dll"
+  File ".\bin\Release\System.Data.SQLite.xml"
+  File ".\bin\Release\System.Data.SQLite.Linq.dll"
   File /r ".\bin\Release\*.dll"
   File "..\README.txt"
   File "..\license.txt"
@@ -108,13 +111,17 @@ Section "Uninstall"
   DeleteRegKey HKLM SOFTWARE\TVUndergroundDownloader
 
   ; Remove files and uninstaller
-  
   Delete $INSTDIR\TvUndergroundDownloader.exe
-  Delete $INSTDIR\*.dll
+  Delete $INSTDIR\TvUndergroundDownloader.exe.manifest
+  Delete $INSTDIR\TvUndergroundDownloader.exe.config
+  Delete $INSTDIR\System.Data.SQLite.dll
+  Delete $INSTDIR\System.Data.SQLite.xml
+  Delete $INSTDIR\System.Data.SQLite.Linq.dll
   Delete $INSTDIR\README.txt
   Delete $INSTDIR\license.txt
   Delete $INSTDIR\uninstall.exe
 
+  
   ; Remove shortcuts, if any
   Delete "$SMPROGRAMS\TVUnderground Downloader\*.*"
 
