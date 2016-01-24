@@ -585,7 +585,7 @@ namespace TvUndergroundDownloader
                             if (MainHistory.FileExistByFeedLink(FeedLink) == false)
                             {
                                 elemList.Add(FeedLink);
-                                feed.tvuStatus = tvuStatus.Unknow; // force refrash of tv Undergoud status when find a new file
+                                feed.tvuStatus = tvuStatus.Unknown; // force refrash of tv Undergoud status when find a new file
                             }
                         }
 
@@ -597,16 +597,16 @@ namespace TvUndergroundDownloader
                             TimeSpan ts = DateTime.Now - LastTvUStatusUpgradeDate;
                             if (ts.TotalDays > 15)
                             {
-                                feed.tvuStatus = tvuStatus.Unknow;
+                                feed.tvuStatus = tvuStatus.Unknown;
                             }
                         }
                         else
                         {
-                            feed.tvuStatus = tvuStatus.Unknow;
+                            feed.tvuStatus = tvuStatus.Unknown;
                         }
 
                         //  Start check complete element 
-                        if (feed.tvuStatus == tvuStatus.Unknow)
+                        if (feed.tvuStatus == tvuStatus.Unknown)
                         {
                             Regex Pattern = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=episodes&sid=\d{1,10}");
                             Match Match = Pattern.Match(WebPage);

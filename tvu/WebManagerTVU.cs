@@ -6,7 +6,7 @@ namespace TvUndergroundDownloader
     {
         public static tvuStatus CheckComplete(string url, CookieContainer cookieContainer)
         {
-            tvuStatus status = tvuStatus.Unknow;
+            tvuStatus status = tvuStatus.Unknown;
             string WebPage = WebFetch.Fetch(url, true, cookieContainer);
 
             if (WebPage != null)

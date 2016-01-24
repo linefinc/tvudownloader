@@ -10,13 +10,13 @@ namespace TvUndergroundDownloader
     {
         Complete,
         StillRunning,
-        Unknow,
+        Unknown,
         StillIncomplete,
         OnHiatus
     }
 
     /// <summary>
-    /// Rss Subsciission container 
+    /// Rss submission container 
     /// </summary>
     public class RssSubscrission
     {
@@ -50,7 +50,7 @@ namespace TvUndergroundDownloader
         public bool PauseDownload = false;
         public string LastUpgradeDate = string.Empty;
         public bool Enabled = true;
-        public tvuStatus tvuStatus = tvuStatus.Unknow;
+        public tvuStatus tvuStatus = tvuStatus.Unknown;
 
         public int seasonID { get; private set; }
 

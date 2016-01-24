@@ -336,9 +336,9 @@ namespace TvUndergroundDownloader
                         case tvuStatus.OnHiatus:
                             writter.WriteString("OnHiatus");
                             break;
-                        case tvuStatus.Unknow:
+                        case tvuStatus.Unknown:
                         default:
-                            writter.WriteString("Unknow");
+                            writter.WriteString("Unknown");
                             break;
                     }
                     writter.WriteEndElement();
@@ -492,9 +492,9 @@ namespace TvUndergroundDownloader
                             case "OnHiatus":
                                 newfeed.tvuStatus = tvuStatus.OnHiatus;
                                 break;
-                            case "Unknow":
+                            case "Unknown":
                             default:
-                                newfeed.tvuStatus = tvuStatus.Unknow;
+                                newfeed.tvuStatus = tvuStatus.Unknown;
                                 break;
                         }
 
