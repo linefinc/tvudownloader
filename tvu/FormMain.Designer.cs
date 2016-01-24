@@ -165,6 +165,7 @@
             this.LogTextBox.Location = new System.Drawing.Point(3, 3);
             this.LogTextBox.Multiline = true;
             this.LogTextBox.Name = "LogTextBox";
+            this.LogTextBox.ReadOnly = true;
             this.LogTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.LogTextBox.Size = new System.Drawing.Size(557, 435);
             this.LogTextBox.TabIndex = 3;
@@ -515,7 +516,6 @@
             this.listBoxPending.FormattingEnabled = true;
             this.listBoxPending.Location = new System.Drawing.Point(3, 3);
             this.listBoxPending.Name = "listBoxPending";
-            this.listBoxPending.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
             this.listBoxPending.Size = new System.Drawing.Size(557, 435);
             this.listBoxPending.Sorted = true;
             this.listBoxPending.TabIndex = 0;

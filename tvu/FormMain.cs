@@ -779,15 +779,14 @@ namespace TvUndergroundDownloader
             Log.logVerbose("Current Download Form Emule " + CourrentDownloadsFormEmule.Count);
 
             //for debug
-            CourrentDownloadsFormEmule.ForEach(delegate (Ed2kfile file) { Log.logVerbose(file.FileName); });
-
+            CourrentDownloadsFormEmule.ForEach(delegate (Ed2kfile file) { Log.logVerbose(file.FileName.Replace("%20", " ")); });
 
             //
             //  note move this function in MainHistory class
             //
             Log.logVerbose("Start search in history");
             List<fileHistory> ActualDownloadFileList = MainHistory.getFileHistoryFromDB(CourrentDownloadsFormEmule);
-            ActualDownloadFileList.ForEach(delegate (fileHistory file) { Log.logVerbose("Found :\"" + file.FileName + "\""); });
+            ActualDownloadFileList.ForEach(delegate (fileHistory file) { Log.logVerbose("Found :\"" + file.FileName.Replace("%20", " ") + "\""); });
 
             Log.logInfo("ActualDownloadFileList.Count = " + ActualDownloadFileList.Count);
             Log.logInfo("MainConfig.MaxSimultaneousFeedDownloads = " + MainConfig.MaxSimultaneousFeedDownloads);
