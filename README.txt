@@ -1,6 +1,6 @@
-TV Undergroud Downloader
+TV Underground Downloader
 
-Copyright (C) 2013  linefinc[at]users.sourceforge.net
+Copyright (C) 2016  linefinc[at]users.sourceforge.net
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -17,14 +17,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
+##### Version 0.6.1 XX/XX/2016  #####
+* add support for windows 10
+* spell check
+* minor fix
+
 ##### Version 0.6.0 beta 27/12/2015  #####
-+ add sqlite instead of xml database
++ add sqlite instead of XML database
 + add support for http://tvunderground.org.ru and http://www.tvunderground.org.ru as link
 * improve memory usage
-* improve preformance
+* improve performance
 * better list view handling
 * some clean up code
-
 
 ##### Version 0.5.6 27/09/2014 [git 6cc9157] #####
 * Fix control on max simulations download
@@ -32,17 +36,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * Code clean up
 * Change: now a duplicate feed is skipped by default
 
-
-
 ##### Version 0.5.6 01/02/2014 [git 9315b10] #####
-* Update new tv undegroud site web
-+ Add pending List Box Penging file
-+ Add support to Gzip in emule comunication
-
+* Update new TV Underground site web
++ Add pending List Box Pending file
++ Add support to Gzip in emule communication
 
 ##### Version 0.5.5 17/10/2013 [git a3b048a] ##### 
 + Add On Hiatus status
-+ Add Edit dialogue
++ Add Edit dialog
 + Add "limit for feed"
 + Add customizable limit for feed
 + Add possibility to disable single feed
@@ -50,26 +51,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * Fix reduce memory foot print
 * Update project to vs2010es
 
-
 ##### Version 0.5.4 26/11/2012 [svn rev 176] ##### 
 * Fix bug when Ed2k link contains special characters
 * Improve register value mapping
 * Fix crash when SMTP server not replay
 * Fix delete episode that non works correctly 
 
-
 ##### Version 0.5.3 10/10/2012 [svn rev 167] ##### 
 * Fix download limitator
 + Add new panel for add rss channel and remove obsolete function
 * Fix ed2k parser
-+ Add hashtable to optimize search in history
++ Add hash table to optimize search in history
 + Add ability to user to define update check interval
 + Add log trim to 1M
 + Add cache for feed link
-+ Add single istance for application
++ Add single instance for application
 * Fix mail sender 
 * other small fix 
-
 
 ##### Version 0.5.2 15/10/2011 [svn rev 124] ##### 
 *IMPORTANT fix to improve bandwidth control
@@ -79,8 +77,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *Fix auto close function than in some configuration not always works
 *Add "Auto delete Complete channels" 
 
-
-
 ##### Version 0.5.1 02/06/2011 ##### 
 *IMPORTANT fix to support TV underground site change
 +Add send mail function
@@ -89,7 +85,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 +Add Show TV Underground status (Complete, incomplete...)
 
 ##### Version 0.5 09/04/2011 #####
-
 This is a bug fix version with some add
 +Add verbose log
 +It's now possible exclude episodes when add RSS channel
@@ -99,13 +94,11 @@ This is a bug fix version with some add
 +Start to implement OPML Import/Exporter (only in SVN version)
 *Fix bug occur when user not use category 
 *Fix RSS parser. A new parser are write to support not standard RSS channel.
-*Fix Url parser to avoid duplicate links
-
+*Fix URL parser to avoid duplicate links
 
 ##### Version 0.4 03/01/2011 ##### 
-
 +Add new parser (more strong)
-+Add autoscroll to log text
++Add auto scroll to log text
 +Add Idle and error status for RSS feed
 +Add Idle status for RSS feed after 15 days of inactivity
 +RSS list are alphabetical sort
@@ -116,18 +109,15 @@ This is a bug fix version with some add
 *Fix Auto close status bar
 *Fix Check now sometime not work
 
-
 ##### Version 0.3 03/08/2010 ##### 
-
-+Add support for Windows 7, windows Vista config (No UAC need)
++Add support for Windows 7, windows Vista configuration (No UAC need)
 +Add Installer
 +Add Start With Windows
 +Add support configuration file in local user path
 +Add Auto start emule ( now not work)
-+Redesign Config
++Redesign Configuration 
 +Add Close eMule when all as done
 +Add About panel
-
 *Fix If http://tvunderground.org.ru/are not available can cause crash
 *Fix Fix delay interval > 60 min not work
 *Fix close X button. Now sand application in tray bar
@@ -138,5 +128,4 @@ This is a bug fix version with some add
 *Fix frieze windows when Download. Add background thread for manage network activity
 
 #####  Version 0.2 01/08/2010 ##### 
-
 First public release
