@@ -10,7 +10,7 @@ namespace TvUndergroundDownloader
         }
 
         /// <summary>
-        /// Url (Download the xml rss from here)
+        /// URL (Download the XML rss from here)
         /// </summary>
         public string Url; 
 

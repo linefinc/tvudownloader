@@ -32,11 +32,11 @@ namespace TvUndergroundDownloader
             string textToParse;
 
             if (textUrl.Enabled == true)
-            {   // Manual url
+            {   // Manual URL
                 textToParse = textUrl.Text;
             }
             else
-            {   // oplm file
+            {   // OPML file
                 try
                 {
                     StreamReader frStream = new StreamReader(textBox1.Text);
@@ -71,7 +71,7 @@ namespace TvUndergroundDownloader
             {
                 if (CurrentRssUrlList.IndexOf(rssUrl) != -1)
                 {
-                    MessageBox.Show(string.Format("Warning: Rss url duplicate ({0}), skipping source", rssUrl));
+                    MessageBox.Show(string.Format("Warning: Rss URL duplicate ({0}), skipping source", rssUrl));
                 }
             }
 

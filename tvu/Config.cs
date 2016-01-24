@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
-using System.Xml;
 using System.IO;
-using Microsoft.Win32;
-using System.Windows.Forms;
 using System.Reflection;
+using System.Windows.Forms;
+using System.Xml;
 
 namespace TvUndergroundDownloader
 {
@@ -146,15 +146,12 @@ namespace TvUndergroundDownloader
         public Config()
         {
             //
-            // get Local USer App data Path, remove version direcorty and add config.xml
+            // get local user application data path, remove version directory and add config.xml
             //
-
-
-
             RssFeedList = new List<RssSubscrission>();
             if (!File.Exists(Config.FileNameConfig))
             {
-                // empty config file
+                // empty configure file
                 XmlTextWriter textWritter = new XmlTextWriter(Config.FileNameConfig, null);
                 textWritter.WriteStartDocument();
                 textWritter.WriteStartElement("Config");
@@ -285,7 +282,7 @@ namespace TvUndergroundDownloader
             foreach (RssSubscrission feed in myRssFeedList)
             {
                 //<Channel>
-                //<Title>[ed2k] tvunderground.org.ru: Lie To Me - Season 2 (HDTV) italian</Title>
+                //<Title>[ed2k] tvunderground.org.ru: Lie To Me - Season 2 (HDTV) italian </Title>
                 //<Url>http://tvunderground.org.ru/rss.php?se_id=32672</Url>
                 //<Pause>False</Pause>
                 //<Category>Anime</Category>
@@ -431,7 +428,7 @@ namespace TvUndergroundDownloader
                 string newFeedUrl = string.Empty; ;
 
                 //
-                //  first serach constructor data
+                //  first search constructor data
                 //
 
                 foreach (XmlNode t in child)
@@ -519,7 +516,7 @@ namespace TvUndergroundDownloader
 
             RssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title));
             //
-            //  remove difference between xml and db
+            //  remove difference between XML and DB
             //
             DataBaseHelper.RssSubscrissionList.CleanUp(RssFeedList);
 
@@ -540,7 +537,6 @@ namespace TvUndergroundDownloader
                 return t[0].InnerText;
             }
         }
-
 
         private int ReadInt(XmlDocument xDoc, string NodeName, int defaultValue)
         {
@@ -576,9 +572,5 @@ namespace TvUndergroundDownloader
             }
             return temp;
         }
-
-
-
-
     }
 }

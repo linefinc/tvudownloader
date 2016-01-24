@@ -113,7 +113,7 @@ namespace TvUndergroundDownloader
                             }
                         }
                         tempFileHistory.Add(new fileHistory(strEd2k, strFeedLink, strFeedSource, strDate));
-                        Log.logInfo("load successefuly item " + i);
+                        Log.logInfo("load successfully item " + i);
                     }
                     catch
                     {
@@ -133,7 +133,7 @@ namespace TvUndergroundDownloader
 
             try
             {
-                Log.logInfo("open sql connection");
+                Log.logInfo("open SQL connection");
                 using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
                 {
                     connection.Open();
@@ -149,12 +149,12 @@ namespace TvUndergroundDownloader
                         Log.logInfo("Transaction Committed");
                     }
                 }
-                Log.logInfo("Inport complite");
+                Log.logInfo("Import complete");
                 return true;
             }
             catch
             {
-                Log.logInfo("some sql error");
+                Log.logInfo("some SQL error");
                 // some wrong in db commit
                 return false;
             }
@@ -165,7 +165,7 @@ namespace TvUndergroundDownloader
         /// <summary>Add a element to list </summary>
         /// <param name='ed2k'>ED2K Link</param>
         /// <param name='FeedLink'>Link in Feed</param>
-        /// <param name='FeedSource'>Rss Feed Link</param>
+        /// <param name='FeedSource'>RSS Feed Link</param>
         /// <param name="Date">Date</param>
         ///
         public static void Add(string ed2k, string FeedLink, string FeedSource, string Date)

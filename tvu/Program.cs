@@ -31,7 +31,7 @@ namespace TvUndergroundDownloader
 
 
             //
-            //  try to resotre old config from previus foulder
+            //  try to restore old configuration from previous folder
             //
             #region update old folder
             if (!File.Exists(Config.FileNameConfig))
@@ -49,7 +49,7 @@ namespace TvUndergroundDownloader
                 //      C:\Users\User\AppData\Local\TvUndergroundDownloader\TvUndergroundDownloader\config.xml
                 //
 
-                // check if old config exist
+                // check if old configuration exist
 
                 if (File.Exists(basePath + @"\tvu\tvu\config.xml"))
                 {
@@ -62,7 +62,6 @@ namespace TvUndergroundDownloader
                 if (File.Exists(basePath + @"\tvu\tvu\History.xml"))
                 {
                     Log.logInfo("History.xml founded");
-                    //File.Copy(basePath + @"\tvu\tvu\History.xml", Config.FileNameHistory);
                     File.Copy(basePath + @"\tvu\tvu\History.xml", Config.FileNameHistory + ".old");
                 }
             }

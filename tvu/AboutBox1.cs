@@ -13,9 +13,9 @@ namespace TvUndergroundDownloader
             this.labelVersion.Text = Config.VersionFull.ToString();
             this.labelCopyright.Text = "GNU General Public License 3";
 
-            this.textBoxDescription.Text = @"TV Undergroud Downloader
+            this.textBoxDescription.Text = @"TV Underground Downloader
 
-Copyright (C) 2011  linefinc[at]users.sourceforge.net
+Copyright (C) 2016  linefinc[at]users.sourceforge.net
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
