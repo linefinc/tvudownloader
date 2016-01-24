@@ -214,7 +214,7 @@ namespace TvUndergroundDownloader
             MatchCollection matchCollection = Pattern.Matches(temp);
             foreach (Match value in matchCollection)
             {
-                ListDownloads.Add(new Ed2kfile(value.ToString()));
+                ListDownloads.Add(new Ed2kfile(value.ToString().Replace("%20"," ")));
             }
 
             return ListDownloads;
