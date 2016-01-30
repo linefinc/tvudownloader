@@ -61,16 +61,16 @@ namespace TvUndergroundDownloader
             }
         }
 
-        public static bool MigrateFromXMLToDB()
+        public static bool MigrateFromXMLToDB(string fileName)
         {
             List<fileHistory> tempFileHistory = new List<fileHistory>();
 
             try
             {
-                Log.logInfo("Open the file " + Config.FileNameHistory + ".old");
+                Log.logInfo("Open the file " + fileName);
 
                 XmlDocument xDoc = new XmlDocument();
-                xDoc.Load(Config.FileNameHistory + ".old");
+                xDoc.Load(fileName);
 
                 Log.logInfo("Scan for item");
 
@@ -127,7 +127,7 @@ namespace TvUndergroundDownloader
             }
             catch
             {
-                // some wrong in xml file
+                // some wrong in XML file
                 return false;
             }
 
@@ -158,7 +158,7 @@ namespace TvUndergroundDownloader
                 // some wrong in db commit
                 return false;
             }
-            
+
         }
 
         ///
@@ -177,7 +177,7 @@ namespace TvUndergroundDownloader
 
             string seasonID = string.Empty, episodeID = string.Empty;
 
-            // Static Regex "https?://(www\.)?tvunderground.org.ru/index.php\?show=ed2k&season=(\d{1,10})&sid\[(\d{1,10})\]=\d{1,10}"
+            // Static Reg-ex "https?://(www\.)?tvunderground.org.ru/index.php\?show=ed2k&season=(\d{1,10})&sid\[(\d{1,10})\]=\d{1,10}"
             MatchCollection matchCollection = fileHistory.regexFeedLink.Matches(FeedLink);
 
 
@@ -427,7 +427,7 @@ namespace TvUndergroundDownloader
 
         }
 
-       
+
 
         /// <summary>
         /// Delete entry by fila name
@@ -449,7 +449,7 @@ namespace TvUndergroundDownloader
             }
             Vacuum();
 
-           
+
 
         }
         /// <summary>
@@ -600,7 +600,7 @@ namespace TvUndergroundDownloader
             }
 
         }
-            
+
 
     }
 }
