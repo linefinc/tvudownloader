@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.IO;
 using System.Security;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -65,9 +66,16 @@ namespace TvUndergroundDownloader
         {
             List<fileHistory> tempFileHistory = new List<fileHistory>();
 
+            if (File.Exists(fileName))
+            {
+                Log.logInfo("file \"" + fileName + "\" exists");
+            }
+            else
+                Log.logInfo("file \"" + fileName + "\" not exists");
+
             try
             {
-                Log.logInfo("Open the file " + fileName);
+                Log.logInfo("Open XML file \"" + fileName + "\"");
 
                 XmlDocument xDoc = new XmlDocument();
                 xDoc.Load(fileName);
@@ -113,11 +121,11 @@ namespace TvUndergroundDownloader
                             }
                         }
                         tempFileHistory.Add(new fileHistory(strEd2k, strFeedLink, strFeedSource, strDate));
-                        Log.logInfo("load successfully item " + i);
+                        Log.logInfo("Load successfully item " + i);
                     }
                     catch
                     {
-                        Log.logInfo("some errors during parsing item" + i);
+                        Log.logInfo("Some errors during parsing item" + i);
                         // unable to parse this row
                     }
 
@@ -128,12 +136,13 @@ namespace TvUndergroundDownloader
             catch
             {
                 // some wrong in XML file
+                Log.logInfo("Some wrong in XML file");
                 return false;
             }
 
             try
             {
-                Log.logInfo("open SQL connection");
+                Log.logInfo("Open SQL connection");
                 using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
                 {
                     connection.Open();
@@ -142,9 +151,9 @@ namespace TvUndergroundDownloader
                         foreach (var fh in tempFileHistory)
                         {
                             History.Add(transaction, fh.Ed2kLink, fh.FeedLink, fh.FeedSource, fh.Date);
-                            Log.logInfo("add item to transaction");
+                            Log.logInfo("Add item to transaction");
                         }
-                        Log.logInfo("all items are ready to commit");
+                        Log.logInfo("All items are ready to commit");
                         transaction.Commit();
                         Log.logInfo("Transaction Committed");
                     }

@@ -53,21 +53,7 @@ namespace TvUndergroundDownloader
                     File.Copy(oldFileNameConfig, Config.FileNameConfig);
                     File.Copy(oldFileNameConfig, Config.FileNameConfig + ".old");
                 }
-
-                // migrate History.xml only for backup because it's replace by sqlite
-                //
-                // old path
-                //      C:\Users\User\AppData\Local\tvu\tvu\History.xml
-                // new path
-                //      C:\Users\User\AppData\Local\TvUndergroundDownloader\History.xml.old
-                //
-                string oldFileNameHistroy = Config.FileNameConfig.Replace(@"TvUndergroundDownloader\History.xml.old", @"tvu\tvu\History.xml");
-
-                if (File.Exists(oldFileNameHistroy))
-                {
-                    Log.logInfo("History.xml founded");
-                    File.Copy(oldFileNameHistroy, Config.FileNameHistory + ".old");
-                }
+              
             }
             #endregion
 
@@ -80,26 +66,29 @@ namespace TvUndergroundDownloader
 
                 History.InitDB();
                 FeedLinkCache.InitDB();
-                if (File.Exists(Config.FileNameHistory + ".old"))
+
+                // migrate History.xml only for backup because it's replace by sqlite
+                //
+                // old path
+                //      C:\Users\User\AppData\Local\tvu\tvu\History.xml
+                // new path, not yet used 
+                //      C:\Users\User\AppData\Local\TvUndergroundDownloader\History.xml
+                //
+
+                // try to load history from old storage position
+                string oldHistoryFile = Config.FileNameHistory;
+                oldHistoryFile = oldHistoryFile.Replace(@"TvUndergroundDownloader\History.xml", @"tvu\tvu\History.xml");
+
+                if (File.Exists(oldHistoryFile))
                 {
-                    // try to load history backup copy
-                    bool rc = History.MigrateFromXMLToDB(Config.FileNameHistory + ".old");
+                    bool rc = History.MigrateFromXMLToDB(oldHistoryFile);
                     if (rc == false)
                     {
-                        // try to load history from old storage position
-                        string oldHistoryFile = Config.FileNameHistory.Replace(@"TvUndergroundDownloader\History.xml", @"tvu\tvu\History.xml");
-
-                        if (File.Exists(oldHistoryFile))
-                        {
-                            rc = History.MigrateFromXMLToDB(oldHistoryFile);
-                            if (rc == false)
-                            {
-                                MessageBox.Show("An error occurred during migration to new data system");
-                            }
-                        }
-
+                        MessageBox.Show("An error occurred during migration to new data system");
                     }
                 }
+
+
             }
             #endregion
 

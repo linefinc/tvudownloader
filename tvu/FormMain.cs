@@ -2024,7 +2024,7 @@ namespace TvUndergroundDownloader
             MainConfig.Save();
 
             listViewFeedFilesList.Items.Clear();
-            UpdateRssFeedGUI(); ///upgrade gui
+            UpdateRssFeedGUI(); ///upgrade GUI
         }
 
         private void disableToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2060,6 +2060,31 @@ namespace TvUndergroundDownloader
                 Log.logVerbose("selected item " + item.ToString());
 
 
+            }
+        }
+
+        private void importOldHistoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            // migrate History.xml only for backup because it's replace by sqlite
+            //
+            // old path
+            //      C:\Users\User\AppData\Local\tvu\tvu\History.xml
+            // new path, not yet used 
+            //      C:\Users\User\AppData\Local\TvUndergroundDownloader\History.xml
+            //
+
+            // try to load history from old storage position
+            string oldHistoryFile = Config.FileNameHistory;
+            oldHistoryFile = oldHistoryFile.Replace(@"TvUndergroundDownloader\History.xml", @"tvu\tvu\History.xml");
+
+            if (File.Exists(oldHistoryFile))
+            {
+                bool rc = History.MigrateFromXMLToDB(oldHistoryFile);
+                if (rc == false)
+                {
+                    MessageBox.Show("An error occurred during migration to new data system");
+                }
             }
         }
 

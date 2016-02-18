@@ -4,33 +4,42 @@
 ;
 ; 
 ;--------------------------------
-
 ;Include Modern UI
 !include MUI2.nsh
 
-
+;--------------------------------
 ; The name of the installer
 Name "Tv Underground Downloader"
 
+;--------------------------------
 ; The file to write
-OutFile ".\bin\Release\tvud_installer_0.6.0.exe"
+OutFile ".\bin\Release\tvud_installer_0.6.1.exe"
+SetCompress force			; force compressor
+SetCompressor /SOLID LZMA	; define lzma compressor
 
-SetCompress force
-SetCompressor /SOLID LZMA
-
+;--------------------------------
 ; The default installation directory
 InstallDir $PROGRAMFILES\Tvunderground_Downloader
 
+;--------------------------------
 ; Registry key to check for directory (so if you install again, it will 
 ; overwrite the old one automatically)
 InstallDirRegKey HKLM "Software\TVUndergroundDownloader" "Install_Dir"
 
+
+;--------------------------------
+;Version Information
+VIProductVersion "0.6.1.0"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "Tv Underground Downloader"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" "Tv Underground Downloader"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "0.6.1.0"
+
+;--------------------------------
 ; Request application privileges for Windows Vista
 RequestExecutionLevel admin
 
 ;--------------------------------
 ;Interface Settings
-
 !define MUI_ABORTWARNING
 !define MUI_FINISHPAGE_RUN "$INSTDIR\TvUndergroundDownloader.exe"
 !define MUI_FINISHPAGE_RUN_TEXT "Start application"
@@ -54,11 +63,10 @@ RequestExecutionLevel admin
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
 
-
-
 ;--------------------------------
-
+; define language
 !insertmacro MUI_LANGUAGE "English"
+
 
 Function .onInit
 	
