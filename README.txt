@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
-##### Version 0.6.1 XX/XX/2016  #####
+##### Version 0.6.1 18/02/2016  #####
 * add support for windows 10
 * spell check
 * minor fix
