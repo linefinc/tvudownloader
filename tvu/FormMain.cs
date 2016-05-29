@@ -592,20 +592,16 @@ namespace TvUndergroundDownloader
                         //
                         //  force status check if more than 15 days ago
                         TimeSpan ts = DateTime.Now - feed.LastSerieStatusUpgradeDate;
-                        if (ts.TotalDays > 15)
-                        {
-                            feed.tvuStatus = tvuStatus.Unknown;
-                        }
-
-                        //  Start check complete element 
-                        if (feed.tvuStatus == tvuStatus.Unknown)
+                        if ((ts.TotalDays > 15) | (feed.tvuStatus == tvuStatus.Unknown))
                         {
                             Log.logVerbose("Checking serie status");
                             Regex Pattern = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=episodes&sid=\d{1,10}");
                             Match Match = Pattern.Match(WebPage);
                             string url = Match.Value;
+
                             feed.tvuStatus = WebManagerTVU.CheckComplete(url, cookieContainer);
                             feed.LastSerieStatusUpgradeDate = DateTime.Now;
+
                             Log.logVerbose("Serie status: " + feed.tvuStatus);
                         }
                     }
