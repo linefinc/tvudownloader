@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Text;
@@ -60,6 +61,7 @@ namespace TvUndergroundDownloader
 
         public ListViewItem listViewItem = null;
 
+        public DateTime LastSerieStatusUpgradeDate = DateTime.MinValue;
     }
 
     public class DataBaseHelper

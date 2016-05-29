@@ -591,16 +591,8 @@ namespace TvUndergroundDownloader
 
                         //
                         //  force status check if more than 15 days ago
-                        DateTime LastTvUStatusUpgradeDate;
-                        if (DateTime.TryParse(MainHistory.LastDownloadDateByFeedSource(feed.Url), out LastTvUStatusUpgradeDate) == true)
-                        {
-                            TimeSpan ts = DateTime.Now - LastTvUStatusUpgradeDate;
-                            if (ts.TotalDays > 15)
-                            {
-                                feed.tvuStatus = tvuStatus.Unknown;
-                            }
-                        }
-                        else
+                        TimeSpan ts = DateTime.Now - feed.LastSerieStatusUpgradeDate;
+                        if (ts.TotalDays > 15)
                         {
                             feed.tvuStatus = tvuStatus.Unknown;
                         }
@@ -608,10 +600,13 @@ namespace TvUndergroundDownloader
                         //  Start check complete element 
                         if (feed.tvuStatus == tvuStatus.Unknown)
                         {
+                            Log.logVerbose("Checking serie status");
                             Regex Pattern = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=episodes&sid=\d{1,10}");
                             Match Match = Pattern.Match(WebPage);
                             string url = Match.Value;
                             feed.tvuStatus = WebManagerTVU.CheckComplete(url, cookieContainer);
+                            feed.LastSerieStatusUpgradeDate = DateTime.Now;
+                            Log.logVerbose("Serie status: " + feed.tvuStatus);
                         }
                     }
 
@@ -646,9 +641,6 @@ namespace TvUndergroundDownloader
                             sEd2k = RssParserTVU.FindEd2kLink(page);
                             FeedLinkCache.AddFeedLink(FeedLink, sEd2k, DateTime.Now.ToString("s"));
                         }
-
-
-
 
                         Ed2kfile parser = new Ed2kfile(sEd2k);
                         Log.logInfo(string.Format("Found new file {0}", parser.GetFileName()));
