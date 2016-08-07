@@ -17,6 +17,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
+##### Version 0.6.2 07/08/2016  #####
+* Enable workaround for old web browser component needs by Google CAPTCHA
+* Add support for UTF8
+* Minor fix
+
+
 ##### Version 0.6.1 18/02/2016  #####
 * add support for windows 10
 * spell check

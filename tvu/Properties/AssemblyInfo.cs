@@ -8,9 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Reflection.AssemblyVersion("0.6.1")]
-[assembly: System.Reflection.AssemblyFileVersion("0.6.1")]
-[assembly: System.Reflection.AssemblyInformationalVersion("0.6.1 76037ac [2016-02-18]")]
+[assembly: System.Reflection.AssemblyVersion("0.6.2")]
+[assembly: System.Reflection.AssemblyFileVersion("0.6.2")]
+[assembly: System.Reflection.AssemblyInformationalVersion("0.6.2 1e50b81 [2016-08-07]")]
 [assembly: System.Reflection.AssemblyTitle("TvUndergroundDownloader")]
 [assembly: System.Reflection.AssemblyProduct("TvUndergroundDownloader")]
 

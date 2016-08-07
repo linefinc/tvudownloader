@@ -13,7 +13,7 @@ Name "Tv Underground Downloader"
 
 ;--------------------------------
 ; The file to write
-OutFile ".\bin\Release\tvud_installer_0.6.1.exe"
+OutFile ".\bin\Release\tvud_installer_0.6.2.exe"
 SetCompress force			; force compressor
 SetCompressor /SOLID LZMA	; define lzma compressor
 
@@ -29,10 +29,10 @@ InstallDirRegKey HKLM "Software\TVUndergroundDownloader" "Install_Dir"
 
 ;--------------------------------
 ;Version Information
-VIProductVersion "0.6.1.0"
+VIProductVersion "0.6.2.0"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "Tv Underground Downloader"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" "Tv Underground Downloader"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "0.6.1.0"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "0.6.2.0"
 
 ;--------------------------------
 ; Request application privileges for Windows Vista
@@ -125,6 +125,11 @@ Section "Tvunderground Downloader (required)"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TVUndergroundDownloader" "UninstallString" '"$INSTDIR\uninstall.exe"'
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TVUndergroundDownloader" "NoModify" 1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TVUndergroundDownloader" "NoRepair" 1
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TVUndergroundDownloader" "NoRepair" 1
+  
+  ; this two row are necessary to force web component to edge emulation (only header)
+  WriteRegDWORD HKLM "Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION" "TvUndergroundDownloader.exe" 0x00002ee1
+  WriteRegDWORD HKLM "Software\WOW6432Node\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION" "TvUndergroundDownloader.exe" 0x00002ee1
   WriteUninstaller "uninstall.exe"
   
 SectionEnd
@@ -146,7 +151,9 @@ Section "Uninstall"
   ; Remove registry keys
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TVUndergroundDownloader"
   DeleteRegKey HKLM SOFTWARE\TVUndergroundDownloader
-
+  DeleteRegValue HKLM "Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION" "TvUndergroundDownloader.exe"
+  DeleteRegValue HKLM "Software\WOW6432Node\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION" "TvUndergroundDownloader.exe"
+  
   ; Remove files and uninstaller
   Delete $INSTDIR\TvUndergroundDownloader.exe
   Delete $INSTDIR\TvUndergroundDownloader.exe.manifest

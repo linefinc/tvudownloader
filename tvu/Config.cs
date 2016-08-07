@@ -145,6 +145,12 @@ namespace TvUndergroundDownloader
 
         public Config()
         {
+
+            //
+            //  Enable web browser emulation
+            //
+            EnableWebBrowserEmulation();
+
             //
             // get local user application data path, remove version directory and add config.xml
             //
@@ -571,6 +577,23 @@ namespace TvUndergroundDownloader
                 temp += string.Format("{0:X}", rand.Next(0, 15));
             }
             return temp;
+        }
+
+        private static void EnableWebBrowserEmulation()
+        {
+            RegistryKey hkcu = Registry.CurrentUser;
+            hkcu = hkcu.OpenSubKey(@"Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION", RegistryKeyPermissionCheck.ReadWriteSubTree);
+            if (hkcu != null)
+            {
+                hkcu.SetValue(Application.ProductName, 0x00002ee1, RegistryValueKind.DWord);
+            }
+
+            hkcu = Registry.CurrentUser;
+            hkcu = hkcu.OpenSubKey(@"Software\WOW6432Node\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION", RegistryKeyPermissionCheck.ReadWriteSubTree);
+            if (hkcu != null)
+            {
+                hkcu.SetValue(Application.ProductName, 0x00002ee1, RegistryValueKind.DWord);
+            }
         }
     }
 }
