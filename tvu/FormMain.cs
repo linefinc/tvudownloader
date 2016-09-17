@@ -764,6 +764,12 @@ namespace TvUndergroundDownloader
             Log.logVerbose("Clean download list (step 1) find channel from ed2k");
 
             List<Ed2kfile> CourrentDownloadsFormEmule = Service.GetActualDownloads();/// file downloaded with this program and now in download in emule
+            if(CourrentDownloadsFormEmule == null)
+            {
+                Log.logInfo("eMule web server not respond");
+                return;
+            }
+
             Log.logVerbose("Current Download Form Emule " + CourrentDownloadsFormEmule.Count);
 
             //for debug

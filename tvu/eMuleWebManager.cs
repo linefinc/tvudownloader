@@ -204,7 +204,7 @@ namespace TvUndergroundDownloader
 
             if (temp == null)
             {
-                return ListDownloads;
+                return null;
             }
 
             //ed2k://\|file\|
