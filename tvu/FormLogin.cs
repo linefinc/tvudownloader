@@ -42,6 +42,11 @@ namespace TvUndergroundDownloader
             {
                 return;
             }
+
+            if (string.IsNullOrEmpty(page.Cookie) == true)
+                return;
+
+
             string[] cookies = page.Cookie.Split(';');
 
 #if DEBUG
