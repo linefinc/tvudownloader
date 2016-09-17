@@ -62,7 +62,10 @@ namespace TvUndergroundDownloader
             checkBoxVerbose.Checked = Verbose = inConfig.Verbose;
             checkBoxEmailNotification.Checked = EmailNotification = inConfig.EmailNotification;
             checkBoxSaveLogToFile.Checked = saveLog = inConfig.saveLog;
-        }
+            tvuCookieH = textBoxCookieH.Text=inConfig.tvuCookieH;
+            tvuCookieI = textBoxCookieI.Text = inConfig.tvuCookieI;
+            tvuCookieT = textBoxCookieT.Text = inConfig.tvuCookieT;
+    }
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
@@ -164,7 +167,12 @@ namespace TvUndergroundDownloader
             //
             //
             MaxSimultaneousFeedDownloads = Convert.ToInt32(numericUpDownMaxSimultaneousDownloadForFeed.Value);
-            
+
+
+            tvuCookieH = textBoxCookieH.Text;
+            tvuCookieI = textBoxCookieI.Text;
+            tvuCookieT = textBoxCookieT.Text;
+
             //
             //  Save log to file
             //
@@ -173,6 +181,8 @@ namespace TvUndergroundDownloader
             {
                 saveLog = true;
             }
+
+
 
 
             this.DialogResult = DialogResult.OK;
