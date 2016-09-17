@@ -341,47 +341,25 @@ namespace TvUndergroundDownloader
 
         public bool FileExistByFeedLink(string feedlink)
         {
-            DataTable dt = new DataTable();
-            dt.Reset();
-
             using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
             {
                 connection.Open();
-                const string sqlTemplate = @"SELECT uuid FROM History WHERE feedlink = @feedlink";
+                const string sqlTemplate = @"SELECT COUNT(*) FROM History WHERE feedlink = @feedlink";
 
                 SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
                 command.CommandType = CommandType.Text;
                 command.Parameters.Add(new SQLiteParameter("@feedlink", feedlink));
-                SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
 
-                dataAdapter.Fill(dt);
+                // command execute scalar return a long
+                var count = Convert.ToInt64(command.ExecuteScalar());
+
+                if (count > 0)
+                {
+                    return true;
+                }
+                return false;
             }
-
-            return dt.Rows.Count > 0;
         }
-
-        public bool ExistInHistoryByEd2k(string Ed2kLink)
-        {
-            DataTable dt = new DataTable();
-            dt.Reset();
-
-            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
-            {
-                connection.Open();
-                const string sqlTemplate = @"SELECT uuid FROM History WHERE Ed2kLink = @Ed2kLink";
-
-                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
-                command.CommandType = CommandType.Text;
-                command.Parameters.Add(new SQLiteParameter("@Ed2kLink", Ed2kLink));
-                SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
-
-
-                dataAdapter.Fill(dt);
-            }
-
-            return dt.Rows.Count > 0;
-        }
-
 
 
         public string LastDownloadDateByFeedSource(string FeedSource)
