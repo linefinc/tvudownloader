@@ -10,9 +10,9 @@ class WebFetch
 {
 
     
-    const int myDelay = 1000; //max 3 connection per sec
+    
 
-    public static string Fetch(string page, bool clean, CookieContainer cookieContainer)
+    public static string Fetch(string page, bool clean, CookieContainer cookieContainer, int myDelay = 0)
     {
 
 
