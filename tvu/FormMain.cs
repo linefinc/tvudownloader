@@ -602,7 +602,24 @@ namespace TvUndergroundDownloader
                             feed.tvuStatus = WebManagerTVU.CheckComplete(url, cookieContainer);
                             feed.LastSerieStatusUpgradeDate = DateTime.Now;
 
-                            Log.logVerbose("Serie status: " + feed.tvuStatus);
+                            switch (feed.tvuStatus)
+                            {
+                                case tvuStatus.Complete:
+                                    Log.logVerbose("Serie status: Complete");
+                                    break;
+                                default:
+                                    Log.logVerbose("Serie status: Unknown");
+                                    break;
+                                case tvuStatus.StillRunning:
+                                    Log.logVerbose("Serie status: Still Running");
+                                    break;
+                                case tvuStatus.StillIncomplete:
+                                    Log.logVerbose("Serie status: Still Incomplete");
+                                    break;
+                                case tvuStatus.OnHiatus:
+                                    Log.logVerbose("Serie status: On Hiatus");
+                                    break;
+                            }
                         }
                     }
 
@@ -764,7 +781,7 @@ namespace TvUndergroundDownloader
             Log.logVerbose("Clean download list (step 1) find channel from ed2k");
 
             List<Ed2kfile> CourrentDownloadsFormEmule = Service.GetActualDownloads();/// file downloaded with this program and now in download in emule
-            if(CourrentDownloadsFormEmule == null)
+            if (CourrentDownloadsFormEmule == null)
             {
                 Log.logInfo("eMule web server not respond");
                 return;
@@ -876,7 +893,7 @@ namespace TvUndergroundDownloader
             Log.logInfo("Force Refresh Shared File List");
             Service.ForceRefreshSharedFileList();
 
-            Log.logInfo("logout Emule");
+            Log.logInfo("Logout Emule");
             Service.Close();
 
             Log.logInfo("Statistics");
