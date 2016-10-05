@@ -80,7 +80,7 @@ namespace TvUndergroundDownloader
                 }
 
 
-                ListCategories.AddRange(Service.GetCategory(true));
+                ListCategories.AddRange(Service.GetCategories(true));
 
                 Service.Close();
 

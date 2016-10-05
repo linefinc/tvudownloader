@@ -720,7 +720,21 @@ namespace TvUndergroundDownloader
                 Log.logVerbose("Total file found " + DownloadFileList.Count);
             }
 
-            eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
+            IMuleWebManager Service = null;
+
+
+            switch (MainConfig.ServiceType)
+            {
+                case Config.eServiceType.aMule:
+                    Log.logVerbose("Load aMule service");
+                    Service = new aMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
+                    break;
+                case Config.eServiceType.eMule:
+                default:
+                    Log.logVerbose("Load eMule service");
+                    Service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
+                    break;
+            }
 
             //
             //  if emule is close and new file < min to start not do null
@@ -735,7 +749,7 @@ namespace TvUndergroundDownloader
                 return;
             }
 
-            for (int cont = 1; (cont <= 5) & (Service.Connect() != eMuleWebManager.LoginStatus.Logged); cont++)
+            for (int cont = 1; (cont <= 5) & (Service.Connect() != LoginStatus.Logged); cont++)
             {
                 if (backgroundWorker1.CancellationPending)
                 {
@@ -776,11 +790,11 @@ namespace TvUndergroundDownloader
             }
 
             Log.logVerbose("Retrieve list category");
-            Service.GetCategory(true);  // force upgrade category list 
+            Service.GetCategories(true);  // force upgrade category list 
 
             Log.logVerbose("Clean download list (step 1) find channel from ed2k");
 
-            List<Ed2kfile> CourrentDownloadsFormEmule = Service.GetActualDownloads();/// file downloaded with this program and now in download in emule
+            List<Ed2kfile> CourrentDownloadsFormEmule = Service.GetActualDownloads(MainHistory.GetKnownFiles());/// file downloaded with this program and now in download in emule
             if (CourrentDownloadsFormEmule == null)
             {
                 Log.logInfo("eMule web server not respond");
@@ -1226,6 +1240,7 @@ namespace TvUndergroundDownloader
 
             if (OptDialog.DialogResult == DialogResult.OK)
             {
+                MainConfig.ServiceType = OptDialog.ServiceType;
                 MainConfig.IntervalTime = OptDialog.IntervalTime;
                 MainConfig.StartMinimized = OptDialog.StartMinimized;
                 MainConfig.StartEmuleIfClose = OptDialog.StartEmuleIfClose;
@@ -1337,11 +1352,11 @@ namespace TvUndergroundDownloader
 
             Log.logVerbose("[AutoClose Mule] Check Login");
             eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
-            eMuleWebManager.LoginStatus returnCode = Service.Connect();
+            LoginStatus returnCode = Service.Connect();
 
 
             // if mule close ... end of game
-            if (returnCode != eMuleWebManager.LoginStatus.Logged)
+            if (returnCode != LoginStatus.Logged)
             {
                 AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do control every 30 minutes
                 Log.logVerbose("[AutoClose Mule] Login failed");
@@ -1349,9 +1364,9 @@ namespace TvUndergroundDownloader
             }
             Log.logVerbose("[AutoClose Mule] Login ok");
 
-            Log.logVerbose("[AutoClose Mule] Actual Downloads " + Service.GetActualDownloads().Count);
+            Log.logVerbose("[AutoClose Mule] Actual Downloads " + Service.GetActualDownloads(null).Count);
             // if donwload > 0 ... there' s some download ... end 
-            if (Service.GetActualDownloads().Count > 0)
+            if (Service.GetActualDownloads(null).Count > 0)
             {
                 Log.logVerbose("[AutoClose Mule] GetActualDownloads return >0");
                 AutoCloseDataTime = DateTime.Now.AddMinutes(30);

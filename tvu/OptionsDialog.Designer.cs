@@ -37,62 +37,64 @@
             this.textBoxEmuleExec = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPageLog = new System.Windows.Forms.TabPage();
-            this.checkBoxAutoClear = new System.Windows.Forms.CheckBox();
-            this.checkBoxVerbose = new System.Windows.Forms.CheckBox();
             this.checkBoxSaveLogToFile = new System.Windows.Forms.CheckBox();
+            this.checkBoxVerbose = new System.Windows.Forms.CheckBox();
+            this.checkBoxAutoClear = new System.Windows.Forms.CheckBox();
             this.tabPageEmail = new System.Windows.Forms.TabPage();
-            this.checkBoxEmailNotification = new System.Windows.Forms.CheckBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.textBoxServerSmtp = new System.Windows.Forms.TextBox();
-            this.textBoxMailReceiver = new System.Windows.Forms.TextBox();
-            this.textBoxMailSender = new System.Windows.Forms.TextBox();
             this.buttonTestEmailNotification = new System.Windows.Forms.Button();
+            this.textBoxMailSender = new System.Windows.Forms.TextBox();
+            this.textBoxMailReceiver = new System.Windows.Forms.TextBox();
+            this.textBoxServerSmtp = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.checkBoxEmailNotification = new System.Windows.Forms.CheckBox();
             this.tabPageNetwork = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBoxServiceUrl = new System.Windows.Forms.TextBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.textBoxPassword = new System.Windows.Forms.TextBox();
-            this.buttonCheckNow = new System.Windows.Forms.Button();
             this.label14 = new System.Windows.Forms.Label();
+            this.buttonCheckNow = new System.Windows.Forms.Button();
+            this.textBoxPassword = new System.Windows.Forms.TextBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.textBoxServiceUrl = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.tabPageGeneral = new System.Windows.Forms.TabPage();
-            this.label7 = new System.Windows.Forms.Label();
-            this.numericUpDownIntervalTime = new System.Windows.Forms.NumericUpDown();
-            this.checkBoxStartMinimized = new System.Windows.Forms.CheckBox();
-            this.checkBoxStartWithWindows = new System.Windows.Forms.CheckBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.checkBoxStartEmuleIfClose = new System.Windows.Forms.CheckBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.textBoxDefaultCategory = new System.Windows.Forms.TextBox();
-            this.textBoxEmuleExe = new System.Windows.Forms.TextBox();
-            this.checkBoxCloseEmuleIfAllIsDone = new System.Windows.Forms.CheckBox();
-            this.numericUpDownMinDownloadToStrarTEmule = new System.Windows.Forms.NumericUpDown();
-            this.label8 = new System.Windows.Forms.Label();
-            this.numericUpDownMaxSimultaneousDownloadForFeed = new System.Windows.Forms.NumericUpDown();
-            this.label13 = new System.Windows.Forms.Label();
-            this.numericUpDownIntervalCheck = new System.Windows.Forms.NumericUpDown();
             this.label12 = new System.Windows.Forms.Label();
+            this.numericUpDownIntervalCheck = new System.Windows.Forms.NumericUpDown();
+            this.label13 = new System.Windows.Forms.Label();
+            this.numericUpDownMaxSimultaneousDownloadForFeed = new System.Windows.Forms.NumericUpDown();
+            this.label8 = new System.Windows.Forms.Label();
+            this.numericUpDownMinDownloadToStrarTEmule = new System.Windows.Forms.NumericUpDown();
+            this.checkBoxCloseEmuleIfAllIsDone = new System.Windows.Forms.CheckBox();
+            this.textBoxEmuleExe = new System.Windows.Forms.TextBox();
+            this.textBoxDefaultCategory = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.checkBoxStartEmuleIfClose = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.checkBoxStartWithWindows = new System.Windows.Forms.CheckBox();
+            this.checkBoxStartMinimized = new System.Windows.Forms.CheckBox();
+            this.numericUpDownIntervalTime = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.textBoxCookieH = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.textBoxCookieT = new System.Windows.Forms.TextBox();
-            this.textBoxCookieI = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.textBoxCookieI = new System.Windows.Forms.TextBox();
+            this.textBoxCookieT = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.textBoxCookieH = new System.Windows.Forms.TextBox();
+            this.comboBoxClientType = new System.Windows.Forms.ComboBox();
+            this.label19 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.tabPageLog.SuspendLayout();
             this.tabPageEmail.SuspendLayout();
             this.tabPageNetwork.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIntervalTime)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinDownloadToStrarTEmule)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxSimultaneousDownloadForFeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIntervalCheck)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxSimultaneousDownloadForFeed)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinDownloadToStrarTEmule)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIntervalTime)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.SuspendLayout();
@@ -193,15 +195,15 @@
             this.tabPageLog.Text = "Log";
             this.tabPageLog.UseVisualStyleBackColor = true;
             // 
-            // checkBoxAutoClear
+            // checkBoxSaveLogToFile
             // 
-            this.checkBoxAutoClear.AutoSize = true;
-            this.checkBoxAutoClear.Location = new System.Drawing.Point(6, 29);
-            this.checkBoxAutoClear.Name = "checkBoxAutoClear";
-            this.checkBoxAutoClear.Size = new System.Drawing.Size(96, 17);
-            this.checkBoxAutoClear.TabIndex = 55;
-            this.checkBoxAutoClear.Text = "Auto Clear Log";
-            this.checkBoxAutoClear.UseVisualStyleBackColor = true;
+            this.checkBoxSaveLogToFile.AutoSize = true;
+            this.checkBoxSaveLogToFile.Location = new System.Drawing.Point(252, 29);
+            this.checkBoxSaveLogToFile.Name = "checkBoxSaveLogToFile";
+            this.checkBoxSaveLogToFile.Size = new System.Drawing.Size(99, 17);
+            this.checkBoxSaveLogToFile.TabIndex = 57;
+            this.checkBoxSaveLogToFile.Text = "Save log to File";
+            this.checkBoxSaveLogToFile.UseVisualStyleBackColor = true;
             // 
             // checkBoxVerbose
             // 
@@ -213,15 +215,15 @@
             this.checkBoxVerbose.Text = "Verbose Log";
             this.checkBoxVerbose.UseVisualStyleBackColor = true;
             // 
-            // checkBoxSaveLogToFile
+            // checkBoxAutoClear
             // 
-            this.checkBoxSaveLogToFile.AutoSize = true;
-            this.checkBoxSaveLogToFile.Location = new System.Drawing.Point(252, 29);
-            this.checkBoxSaveLogToFile.Name = "checkBoxSaveLogToFile";
-            this.checkBoxSaveLogToFile.Size = new System.Drawing.Size(99, 17);
-            this.checkBoxSaveLogToFile.TabIndex = 57;
-            this.checkBoxSaveLogToFile.Text = "Save log to File";
-            this.checkBoxSaveLogToFile.UseVisualStyleBackColor = true;
+            this.checkBoxAutoClear.AutoSize = true;
+            this.checkBoxAutoClear.Location = new System.Drawing.Point(6, 29);
+            this.checkBoxAutoClear.Name = "checkBoxAutoClear";
+            this.checkBoxAutoClear.Size = new System.Drawing.Size(96, 17);
+            this.checkBoxAutoClear.TabIndex = 55;
+            this.checkBoxAutoClear.Text = "Auto Clear Log";
+            this.checkBoxAutoClear.UseVisualStyleBackColor = true;
             // 
             // tabPageEmail
             // 
@@ -241,33 +243,36 @@
             this.tabPageEmail.Text = "Email Notification";
             this.tabPageEmail.UseVisualStyleBackColor = true;
             // 
-            // checkBoxEmailNotification
+            // buttonTestEmailNotification
             // 
-            this.checkBoxEmailNotification.AutoSize = true;
-            this.checkBoxEmailNotification.Location = new System.Drawing.Point(15, 11);
-            this.checkBoxEmailNotification.Name = "checkBoxEmailNotification";
-            this.checkBoxEmailNotification.Size = new System.Drawing.Size(107, 17);
-            this.checkBoxEmailNotification.TabIndex = 0;
-            this.checkBoxEmailNotification.Text = "Email Notification";
-            this.checkBoxEmailNotification.UseVisualStyleBackColor = true;
+            this.buttonTestEmailNotification.Location = new System.Drawing.Point(267, 120);
+            this.buttonTestEmailNotification.Name = "buttonTestEmailNotification";
+            this.buttonTestEmailNotification.Size = new System.Drawing.Size(75, 23);
+            this.buttonTestEmailNotification.TabIndex = 7;
+            this.buttonTestEmailNotification.Text = "Test Email";
+            this.buttonTestEmailNotification.UseVisualStyleBackColor = true;
+            this.buttonTestEmailNotification.Click += new System.EventHandler(this.buttonTestEmailNotification_Click);
             // 
-            // label9
+            // textBoxMailSender
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(13, 34);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(71, 13);
-            this.label9.TabIndex = 2;
-            this.label9.Text = "Server SMTP";
+            this.textBoxMailSender.Location = new System.Drawing.Point(128, 57);
+            this.textBoxMailSender.Name = "textBoxMailSender";
+            this.textBoxMailSender.Size = new System.Drawing.Size(214, 20);
+            this.textBoxMailSender.TabIndex = 6;
             // 
-            // label10
+            // textBoxMailReceiver
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(13, 86);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(72, 13);
-            this.label10.TabIndex = 3;
-            this.label10.Text = "Mail Receiver";
+            this.textBoxMailReceiver.Location = new System.Drawing.Point(128, 83);
+            this.textBoxMailReceiver.Name = "textBoxMailReceiver";
+            this.textBoxMailReceiver.Size = new System.Drawing.Size(214, 20);
+            this.textBoxMailReceiver.TabIndex = 4;
+            // 
+            // textBoxServerSmtp
+            // 
+            this.textBoxServerSmtp.Location = new System.Drawing.Point(128, 31);
+            this.textBoxServerSmtp.Name = "textBoxServerSmtp";
+            this.textBoxServerSmtp.Size = new System.Drawing.Size(214, 20);
+            this.textBoxServerSmtp.TabIndex = 1;
             // 
             // label11
             // 
@@ -278,36 +283,33 @@
             this.label11.TabIndex = 5;
             this.label11.Text = "Mail Sender";
             // 
-            // textBoxServerSmtp
+            // label10
             // 
-            this.textBoxServerSmtp.Location = new System.Drawing.Point(128, 31);
-            this.textBoxServerSmtp.Name = "textBoxServerSmtp";
-            this.textBoxServerSmtp.Size = new System.Drawing.Size(214, 20);
-            this.textBoxServerSmtp.TabIndex = 1;
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(13, 86);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(72, 13);
+            this.label10.TabIndex = 3;
+            this.label10.Text = "Mail Receiver";
             // 
-            // textBoxMailReceiver
+            // label9
             // 
-            this.textBoxMailReceiver.Location = new System.Drawing.Point(128, 83);
-            this.textBoxMailReceiver.Name = "textBoxMailReceiver";
-            this.textBoxMailReceiver.Size = new System.Drawing.Size(214, 20);
-            this.textBoxMailReceiver.TabIndex = 4;
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(13, 34);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(71, 13);
+            this.label9.TabIndex = 2;
+            this.label9.Text = "Server SMTP";
             // 
-            // textBoxMailSender
+            // checkBoxEmailNotification
             // 
-            this.textBoxMailSender.Location = new System.Drawing.Point(128, 57);
-            this.textBoxMailSender.Name = "textBoxMailSender";
-            this.textBoxMailSender.Size = new System.Drawing.Size(214, 20);
-            this.textBoxMailSender.TabIndex = 6;
-            // 
-            // buttonTestEmailNotification
-            // 
-            this.buttonTestEmailNotification.Location = new System.Drawing.Point(267, 120);
-            this.buttonTestEmailNotification.Name = "buttonTestEmailNotification";
-            this.buttonTestEmailNotification.Size = new System.Drawing.Size(75, 23);
-            this.buttonTestEmailNotification.TabIndex = 7;
-            this.buttonTestEmailNotification.Text = "Test Email";
-            this.buttonTestEmailNotification.UseVisualStyleBackColor = true;
-            this.buttonTestEmailNotification.Click += new System.EventHandler(this.buttonTestEmailNotification_Click);
+            this.checkBoxEmailNotification.AutoSize = true;
+            this.checkBoxEmailNotification.Location = new System.Drawing.Point(15, 11);
+            this.checkBoxEmailNotification.Name = "checkBoxEmailNotification";
+            this.checkBoxEmailNotification.Size = new System.Drawing.Size(107, 17);
+            this.checkBoxEmailNotification.TabIndex = 0;
+            this.checkBoxEmailNotification.Text = "Email Notification";
+            this.checkBoxEmailNotification.UseVisualStyleBackColor = true;
             // 
             // tabPageNetwork
             // 
@@ -322,6 +324,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label19);
+            this.groupBox1.Controls.Add(this.comboBoxClientType);
             this.groupBox1.Controls.Add(this.label14);
             this.groupBox1.Controls.Add(this.buttonCheckNow);
             this.groupBox1.Controls.Add(this.textBoxPassword);
@@ -336,30 +340,31 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Network";
             // 
-            // label2
+            // label14
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 60);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 13);
-            this.label2.TabIndex = 24;
-            this.label2.Text = "Password";
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(123, 46);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(190, 13);
+            this.label14.TabIndex = 35;
+            this.label14.Text = "Insert URL like \"http://localhost:4000\"";
             // 
-            // label1
+            // buttonCheckNow
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 16);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(91, 13);
-            this.label1.TabIndex = 23;
-            this.label1.Text = "Emule Service Url";
+            this.buttonCheckNow.Location = new System.Drawing.Point(264, 114);
+            this.buttonCheckNow.Name = "buttonCheckNow";
+            this.buttonCheckNow.Size = new System.Drawing.Size(75, 23);
+            this.buttonCheckNow.TabIndex = 34;
+            this.buttonCheckNow.Text = "Check Now";
+            this.buttonCheckNow.UseVisualStyleBackColor = true;
+            this.buttonCheckNow.Click += new System.EventHandler(this.buttonCheckNow_Click);
             // 
-            // textBoxServiceUrl
+            // textBoxPassword
             // 
-            this.textBoxServiceUrl.Location = new System.Drawing.Point(108, 9);
-            this.textBoxServiceUrl.Name = "textBoxServiceUrl";
-            this.textBoxServiceUrl.Size = new System.Drawing.Size(228, 20);
-            this.textBoxServiceUrl.TabIndex = 20;
+            this.textBoxPassword.Location = new System.Drawing.Point(111, 88);
+            this.textBoxPassword.Name = "textBoxPassword";
+            this.textBoxPassword.Size = new System.Drawing.Size(228, 20);
+            this.textBoxPassword.TabIndex = 21;
             // 
             // button3
             // 
@@ -370,31 +375,30 @@
             this.button3.Text = "Save config";
             this.button3.UseVisualStyleBackColor = true;
             // 
-            // textBoxPassword
+            // textBoxServiceUrl
             // 
-            this.textBoxPassword.Location = new System.Drawing.Point(108, 57);
-            this.textBoxPassword.Name = "textBoxPassword";
-            this.textBoxPassword.Size = new System.Drawing.Size(228, 20);
-            this.textBoxPassword.TabIndex = 21;
+            this.textBoxServiceUrl.Location = new System.Drawing.Point(111, 62);
+            this.textBoxServiceUrl.Name = "textBoxServiceUrl";
+            this.textBoxServiceUrl.Size = new System.Drawing.Size(228, 20);
+            this.textBoxServiceUrl.TabIndex = 20;
             // 
-            // buttonCheckNow
+            // label1
             // 
-            this.buttonCheckNow.Location = new System.Drawing.Point(261, 83);
-            this.buttonCheckNow.Name = "buttonCheckNow";
-            this.buttonCheckNow.Size = new System.Drawing.Size(75, 23);
-            this.buttonCheckNow.TabIndex = 34;
-            this.buttonCheckNow.Text = "Check Now";
-            this.buttonCheckNow.UseVisualStyleBackColor = true;
-            this.buttonCheckNow.Click += new System.EventHandler(this.buttonCheckNow_Click);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(11, 65);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(91, 13);
+            this.label1.TabIndex = 23;
+            this.label1.Text = "Emule Service Url";
             // 
-            // label14
+            // label2
             // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(117, 32);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(213, 13);
-            this.label14.TabIndex = 35;
-            this.label14.Text = "Insert Emule Url like \"http://localhost:4000\"";
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(11, 91);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(53, 13);
+            this.label2.TabIndex = 24;
+            this.label2.Text = "Password";
             // 
             // tabPageGeneral
             // 
@@ -422,124 +426,40 @@
             this.tabPageGeneral.Text = "General";
             this.tabPageGeneral.UseVisualStyleBackColor = true;
             // 
-            // label7
+            // label12
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 49);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(147, 13);
-            this.label7.TabIndex = 38;
-            this.label7.Text = "Check feed Interval time [min]";
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(6, 209);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(180, 13);
+            this.label12.TabIndex = 57;
+            this.label12.Text = "Software update check interval days";
             // 
-            // numericUpDownIntervalTime
+            // numericUpDownIntervalCheck
             // 
-            this.numericUpDownIntervalTime.Location = new System.Drawing.Point(295, 47);
-            this.numericUpDownIntervalTime.Maximum = new decimal(new int[] {
-            720,
+            this.numericUpDownIntervalCheck.Location = new System.Drawing.Point(295, 207);
+            this.numericUpDownIntervalCheck.Minimum = new decimal(new int[] {
+            1,
             0,
             0,
             0});
-            this.numericUpDownIntervalTime.Minimum = new decimal(new int[] {
-            30,
-            0,
-            0,
-            0});
-            this.numericUpDownIntervalTime.Name = "numericUpDownIntervalTime";
-            this.numericUpDownIntervalTime.Size = new System.Drawing.Size(47, 20);
-            this.numericUpDownIntervalTime.TabIndex = 37;
-            this.numericUpDownIntervalTime.Value = new decimal(new int[] {
-            180,
+            this.numericUpDownIntervalCheck.Name = "numericUpDownIntervalCheck";
+            this.numericUpDownIntervalCheck.Size = new System.Drawing.Size(47, 20);
+            this.numericUpDownIntervalCheck.TabIndex = 56;
+            this.numericUpDownIntervalCheck.Value = new decimal(new int[] {
+            1,
             0,
             0,
             0});
             // 
-            // checkBoxStartMinimized
+            // label13
             // 
-            this.checkBoxStartMinimized.AutoSize = true;
-            this.checkBoxStartMinimized.Location = new System.Drawing.Point(6, 6);
-            this.checkBoxStartMinimized.Name = "checkBoxStartMinimized";
-            this.checkBoxStartMinimized.Size = new System.Drawing.Size(97, 17);
-            this.checkBoxStartMinimized.TabIndex = 43;
-            this.checkBoxStartMinimized.Text = "Start Minimized";
-            this.checkBoxStartMinimized.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxStartWithWindows
-            // 
-            this.checkBoxStartWithWindows.AutoSize = true;
-            this.checkBoxStartWithWindows.Location = new System.Drawing.Point(6, 29);
-            this.checkBoxStartWithWindows.Name = "checkBoxStartWithWindows";
-            this.checkBoxStartWithWindows.Size = new System.Drawing.Size(117, 17);
-            this.checkBoxStartWithWindows.TabIndex = 44;
-            this.checkBoxStartWithWindows.Text = "Start with Windows";
-            this.checkBoxStartWithWindows.UseVisualStyleBackColor = true;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 91);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(86, 13);
-            this.label4.TabIndex = 45;
-            this.label4.Text = "Default Category";
-            // 
-            // checkBoxStartEmuleIfClose
-            // 
-            this.checkBoxStartEmuleIfClose.AutoSize = true;
-            this.checkBoxStartEmuleIfClose.Location = new System.Drawing.Point(9, 114);
-            this.checkBoxStartEmuleIfClose.Name = "checkBoxStartEmuleIfClose";
-            this.checkBoxStartEmuleIfClose.Size = new System.Drawing.Size(116, 17);
-            this.checkBoxStartEmuleIfClose.TabIndex = 49;
-            this.checkBoxStartEmuleIfClose.Text = "Start Emule if close";
-            this.checkBoxStartEmuleIfClose.UseVisualStyleBackColor = true;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 134);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(79, 13);
-            this.label5.TabIndex = 48;
-            this.label5.Text = "eMule Exeguile";
-            // 
-            // textBoxDefaultCategory
-            // 
-            this.textBoxDefaultCategory.Location = new System.Drawing.Point(98, 88);
-            this.textBoxDefaultCategory.Name = "textBoxDefaultCategory";
-            this.textBoxDefaultCategory.Size = new System.Drawing.Size(244, 20);
-            this.textBoxDefaultCategory.TabIndex = 46;
-            // 
-            // textBoxEmuleExe
-            // 
-            this.textBoxEmuleExe.Location = new System.Drawing.Point(98, 134);
-            this.textBoxEmuleExe.Name = "textBoxEmuleExe";
-            this.textBoxEmuleExe.Size = new System.Drawing.Size(244, 20);
-            this.textBoxEmuleExe.TabIndex = 47;
-            // 
-            // checkBoxCloseEmuleIfAllIsDone
-            // 
-            this.checkBoxCloseEmuleIfAllIsDone.AutoSize = true;
-            this.checkBoxCloseEmuleIfAllIsDone.Location = new System.Drawing.Point(6, 65);
-            this.checkBoxCloseEmuleIfAllIsDone.Name = "checkBoxCloseEmuleIfAllIsDone";
-            this.checkBoxCloseEmuleIfAllIsDone.Size = new System.Drawing.Size(142, 17);
-            this.checkBoxCloseEmuleIfAllIsDone.TabIndex = 50;
-            this.checkBoxCloseEmuleIfAllIsDone.Text = "Close eMule if all is done";
-            this.checkBoxCloseEmuleIfAllIsDone.UseVisualStyleBackColor = true;
-            // 
-            // numericUpDownMinDownloadToStrarTEmule
-            // 
-            this.numericUpDownMinDownloadToStrarTEmule.Location = new System.Drawing.Point(295, 155);
-            this.numericUpDownMinDownloadToStrarTEmule.Name = "numericUpDownMinDownloadToStrarTEmule";
-            this.numericUpDownMinDownloadToStrarTEmule.Size = new System.Drawing.Size(47, 20);
-            this.numericUpDownMinDownloadToStrarTEmule.TabIndex = 52;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 157);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(144, 13);
-            this.label8.TabIndex = 53;
-            this.label8.Text = "Min Donwload to Start eMule";
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(6, 183);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(184, 13);
+            this.label13.TabIndex = 55;
+            this.label13.Text = "Max simultaneous Download for Feed";
             // 
             // numericUpDownMaxSimultaneousDownloadForFeed
             // 
@@ -563,40 +483,124 @@
             0,
             0});
             // 
-            // label13
+            // label8
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(6, 183);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(184, 13);
-            this.label13.TabIndex = 55;
-            this.label13.Text = "Max simultaneous Download for Feed";
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 157);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(144, 13);
+            this.label8.TabIndex = 53;
+            this.label8.Text = "Min Donwload to Start eMule";
             // 
-            // numericUpDownIntervalCheck
+            // numericUpDownMinDownloadToStrarTEmule
             // 
-            this.numericUpDownIntervalCheck.Location = new System.Drawing.Point(295, 207);
-            this.numericUpDownIntervalCheck.Minimum = new decimal(new int[] {
-            1,
+            this.numericUpDownMinDownloadToStrarTEmule.Location = new System.Drawing.Point(295, 155);
+            this.numericUpDownMinDownloadToStrarTEmule.Name = "numericUpDownMinDownloadToStrarTEmule";
+            this.numericUpDownMinDownloadToStrarTEmule.Size = new System.Drawing.Size(47, 20);
+            this.numericUpDownMinDownloadToStrarTEmule.TabIndex = 52;
+            // 
+            // checkBoxCloseEmuleIfAllIsDone
+            // 
+            this.checkBoxCloseEmuleIfAllIsDone.AutoSize = true;
+            this.checkBoxCloseEmuleIfAllIsDone.Location = new System.Drawing.Point(6, 65);
+            this.checkBoxCloseEmuleIfAllIsDone.Name = "checkBoxCloseEmuleIfAllIsDone";
+            this.checkBoxCloseEmuleIfAllIsDone.Size = new System.Drawing.Size(142, 17);
+            this.checkBoxCloseEmuleIfAllIsDone.TabIndex = 50;
+            this.checkBoxCloseEmuleIfAllIsDone.Text = "Close eMule if all is done";
+            this.checkBoxCloseEmuleIfAllIsDone.UseVisualStyleBackColor = true;
+            // 
+            // textBoxEmuleExe
+            // 
+            this.textBoxEmuleExe.Location = new System.Drawing.Point(98, 134);
+            this.textBoxEmuleExe.Name = "textBoxEmuleExe";
+            this.textBoxEmuleExe.Size = new System.Drawing.Size(244, 20);
+            this.textBoxEmuleExe.TabIndex = 47;
+            // 
+            // textBoxDefaultCategory
+            // 
+            this.textBoxDefaultCategory.Location = new System.Drawing.Point(98, 88);
+            this.textBoxDefaultCategory.Name = "textBoxDefaultCategory";
+            this.textBoxDefaultCategory.Size = new System.Drawing.Size(244, 20);
+            this.textBoxDefaultCategory.TabIndex = 46;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 134);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(79, 13);
+            this.label5.TabIndex = 48;
+            this.label5.Text = "eMule Exeguile";
+            // 
+            // checkBoxStartEmuleIfClose
+            // 
+            this.checkBoxStartEmuleIfClose.AutoSize = true;
+            this.checkBoxStartEmuleIfClose.Location = new System.Drawing.Point(9, 114);
+            this.checkBoxStartEmuleIfClose.Name = "checkBoxStartEmuleIfClose";
+            this.checkBoxStartEmuleIfClose.Size = new System.Drawing.Size(116, 17);
+            this.checkBoxStartEmuleIfClose.TabIndex = 49;
+            this.checkBoxStartEmuleIfClose.Text = "Start Emule if close";
+            this.checkBoxStartEmuleIfClose.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 91);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(86, 13);
+            this.label4.TabIndex = 45;
+            this.label4.Text = "Default Category";
+            // 
+            // checkBoxStartWithWindows
+            // 
+            this.checkBoxStartWithWindows.AutoSize = true;
+            this.checkBoxStartWithWindows.Location = new System.Drawing.Point(6, 29);
+            this.checkBoxStartWithWindows.Name = "checkBoxStartWithWindows";
+            this.checkBoxStartWithWindows.Size = new System.Drawing.Size(117, 17);
+            this.checkBoxStartWithWindows.TabIndex = 44;
+            this.checkBoxStartWithWindows.Text = "Start with Windows";
+            this.checkBoxStartWithWindows.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxStartMinimized
+            // 
+            this.checkBoxStartMinimized.AutoSize = true;
+            this.checkBoxStartMinimized.Location = new System.Drawing.Point(6, 6);
+            this.checkBoxStartMinimized.Name = "checkBoxStartMinimized";
+            this.checkBoxStartMinimized.Size = new System.Drawing.Size(97, 17);
+            this.checkBoxStartMinimized.TabIndex = 43;
+            this.checkBoxStartMinimized.Text = "Start Minimized";
+            this.checkBoxStartMinimized.UseVisualStyleBackColor = true;
+            // 
+            // numericUpDownIntervalTime
+            // 
+            this.numericUpDownIntervalTime.Location = new System.Drawing.Point(295, 47);
+            this.numericUpDownIntervalTime.Maximum = new decimal(new int[] {
+            720,
             0,
             0,
             0});
-            this.numericUpDownIntervalCheck.Name = "numericUpDownIntervalCheck";
-            this.numericUpDownIntervalCheck.Size = new System.Drawing.Size(47, 20);
-            this.numericUpDownIntervalCheck.TabIndex = 56;
-            this.numericUpDownIntervalCheck.Value = new decimal(new int[] {
-            1,
+            this.numericUpDownIntervalTime.Minimum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.numericUpDownIntervalTime.Name = "numericUpDownIntervalTime";
+            this.numericUpDownIntervalTime.Size = new System.Drawing.Size(47, 20);
+            this.numericUpDownIntervalTime.TabIndex = 37;
+            this.numericUpDownIntervalTime.Value = new decimal(new int[] {
+            180,
             0,
             0,
             0});
             // 
-            // label12
+            // label7
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(6, 209);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(180, 13);
-            this.label12.TabIndex = 57;
-            this.label12.Text = "Software update check interval days";
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 49);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(147, 13);
+            this.label7.TabIndex = 38;
+            this.label7.Text = "Check feed Interval time [min]";
             // 
             // tabControl1
             // 
@@ -627,35 +631,14 @@
             this.tabPage1.Text = "Cookie";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // textBoxCookieH
+            // label18
             // 
-            this.textBoxCookieH.Location = new System.Drawing.Point(63, 6);
-            this.textBoxCookieH.Name = "textBoxCookieH";
-            this.textBoxCookieH.Size = new System.Drawing.Size(288, 20);
-            this.textBoxCookieH.TabIndex = 0;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(6, 9);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(51, 13);
-            this.label15.TabIndex = 1;
-            this.label15.Text = "Cookie H";
-            // 
-            // textBoxCookieT
-            // 
-            this.textBoxCookieT.Location = new System.Drawing.Point(62, 58);
-            this.textBoxCookieT.Name = "textBoxCookieT";
-            this.textBoxCookieT.Size = new System.Drawing.Size(289, 20);
-            this.textBoxCookieT.TabIndex = 2;
-            // 
-            // textBoxCookieI
-            // 
-            this.textBoxCookieI.Location = new System.Drawing.Point(62, 32);
-            this.textBoxCookieI.Name = "textBoxCookieI";
-            this.textBoxCookieI.Size = new System.Drawing.Size(289, 20);
-            this.textBoxCookieI.TabIndex = 3;
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(6, 35);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(46, 13);
+            this.label18.TabIndex = 5;
+            this.label18.Text = "Cookie I";
             // 
             // label16
             // 
@@ -666,14 +649,57 @@
             this.label16.TabIndex = 4;
             this.label16.Text = "Cookie T";
             // 
-            // label18
+            // textBoxCookieI
             // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(6, 35);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(46, 13);
-            this.label18.TabIndex = 5;
-            this.label18.Text = "Cookie I";
+            this.textBoxCookieI.Location = new System.Drawing.Point(62, 32);
+            this.textBoxCookieI.Name = "textBoxCookieI";
+            this.textBoxCookieI.Size = new System.Drawing.Size(289, 20);
+            this.textBoxCookieI.TabIndex = 3;
+            // 
+            // textBoxCookieT
+            // 
+            this.textBoxCookieT.Location = new System.Drawing.Point(62, 58);
+            this.textBoxCookieT.Name = "textBoxCookieT";
+            this.textBoxCookieT.Size = new System.Drawing.Size(289, 20);
+            this.textBoxCookieT.TabIndex = 2;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(6, 9);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(51, 13);
+            this.label15.TabIndex = 1;
+            this.label15.Text = "Cookie H";
+            // 
+            // textBoxCookieH
+            // 
+            this.textBoxCookieH.Location = new System.Drawing.Point(63, 6);
+            this.textBoxCookieH.Name = "textBoxCookieH";
+            this.textBoxCookieH.Size = new System.Drawing.Size(288, 20);
+            this.textBoxCookieH.TabIndex = 0;
+            // 
+            // comboBoxClientType
+            // 
+            this.comboBoxClientType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxClientType.FormattingEnabled = true;
+            this.comboBoxClientType.Items.AddRange(new object[] {
+            "eMule",
+            "aMule"});
+            this.comboBoxClientType.Location = new System.Drawing.Point(108, 16);
+            this.comboBoxClientType.Name = "comboBoxClientType";
+            this.comboBoxClientType.Size = new System.Drawing.Size(228, 21);
+            this.comboBoxClientType.TabIndex = 36;
+            this.comboBoxClientType.SelectedIndexChanged += new System.EventHandler(this.comboBoxClientType_SelectedIndexChanged);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(11, 19);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(60, 13);
+            this.label19.TabIndex = 37;
+            this.label19.Text = "Client Type";
             // 
             // OptionsDialog
             // 
@@ -700,10 +726,10 @@
             this.groupBox1.PerformLayout();
             this.tabPageGeneral.ResumeLayout(false);
             this.tabPageGeneral.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIntervalTime)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinDownloadToStrarTEmule)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxSimultaneousDownloadForFeed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIntervalCheck)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxSimultaneousDownloadForFeed)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinDownloadToStrarTEmule)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIntervalTime)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -768,5 +794,7 @@
         private System.Windows.Forms.TextBox textBoxCookieT;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox textBoxCookieH;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.ComboBox comboBoxClientType;
     }
 }

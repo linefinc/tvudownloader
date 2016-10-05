@@ -6,8 +6,8 @@ namespace TvUndergroundDownloader
     public partial class OptionsDialog : Form
     {
         //public Config LocalConfig;
-
-        public string ServiceUrl {private set;get;}
+        public Config.eServiceType ServiceType;
+        public string ServiceUrl { private set; get; }
         public string Password;
         public string tvuUsername;
         public string tvuPassword;
@@ -40,6 +40,18 @@ namespace TvUndergroundDownloader
         {
             InitializeComponent();
 
+            ServiceType = inConfig.ServiceType;
+            switch (ServiceType)
+            {
+                case Config.eServiceType.aMule:
+                    comboBoxClientType.Text = "aMule";
+                    break;
+                case Config.eServiceType.eMule:
+                default:
+                    comboBoxClientType.Text = "eMule";
+                    break;
+            }
+
             textBoxServiceUrl.Text = ServiceUrl = inConfig.ServiceUrl;
             textBoxPassword.Text = Password = inConfig.Password;
 
@@ -62,13 +74,15 @@ namespace TvUndergroundDownloader
             checkBoxVerbose.Checked = Verbose = inConfig.Verbose;
             checkBoxEmailNotification.Checked = EmailNotification = inConfig.EmailNotification;
             checkBoxSaveLogToFile.Checked = saveLog = inConfig.saveLog;
-            tvuCookieH = textBoxCookieH.Text=inConfig.tvuCookieH;
+            tvuCookieH = textBoxCookieH.Text = inConfig.tvuCookieH;
             tvuCookieI = textBoxCookieI.Text = inConfig.tvuCookieI;
             tvuCookieT = textBoxCookieT.Text = inConfig.tvuCookieT;
-    }
+        }
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
+            
+
             //
             // StartMinimized
             //
@@ -119,7 +133,7 @@ namespace TvUndergroundDownloader
             //  Service Url
             //
             ServiceUrl = textBoxServiceUrl.Text;
-            if(  ServiceUrl.IndexOf("http://") == -1)
+            if (ServiceUrl.IndexOf("http://") == -1)
             {
                 ServiceUrl = "http://" + ServiceUrl;
             }
@@ -183,24 +197,33 @@ namespace TvUndergroundDownloader
             }
 
 
-
-
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
         private void buttonCheckNow_Click(object sender, EventArgs e)
         {
-            eMuleWebManager service = new eMuleWebManager(textBoxServiceUrl.Text, textBoxPassword.Text);
-            eMuleWebManager.LoginStatus rc = service.Connect();
+            IMuleWebManager service = null;
+            switch (ServiceType)
+            {
+                case Config.eServiceType.aMule:
+                    service = new aMuleWebManager(textBoxServiceUrl.Text, textBoxPassword.Text);
+                    break;
+                case Config.eServiceType.eMule:
+                default:
+                    service = new eMuleWebManager(textBoxServiceUrl.Text, textBoxPassword.Text);
+                    break;
+            }
 
-            if (rc == eMuleWebManager.LoginStatus.ServiceNotAvailable)
+            LoginStatus rc = service.Connect();
+
+            if (rc == LoginStatus.ServiceNotAvailable)
             {
                 MessageBox.Show("Unable conncet with target URL");
                 return;
             }
 
-            if (rc == eMuleWebManager.LoginStatus.PasswordError)
+            if (rc == LoginStatus.PasswordError)
             {
                 MessageBox.Show("Password error");
                 return;
@@ -226,7 +249,18 @@ namespace TvUndergroundDownloader
 
         }
 
-
-
+        private void comboBoxClientType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (comboBoxClientType.Text)
+            {
+                case "aMule":
+                    ServiceType = Config.eServiceType.aMule;
+                    break;
+                case "eMule":
+                default:
+                    ServiceType = Config.eServiceType.eMule;
+                    break;
+            }
+        }
     }
 }

@@ -23,7 +23,8 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <PublishUrl>.\publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -80,6 +81,7 @@
     </Reference>
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -117,7 +119,8 @@
     <Compile Include="EditFeedForm.Designer.cs">
       <DependentUpon>EditFeedForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="eMuleWebManager.cs" />
+    <Compile Include="WebInterface\eMuleWebManager.cs" />
+    <Compile Include="WebInterface\aMuleWebManager.cs" />
     <Compile Include="FeedLinkCache.cs" />
     <Compile Include="fileHistory.cs" />
     <Compile Include="FormLogin.cs">
@@ -186,7 +189,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="app.config" />
     <None Include="app.manifest" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -204,6 +206,7 @@
     <Compile Include="RssSubscrission.cs" />
     <Compile Include="SmtpClient.cs" />
     <Compile Include="WebFetch.cs" />
+    <Compile Include="WebInterface\IMuleWebManager.cs" />
     <Compile Include="WebManagerTVU.cs" />
   </ItemGroup>
   <ItemGroup>

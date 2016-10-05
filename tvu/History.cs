@@ -414,6 +414,43 @@ namespace TvUndergroundDownloader
 
         }
 
+        public List<Ed2kfile> GetKnownFiles()
+        {
+            DataTable dt = new DataTable();
+            dt.Reset();
+
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+            {
+                connection.Open();
+                const string sqlTemplate = @"SELECT DISTINCT Ed2klink FROM History";
+
+
+                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                command.CommandType = CommandType.Text;
+
+                SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
+                dataAdapter.Fill(dt);
+            }
+
+            List<Ed2kfile> knownFiles = new List<Ed2kfile>();
+
+            foreach(DataRow row in dt.Rows)
+            {
+                try
+                {
+                    knownFiles.Add(new Ed2kfile(row[0].ToString()));
+                }
+                catch
+                {
+
+                }
+            }
+
+            return knownFiles;
+
+        }
+
+
 
 
         /// <summary>

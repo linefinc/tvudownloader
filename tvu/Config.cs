@@ -8,8 +8,12 @@ using System.Xml;
 
 namespace TvUndergroundDownloader
 {
+   
+
     public class Config
     {
+        public enum eServiceType { eMule = 0, aMule };
+
         public static string Version
         {
             get
@@ -26,6 +30,7 @@ namespace TvUndergroundDownloader
                                 .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false)[0]).InformationalVersion;
             }
         }
+        public eServiceType ServiceType;
         public string ServiceUrl;
         public string Password;
         public string tvuCookieH;
@@ -177,6 +182,17 @@ namespace TvUndergroundDownloader
 
             writter.WriteStartElement("version");
             writter.WriteString(Version);
+            writter.WriteEndElement();
+
+            writter.WriteStartElement("ServiceType");
+            if (ServiceType ==eServiceType.eMule)
+            {
+                writter.WriteString("eMule");
+            }
+            else
+            {
+                writter.WriteString("aMule");
+            }
             writter.WriteEndElement();
 
             writter.WriteStartElement("ServiceUrl");
@@ -361,6 +377,17 @@ namespace TvUndergroundDownloader
 
             XmlDocument xDoc = new XmlDocument();
             xDoc.Load(Config.FileNameConfig);
+
+            switch(ReadString(xDoc, "ServiceType", "eMule"))
+            {
+                case "aMule":
+                    ServiceType = eServiceType.aMule;
+                    break;
+                case "eMule":
+                default:
+                    ServiceType = eServiceType.eMule;
+                    break;
+            }
 
             ServiceUrl = ReadString(xDoc, "ServiceUrl", "http://localhost:4000");
 

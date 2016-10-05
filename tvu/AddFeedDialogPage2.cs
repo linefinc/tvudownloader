@@ -112,7 +112,7 @@ namespace TvUndergroundDownloader
                     return;
                 }
 
-                ListCategory.AddRange(Service.GetCategory(true));
+                ListCategory.AddRange(Service.GetCategories(true));
 
                 Service.Close();
             }
