@@ -10,7 +10,7 @@ using System.Web;
 
 namespace TvUndergroundDownloader
 {
-    class aMuleWebManager:IMuleWebManager
+    class aMuleWebManager : IMuleWebManager
     {
         private string Host;
         private string Password;
@@ -84,8 +84,11 @@ namespace TvUndergroundDownloader
         {
             NameValueCollection outgoingQueryString = HttpUtility.ParseQueryString(String.Empty);
             outgoingQueryString.Add("ed2klink", link.Ed2kLink);
-            outgoingQueryString.Add("selectcat", "all");
+            outgoingQueryString.Add("selectcat", "tutti");
             outgoingQueryString.Add("Submit", "Download link");
+
+
+
 
             string requestUri = string.Format("{0}/footer.php", Host);
             RequestPOST(requestUri, outgoingQueryString);
@@ -106,6 +109,7 @@ namespace TvUndergroundDownloader
             outgoingQueryString.Add(link.HashMD4, "on");
 
             string requestUri = string.Format("{0}/amuleweb-main-dload.php", Host);
+
             RequestPOST(requestUri, outgoingQueryString);
 
         }
@@ -163,18 +167,13 @@ namespace TvUndergroundDownloader
                 return categories;
             }
 
-
-            page = page.Substring(start, stop - start );
+            page = page.Substring(start, stop - start);
             page = page.Replace("</option>", ";");
             page = page.Replace("<option>", "");
             page = page.TrimEnd(';');
 
             categories.AddRange(page.Split(';'));
-
-
-
             return categories;
-
         }
 
 
@@ -185,7 +184,7 @@ namespace TvUndergroundDownloader
         public List<Ed2kfile> GetActualDownloads(List<Ed2kfile> knownFiles)
         {
             List<Ed2kfile> ListDownloads = new List<Ed2kfile>();
-                      
+
             // get download page
             string page = RequestGET(string.Format("{0}/amuleweb-main-dload.php", Host));
 
@@ -278,8 +277,7 @@ namespace TvUndergroundDownloader
             request.CookieContainer = new CookieContainer();
             if (this.CookieSessionID != null)
             {
-                request.CookieContainer = new CookieContainer();
-                request.CookieContainer.Add(this.CookieSessionID);
+                request.CookieContainer.Add(new Uri(uri), new Cookie(this.CookieSessionID.Name, this.CookieSessionID.Value));
             }
 
             // Create POST data and convert it to a byte array.
@@ -306,9 +304,10 @@ namespace TvUndergroundDownloader
                 string fileName = string.Format("emule-{0:yyyy-MM-dd-HH-mm-ss-ff}.html", DateTime.Now);
                 using (System.IO.TextWriter writer = System.IO.File.CreateText(fileName))
                 {
-                    writer.WriteLine("<!-- {0} -->", uri);
-                    writer.WriteLine("<!-- {0:yyyy-MM-dd-HH-mm-ss-ff} -->", DateTime.Now);
-                    writer.WriteLine("<!-- {0} -->", outgoingQueryString.ToString());
+                    writer.WriteLine("<!-- URI: {0} -->", uri);
+                    writer.WriteLine("<!-- DateTime: {0:yyyy-MM-dd HH:mm:ss.ff} -->", DateTime.Now);
+                    writer.WriteLine("<!-- OutgoingQuery: {0} -->", outgoingQueryString.ToString());
+                    writer.WriteLine("<!-- OutgoingCookie: {0} -->", request.CookieContainer.ToString());
                     writer.Write(tempBuffer);
                 }
 #endif
