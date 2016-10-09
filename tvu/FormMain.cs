@@ -644,10 +644,11 @@ namespace TvUndergroundDownloader
                             string page = null;
 
                             // download the page in FeedLink
-                            Log.logVerbose(string.Format("Try download page {0}", FeedLink));
+                            Log.logVerbose(string.Format("Download page {0}", FeedLink));
 
                             if ((page = WebFetch.Fetch(FeedLink, true, cookieContainer)) == null)
                             {
+                                Log.logInfo(string.Format("Unable to download"));
                                 continue;
                             }
                             // parse ed2k
