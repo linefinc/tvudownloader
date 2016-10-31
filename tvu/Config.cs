@@ -558,7 +558,7 @@ namespace TvUndergroundDownloader
 
 
 
-        private static string ReadString(XmlDocument xDoc, string NodeName, string defaultValue)
+        public static string ReadString(XmlDocument xDoc, string NodeName, string defaultValue)
         {
             XmlNodeList t = xDoc.GetElementsByTagName(NodeName);
             if (t.Count == 0)

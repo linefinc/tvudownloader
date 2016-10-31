@@ -90,6 +90,7 @@
             this.autoCloseEMuleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testAutoCloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importOldHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -116,7 +117,7 @@
             this.toolStripButtonAddFeed = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonCheckNow = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
-            this.exportDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.contextMenuStripFileFeed.SuspendLayout();
@@ -598,7 +599,8 @@
             this.autoCloseEMuleToolStripMenuItem,
             this.testAutoCloseToolStripMenuItem,
             this.importOldHistoryToolStripMenuItem,
-            this.exportDataToolStripMenuItem});
+            this.exportDataToolStripMenuItem,
+            this.importDataToolStripMenuItem});
             this.optionToolStripMenuItem.Name = "optionToolStripMenuItem";
             this.optionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.optionToolStripMenuItem.Text = "Options";
@@ -656,6 +658,13 @@
             this.importOldHistoryToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.importOldHistoryToolStripMenuItem.Text = "Import old history";
             this.importOldHistoryToolStripMenuItem.Click += new System.EventHandler(this.importOldHistoryToolStripMenuItem_Click);
+            // 
+            // exportDataToolStripMenuItem
+            // 
+            this.exportDataToolStripMenuItem.Name = "exportDataToolStripMenuItem";
+            this.exportDataToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.exportDataToolStripMenuItem.Text = "Export Data";
+            this.exportDataToolStripMenuItem.Click += new System.EventHandler(this.exportDataToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
@@ -862,12 +871,12 @@
             this.toolStripButtonStop.Text = "Stop";
             this.toolStripButtonStop.Click += new System.EventHandler(this.toolStripButtonStop_Click);
             // 
-            // exportDataToolStripMenuItem
+            // importDataToolStripMenuItem
             // 
-            this.exportDataToolStripMenuItem.Name = "exportDataToolStripMenuItem";
-            this.exportDataToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
-            this.exportDataToolStripMenuItem.Text = "Export Data";
-            this.exportDataToolStripMenuItem.Click += new System.EventHandler(this.exportDataToolStripMenuItem_Click);
+            this.importDataToolStripMenuItem.Name = "importDataToolStripMenuItem";
+            this.importDataToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.importDataToolStripMenuItem.Text = "Import Data";
+            this.importDataToolStripMenuItem.Click += new System.EventHandler(this.importDataToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -996,6 +1005,7 @@
         private System.Windows.Forms.ToolStripMenuItem excludeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importOldHistoryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportDataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importDataToolStripMenuItem;
     }
 }
 

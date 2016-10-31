@@ -2135,6 +2135,22 @@ namespace TvUndergroundDownloader
 
 
         }
+
+        private void importDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+
+            openFileDialog1.Filter = "XML (*.xml)|*.xml|All files (*.*)|*.*";
+            openFileDialog1.RestoreDirectory = true;
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                ExportImportHelper.Import(MainConfig, MainHistory, openFileDialog1.FileName);
+                UpdateRecentActivity();
+                UpdateRssFeedGUI();
+            }
+
+        }
     }
 
 

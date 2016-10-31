@@ -23,7 +23,7 @@ namespace TvUndergroundDownloader
         /// url of feed
         /// </summary>
         public string FeedSource { get; private set; }
-        public string Date { get; set; }
+        public string Date { get; set; }    //TODO: use date-time instead of string
 
 
         public FileHistory(string link, string FeedLink, string FeedSource, string Date)
