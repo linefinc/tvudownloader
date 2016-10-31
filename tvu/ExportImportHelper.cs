@@ -49,10 +49,11 @@ namespace TvUndergroundDownloader
                     writter.WriteString(feed.maxSimultaneousDownload.ToString());
                     writter.WriteEndElement();
 
-                    writter.WriteStartElement("DownloadedFile");
+                    writter.WriteStartElement("DownloadedFiles");
 
                     foreach (var file in history.ExportDownloadedFileByFeedSoruce(feed.Url))
                     {
+                        writter.WriteStartElement("File");
                         writter.WriteStartElement("Link"); // max Simultaneous Downloads
                         writter.WriteString(file.GetLink());
                         writter.WriteEndElement();
@@ -64,6 +65,7 @@ namespace TvUndergroundDownloader
                         writter.WriteEndElement();
                         writter.WriteStartElement("Date");
                         writter.WriteString(file.Date);
+                        writter.WriteEndElement();
                         writter.WriteEndElement();
                     }
                     writter.WriteEndElement();

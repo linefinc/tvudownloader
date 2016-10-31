@@ -8,17 +8,17 @@ namespace TvUndergroundDownloader
     {
         private int index;
 
-        public List<fileHistory> UnselectedFile { get; private set; }
-        public List<fileHistory> GlobalListFileHisotry { get; private set; }
+        public List<FileHistory> UnselectedFile { get; private set; }
+        public List<FileHistory> GlobalListFileHisotry { get; private set; }
         public List<RssChannel> ListRssChannel { get; private set; }
 
-        public AddFeedDialogPage3(List<RssChannel> ListRssChannel, List<fileHistory> GlobalListFileHisotry, List<string> ListCategory)
+        public AddFeedDialogPage3(List<RssChannel> ListRssChannel, List<FileHistory> GlobalListFileHisotry, List<string> ListCategory)
         {
             InitializeComponent();
 
             this.ListRssChannel = ListRssChannel;
             this.GlobalListFileHisotry = GlobalListFileHisotry;
-            this.UnselectedFile = new List<fileHistory>(); // select all input file
+            this.UnselectedFile = new List<FileHistory>(); // select all input file
             labelSelectedElement.Text = string.Format("Selected elements {0}", this.GlobalListFileHisotry.Count);
             index = 0;
 
@@ -50,11 +50,11 @@ namespace TvUndergroundDownloader
             for (int index = 0; index < checkedListBox1.Items.Count; index++)
                 checkedListBox1.SetItemChecked(index, true);
 
-            List<fileHistory>  ListFH = GlobalListFileHisotry.FindAll(delegate(fileHistory t) { return t.FeedSource == ListRssChannel[index].Url; });
+            List<FileHistory>  ListFH = GlobalListFileHisotry.FindAll(delegate(FileHistory t) { return t.FeedSource == ListRssChannel[index].Url; });
 
-            foreach (fileHistory fh in ListFH)
+            foreach (FileHistory fh in ListFH)
             {
-                UnselectedFile.RemoveAll(delegate(fileHistory t) { return t == fh; });
+                UnselectedFile.RemoveAll(delegate(FileHistory t) { return t == fh; });
             }
 
             labelSelectedElement.Text = string.Format("Selected elements {0}", this.GlobalListFileHisotry.Count - this.UnselectedFile.Count);
@@ -68,10 +68,10 @@ namespace TvUndergroundDownloader
             for (int index = 0; index < checkedListBox1.Items.Count; index++)
                 checkedListBox1.SetItemChecked(index, false);
 
-            List<fileHistory> ListFH = GlobalListFileHisotry.FindAll(delegate(fileHistory t) { return t.FeedSource == ListRssChannel[index].Url; });
-            foreach (fileHistory fh in ListFH)
+            List<FileHistory> ListFH = GlobalListFileHisotry.FindAll(delegate(FileHistory t) { return t.FeedSource == ListRssChannel[index].Url; });
+            foreach (FileHistory fh in ListFH)
             {
-                UnselectedFile.RemoveAll(delegate(fileHistory t) { return t == fh; });
+                UnselectedFile.RemoveAll(delegate(FileHistory t) { return t == fh; });
             }
 
             UnselectedFile.AddRange(ListFH);
@@ -109,11 +109,11 @@ namespace TvUndergroundDownloader
 
             // add file
             checkedListBox1.Items.Clear();
-            List<fileHistory> listFileToDisplay = new List<fileHistory>();
+            List<FileHistory> listFileToDisplay = new List<FileHistory>();
 
-            listFileToDisplay = GlobalListFileHisotry.FindAll(delegate(fileHistory t) { return t.FeedSource == rsschannel.Url; });
+            listFileToDisplay = GlobalListFileHisotry.FindAll(delegate(FileHistory t) { return t.FeedSource == rsschannel.Url; });
 
-            foreach (fileHistory file in listFileToDisplay)
+            foreach (FileHistory file in listFileToDisplay)
             {
                 bool selected = true;
 
@@ -159,10 +159,10 @@ namespace TvUndergroundDownloader
             {
                 // get item (fileHistory) form main list
                 string strItem = checkedListBox1.Items[index].ToString();
-                fileHistory item = GlobalListFileHisotry.Find(x => x.FileName == strItem);
+                FileHistory item = GlobalListFileHisotry.Find(x => x.FileName == strItem);
 
                 // remove all data 
-                UnselectedFile.RemoveAll(delegate(fileHistory t) { return t == item; });
+                UnselectedFile.RemoveAll(delegate(FileHistory t) { return t == item; });
 
                 if (checkedListBox1.GetItemChecked(index) == false)
                 {

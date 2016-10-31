@@ -50,7 +50,7 @@ namespace TvUndergroundDownloader
 
             // http://tvunderground.org.ru/index.php?show=ed2k&season=73528&sid[815433]=1
             // http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=ed2k&season=(?<season>\d{1,10})&sid\[(?<sid>\d{1,10})\]=\d{1,10}
-            MatchCollection matchCollection = fileHistory.regexFeedLink.Matches(FeedLink);
+            MatchCollection matchCollection = FileHistory.regexFeedLink.Matches(FeedLink);
 
             if (matchCollection.Count > 0)
             {

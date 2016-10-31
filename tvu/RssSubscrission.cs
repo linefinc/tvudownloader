@@ -28,7 +28,7 @@ namespace TvUndergroundDownloader
 
 
             // Static Regex "http(s)?://(www\.)?tvunderground.org.ru/rss.php\?se_id=(\d{1,10})"
-            MatchCollection matchCollection = fileHistory.regexFeedSource.Matches(this.Url);
+            MatchCollection matchCollection = FileHistory.regexFeedSource.Matches(this.Url);
             if (matchCollection.Count == 0)
             {
                 System.ApplicationException ex = new System.ApplicationException("Wrong URL");

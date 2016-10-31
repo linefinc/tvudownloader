@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 
 namespace TvUndergroundDownloader
 {
-    public class fileHistory : Ed2kfile
+    public class FileHistory : Ed2kfile
     {
         static public Regex regexFeedLink = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=ed2k&season=(?<season>\d{1,10})&sid\[(?<sid>\d{1,10})\]=\d{1,10}");
         static public Regex regexFeedSource = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/rss.php\?se_id=(?<seid>\d{1,10})");
@@ -26,7 +26,7 @@ namespace TvUndergroundDownloader
         public string Date { get; set; }
 
 
-        public fileHistory(string link, string FeedLink, string FeedSource, string Date)
+        public FileHistory(string link, string FeedLink, string FeedSource, string Date)
             : base(link)
         {
             if (regexFeedLink.IsMatch(FeedLink) == false)
@@ -45,7 +45,7 @@ namespace TvUndergroundDownloader
 
         }
 
-        public fileHistory(string link, string FeedLink, string FeedSource, DateTime Date)
+        public FileHistory(string link, string FeedLink, string FeedSource, DateTime Date)
             : base(link)
         {
             if (regexFeedLink.IsMatch(FeedLink) == false)
@@ -65,12 +65,12 @@ namespace TvUndergroundDownloader
         }
 
 
-        public fileHistory(string link, string FeedLink, string FeedSource)
+        public FileHistory(string link, string FeedLink, string FeedSource)
             : this(link, FeedLink, FeedSource, DateTime.Now.ToString("s"))
         {
 
         }
-        public fileHistory(Ed2kfile file, string FeedLink, string FeedSource, string Date)
+        public FileHistory(Ed2kfile file, string FeedLink, string FeedSource, string Date)
             : base(file)
         {
             if (regexFeedLink.IsMatch(FeedLink) == false)

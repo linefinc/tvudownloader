@@ -570,7 +570,7 @@ namespace TvUndergroundDownloader
                         //get GUID page
 
                         //static Regex "https?://(www\.)?tvunderground.org.ru/index.php\?show=ed2k&season=\d{1,10}&sid\[\d{1,10}\]=\d{1,10}"
-                        MatchCollection matchCollection = fileHistory.regexFeedLink.Matches(WebPage);
+                        MatchCollection matchCollection = FileHistory.regexFeedLink.Matches(WebPage);
 
 
                         foreach (Match value in matchCollection)
@@ -811,8 +811,8 @@ namespace TvUndergroundDownloader
             //  note move this function in MainHistory class
             //
             Log.logVerbose("Start search in history");
-            List<fileHistory> ActualDownloadFileList = MainHistory.getFileHistoryFromDB(CourrentDownloadsFormEmule);
-            ActualDownloadFileList.ForEach(delegate (fileHistory file) { Log.logVerbose("Found :\"" + file.FileName.Replace("%20", " ") + "\""); });
+            List<FileHistory> ActualDownloadFileList = MainHistory.getFileHistoryFromDB(CourrentDownloadsFormEmule);
+            ActualDownloadFileList.ForEach(delegate (FileHistory file) { Log.logVerbose("Found :\"" + file.FileName.Replace("%20", " ") + "\""); });
 
             Log.logInfo("ActualDownloadFileList.Count = " + ActualDownloadFileList.Count);
             Log.logInfo("MainConfig.MaxSimultaneousFeedDownloads = " + MainConfig.MaxSimultaneousFeedDownloads);
@@ -827,7 +827,7 @@ namespace TvUndergroundDownloader
             // 
             //  remove all file already in download
             //
-            foreach (fileHistory fh in ActualDownloadFileList)
+            foreach (FileHistory fh in ActualDownloadFileList)
             {
                 if (MaxSimultaneousDownloadsDictionary.ContainsKey(fh.FeedSource) == true)
                 {
@@ -1668,7 +1668,7 @@ namespace TvUndergroundDownloader
             }
 
             List<RssChannel> rssChannelList = dialogPage2.rssChannelList;
-            List<fileHistory> newFilesList = dialogPage2.newFilesList;
+            List<FileHistory> newFilesList = dialogPage2.newFilesList;
             List<string> eMuleCategoryList = dialogPage2.ListCategory;
 
             dialogPage2.Dispose();  // free dialog
@@ -1710,7 +1710,7 @@ namespace TvUndergroundDownloader
             //  remove all data from history
             //  note: this is important when you re add a old series
             //
-            foreach (fileHistory fh in newFilesList)
+            foreach (FileHistory fh in newFilesList)
             {
                 MainHistory.DeleteFile(fh);
             }
@@ -1718,10 +1718,10 @@ namespace TvUndergroundDownloader
             //
             //  Add file history
             //  
-            dialogPage3.UnselectedFile.ForEach(delegate (fileHistory fh) { Log.logDebug("UnselectedHistory " + fh.FileName); });
+            dialogPage3.UnselectedFile.ForEach(delegate (FileHistory fh) { Log.logDebug("UnselectedHistory " + fh.FileName); });
 
             // Add the unselected file to the history to avoid redownload
-            foreach (fileHistory fh in dialogPage3.UnselectedFile)
+            foreach (FileHistory fh in dialogPage3.UnselectedFile)
             {
                 History.Add(fh.Ed2kLink, fh.FeedLink, fh.FeedSource, DateTime.MinValue.ToString("s"));
             }

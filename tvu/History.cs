@@ -64,7 +64,7 @@ namespace TvUndergroundDownloader
 
         public static bool MigrateFromXMLToDB(string fileName)
         {
-            List<fileHistory> tempFileHistory = new List<fileHistory>();
+            List<FileHistory> tempFileHistory = new List<FileHistory>();
 
             if (File.Exists(fileName))
             {
@@ -120,7 +120,7 @@ namespace TvUndergroundDownloader
                                 strDate = t.InnerText;
                             }
                         }
-                        tempFileHistory.Add(new fileHistory(strEd2k, strFeedLink, strFeedSource, strDate));
+                        tempFileHistory.Add(new FileHistory(strEd2k, strFeedLink, strFeedSource, strDate));
                         Log.logInfo("Load successfully item " + i);
                     }
                     catch
@@ -179,7 +179,7 @@ namespace TvUndergroundDownloader
         ///
         public static void Add(string ed2k, string FeedLink, string FeedSource, string Date)
         {
-            fileHistory fh = new fileHistory(ed2k, FeedLink, FeedSource, Date);
+            FileHistory fh = new FileHistory(ed2k, FeedLink, FeedSource, Date);
 
             // http://tvunderground.org.ru/index.php?show=ed2k&season=73528&sid[815433]=1
 
@@ -187,7 +187,7 @@ namespace TvUndergroundDownloader
             string seasonID = string.Empty, episodeID = string.Empty;
 
             // Static Reg-ex "https?://(www\.)?tvunderground.org.ru/index.php\?show=ed2k&season=(\d{1,10})&sid\[(\d{1,10})\]=\d{1,10}"
-            MatchCollection matchCollection = fileHistory.regexFeedLink.Matches(FeedLink);
+            MatchCollection matchCollection = FileHistory.regexFeedLink.Matches(FeedLink);
 
 
             seasonID = matchCollection[0].Groups["season"].ToString();
@@ -227,14 +227,14 @@ namespace TvUndergroundDownloader
         ///
         private static void Add(SQLiteTransaction transaction, string ed2k, string FeedLink, string FeedSource, string Date)
         {
-            fileHistory fh = new fileHistory(ed2k, FeedLink, FeedSource, Date);
+            FileHistory fh = new FileHistory(ed2k, FeedLink, FeedSource, Date);
 
             // http://tvunderground.org.ru/index.php?show=ed2k&season=73528&sid[815433]=1
 
 
             string seasonID = string.Empty, episodeID = string.Empty;
             // Static Regex "https?://(www\.)?tvunderground.org.ru/index.php\?show=ed2k&season=(\d{1,10})&sid\[(\d{1,10})\]=\d{1,10}"
-            MatchCollection matchCollection = fileHistory.regexFeedLink.Matches(FeedLink);
+            MatchCollection matchCollection = FileHistory.regexFeedLink.Matches(FeedLink);
 
             if (matchCollection.Count > 0)
             {
@@ -291,12 +291,12 @@ namespace TvUndergroundDownloader
             return dt.Rows.Count > 0;
         }
 
-        public List<fileHistory> getFileHistoryFromDB(List<Ed2kfile> files)
+        public List<FileHistory> getFileHistoryFromDB(List<Ed2kfile> files)
         {
-            List<fileHistory> listFileHistory = new List<fileHistory>();
+            List<FileHistory> listFileHistory = new List<FileHistory>();
             foreach (Ed2kfile file in files)
             {
-                fileHistory fh = getFileHistoryFromDB(file);
+                FileHistory fh = getFileHistoryFromDB(file);
                 if (System.Object.ReferenceEquals(fh, null) == false)
                 {
                     listFileHistory.Add(fh);
@@ -306,7 +306,7 @@ namespace TvUndergroundDownloader
             return listFileHistory;
         }
 
-        public fileHistory getFileHistoryFromDB(Ed2kfile file)
+        public FileHistory getFileHistoryFromDB(Ed2kfile file)
         {
             DataTable dt = new DataTable();
             dt.Reset();
@@ -334,7 +334,7 @@ namespace TvUndergroundDownloader
             }
 
             DataRow row = dt.Rows[0];
-            return new fileHistory(file, row["FeedLink"].ToString(),
+            return new FileHistory(file, row["FeedLink"].ToString(),
                                          row["FeedSource"].ToString(),
                                          row["LastUpdate"].ToString());
         }
@@ -541,9 +541,9 @@ namespace TvUndergroundDownloader
             }
         }
 
-        public List<fileHistory> ExportDownloadedFileByFeedSoruce(string FeedSource)
+        public List<FileHistory> ExportDownloadedFileByFeedSoruce(string FeedSource)
         {
-            List<fileHistory> files = new List<fileHistory>();
+            List<FileHistory> files = new List<FileHistory>();
 
             using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3; UseUTF16Encoding=True;", Config.FileNameDB)))
             {
@@ -570,7 +570,7 @@ namespace TvUndergroundDownloader
                     string link = row["Ed2kLink"].ToString();
                     string feedLink = row["FeedLink"].ToString();
                     string lastUpdate = row["LastUpdate"].ToString();
-                    var newFile = new fileHistory(link, feedLink, FeedSource, lastUpdate);
+                    var newFile = new FileHistory(link, feedLink, FeedSource, lastUpdate);
                     files.Add(newFile);
                 }
                 return files;

@@ -10,7 +10,7 @@ namespace TvUndergroundDownloader
     {
         public List<RssChannel> rssChannelList { private set; get; }
         public List<string> RssUrlList { private set; get; }
-        public List<fileHistory> newFilesList { private set; get; }
+        public List<FileHistory> newFilesList { private set; get; }
         public List<string> ListCategory { private set; get; }
         private string ServiceUrl;
         private string Password;
@@ -23,7 +23,7 @@ namespace TvUndergroundDownloader
             InitializeComponent();
             this.RssUrlList = RssUrlList;
             this.rssChannelList = new List<RssChannel>();
-            this.newFilesList = new List<fileHistory>();
+            this.newFilesList = new List<FileHistory>();
             this.ListCategory = new List<string>();
 
             this.cookieContainer = cookieContainer;
@@ -85,7 +85,7 @@ namespace TvUndergroundDownloader
                             // find ed2k
                             string sEd2k = RssParserTVU.FindEd2kLink(page);
                             // add to history to avoid redonwload
-                            fileHistory file = new fileHistory(sEd2k, Item.Guid, rssChannel.Url);
+                            FileHistory file = new FileHistory(sEd2k, Item.Guid, rssChannel.Url);
                             newFilesList.Add(file);
                             backgroundWorker1.ReportProgress(0);
                             // update feedLinkCache
