@@ -59,7 +59,7 @@ namespace TvUndergroundDownloader
             }
             catch
             {
-                return LoginStatus.ServiceNotAvailable;
+
             }
             return LoginStatus.ServiceNotAvailable;
         }
