@@ -434,7 +434,7 @@ namespace TvUndergroundDownloader
 
             List<Ed2kfile> knownFiles = new List<Ed2kfile>();
 
-            foreach(DataRow row in dt.Rows)
+            foreach (DataRow row in dt.Rows)
             {
                 try
                 {
@@ -538,6 +538,42 @@ namespace TvUndergroundDownloader
 
                 table = ds.Tables[0];
                 return table;
+            }
+        }
+
+        public List<fileHistory> ExportDownloadedFileByFeedSoruce(string FeedSource)
+        {
+            List<fileHistory> files = new List<fileHistory>();
+
+            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3; UseUTF16Encoding=True;", Config.FileNameDB)))
+            {
+                connection.Open();
+                const string sqlTemplate = @"SELECT 
+                                                History.FileName,
+                                                History.Ed2kLink,
+                                                History.FeedLink,
+                                                History.LastUpdate
+                                            FROM History 
+                                            WHERE 
+                                                FeedSource = @FeedSource 
+                                            ORDER BY LastUpdate DESC ";
+
+                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                command.Parameters.Add(new SQLiteParameter("@FeedSource", FeedSource));
+                SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
+
+                DataTable dt = new DataTable();
+                dataAdapter.Fill(dt);
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    string link = row["Ed2kLink"].ToString();
+                    string feedLink = row["FeedLink"].ToString();
+                    string lastUpdate = row["LastUpdate"].ToString();
+                    var newFile = new fileHistory(link, feedLink, FeedSource, lastUpdate);
+                    files.Add(newFile);
+                }
+                return files;
             }
         }
 

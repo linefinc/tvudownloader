@@ -119,6 +119,7 @@
     <Compile Include="EditFeedForm.Designer.cs">
       <DependentUpon>EditFeedForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExportImportHelper.cs" />
     <Compile Include="WebInterface\eMuleWebManager.cs" />
     <Compile Include="WebInterface\aMuleWebManager.cs" />
     <Compile Include="FeedLinkCache.cs" />

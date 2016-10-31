@@ -2115,7 +2115,26 @@ namespace TvUndergroundDownloader
             }
         }
 
+        private void exportDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Stream myStream;
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
 
+            saveFileDialog1.Filter = "XML (*.xml)|*.xml|All files (*.*)|*.*";
+            saveFileDialog1.RestoreDirectory = true;
+
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if ((myStream = saveFileDialog1.OpenFile()) != null)
+                {
+                    ExportImportHelper.Export(MainConfig, MainHistory, myStream);
+                    // Code to write the stream goes here.
+                    myStream.Close();
+                }
+            }
+
+
+        }
     }
 
 

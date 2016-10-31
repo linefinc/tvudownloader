@@ -45,6 +45,26 @@ namespace TvUndergroundDownloader
 
         }
 
+        public fileHistory(string link, string FeedLink, string FeedSource, DateTime Date)
+            : base(link)
+        {
+            if (regexFeedLink.IsMatch(FeedLink) == false)
+            {
+                throw (new System.ApplicationException("Wrong FeedLink"));
+            }
+
+
+            if (regexFeedSource.IsMatch(FeedSource) == false)
+            {
+                throw (new System.ApplicationException("Wrong FeedSource"));
+            }
+            this.FeedLink = FeedLink;
+            this.FeedSource = FeedSource;
+            this.Date = Date.ToString();
+
+        }
+
+
         public fileHistory(string link, string FeedLink, string FeedSource)
             : this(link, FeedLink, FeedSource, DateTime.Now.ToString("s"))
         {
