@@ -16,9 +16,9 @@ namespace TvUndergroundDownloader
         private string Password;
         private Cookie CookieSessionID;
         private List<string> CategoryCache;
+        private string DefaultCategory;
 
         public bool isConnected { private set; get; }
-
         /// <summary>
         /// constructor
         /// </summary>
@@ -59,7 +59,7 @@ namespace TvUndergroundDownloader
             }
             catch
             {
-
+                return LoginStatus.ServiceNotAvailable;
             }
             return LoginStatus.ServiceNotAvailable;
         }
@@ -84,11 +84,11 @@ namespace TvUndergroundDownloader
         {
             NameValueCollection outgoingQueryString = HttpUtility.ParseQueryString(String.Empty);
             outgoingQueryString.Add("ed2klink", link.Ed2kLink);
-            outgoingQueryString.Add("selectcat", "tutti");
+            if (string.IsNullOrEmpty(Category))
+                outgoingQueryString.Add("selectcat", DefaultCategory);
+            else
+                outgoingQueryString.Add("selectcat", Category);
             outgoingQueryString.Add("Submit", "Download link");
-
-
-
 
             string requestUri = string.Format("{0}/footer.php", Host);
             RequestPOST(requestUri, outgoingQueryString);
@@ -105,7 +105,7 @@ namespace TvUndergroundDownloader
             NameValueCollection outgoingQueryString = HttpUtility.ParseQueryString(String.Empty);
             outgoingQueryString.Add("command", "resume");
             outgoingQueryString.Add("status", "all");
-            outgoingQueryString.Add("category", "all");
+            outgoingQueryString.Add("category", DefaultCategory);
             outgoingQueryString.Add(link.HashMD4, "on");
 
             string requestUri = string.Format("{0}/amuleweb-main-dload.php", Host);
@@ -124,7 +124,7 @@ namespace TvUndergroundDownloader
             NameValueCollection outgoingQueryString = HttpUtility.ParseQueryString(String.Empty);
             outgoingQueryString.Add("command", "pause");
             outgoingQueryString.Add("status", "all");
-            outgoingQueryString.Add("category", "all");
+            outgoingQueryString.Add("category", DefaultCategory);
             outgoingQueryString.Add(link.HashMD4, "on");
 
             string requestUri = string.Format("{0}/amuleweb-main-dload.php", Host);
@@ -140,6 +140,7 @@ namespace TvUndergroundDownloader
         public List<string> GetCategories(bool forceUpdate)
         {
             // this function is not implemented on Amule
+
             List<string> categories = new List<string>();
 
             //<select name="category" id="category">
@@ -168,11 +169,17 @@ namespace TvUndergroundDownloader
             }
 
             page = page.Substring(start, stop - start);
-            page = page.Replace("</option>", ";");
             page = page.Replace("<option>", "");
+            page = page.Replace("<option selected>", "");
+            page = page.Replace("</option>", ";");
             page = page.TrimEnd(';');
 
             categories.AddRange(page.Split(';'));
+            if (categories.Count > 0)
+            {
+                this.DefaultCategory = categories[0];
+            }
+
             return categories;
         }
 
@@ -181,7 +188,7 @@ namespace TvUndergroundDownloader
         /// get list of actual file in download
         /// </summary>
         /// <returns></returns>
-        public List<Ed2kfile> GetActualDownloads(List<Ed2kfile> knownFiles)
+        public List<Ed2kfile> GetCurrentDownloads(List<Ed2kfile> knownFiles)
         {
             List<Ed2kfile> ListDownloads = new List<Ed2kfile>();
 
@@ -254,7 +261,7 @@ namespace TvUndergroundDownloader
                 string fileName = string.Format("emule-{0:yyyy-MM-dd-HH-mm-ss-ff}.html", DateTime.Now);
                 using (System.IO.TextWriter writer = System.IO.File.CreateText(fileName))
                 {
-                    writer.WriteLine("<!-- {0} -->", uri);
+                    writer.WriteLine("<!-- GET: {0} -->", uri);
                     writer.WriteLine("<!-- {0:yyyy-MM-dd-HH-mm-ss-ff} -->", DateTime.Now);
                     writer.Write(tempBuffer);
                 }
@@ -304,10 +311,10 @@ namespace TvUndergroundDownloader
                 string fileName = string.Format("emule-{0:yyyy-MM-dd-HH-mm-ss-ff}.html", DateTime.Now);
                 using (System.IO.TextWriter writer = System.IO.File.CreateText(fileName))
                 {
-                    writer.WriteLine("<!-- URI: {0} -->", uri);
+                    writer.WriteLine("<!-- POST: {0} -->", uri);
                     writer.WriteLine("<!-- DateTime: {0:yyyy-MM-dd HH:mm:ss.ff} -->", DateTime.Now);
                     writer.WriteLine("<!-- OutgoingQuery: {0} -->", outgoingQueryString.ToString());
-                    writer.WriteLine("<!-- OutgoingCookie: {0} -->", request.CookieContainer.ToString());
+                    writer.WriteLine("<!-- OutgoingCookie: \"{0}\":\"{1}\"-->", this.CookieSessionID.Name, this.CookieSessionID.Value);
                     writer.Write(tempBuffer);
                 }
 #endif

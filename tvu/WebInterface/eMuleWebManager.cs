@@ -16,6 +16,8 @@ namespace TvUndergroundDownloader
         private List<string> CategoryCache;
 
         public bool isConnected { private set; get; }
+        public string DefaultCategory { get; private set; }
+
 
         /// <summary>
         /// constructor
@@ -184,6 +186,10 @@ namespace TvUndergroundDownloader
                 temp = temp.Substring(j);
             }
             this.CategoryCache = myList;
+            if(myList.Count > 0)
+            {
+                this.DefaultCategory = myList[0];
+            }
             return myList;
 
         }
@@ -193,7 +199,7 @@ namespace TvUndergroundDownloader
         /// get list of actual file in download
         /// </summary>
         /// <returns></returns>
-        public List<Ed2kfile> GetActualDownloads(List<Ed2kfile> knownFiles)
+        public List<Ed2kfile> GetCurrentDownloads(List<Ed2kfile> knownFiles)
         {
             List<Ed2kfile> ListDownloads = new List<Ed2kfile>();
 

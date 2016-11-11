@@ -16,6 +16,6 @@ namespace TvUndergroundDownloader
         void CloseEmuleApp();
         void ForceRefreshSharedFileList();
         List<string> GetCategories(bool forceUpdate);
-        List<Ed2kfile> GetActualDownloads(List<Ed2kfile> knownFiles);
+        List<Ed2kfile> GetCurrentDownloads(List<Ed2kfile> knownFiles);
     }
 }

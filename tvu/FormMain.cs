@@ -795,7 +795,7 @@ namespace TvUndergroundDownloader
 
             Log.logVerbose("Clean download list (step 1) find channel from ed2k");
 
-            List<Ed2kfile> CourrentDownloadsFormEmule = Service.GetActualDownloads(MainHistory.GetKnownFiles());/// file downloaded with this program and now in download in emule
+            List<Ed2kfile> CourrentDownloadsFormEmule = Service.GetCurrentDownloads(MainHistory.GetKnownFiles());/// file downloaded with this program and now in download in emule
             if (CourrentDownloadsFormEmule == null)
             {
                 Log.logInfo("eMule web server not respond");
@@ -1365,9 +1365,9 @@ namespace TvUndergroundDownloader
             }
             Log.logVerbose("[AutoClose Mule] Login ok");
 
-            Log.logVerbose("[AutoClose Mule] Actual Downloads " + Service.GetActualDownloads(null).Count);
+            Log.logVerbose("[AutoClose Mule] Actual Downloads " + Service.GetCurrentDownloads(null).Count);
             // if donwload > 0 ... there' s some download ... end 
-            if (Service.GetActualDownloads(null).Count > 0)
+            if (Service.GetCurrentDownloads(null).Count > 0)
             {
                 Log.logVerbose("[AutoClose Mule] GetActualDownloads return >0");
                 AutoCloseDataTime = DateTime.Now.AddMinutes(30);
