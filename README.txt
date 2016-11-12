@@ -17,6 +17,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
+##### Version 0.6.2 12/11/2016  #####
++ Add first support to aMule
++ Add import/export to simplify future migration
++ Add cookies section on options form (so we can manually setup)
+* Rewrite eMule code to be extendible
+* Improve speed
+
 ##### Version 0.6.2 07/08/2016  #####
 * Enable workaround for old web browser component needs by Google CAPTCHA
 * Add support for UTF8
@@ -53,17 +60,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 + Add "limit for feed"
 + Add customizable limit for feed
 + Add possibility to disable single feed
-* Fix incorrect sorting on rss list
+* Fix incorrect sorting on RSS list
 * Fix reduce memory foot print
 * Update project to vs2010es
 
-##### Version 0.5.4 26/11/2012 [svn rev 176] ##### 
+##### Version 0.5.4 26/11/2012 [SVN rev 176] ##### 
 * Fix bug when Ed2k link contains special characters
 * Improve register value mapping
 * Fix crash when SMTP server not replay
 * Fix delete episode that non works correctly 
 
-##### Version 0.5.3 10/10/2012 [svn rev 167] ##### 
+##### Version 0.5.3 10/10/2012 [SVN rev 167] ##### 
 * Fix download limitator
 + Add new panel for add rss channel and remove obsolete function
 * Fix ed2k parser
@@ -109,7 +116,7 @@ This is a bug fix version with some add
 +Add Idle status for RSS feed after 15 days of inactivity
 +RSS list are alphabetical sort
 +Add Enable/Disable function in try bar
-+Add alert panel to advise emule will close
++Add alert panel to advise eMule will close
 +Add function to delete file from history (double click on history list)
 *Fix bug in delete RSS feed
 *Fix Auto close status bar
@@ -120,14 +127,14 @@ This is a bug fix version with some add
 +Add Installer
 +Add Start With Windows
 +Add support configuration file in local user path
-+Add Auto start emule ( now not work)
++Add Auto start eMule ( now not work)
 +Redesign Configuration 
 +Add Close eMule when all as done
 +Add About panel
 *Fix If http://tvunderground.org.ru/are not available can cause crash
 *Fix Fix delay interval > 60 min not work
 *Fix close X button. Now sand application in tray bar
-*Fix auto start emule. Sometime can crash
+*Fix auto start eMule. Sometime can crash
 *Fix The log information not be correct store when application start minimized
 *Fix error in start up minimized
 *Fix tray bar bug. Now show correct menu indication "Show" or "Hide"

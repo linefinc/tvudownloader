@@ -13,7 +13,7 @@ Name "Tv Underground Downloader"
 
 ;--------------------------------
 ; The file to write
-OutFile ".\bin\Release\tvud_installer_0.6.2.exe"
+OutFile ".\bin\Release\tvud_installer_0.7.0.exe"
 SetCompress force			; force compressor
 SetCompressor /SOLID LZMA	; define lzma compressor
 
@@ -29,10 +29,10 @@ InstallDirRegKey HKLM "Software\TVUndergroundDownloader" "Install_Dir"
 
 ;--------------------------------
 ;Version Information
-VIProductVersion "0.6.2.0"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "Tv Underground Downloader"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" "Tv Underground Downloader"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "0.6.2.0"
+VIProductVersion "0.7.0.0"
+VIAddVersionKey /LANG=0 "ProductName" "Tv Underground Downloader"
+VIAddVersionKey /LANG=0 "Comments" "Tv Underground Downloader"
+VIAddVersionKey /LANG=0 "FileVersion" "0.7.0.0"
 
 ;--------------------------------
 ; Request application privileges for Windows Vista
@@ -109,7 +109,6 @@ Section "Tvunderground Downloader (required)"
   ; Put file there
   File ".\bin\Release\TvUndergroundDownloader.exe"
   File ".\bin\Release\TvUndergroundDownloader.exe.manifest"
-  File ".\bin\Release\TvUndergroundDownloader.exe.config"
   File ".\bin\Release\System.Data.SQLite.dll"
   File ".\bin\Release\System.Data.SQLite.xml"
   File ".\bin\Release\System.Data.SQLite.Linq.dll"
