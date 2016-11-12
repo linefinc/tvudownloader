@@ -33,6 +33,8 @@ VIProductVersion "0.7.0.0"
 VIAddVersionKey /LANG=0 "ProductName" "Tv Underground Downloader"
 VIAddVersionKey /LANG=0 "Comments" "Tv Underground Downloader"
 VIAddVersionKey /LANG=0 "FileVersion" "0.7.0.0"
+VIAddVersionKey /LANG=0 "FileDescription" "Tv Underground Downloader"
+VIAddVersionKey /LANG=0 "LegalCopyright" "Copyright(C) 2016  linefinc[at]users.sourceforge.net"
 
 ;--------------------------------
 ; Request application privileges for Windows Vista
