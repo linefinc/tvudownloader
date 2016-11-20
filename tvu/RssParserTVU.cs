@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TvUndergroundDownloader
 {
+    [Obsolete]
     public class RssChannel
     {
         public RssChannel()
