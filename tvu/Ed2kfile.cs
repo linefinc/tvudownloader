@@ -102,83 +102,36 @@ namespace TvUndergroundDownloader
             return HashMD4;
         }
 
-        public static bool operator ==(Ed2kfile A, Ed2kfile B)
+        public override bool Equals(Object obj)
         {
-            if (A.FileSize != B.FileSize)
-            {
+            //
+            //  https://msdn.microsoft.com/it-it/library/w4hkze5k(v=vs.110).aspx
+            //
+            if (obj == null || !(obj is Ed2kfile))
                 return false;
-            }
-
-            if (A.HashMD4 != B.HashMD4)
+            else
             {
-                return false;
-            }
+                if (this.FileSize != ((Ed2kfile)obj).FileSize)
+                {
+                    return false;
+                }
 
-            if (A.HashSHA1 == null)
+                if (this.HashMD4 != ((Ed2kfile)obj).HashMD4)
+                {
+                    return false;
+                }
+
                 return true;
-
-            if (B.HashSHA1 == null)
-                return true;
-
-            if (A.HashSHA1 != B.HashSHA1)
-                return false;
-
-            return true;
+            }
         }
 
-        public override bool Equals(object o)
-        {
-            Ed2kfile A = (Ed2kfile)o;
-
-            if (this.FileSize != A.FileSize)
-            {
-                return false;
-            }
-
-            if (this.HashMD4 != A.HashMD4)
-            {
-                return false;
-            }
-
-
-
-            return true;
-        }
-
-
-        public bool Equals(Ed2kfile A)
-        {
-            if (this.FileSize != A.FileSize)
-            {
-                return false;
-            }
-
-            if (this.HashMD4 != A.HashMD4)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public static bool operator !=(Ed2kfile A, Ed2kfile B)
-        {
-            if (A.FileSize == B.FileSize)
-            {
-                return false;
-            }
-
-            if (A.HashMD4 == B.HashMD4)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
+       
         public override int GetHashCode()
         {
-            return 0;
+            //
+            //  https://msdn.microsoft.com/it-it/library/system.object.gethashcode(v=vs.110).aspx
+            //
+            return this.HashMD4.GetHashCode();
         }
 
         private int CountChar(string str, char c)
