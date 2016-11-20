@@ -42,7 +42,7 @@ namespace TvUndergroundDownloader
         public bool CloseEmuleIfAllIsDone;
         public bool StartEmuleIfClose;
         public bool AutoClearLog;
-        public List<RssSubscrission> RssFeedList;
+        public List<RssSubscription> RssFeedList;
         public string eMuleExe;
         public bool debug;
         public string DefaultCategory;
@@ -159,7 +159,7 @@ namespace TvUndergroundDownloader
             //
             // get local user application data path, remove version directory and add config.xml
             //
-            RssFeedList = new List<RssSubscrission>();
+            RssFeedList = new List<RssSubscription>();
             if (!File.Exists(Config.FileNameConfig))
             {
                 // empty configure file
@@ -297,11 +297,11 @@ namespace TvUndergroundDownloader
 
             writter.WriteStartElement("RSSChannel");
 
-            List<RssSubscrission> myRssFeedList = new List<RssSubscrission>();
+            List<RssSubscription> myRssFeedList = new List<RssSubscription>();
             myRssFeedList.AddRange(this.RssFeedList);
             myRssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title));
 
-            foreach (RssSubscrission feed in myRssFeedList)
+            foreach (RssSubscription feed in myRssFeedList)
             {
                 //<Channel>
                 //<Title>[ed2k] tvunderground.org.ru: Lie To Me - Season 2 (HDTV) italian </Title>
@@ -446,7 +446,7 @@ namespace TvUndergroundDownloader
             //
             //  Initialize db
             //
-            DataBaseHelper.RssSubscrissionList.InitDB();
+            DataBaseHelper.RssSubscriptionList.InitDB();
             //
             //  Load Channel
             //
@@ -478,7 +478,7 @@ namespace TvUndergroundDownloader
 
                 }
 
-                RssSubscrission newfeed = new RssSubscrission(newFeedTitle, newFeedUrl);
+                RssSubscription newfeed = new RssSubscription(newFeedTitle, newFeedUrl);
 
 
                 //
@@ -544,14 +544,14 @@ namespace TvUndergroundDownloader
                 }
 
                 RssFeedList.Add(newfeed);
-                DataBaseHelper.RssSubscrissionList.AddOrUpgrade(newfeed);
+                DataBaseHelper.RssSubscriptionList.AddOrUpgrade(newfeed);
             }
 
             RssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title));
             //
             //  remove difference between XML and DB
             //
-            DataBaseHelper.RssSubscrissionList.CleanUp(RssFeedList);
+            DataBaseHelper.RssSubscriptionList.CleanUp(RssFeedList);
 
 
         }

@@ -19,11 +19,11 @@ namespace TvUndergroundDownloader
             writter.WriteStartElement("Channels");
             writter.WriteAttributeString("version", Config.Version);
 
-            List<RssSubscrission> myRssFeedList = new List<RssSubscrission>();
+            List<RssSubscription> myRssFeedList = new List<RssSubscription>();
             myRssFeedList.AddRange(config.RssFeedList);
             myRssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title));
 
-            foreach (RssSubscrission feed in myRssFeedList)
+            foreach (RssSubscription feed in myRssFeedList)
             {
                 //<Channel>
                 //<Title>[ed2k] tvunderground.org.ru: Lie To Me - Season 2 (HDTV) italian </Title>
@@ -88,7 +88,7 @@ namespace TvUndergroundDownloader
             {
                 string newFeedTitle = string.Empty;
                 string newFeedUrl = string.Empty;
-                RssSubscrission newFeed = null;
+                RssSubscription newFeed = null;
 
                 foreach (XmlNode t in Channel)
                 {
@@ -112,11 +112,11 @@ namespace TvUndergroundDownloader
                 if (string.IsNullOrEmpty(newFeedUrl) == true)
                     continue;
 
-                bool exist = config.RssFeedList.Exists(delegate (RssSubscrission rs) { return rs.Url == newFeedUrl; });
+                bool exist = config.RssFeedList.Exists(delegate (RssSubscription rs) { return rs.Url == newFeedUrl; });
                 if (exist == true)
                     continue;
 
-                newFeed = new RssSubscrission(newFeedTitle, newFeedUrl);
+                newFeed = new RssSubscription(newFeedTitle, newFeedUrl);
                 newFeed.Enabled = true;
                 newFeed.Category = config.DefaultCategory;
                 newFeed.maxSimultaneousDownload = config.MaxSimultaneousFeedDownloads;
@@ -127,7 +127,7 @@ namespace TvUndergroundDownloader
                 config.RssFeedList.Add(newFeed);
                 // load feed file to avoid duplicate
                 localFileHistory.AddRange(history.ExportDownloadedFileByFeedSoruce(newFeedUrl));
-                DataBaseHelper.RssSubscrissionList.AddOrUpgrade(newFeed);
+                DataBaseHelper.RssSubscriptionList.AddOrUpgrade(newFeed);
             }
 
             XmlNodeList downloadFiles = xDoc.GetElementsByTagName("File");

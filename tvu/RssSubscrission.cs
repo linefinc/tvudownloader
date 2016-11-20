@@ -19,9 +19,9 @@ namespace TvUndergroundDownloader
     /// <summary>
     /// Rss submission container 
     /// </summary>
-    public class RssSubscrission
+    public class RssSubscription
     {
-        public RssSubscrission(string Title, string Url)
+        public RssSubscription(string Title, string Url)
         {
             this.Title = Title;
             this.Url = Url;
@@ -66,7 +66,7 @@ namespace TvUndergroundDownloader
 
     public class DataBaseHelper
     {
-        public class RssSubscrissionList
+        public class RssSubscriptionList
         {
             public static void InitDB()
             {
@@ -107,7 +107,7 @@ namespace TvUndergroundDownloader
 
             }
 
-            public static void CleanUp(List<RssSubscrission> RssFeedList)
+            public static void CleanUp(List<RssSubscription> RssFeedList)
             {
 
                 StringBuilder filterSB = new StringBuilder();
@@ -133,7 +133,7 @@ namespace TvUndergroundDownloader
             }
 
 
-            public static void AddOrUpgrade(RssSubscrission rssSubscrission)
+            public static void AddOrUpgrade(RssSubscription rssSubscrission)
             {
                 using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
                 {
@@ -156,7 +156,7 @@ namespace TvUndergroundDownloader
                 }
             }
 
-            public static void Delete(RssSubscrission rssSubscrission)
+            public static void Delete(RssSubscription rssSubscrission)
             {
                 using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
                 {

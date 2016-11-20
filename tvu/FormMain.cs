@@ -284,7 +284,7 @@ namespace TvUndergroundDownloader
 
         private void UpdateRssFeedGUI()
         {
-            foreach (RssSubscrission subscrission in MainConfig.RssFeedList)
+            foreach (RssSubscription subscrission in MainConfig.RssFeedList)
             {
                 if (subscrission.listViewItem == null)
                 {
@@ -539,9 +539,9 @@ namespace TvUndergroundDownloader
             FeedLinkCache feedLinkCache = new FeedLinkCache();
 
             // select only enabled RSS
-            List<RssSubscrission> RssFeedList = MainConfig.RssFeedList.FindAll(delegate (RssSubscrission rss) { return rss.Enabled == true; });
+            List<RssSubscription> RssFeedList = MainConfig.RssFeedList.FindAll(delegate (RssSubscription rss) { return rss.Enabled == true; });
 
-            foreach (RssSubscrission feed in RssFeedList)
+            foreach (RssSubscription feed in RssFeedList)
             {
                 //
                 //  this code allow to block anytime the loop
@@ -820,7 +820,7 @@ namespace TvUndergroundDownloader
             // create a dictionary to count 
             Dictionary<string, int> MaxSimultaneousDownloadsDictionary = new Dictionary<string, int>();
             // set starting point for each feed
-            foreach (RssSubscrission RssFeed in MainConfig.RssFeedList)
+            foreach (RssSubscription RssFeed in MainConfig.RssFeedList)
             {
                 MaxSimultaneousDownloadsDictionary.Add(RssFeed.Url, RssFeed.maxSimultaneousDownload);
             }
@@ -1570,9 +1570,9 @@ namespace TvUndergroundDownloader
             {
                 string feedTitle = selectedItem.Text;
 
-                RssSubscrission Feed = null;
+                RssSubscription Feed = null;
 
-                Feed = MainConfig.RssFeedList.Find(delegate (RssSubscrission subscrission)
+                Feed = MainConfig.RssFeedList.Find(delegate (RssSubscription subscrission)
                 {
                     return subscrission.listViewItem == selectedItem;
                 });
@@ -1583,7 +1583,7 @@ namespace TvUndergroundDownloader
                     listViewFeed.Items.Remove(Feed.listViewItem);
                     MainHistory.DeleteFileByFeedSource(Feed.Url);
                     MainConfig.RssFeedList.Remove(Feed);
-                    DataBaseHelper.RssSubscrissionList.Delete(Feed);
+                    DataBaseHelper.RssSubscriptionList.Delete(Feed);
                 }
             }
             MainConfig.Save();
@@ -1622,7 +1622,7 @@ namespace TvUndergroundDownloader
             //
             //  Get list of current feed URL
             //
-            MainConfig.RssFeedList.ForEach(delegate (RssSubscrission t) { CurrentRssUrlList.Add(t.Url); });
+            MainConfig.RssFeedList.ForEach(delegate (RssSubscription t) { CurrentRssUrlList.Add(t.Url); });
 
             //
             //  Open dialog 1 to path the URL
@@ -1699,7 +1699,7 @@ namespace TvUndergroundDownloader
             //
             foreach (RssChannel rsschannel in rssChannelList)
             {
-                RssSubscrission RssSubscrission = new RssSubscrission(rsschannel.Title, rsschannel.Url);
+                RssSubscription RssSubscrission = new RssSubscription(rsschannel.Title, rsschannel.Url);
                 RssSubscrission.Category = rsschannel.Category;
                 RssSubscrission.PauseDownload = rsschannel.Pause;
                 RssSubscrission.Enabled = true;
@@ -1761,8 +1761,8 @@ namespace TvUndergroundDownloader
         private void deleteCompleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
-            List<RssSubscrission> channelToDelete = MainConfig.RssFeedList.FindAll(delegate (RssSubscrission t) { return t.tvuStatus == tvuStatus.Complete; });
-            foreach (RssSubscrission subscrission in channelToDelete)
+            List<RssSubscription> channelToDelete = MainConfig.RssFeedList.FindAll(delegate (RssSubscription t) { return t.tvuStatus == tvuStatus.Complete; });
+            foreach (RssSubscription subscrission in channelToDelete)
             {
                 MainHistory.DeleteFileByFeedSource(subscrission.Url);
             }
@@ -1775,10 +1775,10 @@ namespace TvUndergroundDownloader
                 return;
             }
 
-            List<RssSubscrission> completeFeed = new List<RssSubscrission>();
-            completeFeed = MainConfig.RssFeedList.FindAll(delegate (RssSubscrission t) { return t.tvuStatus == tvuStatus.Complete; });
+            List<RssSubscription> completeFeed = new List<RssSubscription>();
+            completeFeed = MainConfig.RssFeedList.FindAll(delegate (RssSubscription t) { return t.tvuStatus == tvuStatus.Complete; });
 
-            foreach (RssSubscrission feed in completeFeed)
+            foreach (RssSubscription feed in completeFeed)
             {
                 // remove from main configuration
                 MainConfig.RssFeedList.Remove(feed);
@@ -1880,7 +1880,7 @@ namespace TvUndergroundDownloader
 
             strOPML += "<outline text=\"tvunderground.org.ru\" title=\"tvunderground.org.ru\">" + Environment.NewLine;
 
-            foreach (RssSubscrission sub in MainConfig.RssFeedList)
+            foreach (RssSubscription sub in MainConfig.RssFeedList)
             {
 
                 strOPML += "<outline text=\"" + sub.Title + "\" title=\"" + sub.Title + "\" xmlUrl=\"" + sub.Url + "\" type=\"rss\"/>" + Environment.NewLine;
@@ -1936,7 +1936,7 @@ namespace TvUndergroundDownloader
             int i = listViewFeed.Items.IndexOf(temp);
             string feedTitle = listViewFeed.Items[i].Text;
 
-            RssSubscrission SelectedFeed = MainConfig.RssFeedList[0];
+            RssSubscription SelectedFeed = MainConfig.RssFeedList[0];
 
             bool found = false;
             for (i = 0; i < listViewFeed.Items.Count; i++)
@@ -2034,9 +2034,9 @@ namespace TvUndergroundDownloader
             {
                 string feedTitle = selectedItem.Text;
 
-                RssSubscrission Feed = null;
+                RssSubscription Feed = null;
 
-                Feed = MainConfig.RssFeedList.Find(delegate (RssSubscrission t)
+                Feed = MainConfig.RssFeedList.Find(delegate (RssSubscription t)
                 {
                     return t.TitleCompact.IndexOf(feedTitle) > -1;
                 });
@@ -2060,9 +2060,9 @@ namespace TvUndergroundDownloader
             {
                 string feedTitle = selectedItem.Text;
 
-                RssSubscrission Feed = null;
+                RssSubscription Feed = null;
 
-                Feed = MainConfig.RssFeedList.Find(delegate (RssSubscrission t)
+                Feed = MainConfig.RssFeedList.Find(delegate (RssSubscription t)
                 {
                     return t.TitleCompact.IndexOf(feedTitle) > -1;
                 });
