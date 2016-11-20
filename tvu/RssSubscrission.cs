@@ -30,9 +30,7 @@ namespace TvUndergroundDownloader
         public string LastUpgradeDate = string.Empty;
         public bool Enabled = true;
         public tvuStatus tvuStatus = tvuStatus.Unknown;
-
         public int seasonID { get; private set; }
-
         public string TitleCompact { get { return this.Title.Replace("[ed2k] tvunderground.org.ru:", ""); } }
 
         public uint maxSimultaneousDownload = 3;
@@ -42,21 +40,17 @@ namespace TvUndergroundDownloader
 
         public DateTime LastSerieStatusUpgradeDate = DateTime.MinValue;
 
+
+
         /// <summary>
-        /// Private constructor
+        /// Build a Rss Subscription
         /// </summary>
-        /// <!-- this construnctor is used to create class when we are loading from xml -->
-        private RssSubscription()
-        {
-
-        }
-
-
+        /// <param name="Title"></param>
+        /// <param name="Url"></param>
         public RssSubscription(string Title, string Url)
         {
             this.Title = Title;
             this.Url = Url;
-
 
             // Static Regex "http(s)?://(www\.)?tvunderground.org.ru/rss.php\?se_id=(\d{1,10})"
             MatchCollection matchCollection = FileHistory.regexFeedSource.Matches(this.Url);
@@ -74,10 +68,6 @@ namespace TvUndergroundDownloader
             }
 
             this.seasonID = integerBuffer;
-
-
-
-
         }
 
         /// <summary>
@@ -85,28 +75,28 @@ namespace TvUndergroundDownloader
         /// </summary>
         /// <param name="doc">XML node with RSS subscription data</param>
         /// <returns></returns>
-        static RssSubscription LoadFormXml(XmlNode doc)
+        static public RssSubscription LoadFormXml(XmlNode doc)
         {
             if (doc == null)
             {
                 throw new NullReferenceException("Doc is null");
             }
 
-            RssSubscription newRssSubscrission = new RssSubscription();
-
             XmlNode node = doc.SelectSingleNode("Title");
             if (node == null)
             {
                 throw new Exception("Error while loading xml: Missing RssSubscrission\\Title");
             }
-            newRssSubscrission.Title = node.InnerText;
+            string title = node.InnerText;
 
             node = doc.SelectSingleNode("Url");
             if (node == null)
             {
-                throw new Exception("Error while loading xml: Missing RssSubscrission\\Title");
+                throw new Exception("Error while loading xml: Missing RssSubscrission\\Url");
             }
-            newRssSubscrission.Url = node.InnerText;
+            string url = node.InnerText;
+
+            RssSubscription newRssSubscrission = new RssSubscription(title, url);
 
             node = doc.SelectSingleNode("Pause");
             newRssSubscrission.PauseDownload = Convert.ToBoolean(node.InnerText);
@@ -152,16 +142,16 @@ namespace TvUndergroundDownloader
     }
 
     public class DataBaseHelper
-{
-    public class RssSubscriptionList
     {
-        public static void InitDB()
+        public class RssSubscriptionList
         {
-            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+            public static void InitDB()
             {
-                connection.Open();
+                using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+                {
+                    connection.Open();
 
-                string sql = @"CREATE TABLE IF NOT EXISTS RssSubscrission (
+                    string sql = @"CREATE TABLE IF NOT EXISTS RssSubscrission (
                                 uuid INTEGER PRIMARY KEY AUTOINCREMENT,
                                 Title TEXT,
                                 Url TEXT UNIQUE,
@@ -171,94 +161,94 @@ namespace TvUndergroundDownloader
                                 Enabled INTEGER,
                                 tvuStatus INTEGER,
                                 maxSimultaneousDownload INTEGER);";
-                SQLiteCommand command = new SQLiteCommand(sql, connection);
-                command.ExecuteNonQuery();
-            }
+                    SQLiteCommand command = new SQLiteCommand(sql, connection);
+                    command.ExecuteNonQuery();
+                }
 
-            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
-            {
-                connection.Open();
-                string sql = @"CREATE VIEW IF NOT EXISTS vwRssSubscrission AS
+                using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+                {
+                    connection.Open();
+                    string sql = @"CREATE VIEW IF NOT EXISTS vwRssSubscrission AS
                                     SELECT *, 
                                     (SELECT COUNT(*) from History WHERE History.seasonID = RssSubscrission.seasonID  ) AS Downloaded ,
                                     (SELECT COUNT(*) from FeedLinkCache WHERE FeedLinkCache.seasonID = RssSubscrission.seasonID  ) AS Pending
                                     FROM RssSubscrission;";
-                SQLiteCommand command = new SQLiteCommand(sql, connection);
-                command.ExecuteNonQuery();
+                    SQLiteCommand command = new SQLiteCommand(sql, connection);
+                    command.ExecuteNonQuery();
+                }
+
+
+            }
+            public static void CleanUp()
+            {
+
+            }
+
+            public static void CleanUp(List<RssSubscription> RssFeedList)
+            {
+
+                StringBuilder filterSB = new StringBuilder();
+
+                foreach (var rssSubscrission in RssFeedList)
+                {
+                    filterSB.AppendFormat("{0},", rssSubscrission.seasonID);
+                }
+
+                char[] charsToTrim = { ',', ' ' };
+
+
+                string temp = filterSB.ToString().TrimEnd(charsToTrim);
+
+                using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+                {
+                    connection.Open();
+                    const string sqlTemplate = @"DELETE FROM RssSubscrission WHERE RssSubscrission.seasonID NOT IN ({0});";
+                    SQLiteCommand command = new SQLiteCommand(string.Format(sqlTemplate, temp), connection);
+                    command.CommandType = CommandType.Text;
+                    command.ExecuteNonQuery();
+                }
             }
 
 
-        }
-        public static void CleanUp()
-        {
-
-        }
-
-        public static void CleanUp(List<RssSubscription> RssFeedList)
-        {
-
-            StringBuilder filterSB = new StringBuilder();
-
-            foreach (var rssSubscrission in RssFeedList)
+            public static void AddOrUpgrade(RssSubscription rssSubscrission)
             {
-                filterSB.AppendFormat("{0},", rssSubscrission.seasonID);
-            }
-
-            char[] charsToTrim = { ',', ' ' };
-
-
-            string temp = filterSB.ToString().TrimEnd(charsToTrim);
-
-            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
-            {
-                connection.Open();
-                const string sqlTemplate = @"DELETE FROM RssSubscrission WHERE RssSubscrission.seasonID NOT IN ({0});";
-                SQLiteCommand command = new SQLiteCommand(string.Format(sqlTemplate, temp), connection);
-                command.CommandType = CommandType.Text;
-                command.ExecuteNonQuery();
-            }
-        }
-
-
-        public static void AddOrUpgrade(RssSubscription rssSubscrission)
-        {
-            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
-            {
-                connection.Open();
-                const string sqlTemplate = @"INSERT OR REPLACE INTO RssSubscrission (title, url, seasonID, pause, category, enabled, tvuStatus, maxSimultaneousDownload )
+                using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+                {
+                    connection.Open();
+                    const string sqlTemplate = @"INSERT OR REPLACE INTO RssSubscrission (title, url, seasonID, pause, category, enabled, tvuStatus, maxSimultaneousDownload )
                                                 VALUES
                                                 (@title, @url, @seasonID, @pause, @category, @enabled, @tvuStatus, @maxSimultaneousDownload)";
 
-                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
-                command.CommandType = CommandType.Text;
-                command.Parameters.Add(new SQLiteParameter("@title", rssSubscrission.Title));
-                command.Parameters.Add(new SQLiteParameter("@url", rssSubscrission.Url));
-                command.Parameters.Add(new SQLiteParameter("@seasonID", rssSubscrission.seasonID));
-                command.Parameters.Add(new SQLiteParameter("@pause", rssSubscrission.PauseDownload));
-                command.Parameters.Add(new SQLiteParameter("@category", rssSubscrission.Category));
-                command.Parameters.Add(new SQLiteParameter("@enabled", rssSubscrission.Enabled));
-                command.Parameters.Add(new SQLiteParameter("@tvuStatus", rssSubscrission.tvuStatus));
-                command.Parameters.Add(new SQLiteParameter("@maxSimultaneousDownload", rssSubscrission.maxSimultaneousDownload));
-                command.ExecuteNonQuery();
+                    SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                    command.CommandType = CommandType.Text;
+                    command.Parameters.Add(new SQLiteParameter("@title", rssSubscrission.Title));
+                    command.Parameters.Add(new SQLiteParameter("@url", rssSubscrission.Url));
+                    command.Parameters.Add(new SQLiteParameter("@seasonID", rssSubscrission.seasonID));
+                    command.Parameters.Add(new SQLiteParameter("@pause", rssSubscrission.PauseDownload));
+                    command.Parameters.Add(new SQLiteParameter("@category", rssSubscrission.Category));
+                    command.Parameters.Add(new SQLiteParameter("@enabled", rssSubscrission.Enabled));
+                    command.Parameters.Add(new SQLiteParameter("@tvuStatus", rssSubscrission.tvuStatus));
+                    command.Parameters.Add(new SQLiteParameter("@maxSimultaneousDownload", rssSubscrission.maxSimultaneousDownload));
+                    command.ExecuteNonQuery();
+                }
             }
-        }
 
-        public static void Delete(RssSubscription rssSubscrission)
-        {
-            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+            public static void Delete(RssSubscription rssSubscrission)
             {
-                connection.Open();
-                const string sqlTemplate = @"DELETE FROM RssSubscrission WHERE url = @url AND seasonID = @seasonID";
+                using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
+                {
+                    connection.Open();
+                    const string sqlTemplate = @"DELETE FROM RssSubscrission WHERE url = @url AND seasonID = @seasonID";
 
-                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
-                command.CommandType = CommandType.Text;
-                command.Parameters.Add(new SQLiteParameter("@url", rssSubscrission.Url));
-                command.Parameters.Add(new SQLiteParameter("@seasonID", rssSubscrission.seasonID));
-                command.ExecuteNonQuery();
+                    SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
+                    command.CommandType = CommandType.Text;
+                    command.Parameters.Add(new SQLiteParameter("@url", rssSubscrission.Url));
+                    command.Parameters.Add(new SQLiteParameter("@seasonID", rssSubscrission.seasonID));
+                    command.ExecuteNonQuery();
+                }
+
             }
 
         }
-
     }
-}
 }
