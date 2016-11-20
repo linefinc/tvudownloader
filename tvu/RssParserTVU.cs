@@ -25,7 +25,7 @@ namespace TvUndergroundDownloader
         public string Link;
         public string Category = "";
         public bool Pause;
-        public int maxSimultaneousDownload;
+        public uint maxSimultaneousDownload;
     }
     
     public class RssItem

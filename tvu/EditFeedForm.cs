@@ -12,12 +12,12 @@ namespace TvUndergroundDownloader
     {
         public string Category { private set; get; }
         public bool PauseDownload { private set; get; }
-        public int maxSimultaneousDownload { private set; get; }
+        public uint maxSimultaneousDownload { private set; get; }
         public bool feedEnable { private set; get; }
         private Config MainConfig;
 
 
-        public EditFeedForm(Config MainConfig, string Category, bool PauseDownload, bool feedEnable, int maxSimultaneousDownload)
+        public EditFeedForm(Config MainConfig, string Category, bool PauseDownload, bool feedEnable, uint maxSimultaneousDownload)
         {
             InitializeComponent();
 
@@ -57,7 +57,7 @@ namespace TvUndergroundDownloader
             this.PauseDownload = this.checkBoxDownloadinPause.Checked;
             this.feedEnable = this.checkBoxEnable.Checked;
             this.DialogResult = DialogResult.OK;
-            this.maxSimultaneousDownload = Convert.ToInt16(numericUpDown1.Value);
+            this.maxSimultaneousDownload = Convert.ToUInt16(numericUpDown1.Value);
 
             this.Close();
         }

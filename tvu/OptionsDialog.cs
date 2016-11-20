@@ -23,7 +23,7 @@ namespace TvUndergroundDownloader
         public bool debug;
         public string DefaultCategory;
         public bool Enebled;
-        public int MaxSimultaneousFeedDownloads;
+        public uint MaxSimultaneousFeedDownloads;
         public int MinToStartEmule;
         public bool Verbose;
         public bool EmailNotification;
@@ -180,7 +180,7 @@ namespace TvUndergroundDownloader
             //
             //
             //
-            MaxSimultaneousFeedDownloads = Convert.ToInt32(numericUpDownMaxSimultaneousDownloadForFeed.Value);
+            MaxSimultaneousFeedDownloads = Convert.ToUInt32(numericUpDownMaxSimultaneousDownloadForFeed.Value);
 
 
             tvuCookieH = textBoxCookieH.Text;

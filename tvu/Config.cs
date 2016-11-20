@@ -47,7 +47,7 @@ namespace TvUndergroundDownloader
         public bool debug;
         public string DefaultCategory;
         public bool Enebled;
-        public int MaxSimultaneousFeedDownloads;
+        public uint MaxSimultaneousFeedDownloads;
         public int MinToStartEmule;
         public string tvudwid; //Unique id
         public bool Verbose;
@@ -409,7 +409,7 @@ namespace TvUndergroundDownloader
 
             AutoClearLog = (bool)Convert.ToBoolean(ReadString(xDoc, "AutoClearLog", "false"));
 
-            MaxSimultaneousFeedDownloads = ReadInt(xDoc, "MaxSimultaneousFeedDownloads", 3, 0, 50);
+            MaxSimultaneousFeedDownloads = ReadUInt(xDoc, "MaxSimultaneousFeedDownloads", 3, 0, 50);
 
             MinToStartEmule = ReadInt(xDoc, "MinToStartEmule", 0, 0, 50);
 
@@ -532,7 +532,7 @@ namespace TvUndergroundDownloader
 
                     if ((t.Name == "maxSimultaneousDownload") & (t.FirstChild != null))
                     {
-                        newfeed.maxSimultaneousDownload = (int)Convert.ToInt32(t.FirstChild.Value);
+                        newfeed.maxSimultaneousDownload = Convert.ToUInt32(t.FirstChild.Value);
                     }
 
                     // to avoid error in upgrade from previous version
@@ -584,6 +584,19 @@ namespace TvUndergroundDownloader
             }
         }
 
+        private uint ReadUInt(XmlDocument xDoc, string NodeName, uint defaultValue)
+        {
+            XmlNodeList t = xDoc.GetElementsByTagName(NodeName);
+            if (t.Count == 0)
+            {
+                return defaultValue;
+            }
+            else
+            {
+                return Convert.ToUInt32(t[0].InnerText);
+            }
+        }
+
         private int ReadInt(XmlDocument xDoc, string NodeName, int defaultValue, int Min, int Max)
         {
             int val = ReadInt(xDoc, NodeName, defaultValue);
@@ -592,7 +605,13 @@ namespace TvUndergroundDownloader
             return val;
         }
 
-
+        private uint ReadUInt(XmlDocument xDoc, string NodeName, uint defaultValue, uint Min, uint Max)
+        {
+            uint val = ReadUInt(xDoc, NodeName, defaultValue);
+            val = Math.Min(val, Max);
+            val = Math.Max(val, Min);
+            return val;
+        }
 
         private static string RandomIDGenerator()
         {

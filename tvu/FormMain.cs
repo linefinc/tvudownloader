@@ -818,7 +818,7 @@ namespace TvUndergroundDownloader
             Log.logInfo("MainConfig.MaxSimultaneousFeedDownloads = " + MainConfig.MaxSimultaneousFeedDownloads);
 
             // create a dictionary to count 
-            Dictionary<string, int> MaxSimultaneousDownloadsDictionary = new Dictionary<string, int>();
+            Dictionary<string, uint> MaxSimultaneousDownloadsDictionary = new Dictionary<string, uint>();
             // set starting point for each feed
             foreach (RssSubscription RssFeed in MainConfig.RssFeedList)
             {
@@ -831,7 +831,7 @@ namespace TvUndergroundDownloader
             {
                 if (MaxSimultaneousDownloadsDictionary.ContainsKey(fh.FeedSource) == true)
                 {
-                    int x = MaxSimultaneousDownloadsDictionary[fh.FeedSource];
+                    uint x = MaxSimultaneousDownloadsDictionary[fh.FeedSource];
                     x = Math.Max(0, x - 1);
                     MaxSimultaneousDownloadsDictionary[fh.FeedSource] = x;
                 }
@@ -852,7 +852,7 @@ namespace TvUndergroundDownloader
                     return;
                 }
 
-                int MSDD = MaxSimultaneousDownloadsDictionary[DownloadFile.FeedSource];
+                uint MSDD = MaxSimultaneousDownloadsDictionary[DownloadFile.FeedSource];
                 if (MSDD == 0)
                 {
                     string fileName = new Ed2kfile(DownloadFile.Ed2kLink).FileName;

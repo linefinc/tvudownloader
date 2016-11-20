@@ -184,7 +184,7 @@ namespace TvUndergroundDownloader
 
         private void numericUpDownMaxSimulDown_ValueChanged(object sender, EventArgs e)
         {
-            ListRssChannel[index].maxSimultaneousDownload = Convert.ToInt16(numericUpDownMaxSimulDown.Value);
+            ListRssChannel[index].maxSimultaneousDownload = Convert.ToUInt16(numericUpDownMaxSimulDown.Value);
         }
 
        
