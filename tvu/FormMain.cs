@@ -543,6 +543,8 @@ namespace TvUndergroundDownloader
 
             foreach (RssSubscription feed in RssFeedList)
             {
+
+                feed.Update(cookieContainer);
                 //
                 //  this code allow to block anytime the loop
                 //
@@ -710,6 +712,7 @@ namespace TvUndergroundDownloader
             }
 
             FeedLinkCache.CleanUp();
+            MainConfig.Save();
 
             if (DownloadFileList.Count == 0)
             {
