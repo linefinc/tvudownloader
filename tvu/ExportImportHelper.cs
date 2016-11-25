@@ -46,7 +46,7 @@ namespace TvUndergroundDownloader
                     writter.WriteEndElement();
 
                     writter.WriteStartElement("maxSimultaneousDownload"); // max Simultaneous Downloads
-                    writter.WriteString(feed.maxSimultaneousDownload.ToString());
+                    writter.WriteString(feed.MaxSimultaneousDownload.ToString());
                     writter.WriteEndElement();
 
                     writter.WriteStartElement("DownloadedFiles");
@@ -119,7 +119,7 @@ namespace TvUndergroundDownloader
                 newFeed = new RssSubscription(newFeedTitle, newFeedUrl);
                 newFeed.Enabled = true;
                 newFeed.Category = config.DefaultCategory;
-                newFeed.maxSimultaneousDownload = config.MaxSimultaneousFeedDownloads;
+                newFeed.MaxSimultaneousDownload = config.MaxSimultaneousFeedDownloads;
                 newFeed.PauseDownload = false;
                 newFeed.LastSerieStatusUpgradeDate = DateTime.Now;
                 newFeed.LastUpgradeDate = DateTime.Now.ToString("s");

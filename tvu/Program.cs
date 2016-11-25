@@ -1,4 +1,7 @@
-﻿using System;
+﻿using NLog;
+using NLog.Config;
+using NLog.Targets;
+using System;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
@@ -8,6 +11,8 @@ namespace TvUndergroundDownloader
 {
     static class Program
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
         /// </summary>
@@ -24,11 +29,27 @@ namespace TvUndergroundDownloader
                 return;
             }
 
-            //
-            // enable file logging
-            //
-            Log.Instance.AddLogTarget(new LogTargetFile(Config.FileNameLog));
 
+            //
+            //  Setup Nlog
+            //
+            LoggingConfiguration config = LogManager.Configuration;
+            if (config == null)
+            {
+                config = new LoggingConfiguration();
+            }
+           
+            FileTarget fileTarget = new FileTarget();
+            fileTarget.Name = "logfile";
+            fileTarget.FileName = Config.FileNameLog;
+            config.AddTarget(fileTarget.Name, fileTarget);
+            LoggingRule m_loggingRule = new LoggingRule("*", LogLevel.Info, fileTarget);
+            config.LoggingRules.Insert(0, m_loggingRule);
+            LogManager.Configuration = config;
+
+            //
+            //
+            //
 
             //
             //  try to restore old configuration from previous folder
@@ -36,7 +57,7 @@ namespace TvUndergroundDownloader
             #region update old folder
             if (!File.Exists(Config.FileNameConfig))
             {
-                Log.logInfo("Migration old configuration file");
+                logger.Warn("Migration old configuration file");
                 // generate old path
                 //
                 // old path
@@ -49,7 +70,7 @@ namespace TvUndergroundDownloader
                 // check if old configuration exist
                 if (File.Exists(oldFileNameConfig))
                 {
-                    Log.logInfo("config.xml founded");
+                    logger.Info("config.xml founded");
                     File.Copy(oldFileNameConfig, Config.FileNameConfig);
                     File.Copy(oldFileNameConfig, Config.FileNameConfig + ".old");
                 }
@@ -61,7 +82,7 @@ namespace TvUndergroundDownloader
             // create db if not exit
             if (File.Exists(Config.FileNameDB) == false)
             {
-                Log.logInfo("Initialize new database");
+                logger.Info("Initialize new database");
                 SQLiteConnection.CreateFile(Config.FileNameDB);
 
                 History.InitDB();

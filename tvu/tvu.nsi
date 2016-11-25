@@ -115,9 +115,15 @@ Section "Tvunderground Downloader (required)"
   File ".\bin\Release\System.Data.SQLite.xml"
   File ".\bin\Release\System.Data.SQLite.Linq.dll"
   File /r ".\bin\Release\*.dll"
+  File  ".\bin\Release\NLog.dll"
+  File  ".\bin\Release\NLog.xml"
+  File  ".\bin\Release\NLog.Windows.Forms.dll"
+  File  ".\bin\Release\NLog.Windows.Forms.xml"
+  
+  
   File "..\README.txt"
   File "..\license.txt"
-    
+      
   ; Write the installation path into the registry
   WriteRegStr HKLM SOFTWARE\TVUndergroundDownloader "Install_Dir" "$INSTDIR"
   
@@ -162,6 +168,10 @@ Section "Uninstall"
   Delete $INSTDIR\System.Data.SQLite.dll
   Delete $INSTDIR\System.Data.SQLite.xml
   Delete $INSTDIR\System.Data.SQLite.Linq.dll
+  Delete $INSTDIR\NLog.dll
+  Delete $INSTDIR\NLog.xml
+  Delete $INSTDIR\NLog.Windows.Forms.dll
+  Delete $INSTDIR\NLog.Windows.Forms.xml
   Delete $INSTDIR\README.txt
   Delete $INSTDIR\license.txt
   Delete $INSTDIR\uninstall.exe

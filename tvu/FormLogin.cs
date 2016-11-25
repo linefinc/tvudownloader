@@ -1,10 +1,13 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Windows.Forms;
 
 namespace TvUndergroundDownloader
 {
     public partial class FormLogin : Form
     {
+        static private Logger logger = LogManager.GetCurrentClassLogger();
+
         static char[] charsToTrim = { ' ', 't', 'h', 'i', '=' };
 
         public string cookieT { private set; get; }
@@ -53,10 +56,10 @@ namespace TvUndergroundDownloader
             //
             //  show debug log
             //
-            Log.logDebug(string.Format("Form Login ({0}):{1}",webBrowser1.Url, page.Cookie));
+            logger.Debug(string.Format("Form Login ({0}):{1}",webBrowser1.Url, page.Cookie));
             foreach (string cookie in cookies)
             {
-                Log.logDebug(cookie);
+                logger.Debug(cookie);
             }
 #endif
             foreach (string cookie in cookies)
@@ -95,9 +98,9 @@ namespace TvUndergroundDownloader
                 return;
             }
 
-            Log.logVerbose("cookie t=" + tempT);
-            Log.logVerbose("cookie i=" + tempI);
-            Log.logVerbose("cookie h=" + tempH);
+            logger.Debug("cookie t=" + tempT);
+            logger.Debug("cookie i=" + tempI);
+            logger.Debug("cookie h=" + tempH);
 
             this.cookieT = tempT;
             this.cookieI = tempI;

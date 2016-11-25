@@ -106,7 +106,6 @@ namespace TvUndergroundDownloader
             set
             {
                 ColumnToSort = value;
-                Log.logDebug(string.Format("Sort column {0}",ColumnToSort));
             }
             get
             {

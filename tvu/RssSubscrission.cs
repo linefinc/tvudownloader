@@ -10,6 +10,7 @@ using System.Web;
 using System.Windows.Forms;
 using System.Xml;
 
+
 namespace TvUndergroundDownloader
 {
     public enum tvuStatus
@@ -40,14 +41,14 @@ namespace TvUndergroundDownloader
         public int seasonID { get; private set; }
         public string TitleCompact { get { return this.Title.Replace("[ed2k] tvunderground.org.ru:", ""); } }
 
-        public uint maxSimultaneousDownload = 3;
+        public uint MaxSimultaneousDownload = 3;
 
         [Obsolete]
         public ListViewItem listViewItem = null;
 
         public DateTime LastSerieStatusUpgradeDate = DateTime.MinValue;
 
-        private Dictionary<string, Ed2kfile> cache = new Dictionary<string, Ed2kfile>();
+        private Dictionary<string, Ed2kfile> linkCache = new Dictionary<string, Ed2kfile>();
         private Dictionary<Ed2kfile, DateTime> downloaded = new Dictionary<Ed2kfile, DateTime>();
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
@@ -78,6 +79,28 @@ namespace TvUndergroundDownloader
             }
 
             this.seasonID = integerBuffer;
+        }
+
+        public List<Ed2kfile> GetNewDownload()
+        {
+            List<Ed2kfile> outArray = new List<Ed2kfile>();
+
+            foreach(Ed2kfile file in  linkCache.Values)
+            {
+                if(downloaded.ContainsKey(file)== false)
+                {
+                    outArray.Add(file);
+                }
+            }
+
+            outArray.Sort();
+            if(outArray.Count > MaxSimultaneousDownload)
+            {
+                outArray.RemoveRange((int)MaxSimultaneousDownload, outArray.Count - (int)MaxSimultaneousDownload);
+            }
+
+            return outArray;
+
         }
 
         /// <summary>
@@ -143,7 +166,7 @@ namespace TvUndergroundDownloader
             }
 
             node = doc.SelectSingleNode("maxSimultaneousDownload");
-            newRssSubscrission.maxSimultaneousDownload = Convert.ToUInt16(node.InnerText);
+            newRssSubscrission.MaxSimultaneousDownload = Convert.ToUInt16(node.InnerText);
 
             XmlNodeList filesNode = doc.SelectNodes("Files/File");
             foreach (XmlNode fileNode in filesNode)
@@ -157,7 +180,7 @@ namespace TvUndergroundDownloader
                 Ed2kfile newFile = new Ed2kfile(ed2kLinkNode.InnerText);
 
                 XmlNode guidLinkNode = fileNode.SelectSingleNode("Guid");
-                newRssSubscrission.cache.Add(guidLinkNode.InnerText, newFile);
+                newRssSubscrission.linkCache.Add(guidLinkNode.InnerText, newFile);
 
                 XmlNode downloadedNode = fileNode.SelectSingleNode("Downloaded");
                 DateTime dtDownloaded = DateTime.Parse(downloadedNode.InnerText);
@@ -184,7 +207,7 @@ namespace TvUndergroundDownloader
             writer.WriteElementString("Category", Category);//Category
             writer.WriteElementString("LastUpgradeDate", LastUpgradeDate);//Last Upgrade Date
             writer.WriteElementString("Enabled", Enabled.ToString());
-            writer.WriteElementString("maxSimultaneousDownload", maxSimultaneousDownload.ToString());
+            writer.WriteElementString("maxSimultaneousDownload", MaxSimultaneousDownload.ToString());
 
             switch (tvuStatus)
             {
@@ -207,13 +230,13 @@ namespace TvUndergroundDownloader
             }
 
             writer.WriteStartElement("Files");
-            foreach (var fileKeys in cache.Keys)
+            foreach (var fileKeys in linkCache.Keys)
             {
                 writer.WriteStartElement("File");
-                if (cache[fileKeys] == null)
+                if (linkCache[fileKeys] == null)
                     writer.WriteElementString("LinkED2K", "null");
                 else
-                    writer.WriteElementString("LinkED2K", cache[fileKeys].Ed2kLink);
+                    writer.WriteElementString("LinkED2K", linkCache[fileKeys].Ed2kLink);
 
                 writer.WriteElementString("Guid", fileKeys);
                 writer.WriteElementString("Downloaded", DateTime.Now.ToString());
@@ -243,16 +266,16 @@ namespace TvUndergroundDownloader
                 XmlNode guidNode = itemNode.SelectSingleNode("guid");
                 string guid = HttpUtility.UrlDecode(guidNode.InnerText);
 
-                if (cache.ContainsKey(guid) == false)
+                if (linkCache.ContainsKey(guid) == false)
                 {
                     try
                     {
                         var newFile = ProcessGUID(guid, cookieContainer);
-                        cache.Add(guid, newFile);
+                        linkCache.Add(guid, newFile);
                     }
                     catch (Exception ex)
                     {
-                        cache.Add(guid, null);
+                        logger.Error(ex, "Error while try to parse or fatch GUID");
                     }
                 }
             }
@@ -358,7 +381,7 @@ namespace TvUndergroundDownloader
                     command.Parameters.Add(new SQLiteParameter("@category", rssSubscrission.Category));
                     command.Parameters.Add(new SQLiteParameter("@enabled", rssSubscrission.Enabled));
                     command.Parameters.Add(new SQLiteParameter("@tvuStatus", rssSubscrission.tvuStatus));
-                    command.Parameters.Add(new SQLiteParameter("@maxSimultaneousDownload", rssSubscrission.maxSimultaneousDownload));
+                    command.Parameters.Add(new SQLiteParameter("@maxSimultaneousDownload", rssSubscrission.MaxSimultaneousDownload));
                     command.ExecuteNonQuery();
                 }
             }

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using NLog;
+using NLog.Config;
+using NLog.Windows.Forms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -33,6 +36,8 @@ namespace TvUndergroundDownloader
 
         private ListViewColumnSorter lvwColumnSorter;
 
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public Config MainConfig;
         public History MainHistory;
 
@@ -41,6 +46,7 @@ namespace TvUndergroundDownloader
 
         public class sDonwloadFile
         {
+            public RssSubscription subscription { get; private set; } = null;
 
             public string FeedSource { get; private set; }
             public string FeedLink { get; private set; }
@@ -58,6 +64,15 @@ namespace TvUndergroundDownloader
                 this.Category = Category;
             }
 
+            public sDonwloadFile(string Ed2kLink, RssSubscription subscription)
+            {
+                this.Ed2kLink = Ed2kLink;
+                this.FeedLink = subscription.Url;
+                this.FeedSource = string.Empty;
+                this.PauseDownload = subscription.PauseDownload;
+                this.Category = Category;
+                this.subscription = subscription;
+            }
 
         };
 
@@ -77,6 +92,34 @@ namespace TvUndergroundDownloader
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
+
+            //
+            //  Setup Nlog
+            //
+            LoggingConfiguration config = LogManager.Configuration;
+            if(config == null)
+            {
+                config = new LoggingConfiguration();
+            }
+            RichTextBoxTarget textBoxTarget = new RichTextBoxTarget();
+            textBoxTarget.AutoScroll = true;
+            textBoxTarget.ControlName = richTextBoxLog.Name;
+            textBoxTarget.FormName = this.Name;
+            textBoxTarget.MaxLines = 1024;
+            textBoxTarget.Name = "TextBox";
+            textBoxTarget.Layout = "${message} ${exception:format=tostring}";
+            textBoxTarget.RowColoringRules.Add(new RichTextBoxRowColoringRule("level==LogLevel.Warn", "Empty", "Empty", FontStyle.Bold));
+            textBoxTarget.RowColoringRules.Add(new RichTextBoxRowColoringRule("level==LogLevel.Error", "Red", "Empty", FontStyle.Bold));
+            textBoxTarget.RowColoringRules.Add(new RichTextBoxRowColoringRule("level==LogLevel.Trace", "Gray", "Empty", FontStyle.Regular));
+            config.AddTarget(textBoxTarget.Name, textBoxTarget);
+
+            LoggingRule m_loggingRule = new LoggingRule("*", LogLevel.Info, textBoxTarget);
+            //add before final rules from config
+            config.LoggingRules.Insert(0, m_loggingRule);
+
+            LogManager.Configuration = config;
+
 
             if (MainConfig.AutoClearLog == true)
             {
@@ -117,9 +160,6 @@ namespace TvUndergroundDownloader
             UpdateRssFeedGUI();
 
             // attach textBox to the logger
-            Log.Instance.AddLogTarget(new LogTargetTextBox(this, LogTextBox));
-            Log.Instance.SetVerboseMode(MainConfig.Verbose);
-
         }
 
 
@@ -225,7 +265,7 @@ namespace TvUndergroundDownloader
 
         private void menu_AutoStartEmule(object Sender, EventArgs e)
         {
-            Log.logInfo("Auto Start Emule");
+            logger.Info("Auto Start Emule");
             if (MainConfig.StartEmuleIfClose == true)
             {
                 this.menuItemAutoStartEmule.Checked = false;
@@ -369,24 +409,16 @@ namespace TvUndergroundDownloader
             {
                 if (MainConfig.AutoClearLog == true)
                 {
-                    LogTextBox.Clear();
+                    richTextBoxLog.Clear();
                 }
 
                 DownloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
 
-                Log.logInfo("Now : " + DateTime.Now.ToString());
-                Log.logInfo("next tick : " + DownloadDataTime.ToString());
+                logger.Info("Now : {0}", DateTime.Now.ToString());
+                logger.Info("next tick : " + DownloadDataTime.ToString());
                 StartDownloadThread();
                 UpdateRssFeedGUI();
 
-                if ((MainConfig.EmailNotification == true) && (sendLogToEmailToolStripMenuItem.Checked))
-                {
-                    string stmpServer = MainConfig.ServerSMTP;
-                    string EmailReceiver = MainConfig.MailReceiver;
-                    string EmailSender = MainConfig.MailSender;
-                    string Subject = "TV Underground Downloader Notification";
-                    SmtpClient.SendEmail(stmpServer, EmailReceiver, EmailSender, Subject, LogTextBox.Text);
-                }
             }
 
             if (CheckNewVersion() == true)
@@ -450,7 +482,7 @@ namespace TvUndergroundDownloader
                 labelLastDownloadDate.Text = temp.Replace('T', ' ');
             }
             labelTotalFiles.Text = MainHistory.GetDownloadedFileCountByFeedSoruce(Feed.Url).ToString();
-            labelMaxSimultaneousDownloads.Text = Feed.maxSimultaneousDownload.ToString();
+            labelMaxSimultaneousDownloads.Text = Feed.MaxSimultaneousDownload.ToString();
 
             // update list history
             listViewFeedFilesList.Items.Clear();
@@ -478,13 +510,13 @@ namespace TvUndergroundDownloader
         {
             if (backgroundWorker1.IsBusy == true)
             {
-                Log.logInfo("Thread is busy");
+                logger.Info("Thread is busy");
                 return;
             }
 
             if (autoClearToolStripMenuItem.Checked == true)
             {
-                LogTextBox.Clear();
+                richTextBoxLog.Clear();
             }
 
             checkNowToolStripMenuItem.Enabled = false;
@@ -532,7 +564,7 @@ namespace TvUndergroundDownloader
             //
             //  start RSS Check
             //
-            Log.logInfo("Start RSS Check");
+            logger.Info("Start RSS Check");
 
             List<sDonwloadFile> DownloadFileList = new List<sDonwloadFile>();
 
@@ -543,157 +575,166 @@ namespace TvUndergroundDownloader
 
             foreach (RssSubscription feed in RssFeedList)
             {
-
-                feed.Update(cookieContainer);
-                //
-                //  this code allow to block anytime the loop
-                //
-                if (backgroundWorker1.CancellationPending)
-                {
-                    e.Cancel = true;
-                    return;
-                }
-                Log.logInfo("Read RSS " + feed.TitleCompact);
-
                 try
                 {
-                    string webPageUrl = feed.Url;
-                    if (MainConfig.useHttpInsteadOfHttps == true)
+                    logger.Info("Read RSS {0}", feed.TitleCompact);
+                    feed.Update(cookieContainer);
+                    foreach (Ed2kfile file in feed.GetNewDownload())
                     {
-                        webPageUrl = webPageUrl.Replace("https", "http");
+                        sDonwloadFile sfile = new sDonwloadFile(file.Ed2kLink, feed);
+                        DownloadFileList.Add(sfile);
                     }
 
-                    string WebPage = WebFetch.Fetch(feed.Url, true, cookieContainer);
-
-                    List<string> elemList = new List<string>();
-
-                    if (WebPage != null)
+                    //
+                    //  this code allow to block anytime the loop
+                    //
+                    if (backgroundWorker1.CancellationPending)
                     {
-                        //get GUID page
-
-                        //static Regex "https?://(www\.)?tvunderground.org.ru/index.php\?show=ed2k&season=\d{1,10}&sid\[\d{1,10}\]=\d{1,10}"
-                        MatchCollection matchCollection = FileHistory.regexFeedLink.Matches(WebPage);
-
-
-                        foreach (Match value in matchCollection)
-                        {
-                            if (backgroundWorker1.CancellationPending)
-                            {
-                                e.Cancel = true;
-                                return;
-                            }
-
-                            string FeedLink = value.ToString();
-                            if (MainHistory.FileExistByFeedLink(FeedLink) == false)
-                            {
-                                elemList.Add(FeedLink);
-                                feed.tvuStatus = tvuStatus.Unknown; // force refrash of tv Undergoud status when find a new file
-                            }
-                        }
-
-                        //
-                        //  force status check if more than 15 days ago
-                        TimeSpan ts = DateTime.Now - feed.LastSerieStatusUpgradeDate;
-                        if ((ts.TotalDays > 15) | (feed.tvuStatus == tvuStatus.Unknown))
-                        {
-                            Log.logVerbose("Checking serie status");
-                            Regex Pattern = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=episodes&sid=\d{1,10}");
-                            Match Match = Pattern.Match(WebPage);
-                            string url = Match.Value;
-
-                            feed.tvuStatus = WebManagerTVU.CheckComplete(url, cookieContainer);
-                            feed.LastSerieStatusUpgradeDate = DateTime.Now;
-
-                            switch (feed.tvuStatus)
-                            {
-                                case tvuStatus.Complete:
-                                    Log.logVerbose("Serie status: Complete");
-                                    break;
-                                default:
-                                    Log.logVerbose("Serie status: Unknown");
-                                    break;
-                                case tvuStatus.StillRunning:
-                                    Log.logVerbose("Serie status: Still Running");
-                                    break;
-                                case tvuStatus.StillIncomplete:
-                                    Log.logVerbose("Serie status: Still Incomplete");
-                                    break;
-                                case tvuStatus.OnHiatus:
-                                    Log.logVerbose("Serie status: On Hiatus");
-                                    break;
-                            }
-                        }
+                        e.Cancel = true;
+                        return;
                     }
 
-                    // reverse the list so the last feed ( first temporal feed) became the first feed in list
-                    elemList.Reverse();
 
-                    // download 
-                    foreach (string FeedLink in elemList)
-                    {
-                        string sEd2k = string.Empty;
+                    //try
+                    //{
+                    //    string webPageUrl = feed.Url;
+                    //    if (MainConfig.useHttpInsteadOfHttps == true)
+                    //    {
+                    //        webPageUrl = webPageUrl.Replace("https", "http");
+                    //    }
 
-                        if (backgroundWorker1.CancellationPending)
-                        {
-                            e.Cancel = true;
-                            return;
-                        }
+                    //    string WebPage = WebFetch.Fetch(feed.Url, true, cookieContainer);
 
-                        // check is the feed is already present in feed link cache
-                        sEd2k = feedLinkCache.FindFeedLink(FeedLink);
-                        if (sEd2k == string.Empty)
-                        {
-                            string page = null;
+                    //    List<string> elemList = new List<string>();
 
-                            // download the page in FeedLink
-                            Log.logVerbose(string.Format("Download page {0}", FeedLink));
+                    //    if (WebPage != null)
+                    //    {
+                    //        //get GUID page
 
-                            if ((page = WebFetch.Fetch(FeedLink, true, cookieContainer)) == null)
-                            {
-                                Log.logInfo(string.Format("Unable to download"));
-                                continue;
-                            }
-                            // parse ed2k
-                            sEd2k = RssParserTVU.FindEd2kLink(page);
-                            FeedLinkCache.AddFeedLink(FeedLink, sEd2k, DateTime.Now.ToString("s"));
-                        }
+                    //        //static Regex "https?://(www\.)?tvunderground.org.ru/index.php\?show=ed2k&season=\d{1,10}&sid\[\d{1,10}\]=\d{1,10}"
+                    //        MatchCollection matchCollection = FileHistory.regexFeedLink.Matches(WebPage);
 
-                        Ed2kfile parser = new Ed2kfile(sEd2k);
-                        Log.logInfo(string.Format("Found new file {0}", parser.GetFileName()));
 
-                        if (elemList.IndexOf(FeedLink) < feed.maxSimultaneousDownload)
-                        {
-                            // add file to Download list 
-                            sDonwloadFile DL = new sDonwloadFile(sEd2k, FeedLink, feed.Url, feed.PauseDownload, feed.Category);
-                            DownloadFileList.Add(DL);
-                        }
-                        else
-                        {
-                            Log.logInfo(string.Format("Found new file end skipped {0}", parser.GetFileName()));
-                            //
-                            //  Use invoke to avoid thread issue
-                            //
-                            if (this.listBoxPending.InvokeRequired == true)
-                            {
+                    //        foreach (Match value in matchCollection)
+                    //        {
+                    //            if (backgroundWorker1.CancellationPending)
+                    //            {
+                    //                e.Cancel = true;
+                    //                return;
+                    //            }
 
-                                Invoke(new MethodInvoker(
-                                    delegate { this.AddItemToListBoxPending(parser.GetFileName()); }
-                                ));
+                    //            string FeedLink = value.ToString();
+                    //            if (MainHistory.FileExistByFeedLink(FeedLink) == false)
+                    //            {
+                    //                elemList.Add(FeedLink);
+                    //                feed.tvuStatus = tvuStatus.Unknown; // force refrash of tv Undergoud status when find a new file
+                    //            }
+                    //        }
 
-                            }
-                            else
-                            {
-                                this.AddItemToListBoxPending(parser.GetFileName());
-                            }
-                        }
-                    }
+                    //        //
+                    //        //  force status check if more than 15 days ago
+                    //        TimeSpan ts = DateTime.Now - feed.LastSerieStatusUpgradeDate;
+                    //        if ((ts.TotalDays > 15) | (feed.tvuStatus == tvuStatus.Unknown))
+                    //        {
+                    //            logger.Info("Checking serie status");
+                    //            Regex Pattern = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=episodes&sid=\d{1,10}");
+                    //            Match Match = Pattern.Match(WebPage);
+                    //            string url = Match.Value;
+
+                    //            feed.tvuStatus = WebManagerTVU.CheckComplete(url, cookieContainer);
+                    //            feed.LastSerieStatusUpgradeDate = DateTime.Now;
+
+                    //            switch (feed.tvuStatus)
+                    //            {
+                    //                case tvuStatus.Complete:
+                    //                    logger.Info("Serie status: Complete");
+                    //                    break;
+                    //                default:
+                    //                    logger.Info("Serie status: Unknown");
+                    //                    break;
+                    //                case tvuStatus.StillRunning:
+                    //                    logger.Info("Serie status: Still Running");
+                    //                    break;
+                    //                case tvuStatus.StillIncomplete:
+                    //                    logger.Info("Serie status: Still Incomplete");
+                    //                    break;
+                    //                case tvuStatus.OnHiatus:
+                    //                    logger.Info("Serie status: On Hiatus");
+                    //                    break;
+                    //            }
+                    //        }
+                    //    }
+
+                    //    // reverse the list so the last feed ( first temporal feed) became the first feed in list
+                    //    elemList.Reverse();
+
+                    //    // download 
+                    //    foreach (string FeedLink in elemList)
+                    //    {
+                    //        string sEd2k = string.Empty;
+
+                    //        if (backgroundWorker1.CancellationPending)
+                    //        {
+                    //            e.Cancel = true;
+                    //            return;
+                    //        }
+
+                    //        // check is the feed is already present in feed link cache
+                    //        sEd2k = feedLinkCache.FindFeedLink(FeedLink);
+                    //        if (sEd2k == string.Empty)
+                    //        {
+                    //            string page = null;
+
+                    //            // download the page in FeedLink
+                    //            logger.Info(string.Format("Download page {0}", FeedLink));
+
+                    //            if ((page = WebFetch.Fetch(FeedLink, true, cookieContainer)) == null)
+                    //            {
+                    //                logger.Info(string.Format("Unable to download"));
+                    //                continue;
+                    //            }
+                    //            // parse ed2k
+                    //            sEd2k = RssParserTVU.FindEd2kLink(page);
+                    //            FeedLinkCache.AddFeedLink(FeedLink, sEd2k, DateTime.Now.ToString("s"));
+                    //        }
+
+                    //        Ed2kfile parser = new Ed2kfile(sEd2k);
+                    //        logger.Info(string.Format("Found new file {0}", parser.GetFileName()));
+
+                    //        if (elemList.IndexOf(FeedLink) < feed.MaxSimultaneousDownload)
+                    //        {
+                    //            // add file to Download list 
+                    //            sDonwloadFile DL = new sDonwloadFile(sEd2k, FeedLink, feed.Url, feed.PauseDownload, feed.Category);
+                    //            DownloadFileList.Add(DL);
+                    //        }
+                    //        else
+                    //        {
+                    //            logger.Info(string.Format("Found new file end skipped {0}", parser.GetFileName()));
+                    //            //
+                    //            //  Use invoke to avoid thread issue
+                    //            //
+                    //            if (this.listBoxPending.InvokeRequired == true)
+                    //            {
+
+                    //                Invoke(new MethodInvoker(
+                    //                    delegate { this.AddItemToListBoxPending(parser.GetFileName()); }
+                    //                ));
+
+                    //            }
+                    //            else
+                    //            {
+                    //                this.AddItemToListBoxPending(parser.GetFileName());
+                    //            }
+                    //        }
+                    //    }
 
 
 
                 }
-                catch
+                catch (Exception ex)
                 {
-                    Log.logInfo("Some errors in RSS parsing (check login)");
+
+                    logger.Info("Some errors in RSS parsing (check login)");
                 }
 
                 if (backgroundWorker1.CancellationPending)
@@ -716,12 +757,12 @@ namespace TvUndergroundDownloader
 
             if (DownloadFileList.Count == 0)
             {
-                Log.logVerbose("Nothing to download");
+                logger.Info("Nothing to download");
                 return;
             }
             else
             {
-                Log.logVerbose("Total file found " + DownloadFileList.Count);
+                logger.Info("Total file found " + DownloadFileList.Count);
             }
 
             IMuleWebManager Service = null;
@@ -730,12 +771,12 @@ namespace TvUndergroundDownloader
             switch (MainConfig.ServiceType)
             {
                 case Config.eServiceType.aMule:
-                    Log.logVerbose("Load aMule service");
+                    logger.Info("Load aMule service");
                     Service = new aMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
                     break;
                 case Config.eServiceType.eMule:
                 default:
-                    Log.logVerbose("Load eMule service");
+                    logger.Info("Load eMule service");
                     Service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
                     break;
             }
@@ -748,8 +789,8 @@ namespace TvUndergroundDownloader
             // the if work only if rc == null ad 
             if ((MainConfig.StartEmuleIfClose != true) & (DownloadFileList.Count <= MainConfig.MinToStartEmule))
             {
-                Log.logInfo("Emule off line");
-                Log.logInfo("Min files to download not reached");
+                logger.Info("Emule off line");
+                logger.Info("Min files to download not reached");
                 return;
             }
 
@@ -761,15 +802,15 @@ namespace TvUndergroundDownloader
                     return;
                 }
 
-                Log.logInfo(string.Format("Start eMule Now (try {0}/5)", cont));
-                Log.logInfo("Wait 60 sec");
+                logger.Info(string.Format("Start eMule Now (try {0}/5)", cont));
+                logger.Info("Wait 60 sec");
                 try
                 {
                     Process.Start(MainConfig.eMuleExe);
                 }
                 catch
                 {
-                    Log.logInfo("Unable start application");
+                    logger.Info("Unable start application");
                 }
 
                 // avoid blocking during delay
@@ -786,46 +827,46 @@ namespace TvUndergroundDownloader
 
             }
 
-            Log.logVerbose("Check min download");
+            logger.Info("Check min download");
             if (Service.isConnected == false)
             {
-                Log.logInfo("Unable to connect to eMule web server");
+                logger.Info("Unable to connect to eMule web server");
                 return;
             }
 
-            Log.logVerbose("Retrieve list category");
+            logger.Info("Retrieve list category");
             Service.GetCategories(true);  // force upgrade category list 
 
-            Log.logVerbose("Clean download list (step 1) find channel from ed2k");
+            logger.Info("Clean download list (step 1) find channel from ed2k");
 
             List<Ed2kfile> CourrentDownloadsFormEmule = Service.GetCurrentDownloads(MainHistory.GetKnownFiles());/// file downloaded with this program and now in download in emule
             if (CourrentDownloadsFormEmule == null)
             {
-                Log.logInfo("eMule web server not respond");
+                logger.Info("eMule web server not respond");
                 return;
             }
 
-            Log.logVerbose("Current Download Form Emule " + CourrentDownloadsFormEmule.Count);
+            logger.Info("Current Download Form Emule " + CourrentDownloadsFormEmule.Count);
 
             //for debug
-            CourrentDownloadsFormEmule.ForEach(delegate (Ed2kfile file) { Log.logVerbose(file.FileName.Replace("%20", " ")); });
+            CourrentDownloadsFormEmule.ForEach(delegate (Ed2kfile file) { logger.Info(file.FileName.Replace("%20", " ")); });
 
             //
             //  note move this function in MainHistory class
             //
-            Log.logVerbose("Start search in history");
+            logger.Info("Start search in history");
             List<FileHistory> ActualDownloadFileList = MainHistory.getFileHistoryFromDB(CourrentDownloadsFormEmule);
-            ActualDownloadFileList.ForEach(delegate (FileHistory file) { Log.logVerbose("Found :\"" + file.FileName.Replace("%20", " ") + "\""); });
+            ActualDownloadFileList.ForEach(delegate (FileHistory file) { logger.Info("Found :\"" + file.FileName.Replace("%20", " ") + "\""); });
 
-            Log.logInfo("ActualDownloadFileList.Count = " + ActualDownloadFileList.Count);
-            Log.logInfo("MainConfig.MaxSimultaneousFeedDownloads = " + MainConfig.MaxSimultaneousFeedDownloads);
+            logger.Info("ActualDownloadFileList.Count = " + ActualDownloadFileList.Count);
+            logger.Info("MainConfig.MaxSimultaneousFeedDownloads = " + MainConfig.MaxSimultaneousFeedDownloads);
 
             // create a dictionary to count 
             Dictionary<string, uint> MaxSimultaneousDownloadsDictionary = new Dictionary<string, uint>();
             // set starting point for each feed
             foreach (RssSubscription RssFeed in MainConfig.RssFeedList)
             {
-                MaxSimultaneousDownloadsDictionary.Add(RssFeed.Url, RssFeed.maxSimultaneousDownload);
+                MaxSimultaneousDownloadsDictionary.Add(RssFeed.Url, RssFeed.MaxSimultaneousDownload);
             }
             // 
             //  remove all file already in download
@@ -842,7 +883,7 @@ namespace TvUndergroundDownloader
 
 
 
-            Log.logVerbose("Download file");
+            logger.Info("Download file");
             //
             //  Download file 
             // 
@@ -859,7 +900,7 @@ namespace TvUndergroundDownloader
                 if (MSDD == 0)
                 {
                     string fileName = new Ed2kfile(DownloadFile.Ed2kLink).FileName;
-                    Log.logInfo(string.Format("File skipped {0}", fileName));
+                    logger.Info(string.Format("File skipped {0}", fileName));
                     //
                     //  Use invoke to avoid thread issue
                     //
@@ -882,22 +923,22 @@ namespace TvUndergroundDownloader
                 MaxSimultaneousDownloadsDictionary[DownloadFile.FeedSource] = Math.Max(0, MSDD - 1);
 
                 Ed2kfile ed2klink = new Ed2kfile(DownloadFile.Ed2kLink);
-                Log.logVerbose("Add file to download");
+                logger.Info("Add file to download");
                 Service.AddToDownload(ed2klink, DownloadFile.Category);
 
                 if (DownloadFile.PauseDownload == true)
                 {
-                    Log.logVerbose("Pause download");
+                    logger.Info("Pause download");
                     Service.StopDownload(ed2klink);
                 }
                 else
                 {
-                    Log.logVerbose("Resume download");
+                    logger.Info("Resume download");
                     Service.StartDownload(ed2klink);
                 }
                 History.Add(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource, DateTime.Now.ToString("s"));
                 Ed2kfile parser = new Ed2kfile(DownloadFile.Ed2kLink);
-                Log.logInfo(string.Format("Add file to emule {0}", parser.GetFileName()));
+                logger.Info("Add file to emule {0}", parser.GetFileName());
                 SendMailDownload(parser.GetFileName(), DownloadFile.Ed2kLink);
                 MainConfig.TotalDownloads++;   //increase Total Downloads for statistic
 
@@ -908,14 +949,14 @@ namespace TvUndergroundDownloader
             }
 
 
-            Log.logInfo("Force Refresh Shared File List");
+            logger.Info("Force Refresh Shared File List");
             Service.ForceRefreshSharedFileList();
 
-            Log.logInfo("Logout Emule");
+            logger.Info("Logout Emule");
             Service.Close();
 
-            Log.logInfo("Statistics");
-            Log.logInfo(string.Format("Total file added {0}", MainConfig.TotalDownloads));
+            logger.Info("Statistics");
+            logger.Info(string.Format("Total file added {0}", MainConfig.TotalDownloads));
             MainHistory.Save();
 
 
@@ -928,7 +969,7 @@ namespace TvUndergroundDownloader
         {
             if (e.Cancelled)
             {
-                Log.logInfo("Background Worker Cancelled");
+                logger.Info("Background Worker Cancelled");
             }
 
             UpdateRecentActivity();
@@ -967,10 +1008,10 @@ namespace TvUndergroundDownloader
         void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
 
-            Log.logVerbose("FormClosing Event");
-            Log.logVerbose(string.Format("{0} = {1}", "CloseReason", e.CloseReason));
-            Log.logVerbose(string.Format("{0} = {1}", "Cancel", e.Cancel));
-            Log.logVerbose(string.Format("{0} = {1}", "mAllowClose", mAllowClose));
+            logger.Info("FormClosing Event");
+            logger.Debug("{0} = {1}", "CloseReason", e.CloseReason);
+            logger.Debug("{0} = {1}", "Cancel", e.Cancel);
+            logger.Debug("{0} = {1}", "mAllowClose", mAllowClose);
 
             if (e.CloseReason == CloseReason.WindowsShutDown)
             {
@@ -1012,7 +1053,7 @@ namespace TvUndergroundDownloader
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            Log.logInfo("Configuration loaded " + Config.FileNameConfig);
+            logger.Info("Configuration loaded " + Config.FileNameConfig);
             timer2.Enabled = false;
 
             if (MainConfig.StartMinimized == true)
@@ -1228,7 +1269,7 @@ namespace TvUndergroundDownloader
 
         private void clearToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LogTextBox.Clear();
+            richTextBoxLog.Clear();
         }
 
         private void checkBoxAutoClear_CheckedChanged(object sender, EventArgs e)
@@ -1253,13 +1294,8 @@ namespace TvUndergroundDownloader
                 Config.StartWithWindows = OptDialog.StartWithWindows;
 
                 MainConfig.Verbose = OptDialog.Verbose;
-                Log.Instance.SetVerboseMode(MainConfig.Verbose);
-
                 MainConfig.ServiceUrl = OptDialog.ServiceUrl;
                 MainConfig.Password = OptDialog.Password;
-
-
-
                 MainConfig.DefaultCategory = OptDialog.DefaultCategory;
                 MainConfig.eMuleExe = OptDialog.eMuleExe;
                 MainConfig.IntervalTime = OptDialog.IntervalTime;
@@ -1330,14 +1366,14 @@ namespace TvUndergroundDownloader
         {
             if (MainConfig.CloseEmuleIfAllIsDone == false)
             {
-                Log.logVerbose("[AutoClose Mule] MainConfig.CloseEmuleIfAllIsDone == false");
+                logger.Info("[AutoClose Mule] MainConfig.CloseEmuleIfAllIsDone == false");
                 return;
             }
 
             // check if Auto Close Data Time is not set
             if (AutoCloseDataTime == DateTime.MinValue)
             {
-                Log.logVerbose("[AutoClose Mule] AutoCloseDataTime = DateTime.Now.AddMinutes(30);");
+                logger.Info("[AutoClose Mule] AutoCloseDataTime = DateTime.Now.AddMinutes(30);");
                 AutoCloseDataTime = DateTime.Now.AddMinutes(30);
             }
 
@@ -1354,7 +1390,7 @@ namespace TvUndergroundDownloader
 
             // connect to mule
 
-            Log.logVerbose("[AutoClose Mule] Check Login");
+            logger.Info("[AutoClose Mule] Check Login");
             eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
             LoginStatus returnCode = Service.Connect();
 
@@ -1363,32 +1399,32 @@ namespace TvUndergroundDownloader
             if (returnCode != LoginStatus.Logged)
             {
                 AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do control every 30 minutes
-                Log.logVerbose("[AutoClose Mule] Login failed");
+                logger.Info("[AutoClose Mule] Login failed");
                 return;
             }
-            Log.logVerbose("[AutoClose Mule] Login ok");
+            logger.Info("[AutoClose Mule] Login ok");
 
-            Log.logVerbose("[AutoClose Mule] Actual Downloads " + Service.GetCurrentDownloads(null).Count);
+            logger.Info("[AutoClose Mule] Actual Downloads " + Service.GetCurrentDownloads(null).Count);
             // if donwload > 0 ... there' s some download ... end 
             if (Service.GetCurrentDownloads(null).Count > 0)
             {
-                Log.logVerbose("[AutoClose Mule] GetActualDownloads return >0");
+                logger.Info("[AutoClose Mule] GetActualDownloads return >0");
                 AutoCloseDataTime = DateTime.Now.AddMinutes(30);
-                Log.logVerbose("[AutoClose Mule] LogOut");
+                logger.Info("[AutoClose Mule] LogOut");
                 Service.Close();
                 return;
             }
 
-            Log.logVerbose("[AutoClose Mule] Show dialog ");
+            logger.Info("[AutoClose Mule] Show dialog ");
             // pop up form to advise user
             FormAlerteMuleClose Dialog = new FormAlerteMuleClose();
             Dialog.ShowDialog();
 
-            Log.logVerbose("[AutoClose Mule] Dialog return " + Dialog.AlertChoice.ToString());
+            logger.Info("[AutoClose Mule] Dialog return " + Dialog.AlertChoice.ToString());
             switch (Dialog.AlertChoice)
             {
                 case AlertChoiceEnum.Close:// Close
-                    Log.logVerbose("[AutoClose Mule: CLOSE] Close Service");
+                    logger.Info("[AutoClose Mule: CLOSE] Close Service");
                     Dialog.Dispose();
                     Service.CloseEmuleApp();
                     Service.Close();
@@ -1397,31 +1433,21 @@ namespace TvUndergroundDownloader
                 // to fix here                    
                 case AlertChoiceEnum.Skip: // SKIP
                     AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
-                    Log.logVerbose("[AutoClose Mule: SKIP] Skip");
-                    Log.logVerbose("[AutoClose Mule: SKIP] Next Tock " + AutoCloseDataTime.ToString());
+                    logger.Info("[AutoClose Mule: SKIP] Skip");
+                    logger.Info("[AutoClose Mule: SKIP] Next Tock " + AutoCloseDataTime.ToString());
                     Dialog.Dispose();
-                    Log.logVerbose("[AutoClose Mule] LogOut");
+                    logger.Info("[AutoClose Mule] LogOut");
                     Service.Close();
                     timerAutoClose.Enabled = true;  // enable timer 
                     break;
                 case AlertChoiceEnum.Disable:    // disable autoclose
-                    Log.logVerbose("[AutoClose Mule: DISABLE] Disable");
+                    logger.Info("[AutoClose Mule: DISABLE] Disable");
                     Dialog.Dispose();
-                    Log.logVerbose("[AutoClose Mule] LogOut");
+                    logger.Info("[AutoClose Mule] LogOut");
                     Service.Close();
                     DisableAutoCloseEmule();
                     timerAutoClose.Enabled = true;  // enable timer 
                     break;
-            }
-
-            if ((MainConfig.EmailNotification == true) && (sendLogToEmailToolStripMenuItem.Checked))
-            {
-                Log.logVerbose("[AutoClose Mule] Send Mail");
-                string stmpServer = MainConfig.ServerSMTP;
-                string EmailReceiver = MainConfig.MailReceiver;
-                string EmailSender = MainConfig.MailSender;
-                string Subject = "TV Underground Downloader Notification";
-                SmtpClient.SendEmail(stmpServer, EmailReceiver, EmailSender, Subject, LogTextBox.Text);
             }
         }
 
@@ -1511,19 +1537,19 @@ namespace TvUndergroundDownloader
                 verboseToolStripMenuItem.Checked = true;
                 MainConfig.Verbose = true;
             }
-            Log.Instance.SetVerboseMode(MainConfig.Verbose);
-        }
 
-        private void sendLogToEmailToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (sendLogToEmailToolStripMenuItem.Checked == true)
+            foreach (var rule in LogManager.Configuration.LoggingRules)
             {
-                sendLogToEmailToolStripMenuItem.Checked = false;
+                if (MainConfig.Verbose == true)
+                    rule.EnableLoggingForLevel(LogLevel.Trace);
+                else
+                    rule.EnableLoggingForLevel(LogLevel.Info);
             }
-            else
-            {
-                sendLogToEmailToolStripMenuItem.Checked = true;
-            }
+
+            //Call to update existing Loggers created with GetLogger() or GetCurrentClassLogger()
+            LogManager.ReconfigExistingLoggers();
+
+
         }
 
         private void testAutoCloseToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1543,7 +1569,7 @@ namespace TvUndergroundDownloader
             }
             catch
             {
-                Log.logInfo("Unable start application");
+                logger.Info("Unable start application");
             }
         }
 
@@ -1706,7 +1732,7 @@ namespace TvUndergroundDownloader
                 RssSubscrission.Category = rsschannel.Category;
                 RssSubscrission.PauseDownload = rsschannel.Pause;
                 RssSubscrission.Enabled = true;
-                RssSubscrission.maxSimultaneousDownload = rsschannel.maxSimultaneousDownload;
+                RssSubscrission.MaxSimultaneousDownload = rsschannel.maxSimultaneousDownload;
                 MainConfig.RssFeedList.Add(RssSubscrission);
             }
             //
@@ -1721,7 +1747,7 @@ namespace TvUndergroundDownloader
             //
             //  Add file history
             //  
-            dialogPage3.UnselectedFile.ForEach(delegate (FileHistory fh) { Log.logDebug("UnselectedHistory " + fh.FileName); });
+            dialogPage3.UnselectedFile.ForEach(delegate (FileHistory fh) { logger.Debug("UnselectedHistory {0}", fh.FileName); });
 
             // Add the unselected file to the history to avoid redownload
             foreach (FileHistory fh in dialogPage3.UnselectedFile)
@@ -1748,7 +1774,7 @@ namespace TvUndergroundDownloader
             ListViewItem selectedItem = listViewFeedFilesList.SelectedItems[0];
             string strSelectItemText = selectedItem.Text;   // this contain name file
 
-            Log.logInfo(string.Format("Delete {0}", strSelectItemText));
+            logger.Info(string.Format("Delete {0}", strSelectItemText));
 
             // remove from list view
             listViewFeedFilesList.Items.Remove(selectedItem);
@@ -1808,7 +1834,8 @@ namespace TvUndergroundDownloader
             }
             catch (Exception exception)
             {
-                Log.logInfo("Exception \"" + exception.Message + "\"");
+
+                logger.Error(exception, "Open Log File ");
             }
 
         }
@@ -1959,7 +1986,7 @@ namespace TvUndergroundDownloader
                 return;
             }
 
-            EditFeedForm dialog = new EditFeedForm(MainConfig, SelectedFeed.Category, SelectedFeed.PauseDownload, SelectedFeed.Enabled, SelectedFeed.maxSimultaneousDownload);
+            EditFeedForm dialog = new EditFeedForm(MainConfig, SelectedFeed.Category, SelectedFeed.PauseDownload, SelectedFeed.Enabled, SelectedFeed.MaxSimultaneousDownload);
             dialog.ShowDialog();
 
             if (dialog.DialogResult != DialogResult.OK)
@@ -1971,7 +1998,7 @@ namespace TvUndergroundDownloader
             SelectedFeed.Enabled = dialog.feedEnable;
             SelectedFeed.Category = dialog.Category;
             SelectedFeed.PauseDownload = dialog.PauseDownload;
-            SelectedFeed.maxSimultaneousDownload = dialog.maxSimultaneousDownload;
+            SelectedFeed.MaxSimultaneousDownload = dialog.maxSimultaneousDownload;
 
             MainConfig.Save();
             UpdateRssFeedGUI();
@@ -2087,7 +2114,7 @@ namespace TvUndergroundDownloader
         {
             foreach (var item in listBoxPending.SelectedItems)
             {
-                Log.logVerbose("selected item " + item.ToString());
+                logger.Info("selected item ", item.ToString());
 
 
             }

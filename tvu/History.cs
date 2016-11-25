@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
@@ -12,6 +13,8 @@ namespace TvUndergroundDownloader
 {
     public class History
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
 
         public History()
         {
@@ -68,23 +71,23 @@ namespace TvUndergroundDownloader
 
             if (File.Exists(fileName))
             {
-                Log.logInfo("file \"" + fileName + "\" exists");
+                logger.Info("file \"" + fileName + "\" exists");
             }
             else
-                Log.logInfo("file \"" + fileName + "\" not exists");
+                logger.Info("file \"" + fileName + "\" not exists");
 
             try
             {
-                Log.logInfo("Open XML file \"" + fileName + "\"");
+                logger.Info("Open XML file \"" + fileName + "\"");
 
                 XmlDocument xDoc = new XmlDocument();
                 xDoc.Load(fileName);
 
-                Log.logInfo("Scan for item");
+                logger.Info("Scan for item");
 
                 XmlNodeList ItemList = xDoc.GetElementsByTagName("Item");
 
-                Log.logInfo("Found " + ItemList.Count + " items");
+                logger.Info("Found " + ItemList.Count + " items");
 
                 for (int i = 0; i < ItemList.Count; i++)
                 {
@@ -121,11 +124,11 @@ namespace TvUndergroundDownloader
                             }
                         }
                         tempFileHistory.Add(new FileHistory(strEd2k, strFeedLink, strFeedSource, strDate));
-                        Log.logInfo("Load successfully item " + i);
+                        logger.Info("Load successfully item " + i);
                     }
                     catch
                     {
-                        Log.logInfo("Some errors during parsing item" + i);
+                        logger.Info("Some errors during parsing item" + i);
                         // unable to parse this row
                     }
 
@@ -136,13 +139,13 @@ namespace TvUndergroundDownloader
             catch
             {
                 // some wrong in XML file
-                Log.logInfo("Some wrong in XML file");
+                logger.Info("Some wrong in XML file");
                 return false;
             }
 
             try
             {
-                Log.logInfo("Open SQL connection");
+                logger.Info("Open SQL connection");
                 using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
                 {
                     connection.Open();
@@ -151,19 +154,19 @@ namespace TvUndergroundDownloader
                         foreach (var fh in tempFileHistory)
                         {
                             History.Add(transaction, fh.Ed2kLink, fh.FeedLink, fh.FeedSource, fh.Date);
-                            Log.logInfo("Add item to transaction");
+                            logger.Info("Add item to transaction");
                         }
-                        Log.logInfo("All items are ready to commit");
+                        logger.Info("All items are ready to commit");
                         transaction.Commit();
-                        Log.logInfo("Transaction Committed");
+                        logger.Info("Transaction Committed");
                     }
                 }
-                Log.logInfo("Import complete");
+                logger.Info("Import complete");
                 return true;
             }
-            catch
+            catch(Exception ex)
             {
-                Log.logInfo("some SQL error");
+                logger.Error(ex,"Some SQL error");
                 // some wrong in db commit
                 return false;
             }
