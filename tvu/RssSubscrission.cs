@@ -85,23 +85,28 @@ namespace TvUndergroundDownloader
         {
             List<Ed2kfile> outArray = new List<Ed2kfile>();
 
-            foreach(Ed2kfile file in  linkCache.Values)
+            foreach (Ed2kfile file in linkCache.Values)
             {
-                if(downloaded.ContainsKey(file)== false)
+                if (downloaded.ContainsKey(file) == false)
                 {
                     outArray.Add(file);
                 }
             }
 
-            outArray.Sort();
-            if(outArray.Count > MaxSimultaneousDownload)
+            outArray.Sort((A, B) => A.FileName.CompareTo(B.FileName));
+            if (outArray.Count > MaxSimultaneousDownload)
             {
                 outArray.RemoveRange((int)MaxSimultaneousDownload, outArray.Count - (int)MaxSimultaneousDownload);
             }
 
             return outArray;
-
         }
+
+        public void MarkFileDownload(Ed2kfile file)
+        {
+            downloaded.Add(file, DateTime.Now);
+        }
+
 
         /// <summary>
         /// Load data from xml
@@ -183,8 +188,11 @@ namespace TvUndergroundDownloader
                 newRssSubscrission.linkCache.Add(guidLinkNode.InnerText, newFile);
 
                 XmlNode downloadedNode = fileNode.SelectSingleNode("Downloaded");
-                DateTime dtDownloaded = DateTime.Parse(downloadedNode.InnerText);
-                newRssSubscrission.downloaded.Add(newFile, dtDownloaded);
+                if (downloadedNode != null)
+                {
+                    DateTime dtDownloaded = DateTime.Parse(downloadedNode.InnerText);
+                    newRssSubscrission.downloaded.Add(newFile, dtDownloaded);
+                }
             }
 
             return newRssSubscrission;
@@ -233,13 +241,15 @@ namespace TvUndergroundDownloader
             foreach (var fileKeys in linkCache.Keys)
             {
                 writer.WriteStartElement("File");
-                if (linkCache[fileKeys] == null)
-                    writer.WriteElementString("LinkED2K", "null");
-                else
-                    writer.WriteElementString("LinkED2K", linkCache[fileKeys].Ed2kLink);
+
+                Ed2kfile file = linkCache[fileKeys];
+                writer.WriteElementString("LinkED2K", file.Ed2kLink);
 
                 writer.WriteElementString("Guid", fileKeys);
-                writer.WriteElementString("Downloaded", DateTime.Now.ToString());
+                if (downloaded.ContainsKey(linkCache[fileKeys]))
+                {
+                    writer.WriteElementString("Downloaded", downloaded[file].ToString());
+                }
                 writer.WriteEndElement();// end file
             }
             writer.WriteEndElement();// end file

@@ -47,30 +47,11 @@ namespace TvUndergroundDownloader
         public class sDonwloadFile
         {
             public RssSubscription subscription { get; private set; } = null;
+            public Ed2kfile file { get; private set; }
 
-            public string FeedSource { get; private set; }
-            public string FeedLink { get; private set; }
-            public string Ed2kLink { get; private set; }
-
-            public bool PauseDownload { get; private set; }
-            public string Category { get; private set; }
-
-            public sDonwloadFile(string Ed2kLink, string FeedLink, string FeedSource, bool PauseDownload, string Category)
+            public sDonwloadFile(Ed2kfile Ed2kLink, RssSubscription subscription)
             {
-                this.Ed2kLink = Ed2kLink;
-                this.FeedLink = FeedLink;
-                this.FeedSource = FeedSource;
-                this.PauseDownload = PauseDownload;
-                this.Category = Category;
-            }
-
-            public sDonwloadFile(string Ed2kLink, RssSubscription subscription)
-            {
-                this.Ed2kLink = Ed2kLink;
-                this.FeedLink = subscription.Url;
-                this.FeedSource = string.Empty;
-                this.PauseDownload = subscription.PauseDownload;
-                this.Category = Category;
+                this.file = Ed2kLink;
                 this.subscription = subscription;
             }
 
@@ -98,7 +79,7 @@ namespace TvUndergroundDownloader
             //  Setup Nlog
             //
             LoggingConfiguration config = LogManager.Configuration;
-            if(config == null)
+            if (config == null)
             {
                 config = new LoggingConfiguration();
             }
@@ -577,12 +558,13 @@ namespace TvUndergroundDownloader
             {
                 try
                 {
-                    logger.Info("Read RSS {0}", feed.TitleCompact);
+                    logger.Info(@"Read RSS ""{0}""", feed.TitleCompact);
                     feed.Update(cookieContainer);
                     foreach (Ed2kfile file in feed.GetNewDownload())
                     {
-                        sDonwloadFile sfile = new sDonwloadFile(file.Ed2kLink, feed);
+                        sDonwloadFile sfile = new sDonwloadFile(file, feed);
                         DownloadFileList.Add(sfile);
+                        logger.Info(@"Found new file ""{0}""", file.FileName);
                     }
 
                     //
@@ -734,7 +716,7 @@ namespace TvUndergroundDownloader
                 catch (Exception ex)
                 {
 
-                    logger.Info("Some errors in RSS parsing (check login)");
+                    logger.Error(ex, "Some errors in RSS parsing (check login)");
                 }
 
                 if (backgroundWorker1.CancellationPending)
@@ -837,12 +819,12 @@ namespace TvUndergroundDownloader
             logger.Info("Retrieve list category");
             Service.GetCategories(true);  // force upgrade category list 
 
-            logger.Info("Clean download list (step 1) find channel from ed2k");
+            logger.Debug("Clean download list (step 1) find channel from ed2k");
 
             List<Ed2kfile> CourrentDownloadsFormEmule = Service.GetCurrentDownloads(MainHistory.GetKnownFiles());/// file downloaded with this program and now in download in emule
             if (CourrentDownloadsFormEmule == null)
             {
-                logger.Info("eMule web server not respond");
+                logger.Error("eMule web server not respond");
                 return;
             }
 
@@ -896,10 +878,10 @@ namespace TvUndergroundDownloader
                     return;
                 }
 
-                uint MSDD = MaxSimultaneousDownloadsDictionary[DownloadFile.FeedSource];
+                uint MSDD = MaxSimultaneousDownloadsDictionary[DownloadFile.subscription.Url];
                 if (MSDD == 0)
                 {
-                    string fileName = new Ed2kfile(DownloadFile.Ed2kLink).FileName;
+                    string fileName = new Ed2kfile(DownloadFile.file).FileName;
                     logger.Info(string.Format("File skipped {0}", fileName));
                     //
                     //  Use invoke to avoid thread issue
@@ -920,13 +902,13 @@ namespace TvUndergroundDownloader
                     continue;
                 }
 
-                MaxSimultaneousDownloadsDictionary[DownloadFile.FeedSource] = Math.Max(0, MSDD - 1);
+                MaxSimultaneousDownloadsDictionary[DownloadFile.subscription.Url] = Math.Max(0, MSDD - 1);
 
-                Ed2kfile ed2klink = new Ed2kfile(DownloadFile.Ed2kLink);
+                Ed2kfile ed2klink = new Ed2kfile(DownloadFile.file);
                 logger.Info("Add file to download");
-                Service.AddToDownload(ed2klink, DownloadFile.Category);
+                Service.AddToDownload(ed2klink, DownloadFile.subscription.Category);
 
-                if (DownloadFile.PauseDownload == true)
+                if (DownloadFile.subscription.PauseDownload == true)
                 {
                     logger.Info("Pause download");
                     Service.StopDownload(ed2klink);
@@ -936,16 +918,17 @@ namespace TvUndergroundDownloader
                     logger.Info("Resume download");
                     Service.StartDownload(ed2klink);
                 }
-                History.Add(DownloadFile.Ed2kLink, DownloadFile.FeedLink, DownloadFile.FeedSource, DateTime.Now.ToString("s"));
-                Ed2kfile parser = new Ed2kfile(DownloadFile.Ed2kLink);
+                History.Add(DownloadFile.file.Ed2kLink, DownloadFile.subscription.Url, String.Empty, DateTime.Now.ToString("s"));
+                DownloadFile.subscription.MarkFileDownload(DownloadFile.file);
+                Ed2kfile parser = new Ed2kfile(DownloadFile.file);
                 logger.Info("Add file to emule {0}", parser.GetFileName());
-                SendMailDownload(parser.GetFileName(), DownloadFile.Ed2kLink);
+                SendMailDownload(parser.GetFileName(), DownloadFile.file.Ed2kLink);
                 MainConfig.TotalDownloads++;   //increase Total Downloads for statistic
 
-                { // progress bar
-                    int progress = (DownloadFileList.IndexOf(DownloadFile) + 1) * 100;
-                    backgroundWorker1.ReportProgress(progress / DownloadFileList.Count);
-                }
+                // progress bar
+                int progress = (DownloadFileList.IndexOf(DownloadFile) + 1) * 100;
+                backgroundWorker1.ReportProgress(progress / DownloadFileList.Count);
+
             }
 
 
