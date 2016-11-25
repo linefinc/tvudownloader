@@ -123,7 +123,7 @@ namespace TvUndergroundDownloader
                 newFeed.PauseDownload = false;
                 newFeed.LastSerieStatusUpgradeDate = DateTime.Now;
                 newFeed.LastUpgradeDate = DateTime.Now.ToString("s");
-                newFeed.tvuStatus = tvuStatus.Unknown;
+                newFeed.CurrentTVUStatus = tvuStatus.Unknown;
                 config.RssFeedList.Add(newFeed);
                 // load feed file to avoid duplicate
                 localFileHistory.AddRange(history.ExportDownloadedFileByFeedSoruce(newFeedUrl));

@@ -1,9 +1,11 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 
 namespace TvUndergroundDownloader
 {
     class WebManagerTVU
     {
+        [Obsolete]
         public static tvuStatus CheckComplete(string url, CookieContainer cookieContainer)
         {
             tvuStatus status = tvuStatus.Unknown;

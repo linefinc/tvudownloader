@@ -350,7 +350,7 @@ namespace TvUndergroundDownloader
                 }
 
                 // serie status      column 3
-                switch (subscrission.tvuStatus)
+                switch (subscrission.CurrentTVUStatus)
                 {
                     default:
                         item.SubItems[3].Text = "Unknown";
@@ -1773,7 +1773,7 @@ namespace TvUndergroundDownloader
         private void deleteCompleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
-            List<RssSubscription> channelToDelete = MainConfig.RssFeedList.FindAll(delegate (RssSubscription t) { return t.tvuStatus == tvuStatus.Complete; });
+            List<RssSubscription> channelToDelete = MainConfig.RssFeedList.FindAll(delegate (RssSubscription t) { return t.CurrentTVUStatus == tvuStatus.Complete; });
             foreach (RssSubscription subscrission in channelToDelete)
             {
                 MainHistory.DeleteFileByFeedSource(subscrission.Url);
@@ -1788,7 +1788,7 @@ namespace TvUndergroundDownloader
             }
 
             List<RssSubscription> completeFeed = new List<RssSubscription>();
-            completeFeed = MainConfig.RssFeedList.FindAll(delegate (RssSubscription t) { return t.tvuStatus == tvuStatus.Complete; });
+            completeFeed = MainConfig.RssFeedList.FindAll(delegate (RssSubscription t) { return t.CurrentTVUStatus == tvuStatus.Complete; });
 
             foreach (RssSubscription feed in completeFeed)
             {

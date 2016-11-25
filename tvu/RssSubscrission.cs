@@ -37,7 +37,7 @@ namespace TvUndergroundDownloader
         public bool PauseDownload = false;
         public string LastUpgradeDate = string.Empty;
         public bool Enabled = true;
-        public tvuStatus tvuStatus = tvuStatus.Unknown;
+        public tvuStatus CurrentTVUStatus = tvuStatus.Unknown;
         public int seasonID { get; private set; }
         public string TitleCompact { get { return this.Title.Replace("[ed2k] tvunderground.org.ru:", ""); } }
 
@@ -153,20 +153,20 @@ namespace TvUndergroundDownloader
             switch (node.InnerText)
             {
                 case "Complete":
-                    newRssSubscrission.tvuStatus = tvuStatus.Complete;
+                    newRssSubscrission.CurrentTVUStatus = tvuStatus.Complete;
                     break;
                 case "StillIncomplete":
-                    newRssSubscrission.tvuStatus = tvuStatus.StillIncomplete;
+                    newRssSubscrission.CurrentTVUStatus = tvuStatus.StillIncomplete;
                     break;
                 case "StillRunning":
-                    newRssSubscrission.tvuStatus = tvuStatus.StillRunning;
+                    newRssSubscrission.CurrentTVUStatus = tvuStatus.StillRunning;
                     break;
                 case "OnHiatus":
-                    newRssSubscrission.tvuStatus = tvuStatus.OnHiatus;
+                    newRssSubscrission.CurrentTVUStatus = tvuStatus.OnHiatus;
                     break;
                 case "Unknown":
                 default:
-                    newRssSubscrission.tvuStatus = tvuStatus.Unknown;
+                    newRssSubscrission.CurrentTVUStatus = tvuStatus.Unknown;
                     break;
             }
 
@@ -198,6 +198,7 @@ namespace TvUndergroundDownloader
             return newRssSubscrission;
         }
 
+
         public void Write(XmlTextWriter writer)
         {
             //<Channel>
@@ -217,7 +218,7 @@ namespace TvUndergroundDownloader
             writer.WriteElementString("Enabled", Enabled.ToString());
             writer.WriteElementString("maxSimultaneousDownload", MaxSimultaneousDownload.ToString());
 
-            switch (tvuStatus)
+            switch (CurrentTVUStatus)
             {
                 case tvuStatus.Complete:
                     writer.WriteElementString("tvuStatus", "Complete");
@@ -289,6 +290,15 @@ namespace TvUndergroundDownloader
                     }
                 }
             }
+
+            TimeSpan ts = DateTime.Now - LastSerieStatusUpgradeDate;
+            if (CurrentTVUStatus != tvuStatus.Complete)
+            {
+                return;
+            }
+
+            UpdateTVUStatus(cookieContainer);
+
         }
 
         private Ed2kfile ProcessGUID(string url, CookieContainer cookieContainer)
@@ -301,6 +311,52 @@ namespace TvUndergroundDownloader
             WebPage = WebPage.Substring(0, i + "|/".Length);
             return new Ed2kfile(WebPage);
         }
+
+        public void UpdateTVUStatus(CookieContainer cookieContainer)
+        {
+
+            logger.Info("Checking serie status");
+            string url = string.Format("http://tvunderground.org.ru/index.php?show=episodes&sid={0}", this.seasonID);
+
+            string WebPage = WebFetch.Fetch(url, true, cookieContainer);
+            LastSerieStatusUpgradeDate = DateTime.Now;
+            if (WebPage != null)
+            {
+                if (WebPage.IndexOf("Still Running") > 0)
+                {
+
+                    CurrentTVUStatus = tvuStatus.StillRunning;
+                    logger.Info("Serie status: Still Running");
+                    return;
+                }
+
+                if (WebPage.IndexOf("Complete") > 0)
+                {
+                    CurrentTVUStatus = tvuStatus.Complete;
+                    logger.Info("Serie status: Complete");
+                    return;
+                }
+
+                if (WebPage.IndexOf("Still Incomplete") > 0)
+                {
+                    CurrentTVUStatus = tvuStatus.StillIncomplete;
+                    logger.Info("Serie status: Still Incomplete");
+                    return;
+                }
+
+                if (WebPage.IndexOf("On Hiatus") > 0)
+                {
+                    logger.Info("Serie status: On Hiatus");
+                    CurrentTVUStatus = tvuStatus.OnHiatus;
+                    return;
+                }
+            }
+
+            this.CurrentTVUStatus = tvuStatus.Unknown;
+            logger.Info("Serie status: Unknown");
+
+        }
+
 
     }
 
@@ -390,7 +446,7 @@ namespace TvUndergroundDownloader
                     command.Parameters.Add(new SQLiteParameter("@pause", rssSubscrission.PauseDownload));
                     command.Parameters.Add(new SQLiteParameter("@category", rssSubscrission.Category));
                     command.Parameters.Add(new SQLiteParameter("@enabled", rssSubscrission.Enabled));
-                    command.Parameters.Add(new SQLiteParameter("@tvuStatus", rssSubscrission.tvuStatus));
+                    command.Parameters.Add(new SQLiteParameter("@tvuStatus", rssSubscrission.CurrentTVUStatus));
                     command.Parameters.Add(new SQLiteParameter("@maxSimultaneousDownload", rssSubscrission.MaxSimultaneousDownload));
                     command.ExecuteNonQuery();
                 }
