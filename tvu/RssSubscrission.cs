@@ -33,11 +33,11 @@ namespace TvUndergroundDownloader
 
         public string Title { private set; get; }
         public string Url { private set; get; }
-        public string Category = string.Empty;
-        public bool PauseDownload = false;
+        public string Category { get; set; } = string.Empty;
+        public bool PauseDownload { get; set; } = false;
         public string LastUpgradeDate = string.Empty;
         public bool Enabled = true;
-        public tvuStatus CurrentTVUStatus = tvuStatus.Unknown;
+        public tvuStatus CurrentTVUStatus { get; private set; } = tvuStatus.Unknown;
         public int seasonID { get; private set; }
         public string TitleCompact { get { return this.Title.Replace("[ed2k] tvunderground.org.ru:", ""); } }
 
@@ -67,18 +67,54 @@ namespace TvUndergroundDownloader
             MatchCollection matchCollection = regexFeedSource.Matches(this.Url);
             if (matchCollection.Count == 0)
             {
-                System.ApplicationException ex = new System.ApplicationException("Wrong URL");
-                throw ex;
+                throw new ApplicationException("Wrong URL");
             }
 
             int integerBuffer;
             if (int.TryParse(matchCollection[0].Groups["seid"].ToString(), out integerBuffer) == false)
             {
-                System.ApplicationException ex = new System.ApplicationException("Wrong URL");
-                throw ex;
+
+                throw new ApplicationException("Wrong URL");
             }
 
             this.seasonID = integerBuffer;
+        }
+
+        public RssSubscription(string newUrl, CookieContainer cookieContainer)
+        {
+            this.Url = newUrl;
+            MatchCollection matchCollection = regexFeedSource.Matches(newUrl);
+            if (matchCollection.Count == 0)
+            {
+                throw new ApplicationException("Wrong URL");
+            }
+
+            string webPageUrl = Url;
+            string WebPage = WebFetch.Fetch(Url, false, cookieContainer);
+
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(WebPage);
+
+            XmlNode node = doc.SelectSingleNode(@"/rss/channel/title");
+
+            if (node == null)
+            {
+                throw new ApplicationException("Wrong RSS file format");
+            }
+            if (string.IsNullOrEmpty(node.InnerText) == true)
+            {
+                throw new ApplicationException("Wrong RSS file format");
+            }
+
+            this.Title = node.InnerText;
+        }
+
+        public List<Ed2kfile> GetAllFile()
+        {
+            List<Ed2kfile> outArray = new List<Ed2kfile>();
+            outArray.AddRange(linkCache.Values);
+            outArray.Sort((A, B) => A.FileName.CompareTo(B.FileName));
+            return outArray;
         }
 
         public List<Ed2kfile> GetNewDownload()
@@ -102,11 +138,35 @@ namespace TvUndergroundDownloader
             return outArray;
         }
 
-        public void MarkFileDownload(Ed2kfile file)
+        public List<Ed2kfile> GetDownloadedFiles()
         {
+            List<Ed2kfile> outArray = new List<Ed2kfile>();
+            outArray.AddRange(downloaded.Keys);
+            outArray.Sort((A, B) => A.FileName.CompareTo(B.FileName));
+            return outArray;
+        }
+
+
+
+        public void SetFileDownloaded(Ed2kfile file)
+        {
+            if (downloaded.ContainsKey(file) == true)
+            {
+                return;
+            }
+
             downloaded.Add(file, DateTime.Now);
         }
 
+        public void SetFileNotDownloaded(Ed2kfile file)
+        {
+            if (downloaded.ContainsKey(file) == false)
+            {
+                return;
+            }
+
+            downloaded.Remove(file);
+        }
 
         /// <summary>
         /// Load data from xml

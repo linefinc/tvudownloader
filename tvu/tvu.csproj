@@ -211,12 +211,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="RssParserTVU.cs" />
     <Compile Include="RssSubscrission.cs" />
     <Compile Include="SmtpClient.cs" />
     <Compile Include="WebFetch.cs" />
     <Compile Include="WebInterface\IMuleWebManager.cs" />
-    <Compile Include="WebManagerTVU.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

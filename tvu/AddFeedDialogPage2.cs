@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Net;
+using NLog;
 
 namespace TvUndergroundDownloader
 {
     public partial class AddFeedDialogPage2 : Form
     {
-        public List<RssChannel> rssChannelList { private set; get; }
+        public List<RssSubscription> rssSubscriptionsList { private set; get; }
         public List<string> RssUrlList { private set; get; }
-        public List<FileHistory> newFilesList { private set; get; }
+
         public List<string> ListCategory { private set; get; }
         private string ServiceUrl;
         private string Password;
         private bool FastAdd;
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private CookieContainer cookieContainer;
 
@@ -22,14 +25,13 @@ namespace TvUndergroundDownloader
         {
             InitializeComponent();
             this.RssUrlList = RssUrlList;
-            this.rssChannelList = new List<RssChannel>();
-            this.newFilesList = new List<FileHistory>();
+            this.rssSubscriptionsList = new List<RssSubscription>();
             this.ListCategory = new List<string>();
 
             this.cookieContainer = cookieContainer;
             this.ServiceUrl = ServiceUrl;
             this.Password = Password;
-            this.FastAdd = FastAdd;
+
 
         }
 
@@ -52,52 +54,19 @@ namespace TvUndergroundDownloader
 
                 try
                 {
-                    RssChannel rc = new RssChannel();
-                    string WebPage = WebFetch.Fetch(url, true, cookieContainer);
-                    rc = RssParserTVU.Parse(WebPage);
-                    rc.Url = url;
-                    rssChannelList.Add(rc);
+                    RssSubscription rs = new RssSubscription(url, cookieContainer);
+                    rs.Update(cookieContainer);
+                    rssSubscriptionsList.Add(rs);
                     backgroundWorker1.ReportProgress(0);
                 }
-                catch
+                catch (Exception ex)
                 {
+                    logger.Error(ex, "Error while parse link {0}", url);
                 }
+
+                backgroundWorker1.ReportProgress(100 * RssUrlList.IndexOf(url) / RssUrlList.Count);
             }
 
-            if (this.FastAdd == false)
-            {
-                FeedLinkCache feedLinkCache = new FeedLinkCache();
-
-                foreach (RssChannel rssChannel in rssChannelList)
-                {
-                    foreach (RssItem Item in rssChannel.ListItem)
-                    {
-                        if (backgroundWorker1.CancellationPending)
-                        {
-                            e.Cancel = true;
-                            return;
-                        }
-
-                        try
-                        {
-                            // download page
-                            string page = WebFetch.Fetch(Item.Guid, true, cookieContainer);
-                            // find ed2k
-                            string sEd2k = RssParserTVU.FindEd2kLink(page);
-                            // add to history to avoid redonwload
-                            FileHistory file = new FileHistory(sEd2k, Item.Guid, rssChannel.Url);
-                            newFilesList.Add(file);
-                            backgroundWorker1.ReportProgress(0);
-                            // update feedLinkCache
-                            FeedLinkCache.AddFeedLink(Item.Guid, sEd2k, DateTime.Now.ToString("s"));
-                        }
-                        catch
-                        {
-                        }
-                    }
-
-                }
-            }
 
             //
             // update category list from mule
@@ -116,15 +85,15 @@ namespace TvUndergroundDownloader
 
                 Service.Close();
             }
-            catch
+            catch(Exception ex)
             {
-
+                logger.Error(ex, "Error while try to connect to server \"{0}\"", ServiceUrl);
             }
 
 
         }
 
- 
+
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {

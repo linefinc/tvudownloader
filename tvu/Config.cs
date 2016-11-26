@@ -48,7 +48,8 @@ namespace TvUndergroundDownloader
         public bool debug;
         public string DefaultCategory;
         public bool Enebled;
-        public uint MaxSimultaneousFeedDownloads;
+        public uint MaxSimultaneousFeedDownloadsDefault;
+        public bool PauseDownloadDefault;   //TODO: Implement
         public int MinToStartEmule;
         public string tvudwid; //Unique id
         public bool Verbose;
@@ -230,9 +231,11 @@ namespace TvUndergroundDownloader
             writer.WriteEndElement();
 
             writer.WriteStartElement("MaxSimultaneousFeedDownloads");
-            writer.WriteString(MaxSimultaneousFeedDownloads.ToString());
+            writer.WriteString(MaxSimultaneousFeedDownloadsDefault.ToString());
             writer.WriteEndElement();
 
+            writer.WriteElementString("PauseDownloadDefault", PauseDownloadDefault.ToString());
+            
             writer.WriteStartElement("Verbose");
             writer.WriteString(Verbose.ToString());
             writer.WriteEndElement();
@@ -328,15 +331,17 @@ namespace TvUndergroundDownloader
 
             IntervalTime = ReadInt(xDoc, "IntervalTime", 30, 1, 24 * 60 * 60);
 
-            StartMinimized = (bool)Convert.ToBoolean(ReadString(xDoc, "StartMinimized", "false"));
+            StartMinimized = Convert.ToBoolean(ReadString(xDoc, "StartMinimized", "false"));
 
-            CloseEmuleIfAllIsDone = (bool)Convert.ToBoolean(ReadString(xDoc, "CloseWhenAllDone", "false"));
+            CloseEmuleIfAllIsDone = Convert.ToBoolean(ReadString(xDoc, "CloseWhenAllDone", "false"));
 
-            StartEmuleIfClose = (bool)Convert.ToBoolean(ReadString(xDoc, "AutoStartEmule", "false"));
+            StartEmuleIfClose =Convert.ToBoolean(ReadString(xDoc, "AutoStartEmule", "false"));
 
-            AutoClearLog = (bool)Convert.ToBoolean(ReadString(xDoc, "AutoClearLog", "false"));
+            AutoClearLog = Convert.ToBoolean(ReadString(xDoc, "AutoClearLog", "false"));
 
-            MaxSimultaneousFeedDownloads = ReadUInt(xDoc, "MaxSimultaneousFeedDownloads", 3, 0, 50);
+            MaxSimultaneousFeedDownloadsDefault = ReadUInt(xDoc, "MaxSimultaneousFeedDownloads", 3, 0, 50);
+
+            PauseDownloadDefault = Convert.ToBoolean(ReadString(xDoc, "PauseDownloadDefault", "false"));
 
             MinToStartEmule = ReadInt(xDoc, "MinToStartEmule", 0, 0, 50);
 
@@ -344,15 +349,15 @@ namespace TvUndergroundDownloader
 
             DefaultCategory = ReadString(xDoc, "DefaultCategory", "");
 
-            debug = (bool)Convert.ToBoolean(ReadString(xDoc, "Debug", "false"));
+            debug =Convert.ToBoolean(ReadString(xDoc, "Debug", "false"));
 #if DEBUG
             Verbose = true;
 #else
-            Verbose = (bool)Convert.ToBoolean(ReadString(xDoc, "Verbose", "false"));
+            Verbose = Convert.ToBoolean(ReadString(xDoc, "Verbose", "false"));
 #endif
-            saveLog = (bool)Convert.ToBoolean(ReadString(xDoc, "SaveLog", "false"));
+            saveLog = Convert.ToBoolean(ReadString(xDoc, "SaveLog", "false"));
 
-            EmailNotification = (bool)Convert.ToBoolean(ReadString(xDoc, "EmailNotification", "false"));
+            EmailNotification = Convert.ToBoolean(ReadString(xDoc, "EmailNotification", "false"));
 
             ServerSMTP = ReadString(xDoc, "ServerSMTP", "");
 

@@ -65,7 +65,7 @@ namespace TvUndergroundDownloader
             numericUpDownMinDownloadToStrarTEmule.Value = MinToStartEmule = inConfig.MinToStartEmule;
             numericUpDownIntervalCheck.Value = intervalBetweenUpgradeCheck = inConfig.intervalBetweenUpgradeCheck;
 
-            numericUpDownMaxSimultaneousDownloadForFeed.Value = MaxSimultaneousFeedDownloads = inConfig.MaxSimultaneousFeedDownloads;
+            numericUpDownMaxSimultaneousDownloadForFeed.Value = MaxSimultaneousFeedDownloads = inConfig.MaxSimultaneousFeedDownloadsDefault;
             checkBoxStartMinimized.Checked = StartMinimized = inConfig.StartMinimized;
             checkBoxStartEmuleIfClose.Checked = StartEmuleIfClose = inConfig.StartEmuleIfClose;
             checkBoxCloseEmuleIfAllIsDone.Checked = CloseEmuleIfAllIsDone = inConfig.CloseEmuleIfAllIsDone;

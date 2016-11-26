@@ -6,34 +6,30 @@ namespace TvUndergroundDownloader
 {
     public partial class AddFeedDialogPage3 : Form
     {
-        private int index;
+        private int subscriptionListIndex;
+        private RssSubscription currenctView = null;
+        public List<RssSubscription> rssSubscriptionList { get; private set; }
 
-        public List<FileHistory> UnselectedFile { get; private set; }
-        public List<FileHistory> GlobalListFileHisotry { get; private set; }
-        public List<RssChannel> ListRssChannel { get; private set; }
-
-        public AddFeedDialogPage3(List<RssChannel> ListRssChannel, List<FileHistory> GlobalListFileHisotry, List<string> ListCategory)
+        public AddFeedDialogPage3(List<RssSubscription> RssSubscriptionList, List<string> ListCategory)
         {
             InitializeComponent();
 
-            this.ListRssChannel = ListRssChannel;
-            this.GlobalListFileHisotry = GlobalListFileHisotry;
-            this.UnselectedFile = new List<FileHistory>(); // select all input file
-            labelSelectedElement.Text = string.Format("Selected elements {0}", this.GlobalListFileHisotry.Count);
-            index = 0;
+            this.rssSubscriptionList = RssSubscriptionList;
+            labelSelectedElement.Text = string.Format("Selected elements {0}", this.rssSubscriptionList[0].GetAllFile().Count);
+            subscriptionListIndex = 0;
+            currenctView = this.rssSubscriptionList[0];
 
-
-            foreach(var str in ListCategory)
+            foreach (var str in ListCategory)
             {
                 comboBoxCategory.Items.Add(str);
             }
-        }     
+        }
 
         private void AddFeedDialogPage3_Load(object sender, EventArgs e)
         {
             RefreshList();
         }
-            
+
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
@@ -47,48 +43,64 @@ namespace TvUndergroundDownloader
         /// </remarks>
         private void buttonSelectAll_Click(object sender, EventArgs e)
         {
+            RssSubscription rssSubscription = rssSubscriptionList[subscriptionListIndex];
+            List<Ed2kfile> listDownloadedFile = rssSubscription.GetDownloadedFiles();
+            List<Ed2kfile> listAllFiles = rssSubscription.GetAllFile();
+
             for (int index = 0; index < checkedListBox1.Items.Count; index++)
+            {
                 checkedListBox1.SetItemChecked(index, true);
 
-            List<FileHistory>  ListFH = GlobalListFileHisotry.FindAll(delegate(FileHistory t) { return t.FeedSource == ListRssChannel[index].Url; });
+                // get item (fileHistory) form main list
+                string strFileName = checkedListBox1.Items[index].ToString();
+                bool isChecked = checkedListBox1.GetItemChecked(index);
 
-            foreach (FileHistory fh in ListFH)
-            {
-                UnselectedFile.RemoveAll(delegate(FileHistory t) { return t == fh; });
+                Ed2kfile File = listAllFiles.Find((temp) => temp.FileName == strFileName);
+                if (File == null)
+                {
+                    continue;
+                }
+                rssSubscription.SetFileNotDownloaded(File);
+
             }
-
-            labelSelectedElement.Text = string.Format("Selected elements {0}", this.GlobalListFileHisotry.Count - this.UnselectedFile.Count);
-            
         }
         /// <summary>
         /// deSelect all element present in checkListBox1 
         /// </summary>
         private void buttonSelectNone_Click(object sender, EventArgs e)
         {
+            RssSubscription rssSubscription = rssSubscriptionList[subscriptionListIndex];
+            List<Ed2kfile> listDownloadedFile = rssSubscription.GetDownloadedFiles();
+            List<Ed2kfile> listAllFiles = rssSubscription.GetAllFile();
+
             for (int index = 0; index < checkedListBox1.Items.Count; index++)
-                checkedListBox1.SetItemChecked(index, false);
-
-            List<FileHistory> ListFH = GlobalListFileHisotry.FindAll(delegate(FileHistory t) { return t.FeedSource == ListRssChannel[index].Url; });
-            foreach (FileHistory fh in ListFH)
             {
-                UnselectedFile.RemoveAll(delegate(FileHistory t) { return t == fh; });
-            }
+                checkedListBox1.SetItemChecked(index, true);
 
-            UnselectedFile.AddRange(ListFH);
-            
-            labelSelectedElement.Text = string.Format("Selected elements {0}", this.GlobalListFileHisotry.Count - this.UnselectedFile.Count);
+                // get item (fileHistory) form main list
+                string strFileName = checkedListBox1.Items[index].ToString();
+                bool isChecked = checkedListBox1.GetItemChecked(index);
+
+                Ed2kfile File = listAllFiles.Find((temp) => temp.FileName == strFileName);
+                if (File == null)
+                {
+                    continue;
+                }
+                rssSubscription.SetFileDownloaded(File);
+
+            }
         }
 
 
         private void buttonNext_Click(object sender, EventArgs e)
         {
-            index = Math.Min(index + 1, ListRssChannel.Count);
+            subscriptionListIndex = Math.Min(subscriptionListIndex + 1, rssSubscriptionList.Count);
             RefreshList();
         }
 
         private void buttonPrevious_Click(object sender, EventArgs e)
         {
-            index = Math.Max(index - 1, 0);
+            subscriptionListIndex = Math.Max(subscriptionListIndex - 1, 0);
             RefreshList();
         }
 
@@ -97,41 +109,35 @@ namespace TvUndergroundDownloader
         /// </summary>
         private void RefreshList()
         {
-            RssChannel rsschannel = ListRssChannel[index];
-            comboBoxCategory.Text = rsschannel.Category;
-            checkBoxPause.Checked = rsschannel.Pause;
+            RssSubscription rssSubscription = rssSubscriptionList[subscriptionListIndex];
+            comboBoxCategory.Text = rssSubscription.Category;
+            checkBoxPause.Checked = rssSubscription.PauseDownload;
+            numericUpDownMaxSimulDown.Value = rssSubscription.MaxSimultaneousDownload;
 
-            // check max and min value allowed to numericUpDownMaxSimulDown
-            decimal tempDec = Math.Max(rsschannel.maxSimultaneousDownload, numericUpDownMaxSimulDown.Minimum);
+            //// check max and min value allowed to numericUpDownMaxSimulDown
+            decimal tempDec = Math.Max(rssSubscription.MaxSimultaneousDownload, numericUpDownMaxSimulDown.Minimum);
             tempDec = Math.Min(tempDec, numericUpDownMaxSimulDown.Maximum);
             numericUpDownMaxSimulDown.Value = tempDec;
 
 
-            // add file
+            //// add file
             checkedListBox1.Items.Clear();
-            List<FileHistory> listFileToDisplay = new List<FileHistory>();
-
-            listFileToDisplay = GlobalListFileHisotry.FindAll(delegate(FileHistory t) { return t.FeedSource == rsschannel.Url; });
-
-            foreach (FileHistory file in listFileToDisplay)
+            List<Ed2kfile> listDownloadedFile = rssSubscription.GetDownloadedFiles();
+            List<Ed2kfile> listAllFile = rssSubscription.GetAllFile();
+            foreach (Ed2kfile file in listAllFile)
             {
-                bool selected = true;
-
-                if (UnselectedFile.IndexOf(file) > -1)
-                {
-                    selected = false;
-                }
-                checkedListBox1.Items.Add(file.FileName, selected);
+                int index = checkedListBox1.Items.Add(file.FileName);
+                bool isDownloaded = listDownloadedFile.Contains(file);
+                checkedListBox1.SetItemChecked(index, isDownloaded == false);
             }
-            buttonNext.Enabled = (ListRssChannel.Count-1) != index;
-            buttonPrevious.Enabled = index != 0;
+            buttonNext.Enabled = (rssSubscriptionList.Count - 1) != subscriptionListIndex;
+            buttonPrevious.Enabled = subscriptionListIndex != 0;
         }
         /// <summary>
         /// close dialog
         /// </summary>
         private void buttonFinish_Click(object sender, EventArgs e)
         {
-            
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
@@ -155,41 +161,55 @@ namespace TvUndergroundDownloader
 
         private void checkedListBox1_SelectedValueChanged(object sender, EventArgs e)
         {
+            RssSubscription rssSubscription = rssSubscriptionList[subscriptionListIndex];
+            List<Ed2kfile> listDownloadedFile = rssSubscription.GetDownloadedFiles();
+            List<Ed2kfile> listAllFiles = rssSubscription.GetAllFile();
+
             for (int index = 0; index < checkedListBox1.Items.Count; index++)
             {
                 // get item (fileHistory) form main list
-                string strItem = checkedListBox1.Items[index].ToString();
-                FileHistory item = GlobalListFileHisotry.Find(x => x.FileName == strItem);
+                string strFileName = checkedListBox1.Items[index].ToString();
+                bool isChecked = checkedListBox1.GetItemChecked(index);
 
-                // remove all data 
-                UnselectedFile.RemoveAll(delegate(FileHistory t) { return t == item; });
-
-                if (checkedListBox1.GetItemChecked(index) == false)
+                Ed2kfile File = listAllFiles.Find((temp) => temp.FileName == strFileName);
+                if (File == null)
                 {
-                    UnselectedFile.Add(item);
+                    continue;
                 }
+
+                if (isChecked == false)
+                {
+                    rssSubscription.SetFileDownloaded(File);
+                }
+                else
+                {
+                    rssSubscription.SetFileNotDownloaded(File);
+                }
+
+
             }
-            labelSelectedElement.Text = string.Format("Selected elements {0}", this.GlobalListFileHisotry.Count - this.UnselectedFile.Count);
         }
 
         private void comboBoxCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ListRssChannel[index].Category = comboBoxCategory.Text;
+            rssSubscriptionList[subscriptionListIndex].Category = comboBoxCategory.Text;
         }
 
         private void checkBoxPause_CheckedChanged(object sender, EventArgs e)
         {
-            ListRssChannel[index].Pause = checkBoxPause.Checked;
+            RssSubscription rssSubscription = rssSubscriptionList[subscriptionListIndex];
+            rssSubscription.PauseDownload = checkBoxPause.Checked;
         }
 
         private void numericUpDownMaxSimulDown_ValueChanged(object sender, EventArgs e)
         {
-            ListRssChannel[index].maxSimultaneousDownload = Convert.ToUInt16(numericUpDownMaxSimulDown.Value);
+            RssSubscription rssSubscription = rssSubscriptionList[subscriptionListIndex];
+            rssSubscription.MaxSimultaneousDownload = Convert.ToUInt32(numericUpDownMaxSimulDown.Value);
         }
 
-       
-      
 
-   
+
+
+
     }
 }

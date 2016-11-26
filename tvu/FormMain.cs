@@ -576,142 +576,6 @@ namespace TvUndergroundDownloader
                         return;
                     }
 
-
-                    //try
-                    //{
-                    //    string webPageUrl = feed.Url;
-                    //    if (MainConfig.useHttpInsteadOfHttps == true)
-                    //    {
-                    //        webPageUrl = webPageUrl.Replace("https", "http");
-                    //    }
-
-                    //    string WebPage = WebFetch.Fetch(feed.Url, true, cookieContainer);
-
-                    //    List<string> elemList = new List<string>();
-
-                    //    if (WebPage != null)
-                    //    {
-                    //        //get GUID page
-
-                    //        //static Regex "https?://(www\.)?tvunderground.org.ru/index.php\?show=ed2k&season=\d{1,10}&sid\[\d{1,10}\]=\d{1,10}"
-                    //        MatchCollection matchCollection = FileHistory.regexFeedLink.Matches(WebPage);
-
-
-                    //        foreach (Match value in matchCollection)
-                    //        {
-                    //            if (backgroundWorker1.CancellationPending)
-                    //            {
-                    //                e.Cancel = true;
-                    //                return;
-                    //            }
-
-                    //            string FeedLink = value.ToString();
-                    //            if (MainHistory.FileExistByFeedLink(FeedLink) == false)
-                    //            {
-                    //                elemList.Add(FeedLink);
-                    //                feed.tvuStatus = tvuStatus.Unknown; // force refrash of tv Undergoud status when find a new file
-                    //            }
-                    //        }
-
-                    //        //
-                    //        //  force status check if more than 15 days ago
-                    //        TimeSpan ts = DateTime.Now - feed.LastSerieStatusUpgradeDate;
-                    //        if ((ts.TotalDays > 15) | (feed.tvuStatus == tvuStatus.Unknown))
-                    //        {
-                    //            logger.Info("Checking serie status");
-                    //            Regex Pattern = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=episodes&sid=\d{1,10}");
-                    //            Match Match = Pattern.Match(WebPage);
-                    //            string url = Match.Value;
-
-                    //            feed.tvuStatus = WebManagerTVU.CheckComplete(url, cookieContainer);
-                    //            feed.LastSerieStatusUpgradeDate = DateTime.Now;
-
-                    //            switch (feed.tvuStatus)
-                    //            {
-                    //                case tvuStatus.Complete:
-                    //                    logger.Info("Serie status: Complete");
-                    //                    break;
-                    //                default:
-                    //                    logger.Info("Serie status: Unknown");
-                    //                    break;
-                    //                case tvuStatus.StillRunning:
-                    //                    logger.Info("Serie status: Still Running");
-                    //                    break;
-                    //                case tvuStatus.StillIncomplete:
-                    //                    logger.Info("Serie status: Still Incomplete");
-                    //                    break;
-                    //                case tvuStatus.OnHiatus:
-                    //                    logger.Info("Serie status: On Hiatus");
-                    //                    break;
-                    //            }
-                    //        }
-                    //    }
-
-                    //    // reverse the list so the last feed ( first temporal feed) became the first feed in list
-                    //    elemList.Reverse();
-
-                    //    // download 
-                    //    foreach (string FeedLink in elemList)
-                    //    {
-                    //        string sEd2k = string.Empty;
-
-                    //        if (backgroundWorker1.CancellationPending)
-                    //        {
-                    //            e.Cancel = true;
-                    //            return;
-                    //        }
-
-                    //        // check is the feed is already present in feed link cache
-                    //        sEd2k = feedLinkCache.FindFeedLink(FeedLink);
-                    //        if (sEd2k == string.Empty)
-                    //        {
-                    //            string page = null;
-
-                    //            // download the page in FeedLink
-                    //            logger.Info(string.Format("Download page {0}", FeedLink));
-
-                    //            if ((page = WebFetch.Fetch(FeedLink, true, cookieContainer)) == null)
-                    //            {
-                    //                logger.Info(string.Format("Unable to download"));
-                    //                continue;
-                    //            }
-                    //            // parse ed2k
-                    //            sEd2k = RssParserTVU.FindEd2kLink(page);
-                    //            FeedLinkCache.AddFeedLink(FeedLink, sEd2k, DateTime.Now.ToString("s"));
-                    //        }
-
-                    //        Ed2kfile parser = new Ed2kfile(sEd2k);
-                    //        logger.Info(string.Format("Found new file {0}", parser.GetFileName()));
-
-                    //        if (elemList.IndexOf(FeedLink) < feed.MaxSimultaneousDownload)
-                    //        {
-                    //            // add file to Download list 
-                    //            sDonwloadFile DL = new sDonwloadFile(sEd2k, FeedLink, feed.Url, feed.PauseDownload, feed.Category);
-                    //            DownloadFileList.Add(DL);
-                    //        }
-                    //        else
-                    //        {
-                    //            logger.Info(string.Format("Found new file end skipped {0}", parser.GetFileName()));
-                    //            //
-                    //            //  Use invoke to avoid thread issue
-                    //            //
-                    //            if (this.listBoxPending.InvokeRequired == true)
-                    //            {
-
-                    //                Invoke(new MethodInvoker(
-                    //                    delegate { this.AddItemToListBoxPending(parser.GetFileName()); }
-                    //                ));
-
-                    //            }
-                    //            else
-                    //            {
-                    //                this.AddItemToListBoxPending(parser.GetFileName());
-                    //            }
-                    //        }
-                    //    }
-
-
-
                 }
                 catch (Exception ex)
                 {
@@ -841,7 +705,7 @@ namespace TvUndergroundDownloader
             ActualDownloadFileList.ForEach(delegate (FileHistory file) { logger.Info("Found :\"" + file.FileName.Replace("%20", " ") + "\""); });
 
             logger.Info("ActualDownloadFileList.Count = " + ActualDownloadFileList.Count);
-            logger.Info("MainConfig.MaxSimultaneousFeedDownloads = " + MainConfig.MaxSimultaneousFeedDownloads);
+            logger.Info("MainConfig.MaxSimultaneousFeedDownloads = " + MainConfig.MaxSimultaneousFeedDownloadsDefault);
 
             // create a dictionary to count 
             Dictionary<string, uint> MaxSimultaneousDownloadsDictionary = new Dictionary<string, uint>();
@@ -919,7 +783,7 @@ namespace TvUndergroundDownloader
                     Service.StartDownload(ed2klink);
                 }
                 History.Add(DownloadFile.file.Ed2kLink, DownloadFile.subscription.Url, String.Empty, DateTime.Now.ToString("s"));
-                DownloadFile.subscription.MarkFileDownload(DownloadFile.file);
+                DownloadFile.subscription.SetFileDownloaded(DownloadFile.file);
                 Ed2kfile parser = new Ed2kfile(DownloadFile.file);
                 logger.Info("Add file to emule {0}", parser.GetFileName());
                 SendMailDownload(parser.GetFileName(), DownloadFile.file.Ed2kLink);
@@ -1289,7 +1153,7 @@ namespace TvUndergroundDownloader
                 MainConfig.MailReceiver = OptDialog.MailReceiver;
                 MainConfig.AutoClearLog = OptDialog.AutoClearLog;
                 MainConfig.intervalBetweenUpgradeCheck = OptDialog.intervalBetweenUpgradeCheck;
-                MainConfig.MaxSimultaneousFeedDownloads = OptDialog.MaxSimultaneousFeedDownloads;
+                MainConfig.MaxSimultaneousFeedDownloadsDefault = OptDialog.MaxSimultaneousFeedDownloads;
                 MainConfig.saveLog = OptDialog.saveLog;
 
 
@@ -1672,33 +1536,32 @@ namespace TvUndergroundDownloader
             // 
             //  check file count
             //
-            if ((dialogPage2.rssChannelList.Count == 0) ^ ((dialogPage2.newFilesList.Count == 0) & (fastAdd == false)))
+            if ((dialogPage2.rssSubscriptionsList.Count == 0) & (fastAdd == false))
             {
                 MessageBox.Show("Nothing to downloads");
                 dialogPage2.Dispose();
                 return;
             }
 
-            List<RssChannel> rssChannelList = dialogPage2.rssChannelList;
-            List<FileHistory> newFilesList = dialogPage2.newFilesList;
+            List<RssSubscription> rssSubscriptionsList = dialogPage2.rssSubscriptionsList;
             List<string> eMuleCategoryList = dialogPage2.ListCategory;
-
             dialogPage2.Dispose();  // free dialog
-            // setup default 
-            foreach (RssChannel rc in rssChannelList)
-            {
-                rc.Category = MainConfig.DefaultCategory;
-                rc.Pause = false;
-                rc.maxSimultaneousDownload = MainConfig.MaxSimultaneousFeedDownloads;
-            }
+                                    // setup default 
 
-            //
-            //  show Page 3 : choose single files to download.
-            //
-            AddFeedDialogPage3 dialogPage3 = new AddFeedDialogPage3(rssChannelList, newFilesList, eMuleCategoryList);
+            foreach (RssSubscription rssSubscription in rssSubscriptionsList)
+            {
+                rssSubscription.Category = MainConfig.DefaultCategory;
+                rssSubscription.PauseDownload = MainConfig.PauseDownloadDefault;
+                rssSubscription.Enabled = true;
+                rssSubscription.MaxSimultaneousDownload = MainConfig.MaxSimultaneousFeedDownloadsDefault;
+            }
 
             if (fastAdd == false)
             {
+                ////
+                //  show Page 3 : choose single files to download.
+                //
+                AddFeedDialogPage3 dialogPage3 = new AddFeedDialogPage3(rssSubscriptionsList, eMuleCategoryList);
                 dialogPage3.ShowDialog();
                 if (dialogPage3.DialogResult != DialogResult.OK)
                 {
@@ -1706,40 +1569,56 @@ namespace TvUndergroundDownloader
                     return;
                 }
             }
-            //
-            //  Add rss channel
-            //
-            foreach (RssChannel rsschannel in rssChannelList)
-            {
-                RssSubscription RssSubscrission = new RssSubscription(rsschannel.Title, rsschannel.Url);
-                RssSubscrission.Category = rsschannel.Category;
-                RssSubscrission.PauseDownload = rsschannel.Pause;
-                RssSubscrission.Enabled = true;
-                RssSubscrission.MaxSimultaneousDownload = rsschannel.maxSimultaneousDownload;
-                MainConfig.RssFeedList.Add(RssSubscrission);
-            }
+
+            MainConfig.RssFeedList.AddRange(dialogPage2.rssSubscriptionsList);
+            MainConfig.Save();
+
+            UpdateRssFeedGUI();
+            StartDownloadThread();
+            return;
+            //if (fastAdd == false)
+            //{
+            //    dialogPage3.ShowDialog();
+            //    if (dialogPage3.DialogResult != DialogResult.OK)
+            //    {
+            //        dialogPage3.Dispose();
+            //        return;
+            //    }
+            //}
+            ////
+            ////  Add rss channel
+            ////
+            //foreach (RssChannel rsschannel in rssChannelList)
+            //{
+            //    RssSubscription RssSubscrission = new RssSubscription(rsschannel.Title, rsschannel.Url);
+            //    RssSubscrission.Category = rsschannel.Category;
+            //    RssSubscrission.PauseDownload = rsschannel.Pause;
+            //    RssSubscrission.Enabled = true;
+            //    RssSubscrission.MaxSimultaneousDownload = rsschannel.maxSimultaneousDownload;
+            //    MainConfig.RssFeedList.Add(RssSubscrission);
+            //}
             //
             //  remove all data from history
             //  note: this is important when you re add a old series
             //
-            foreach (FileHistory fh in newFilesList)
-            {
-                MainHistory.DeleteFile(fh);
-            }
+            //foreach (FileHistory fh in newFilesList)
+            //{
+            //    MainHistory.DeleteFile(fh);
+            //}
 
             //
             //  Add file history
             //  
-            dialogPage3.UnselectedFile.ForEach(delegate (FileHistory fh) { logger.Debug("UnselectedHistory {0}", fh.FileName); });
+            //dialogPage3.UnselectedFile.ForEach(delegate (FileHistory fh) { logger.Debug("UnselectedHistory {0}", fh.FileName); });
 
             // Add the unselected file to the history to avoid redownload
-            foreach (FileHistory fh in dialogPage3.UnselectedFile)
-            {
-                History.Add(fh.Ed2kLink, fh.FeedLink, fh.FeedSource, DateTime.MinValue.ToString("s"));
-            }
-            dialogPage3.Dispose();
+            //foreach (FileHistory fh in dialogPage3.UnselectedFile)
+            //{
+            //    History.Add(fh.Ed2kLink, fh.FeedLink, fh.FeedSource, DateTime.MinValue.ToString("s"));
+            //}
+            //dialogPage3.Dispose();
 
-            FeedLinkCache.CleanUp();
+            //FeedLinkCache.CleanUp();
 
             MainConfig.Save();
             UpdateRssFeedGUI();

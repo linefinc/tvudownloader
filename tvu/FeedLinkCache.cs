@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.SQLite;
 using System.Text.RegularExpressions;
 
@@ -78,49 +79,7 @@ namespace TvUndergroundDownloader
         }
 
         
-
-
-        public string FindFeedLink(string FeedLink)
-        {
-            DataTable dt = new DataTable();
-            dt.Reset();
-
-            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
-            {
-                connection.Open();
-                const string sqlTemplate = @"SELECT FeedLinkCache.Ed2kLink FROM FeedLinkCache WHERE FeedLinkCache.FeedLink = @FeedLink LIMIT 1;";
-
-                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
-                command.CommandType = CommandType.Text;
-                command.Parameters.Add(new SQLiteParameter("@FeedLink", FeedLink));
-                SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
-
-                dataAdapter.Fill(dt);
-            }
-
-            if(dt.Rows.Count == 0)
-            {
-                return string.Empty;
-            }
-
-            return dt.Rows[0][0].ToString();
-  
-        }
-
-        public void DeleteFileByEd2kLink(string ed2kLink)
-        {
-            using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))
-            {
-                connection.Open();
-                const string sqlTemplate = @"DELETE FROM FeedLinkCache WHERE FeedLinkCache.Ed2kLink = @Ed2kLink;";
-
-                SQLiteCommand command = new SQLiteCommand(sqlTemplate, connection);
-                command.CommandType = CommandType.Text;
-                command.Parameters.Add(new SQLiteParameter("@Ed2kLink", ed2kLink));
-                command.ExecuteNonQuery();
-            }
-        }
-
+        [Obsolete]
         public static void CleanUp()
         {
             using (SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", Config.FileNameDB)))

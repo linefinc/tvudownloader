@@ -119,11 +119,10 @@ namespace TvUndergroundDownloader
                 newFeed = new RssSubscription(newFeedTitle, newFeedUrl);
                 newFeed.Enabled = true;
                 newFeed.Category = config.DefaultCategory;
-                newFeed.MaxSimultaneousDownload = config.MaxSimultaneousFeedDownloads;
+                newFeed.MaxSimultaneousDownload = config.MaxSimultaneousFeedDownloadsDefault;
                 newFeed.PauseDownload = false;
                 newFeed.LastSerieStatusUpgradeDate = DateTime.Now;
                 newFeed.LastUpgradeDate = DateTime.Now.ToString("s");
-                newFeed.CurrentTVUStatus = tvuStatus.Unknown;
                 config.RssFeedList.Add(newFeed);
                 // load feed file to avoid duplicate
                 localFileHistory.AddRange(history.ExportDownloadedFileByFeedSoruce(newFeedUrl));
@@ -174,7 +173,7 @@ namespace TvUndergroundDownloader
 
                 var file = new FileHistory(newLink, newFeedLink, newFeedSource, newDate);
 
-                bool exist = localFileHistory.Exists(delegate (FileHistory f) { return f.HashMD4 == file.HashMD4; }); 
+                bool exist = localFileHistory.Exists(delegate (FileHistory f) { return f.HashMD4 == file.HashMD4; });
                 if (exist == true)
                     continue;
 
