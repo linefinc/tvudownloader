@@ -9,7 +9,7 @@ namespace TvUndergroundDownloader
 {
     class ExportImportHelper
     {
-        public static void Export(Config config, History history, Stream steam)
+        public static void Export(Config config, Stream steam)
         {
             XmlTextWriter writter = new XmlTextWriter(steam, Encoding.UTF8);
             writter.Formatting = Formatting.Indented;
@@ -51,21 +51,26 @@ namespace TvUndergroundDownloader
 
                     writter.WriteStartElement("DownloadedFiles");
 
-                    foreach (var file in history.ExportDownloadedFileByFeedSoruce(feed.Url))
+                    foreach (var file in feed.GetDownloadFile())
                     {
                         writter.WriteStartElement("File");
+
                         writter.WriteStartElement("Link");
-                        writter.WriteString(file.GetLink());
+                        writter.WriteString(file.File.Ed2kLink);
                         writter.WriteEndElement();
                         writter.WriteStartElement("FeedLink");
-                        writter.WriteString(file.FeedLink);
+                        writter.WriteString(file.Guid);
                         writter.WriteEndElement();
                         writter.WriteStartElement("FeedSource");
-                        writter.WriteString(file.FeedSource);
+                        writter.WriteString(file.Subscription.Url);
                         writter.WriteEndElement();
-                        writter.WriteStartElement("Date");
-                        writter.WriteString(file.Date);
-                        writter.WriteEndElement();
+
+                        if (file.DownloadDate.HasValue)
+                        {
+                            writter.WriteStartElement("Date");
+                            writter.WriteString(file.DownloadDate.ToString());
+                            writter.WriteEndElement();
+                        }
                         writter.WriteEndElement();
                     }
                     writter.WriteEndElement();
@@ -76,10 +81,8 @@ namespace TvUndergroundDownloader
             writter.Close();
         }
 
-        public static void Import(Config config, History history, string fileName)
+        public static void Import(Config config, string fileName)
         {
-            List<FileHistory> localFileHistory = new List<FileHistory>();
-
             XmlDocument xDoc = new XmlDocument();
             xDoc.Load(fileName);
 
@@ -124,9 +127,6 @@ namespace TvUndergroundDownloader
                 newFeed.LastSerieStatusUpgradeDate = DateTime.Now;
                 newFeed.LastUpgradeDate = DateTime.Now.ToString("s");
                 config.RssFeedList.Add(newFeed);
-                // load feed file to avoid duplicate
-                localFileHistory.AddRange(history.ExportDownloadedFileByFeedSoruce(newFeedUrl));
-                DataBaseHelper.RssSubscriptionList.AddOrUpgrade(newFeed);
             }
 
             XmlNodeList downloadFiles = xDoc.GetElementsByTagName("File");
@@ -171,15 +171,28 @@ namespace TvUndergroundDownloader
                 if (string.IsNullOrEmpty(newDate) == true)
                     continue;
 
-                var file = new FileHistory(newLink, newFeedLink, newFeedSource, newDate);
+                var file = new Ed2kfile(newLink);
+                RssSubscription subscription = config.RssFeedList.Find((temp) => temp.Url == newFeedLink);
+                var dw = new DownloadFile(file, subscription);
+                if( string.IsNullOrEmpty(newDate) == false)
+                {
+                    DateTime dt;
+                    if (DateTime.TryParse(newDate, out dt)== true)
+                    {
+                        dw.DownloadDate = dt;
+                    }
+                }
 
-                bool exist = localFileHistory.Exists(delegate (FileHistory f) { return f.HashMD4 == file.HashMD4; });
-                if (exist == true)
-                    continue;
+                //subscription.
+                //var file = new FileHistory(newLink, newFeedLink, newFeedSource, newDate);
 
-                History.Add(newLink, newFeedLink, newFeedSource, newDate);
+                //bool exist = localFileHistory.Exists(delegate (FileHistory f) { return f.HashMD4 == file.HashMD4; });
+                //if (exist == true)
+                //    continue;
 
-                history.Save();
+                //History.Add(newLink, newFeedLink, newFeedSource, newDate);
+
+                //history.Save();
 
             }
 

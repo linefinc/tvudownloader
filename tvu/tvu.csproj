@@ -120,7 +120,6 @@
       <DependentUpon>AddFeedDialogPage3.cs</DependentUpon>
     </Compile>
     <Compile Include="Config.cs" />
-    <Compile Include="core.cs" />
     <Compile Include="Ed2kfile.cs" />
     <Compile Include="EditFeedForm.cs">
       <SubType>Form</SubType>
@@ -130,9 +129,9 @@
     </Compile>
     <Compile Include="ExportImportHelper.cs" />
     <Compile Include="fileHistory.cs" />
+    <Compile Include="RssSubscriptionList.cs" />
     <Compile Include="WebInterface\eMuleWebManager.cs" />
     <Compile Include="WebInterface\aMuleWebManager.cs" />
-    <Compile Include="FeedLinkCache.cs" />
     <Compile Include="FormLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -199,6 +198,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.manifest" />
+    <None Include="ClassDiagramRss.cd" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

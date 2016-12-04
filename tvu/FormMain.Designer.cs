@@ -34,7 +34,9 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.tabLog = new System.Windows.Forms.TabPage();
+            this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
             this.tabMain = new System.Windows.Forms.TabPage();
+            this.dataGridViewMain = new System.Windows.Forms.DataGridView();
             this.labelMaxSimultaneousDownloads = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.labelTotalFiles = new System.Windows.Forms.Label();
@@ -52,12 +54,6 @@
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStripFileFeed = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.listViewFeed = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStripFeed = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemEdit = new System.Windows.Forms.ToolStripMenuItem();
@@ -116,9 +112,9 @@
             this.toolStripButtonAddFeed = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonCheckNow = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
-            this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).BeginInit();
             this.contextMenuStripFileFeed.SuspendLayout();
             this.contextMenuStripFeed.SuspendLayout();
             this.tabRecentActivity.SuspendLayout();
@@ -161,8 +157,19 @@
             this.tabLog.Text = "Log";
             this.tabLog.UseVisualStyleBackColor = true;
             // 
+            // richTextBoxLog
+            // 
+            this.richTextBoxLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBoxLog.Location = new System.Drawing.Point(3, 3);
+            this.richTextBoxLog.Name = "richTextBoxLog";
+            this.richTextBoxLog.ReadOnly = true;
+            this.richTextBoxLog.Size = new System.Drawing.Size(557, 435);
+            this.richTextBoxLog.TabIndex = 0;
+            this.richTextBoxLog.Text = "";
+            // 
             // tabMain
             // 
+            this.tabMain.Controls.Add(this.dataGridViewMain);
             this.tabMain.Controls.Add(this.labelMaxSimultaneousDownloads);
             this.tabMain.Controls.Add(this.label1);
             this.tabMain.Controls.Add(this.labelTotalFiles);
@@ -176,7 +183,6 @@
             this.tabMain.Controls.Add(this.labelFeedCategory);
             this.tabMain.Controls.Add(this.label7);
             this.tabMain.Controls.Add(this.listViewFeedFilesList);
-            this.tabMain.Controls.Add(this.listViewFeed);
             this.tabMain.Location = new System.Drawing.Point(4, 22);
             this.tabMain.Name = "tabMain";
             this.tabMain.Padding = new System.Windows.Forms.Padding(3);
@@ -184,6 +190,21 @@
             this.tabMain.TabIndex = 0;
             this.tabMain.Text = "Feeds";
             this.tabMain.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewMain
+            // 
+            this.dataGridViewMain.AllowUserToAddRows = false;
+            this.dataGridViewMain.AllowUserToDeleteRows = false;
+            this.dataGridViewMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewMain.ContextMenuStrip = this.contextMenuStripFeed;
+            this.dataGridViewMain.Location = new System.Drawing.Point(3, 3);
+            this.dataGridViewMain.Name = "dataGridViewMain";
+            this.dataGridViewMain.ReadOnly = true;
+            this.dataGridViewMain.RowHeadersVisible = false;
+            this.dataGridViewMain.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewMain.Size = new System.Drawing.Size(557, 242);
+            this.dataGridViewMain.TabIndex = 38;
+            this.dataGridViewMain.SelectionChanged += new System.EventHandler(this.dataGridViewMain_SelectionChanged);
             // 
             // labelMaxSimultaneousDownloads
             // 
@@ -330,46 +351,6 @@
             this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(140, 22);
             this.deleteToolStripMenuItem1.Text = "Redownload";
             this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.deleteToolStripMenuItem1_Click);
-            // 
-            // listViewFeed
-            // 
-            this.listViewFeed.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader3,
-            this.columnHeader4,
-            this.columnHeader6,
-            this.columnHeader2});
-            this.listViewFeed.ContextMenuStrip = this.contextMenuStripFeed;
-            this.listViewFeed.Dock = System.Windows.Forms.DockStyle.Top;
-            this.listViewFeed.Location = new System.Drawing.Point(3, 3);
-            this.listViewFeed.Name = "listViewFeed";
-            this.listViewFeed.Size = new System.Drawing.Size(557, 236);
-            this.listViewFeed.TabIndex = 23;
-            this.listViewFeed.UseCompatibleStateImageBehavior = false;
-            this.listViewFeed.View = System.Windows.Forms.View.Details;
-            this.listViewFeed.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listViewFeed_ColumnClick);
-            this.listViewFeed.SelectedIndexChanged += new System.EventHandler(this.listViewFeed_SelectedIndexChanged);
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Name";
-            this.columnHeader1.Width = 200;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Episode";
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.Text = "Last Download";
-            // 
-            // columnHeader6
-            // 
-            this.columnHeader6.Text = "Status";
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Enabled";
             // 
             // contextMenuStripFeed
             // 
@@ -731,33 +712,33 @@
             // clearToolStripMenuItem
             // 
             this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.clearToolStripMenuItem.Text = "Clear";
             this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
             // 
             // autoClearToolStripMenuItem
             // 
             this.autoClearToolStripMenuItem.Name = "autoClearToolStripMenuItem";
-            this.autoClearToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.autoClearToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.autoClearToolStripMenuItem.Text = "AutoClear";
             this.autoClearToolStripMenuItem.Click += new System.EventHandler(this.autoClearToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(144, 6);
             // 
             // verboseToolStripMenuItem
             // 
             this.verboseToolStripMenuItem.Name = "verboseToolStripMenuItem";
-            this.verboseToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.verboseToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.verboseToolStripMenuItem.Text = "Verbose";
             this.verboseToolStripMenuItem.Click += new System.EventHandler(this.verboseToolStripMenuItem_Click);
             // 
             // openLogFileToolStripMenuItem
             // 
             this.openLogFileToolStripMenuItem.Name = "openLogFileToolStripMenuItem";
-            this.openLogFileToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openLogFileToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.openLogFileToolStripMenuItem.Text = "Open Log File";
             this.openLogFileToolStripMenuItem.Click += new System.EventHandler(this.openLogFileToolStripMenuItem_Click);
             // 
@@ -858,16 +839,6 @@
             this.toolStripButtonStop.Text = "Stop";
             this.toolStripButtonStop.Click += new System.EventHandler(this.toolStripButtonStop_Click);
             // 
-            // richTextBoxLog
-            // 
-            this.richTextBoxLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBoxLog.Location = new System.Drawing.Point(3, 3);
-            this.richTextBoxLog.Name = "richTextBoxLog";
-            this.richTextBoxLog.ReadOnly = true;
-            this.richTextBoxLog.Size = new System.Drawing.Size(557, 435);
-            this.richTextBoxLog.TabIndex = 0;
-            this.richTextBoxLog.Text = "";
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -887,6 +858,7 @@
             this.tabLog.ResumeLayout(false);
             this.tabMain.ResumeLayout(false);
             this.tabMain.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).EndInit();
             this.contextMenuStripFileFeed.ResumeLayout(false);
             this.contextMenuStripFeed.ResumeLayout(false);
             this.tabRecentActivity.ResumeLayout(false);
@@ -922,12 +894,8 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label labelFeedCategory;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.ListView listViewFeed;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.TabPage tabRecentActivity;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
@@ -950,7 +918,6 @@
         private System.Windows.Forms.Timer timerAutoClose;
         private System.Windows.Forms.ToolStripMenuItem verboseToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ColumnHeader columnHeader6;
         private System.Windows.Forms.ToolStripMenuItem testAutoCloseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testAutoStartToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripFeed;
@@ -969,7 +936,6 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemEdit;
         private System.Windows.Forms.Label labelMaxSimultaneousDownloads;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.TabPage tabPending;
         private System.Windows.Forms.ListBox listBoxPending;
         private System.Windows.Forms.ToolStripMenuItem forumToolStripMenuItem;
@@ -994,6 +960,7 @@
         private System.Windows.Forms.ToolStripMenuItem exportDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importDataToolStripMenuItem;
         private System.Windows.Forms.RichTextBox richTextBoxLog;
+        private System.Windows.Forms.DataGridView dataGridViewMain;
     }
 }
 

@@ -15,7 +15,6 @@ namespace TvUndergroundDownloader
         public List<string> ListCategory { private set; get; }
         private string ServiceUrl;
         private string Password;
-        private bool FastAdd;
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
 

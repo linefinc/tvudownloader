@@ -43,7 +43,7 @@ namespace TvUndergroundDownloader
         public bool CloseEmuleIfAllIsDone;
         public bool StartEmuleIfClose;
         public bool AutoClearLog;
-        public List<RssSubscription> RssFeedList;
+        public RssSubscriptionList RssFeedList;
         public string eMuleExe;
         public bool debug;
         public string DefaultCategory;
@@ -161,7 +161,7 @@ namespace TvUndergroundDownloader
             //
             // get local user application data path, remove version directory and add config.xml
             //
-            RssFeedList = new List<RssSubscription>();
+            RssFeedList = new RssSubscriptionList();
             if (!File.Exists(Config.FileNameConfig))
             {
                 // empty configure file
@@ -376,10 +376,6 @@ namespace TvUndergroundDownloader
             useHttpInsteadOfHttps = (bool)Convert.ToBoolean(ReadString(xDoc, "useHttpInsteadOfHttps", "false"));
 
             //
-            //  Initialize db
-            //
-            DataBaseHelper.RssSubscriptionList.InitDB();
-            //
             //  Load Channel
             //
             XmlNodeList Channels = xDoc.GetElementsByTagName("Channel");
@@ -387,18 +383,10 @@ namespace TvUndergroundDownloader
             for (int i = 0; i < Channels.Count; i++)
             {
                 RssSubscription newfeed = RssSubscription.LoadFormXml(Channels[i]);
-
                 RssFeedList.Add(newfeed);
-                DataBaseHelper.RssSubscriptionList.AddOrUpgrade(newfeed);
             }
 
             RssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title));
-            //
-            //  remove difference between XML and DB
-            //
-            DataBaseHelper.RssSubscriptionList.CleanUp(RssFeedList);
-
-
         }
 
 

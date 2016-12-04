@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 
 namespace TvUndergroundDownloader
 {
+    [Obsolete]
     public class FileHistory : Ed2kfile
     {
         static public Regex regexFeedLink = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=ed2k&season=(?<season>\d{1,10})&sid\[(?<sid>\d{1,10})\]=\d{1,10}");
@@ -89,7 +90,7 @@ namespace TvUndergroundDownloader
         }
 
 
-      
+
     }
 
 

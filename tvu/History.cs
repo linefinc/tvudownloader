@@ -11,6 +11,7 @@ using System.Xml;
 
 namespace TvUndergroundDownloader
 {
+    [Obsolete]
     public class History
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();

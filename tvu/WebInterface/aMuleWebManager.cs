@@ -61,7 +61,6 @@ namespace TvUndergroundDownloader
             {
                 return LoginStatus.ServiceNotAvailable;
             }
-            return LoginStatus.ServiceNotAvailable;
         }
 
         /// <summary>
