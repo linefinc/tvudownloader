@@ -129,6 +129,10 @@ namespace TvUndergroundDownloader
             UpdateRecentActivity();
             UpdateRssFeedGUI();
 
+#if !DEBUG
+            autoStartEMuleToolStripMenuItem.Visible = false;
+            autoCloseEMuleToolStripMenuItem.Visible = false;
+#endif
             // attach textBox to the logger
         }
 

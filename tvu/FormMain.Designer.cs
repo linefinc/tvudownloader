@@ -111,6 +111,7 @@
             this.toolStripButtonAddFeed = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonCheckNow = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).BeginInit();
@@ -562,12 +563,13 @@
             this.globalOptionToolStripMenuItem,
             this.oPMLExportToolStripMenuItem,
             this.toolStripSeparator3,
-            this.autoStartEMuleToolStripMenuItem,
             this.testAutoStartToolStripMenuItem,
-            this.autoCloseEMuleToolStripMenuItem,
             this.testAutoCloseToolStripMenuItem,
-            this.exportDataToolStripMenuItem,
-            this.importDataToolStripMenuItem});
+            this.autoStartEMuleToolStripMenuItem,
+            this.autoCloseEMuleToolStripMenuItem,
+            this.toolStripSeparator6,
+            this.importDataToolStripMenuItem,
+            this.exportDataToolStripMenuItem});
             this.optionToolStripMenuItem.Name = "optionToolStripMenuItem";
             this.optionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.optionToolStripMenuItem.Text = "Options";
@@ -830,6 +832,11 @@
             this.toolStripButtonStop.Text = "Stop";
             this.toolStripButtonStop.Click += new System.EventHandler(this.toolStripButtonStop_Click);
             // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(165, 6);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -951,6 +958,7 @@
         private System.Windows.Forms.ToolStripMenuItem importDataToolStripMenuItem;
         private System.Windows.Forms.RichTextBox richTextBoxLog;
         private System.Windows.Forms.DataGridView dataGridViewMain;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
     }
 }
 
