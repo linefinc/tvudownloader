@@ -29,8 +29,30 @@ namespace TvUndergroundDownloader
 
     public class RssSubscriptionList : List<RssSubscription>
     {
+        public List<DownloadFile> GetLastActivity(int Size = 20)
+        {
+            List<DownloadFile> fileList = new List<DownloadFile>();
 
+            foreach (var subscription in this)
+            {
+                fileList.AddRange(subscription.GetDownloadFile());
+            }
 
+            fileList.RemoveAll((temp) => temp.DownloadDate.HasValue == false);
+            fileList.Sort((A, B) => A.DownloadDate.Value.CompareTo(B.DownloadDate.Value));
+            fileList.RemoveRange(Size, fileList.Count - Size);
+            return fileList;
+        }
 
+        public List<DownloadFile> GetDownloadFiles()
+        {
+            List<DownloadFile> fileList = new List<DownloadFile>();
+
+            foreach (var subscription in this)
+            {
+                fileList.AddRange(subscription.GetDownloadFile());
+            }
+            return fileList;
+        }
     }
 }

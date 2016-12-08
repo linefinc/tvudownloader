@@ -37,7 +37,6 @@ namespace TvUndergroundDownloader
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public Config MainConfig;
-        public History MainHistory;
 
         private DateTime DownloadDataTime;
         private DateTime AutoCloseDataTime;
@@ -60,9 +59,6 @@ namespace TvUndergroundDownloader
             // load configuration
             MainConfig = new Config();
             MainConfig.Load();
-
-            // load History
-            MainHistory = new History();
 
             InitializeComponent();
             SetupNotify();
@@ -319,81 +315,7 @@ namespace TvUndergroundDownloader
             }
             dataGridViewMain.DataSource = dataTable;
 
-            foreach (RssSubscription subscrission in MainConfig.RssFeedList)
-            {
-                if (subscrission.listViewItem == null)
-                {
-                    string title = subscrission.Title.Replace("[ed2k] tvunderground.org.ru:", "");
-                    subscrission.listViewItem = new ListViewItem(title);
-                    subscrission.listViewItem.SubItems.Add("Total downloads");
-                    subscrission.listViewItem.SubItems.Add("Last upgrade");
-                    subscrission.listViewItem.SubItems.Add("Status");
-                    subscrission.listViewItem.SubItems.Add("Enabled");
 
-                }
-
-                ListViewItem item = subscrission.listViewItem;
-
-
-                // total downloads      column 1
-                item.SubItems[1].Text = MainHistory.GetDownloadedFileCountByFeedSoruce(subscrission.Url).ToString();
-
-                // last upgrade         column 2
-                uint days = 0;
-
-                string LastDownloadDate = MainHistory.LastDownloadDateByFeedSource(subscrission.Url);
-                if (LastDownloadDate != string.Empty)
-                {
-                    DateTime LastDownloadTime = Convert.ToDateTime(LastDownloadDate);
-
-                    if (LastDownloadTime > DateTime.MinValue)
-                    {
-                        TimeSpan diff = DateTime.Now.Subtract(LastDownloadTime);
-                        days = (uint)diff.TotalDays;
-
-                        item.SubItems[2].Text = days.ToString() + " days";
-                    }
-                    else
-                    {
-                        item.SubItems[2].Text = string.Empty;
-                    }
-                }
-                else
-                {
-                    item.SubItems[2].Text = string.Empty;
-                }
-
-                // serie status      column 3
-                switch (subscrission.CurrentTVUStatus)
-                {
-                    default:
-                        item.SubItems[3].Text = "Unknown";
-                        break;
-                    case tvuStatus.Complete:
-                        item.SubItems[3].Text = "Complete";
-                        break;
-                    case tvuStatus.StillRunning:
-                        item.SubItems[3].Text = "Still Running";
-                        break;
-                    case tvuStatus.StillIncomplete:
-                        item.SubItems[3].Text = "Still Incomplete";
-                        break;
-                    case tvuStatus.OnHiatus:
-                        item.SubItems[3].Text = "On Hiatus";
-                        break;
-                }
-
-                // TV status
-                if (subscrission.Enabled == true)
-                {
-                    item.SubItems[4].Text = "Enabled";
-                }
-                else
-                {
-                    item.SubItems[4].Text = "Disabled";
-                }
-
-            }
 
         }
 
@@ -540,7 +462,6 @@ namespace TvUndergroundDownloader
                 }
 
                 //update RSS feed
-                feed.LastUpgradeDate = MainHistory.LastDownloadDateByFeedSource(feed.Url);
                 int progress = (MainConfig.RssFeedList.IndexOf(feed) + 1) * 100;
                 progress = progress / MainConfig.RssFeedList.Count;
                 backgroundWorker1.ReportProgress(progress);
@@ -634,7 +555,10 @@ namespace TvUndergroundDownloader
 
             logger.Debug("Clean download list (step 1) find channel from ed2k");
 
-            List<Ed2kfile> CourrentDownloadsFormEmule = Service.GetCurrentDownloads(MainHistory.GetKnownFiles());/// file downloaded with this program and now in download in emule
+            List<Ed2kfile> KnownFiles = new List<Ed2kfile>();
+            MainConfig.RssFeedList.GetDownloadFiles().ForEach((x) => KnownFiles.Add(x.File));
+
+            List<Ed2kfile> CourrentDownloadsFormEmule = Service.GetCurrentDownloads(KnownFiles);/// file downloaded with this program and now in download in emule
             if (CourrentDownloadsFormEmule == null)
             {
                 logger.Error("eMule web server not respond");
@@ -650,29 +574,29 @@ namespace TvUndergroundDownloader
             //  note move this function in MainHistory class
             //
             logger.Info("Start search in history");
-            List<FileHistory> ActualDownloadFileList = MainHistory.getFileHistoryFromDB(CourrentDownloadsFormEmule);
-            ActualDownloadFileList.ForEach(delegate (FileHistory file) { logger.Info("Found :\"" + file.FileName.Replace("%20", " ") + "\""); });
+            //List<FileHistory> ActualDownloadFileList = MainHistory.getFileHistoryFromDB(CourrentDownloadsFormEmule);
+            List<DownloadFile> ActualDownloadFileList = MainConfig.RssFeedList.GetDownloadFiles();
+            ActualDownloadFileList.ForEach(delegate (DownloadFile file) { logger.Info("Found :{0}", file.File.FileName); });
 
             logger.Info("ActualDownloadFileList.Count = " + ActualDownloadFileList.Count);
             logger.Info("MainConfig.MaxSimultaneousFeedDownloads = " + MainConfig.MaxSimultaneousFeedDownloadsDefault);
 
             // create a dictionary to count 
-            Dictionary<string, uint> MaxSimultaneousDownloadsDictionary = new Dictionary<string, uint>();
+            Dictionary<RssSubscription, uint> MaxSimultaneousDownloadsDictionary = new Dictionary<RssSubscription, uint>();
             // set starting point for each feed
             foreach (RssSubscription RssFeed in MainConfig.RssFeedList)
             {
-                MaxSimultaneousDownloadsDictionary.Add(RssFeed.Url, RssFeed.MaxSimultaneousDownload);
+                MaxSimultaneousDownloadsDictionary.Add(RssFeed, RssFeed.MaxSimultaneousDownload);
             }
             // 
             //  remove all file already in download
             //
-            foreach (FileHistory fh in ActualDownloadFileList)
+            foreach (DownloadFile file in ActualDownloadFileList)
             {
-                if (MaxSimultaneousDownloadsDictionary.ContainsKey(fh.FeedSource) == true)
+                if (MaxSimultaneousDownloadsDictionary.ContainsKey(file.Subscription) == true)
                 {
-                    uint x = MaxSimultaneousDownloadsDictionary[fh.FeedSource];
-                    x = Math.Max(0, x - 1);
-                    MaxSimultaneousDownloadsDictionary[fh.FeedSource] = x;
+                    uint counter = Math.Max(0, MaxSimultaneousDownloadsDictionary[file.Subscription] - 1);
+                    MaxSimultaneousDownloadsDictionary[file.Subscription] = counter;
                 }
             }
 
@@ -691,7 +615,7 @@ namespace TvUndergroundDownloader
                     return;
                 }
 
-                uint MSDD = MaxSimultaneousDownloadsDictionary[DownloadFile.subscription.Url];
+                uint MSDD = MaxSimultaneousDownloadsDictionary[DownloadFile.subscription];
                 if (MSDD == 0)
                 {
                     string fileName = new Ed2kfile(DownloadFile.file).FileName;
@@ -715,7 +639,7 @@ namespace TvUndergroundDownloader
                     continue;
                 }
 
-                MaxSimultaneousDownloadsDictionary[DownloadFile.subscription.Url] = Math.Max(0, MSDD - 1);
+                MaxSimultaneousDownloadsDictionary[DownloadFile.subscription] = Math.Max(0, MSDD - 1);
 
                 Ed2kfile ed2klink = new Ed2kfile(DownloadFile.file);
                 logger.Info("Add file to download");
@@ -731,7 +655,7 @@ namespace TvUndergroundDownloader
                     logger.Info("Resume download");
                     Service.StartDownload(ed2klink);
                 }
-                History.Add(DownloadFile.file.Ed2kLink, DownloadFile.subscription.Url, String.Empty, DateTime.Now.ToString("s"));
+                // mark the file download
                 DownloadFile.subscription.SetFileDownloaded(DownloadFile.file);
                 Ed2kfile parser = new Ed2kfile(DownloadFile.file);
                 logger.Info("Add file to emule {0}", parser.GetFileName());
@@ -753,8 +677,6 @@ namespace TvUndergroundDownloader
 
             logger.Info("Statistics");
             logger.Info(string.Format("Total file added {0}", MainConfig.TotalDownloads));
-            MainHistory.Save();
-
 
         }
 
@@ -934,9 +856,6 @@ namespace TvUndergroundDownloader
 
         }
 
-
-
-
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start("http://sourceforge.net/projects/tvudownloader/");
@@ -945,24 +864,25 @@ namespace TvUndergroundDownloader
 
         public void UpdateRecentActivity()
         {
-            DataTable list = MainHistory.GetRecentActivity();
+            DataTable table = new DataTable();
+            table.Columns.Add("FileName");
+            table.Columns.Add("LastUpdate");
 
-            foreach (DataRow row in list.Rows)
+            foreach (DownloadFile file in MainConfig.RssFeedList.GetLastActivity())
             {
-                string temp = (string)row["LastUpdate"];
-
-                if (temp.IndexOf("0001-01-01") > -1)
+                if(file.DownloadDate.HasValue == false)
                 {
-                    row.Delete();
-                }
-                else
-                {
-                    row["LastUpdate"] = temp.Replace('T', ' ');
+                    continue;
                 }
 
+                var newRow = table.NewRow();
+
+                newRow["FileName"] = file.File.FileName;
+                newRow["LastUpdate"] = file.DownloadDate;
+                table.Rows.Add(newRow);
             }
 
-            dataGridViewRecentActivity.DataSource = list;
+            dataGridViewRecentActivity.DataSource = table;
         }
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -1580,9 +1500,6 @@ namespace TvUndergroundDownloader
             // remove from list view
             listViewFeedFilesList.Items.Remove(selectedItem);
 
-            // remove file from main history
-            MainHistory.DeleteFile(strSelectItemText);
-
             // finally update GUI
             UpdateRssFeedGUI();
 
@@ -1590,34 +1507,35 @@ namespace TvUndergroundDownloader
 
         private void deleteCompleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            MessageBox.Show("This function is not implemnted");
 
-            List<RssSubscription> channelToDelete = MainConfig.RssFeedList.FindAll(delegate (RssSubscription t) { return t.CurrentTVUStatus == tvuStatus.Complete; });
-            foreach (RssSubscription subscrission in channelToDelete)
-            {
-                MainHistory.DeleteFileByFeedSource(subscrission.Url);
-            }
+            //List<RssSubscription> channelToDelete = MainConfig.RssFeedList.FindAll(delegate (RssSubscription t) { return t.CurrentTVUStatus == tvuStatus.Complete; });
+            //foreach (RssSubscription subscrission in channelToDelete)
+            //{
+            //    MainHistory.DeleteFileByFeedSource(subscrission.Url);
+            //}
 
-            // check user 
-            DialogResult rc;
-            rc = MessageBox.Show("Delete all complete feed", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk);
-            if (rc != DialogResult.OK)
-            {
-                return;
-            }
+            //// check user 
+            //DialogResult rc;
+            //rc = MessageBox.Show("Delete all complete feed", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk);
+            //if (rc != DialogResult.OK)
+            //{
+            //    return;
+            //}
 
-            List<RssSubscription> completeFeed = new List<RssSubscription>();
-            completeFeed = MainConfig.RssFeedList.FindAll(delegate (RssSubscription t) { return t.CurrentTVUStatus == tvuStatus.Complete; });
+            //List<RssSubscription> completeFeed = new List<RssSubscription>();
+            //completeFeed = MainConfig.RssFeedList.FindAll(delegate (RssSubscription t) { return t.CurrentTVUStatus == tvuStatus.Complete; });
 
-            foreach (RssSubscription feed in completeFeed)
-            {
-                // remove from main configuration
-                MainConfig.RssFeedList.Remove(feed);
-            }
-            // save changes
-            MainConfig.Save();
+            //foreach (RssSubscription feed in completeFeed)
+            //{
+            //    // remove from main configuration
+            //    MainConfig.RssFeedList.Remove(feed);
+            //}
+            //// save changes
+            //MainConfig.Save();
 
-            ///upgrade GUI
-            UpdateRssFeedGUI();
+            /////upgrade GUI
+            //UpdateRssFeedGUI();
         }
 
         private void openLogFileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1872,31 +1790,6 @@ namespace TvUndergroundDownloader
             }
         }
 
-        private void importOldHistoryToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-            // migrate History.xml only for backup because it's replace by sqlite
-            //
-            // old path
-            //      C:\Users\User\AppData\Local\tvu\tvu\History.xml
-            // new path, not yet used 
-            //      C:\Users\User\AppData\Local\TvUndergroundDownloader\History.xml
-            //
-
-            // try to load history from old storage position
-            string oldHistoryFile = Config.FileNameHistory;
-            oldHistoryFile = oldHistoryFile.Replace(@"TvUndergroundDownloader\History.xml", @"tvu\tvu\History.xml");
-
-            if (File.Exists(oldHistoryFile))
-            {
-                bool rc = History.MigrateFromXMLToDB(oldHistoryFile);
-                if (rc == false)
-                {
-                    MessageBox.Show("An error occurred during migration to new data system");
-                }
-            }
-        }
-
         private void exportDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Stream myStream;
@@ -1964,16 +1857,17 @@ namespace TvUndergroundDownloader
 
 
 
-            string temp = MainHistory.LastDownloadDateByFeedSource(Feed.Url);
-            if (temp.IndexOf("0001-01-01") > -1)
+            //string temp = MainHistory.LastDownloadDateByFeedSource(Feed.Url);
+            DateTime lastDownloadDate = Feed.GetLastDownloadDate();
+            if (lastDownloadDate == DateTime.MinValue)
             {
                 labelLastDownloadDate.Text = "-";
             }
             else
             {
-                labelLastDownloadDate.Text = temp.Replace('T', ' ');
+                labelLastDownloadDate.Text = lastDownloadDate.Date.ToString();
             }
-            labelTotalFiles.Text = MainHistory.GetDownloadedFileCountByFeedSoruce(Feed.Url).ToString();
+            labelTotalFiles.Text = Feed.GetDownloadFileCount().ToString();
             labelMaxSimultaneousDownloads.Text = Feed.MaxSimultaneousDownload.ToString();
 
             // update list history

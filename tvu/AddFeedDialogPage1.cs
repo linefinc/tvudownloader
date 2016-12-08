@@ -60,7 +60,7 @@ namespace TvUndergroundDownloader
             }
         
             // Static Regex "http(s)?://(www\.)?tvunderground.org.ru/rss.php\?se_id=(\d{1,10})"
-            MatchCollection mc = FileHistory.regexFeedSource.Matches(textToParse);
+            MatchCollection mc = RssSubscription.regexFeedSource.Matches(textToParse);
             foreach (Match p in mc)
             {
                 RssUrlList.Add(p.Value);

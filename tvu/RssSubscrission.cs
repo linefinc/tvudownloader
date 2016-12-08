@@ -28,7 +28,7 @@ namespace TvUndergroundDownloader
     public class RssSubscription
     {
         static private Regex regexFeedLink = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=ed2k&season=(?<season>\d{1,10})&sid\[(?<sid>\d{1,10})\]=\d{1,10}");
-        static private Regex regexFeedSource = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/rss.php\?se_id=(?<seid>\d{1,10})");
+        static public Regex regexFeedSource = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/rss.php\?se_id=(?<seid>\d{1,10})");
         static private Regex regexEDK2Link = new Regex(@"ed2k://\|file\|(.*)\|\d+\|\w+\|/");
 
         public string Title { private set; get; }
@@ -124,6 +124,11 @@ namespace TvUndergroundDownloader
             {
                 this.downloaded.Add(file.File, file.DownloadDate.Value);
             }
+        }
+
+        public int GetDownloadFileCount()
+        {
+            return downloaded.Count;
         }
 
         public List<DownloadFile> GetDownloadFile()

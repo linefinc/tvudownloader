@@ -128,7 +128,6 @@
       <DependentUpon>EditFeedForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ExportImportHelper.cs" />
-    <Compile Include="fileHistory.cs" />
     <Compile Include="RssSubscriptionList.cs" />
     <Compile Include="WebInterface\eMuleWebManager.cs" />
     <Compile Include="WebInterface\aMuleWebManager.cs" />
@@ -150,7 +149,6 @@
     <Compile Include="FormAlerteMuleClose.Designer.cs">
       <DependentUpon>FormAlerteMuleClose.cs</DependentUpon>
     </Compile>
-    <Compile Include="History.cs" />
     <Compile Include="ListViewColumnSorter.cs" />
     <Compile Include="OptionsDialog.cs">
       <SubType>Form</SubType>
@@ -198,7 +196,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.manifest" />
-    <None Include="ClassDiagramRss.cd" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
