@@ -1025,8 +1025,10 @@ namespace TvUndergroundDownloader
                 MainConfig.MaxSimultaneousFeedDownloadsDefault = OptDialog.MaxSimultaneousFeedDownloads;
                 MainConfig.saveLog = OptDialog.saveLog;
 
-
-
+                // tvu save cookie
+                MainConfig.tvuCookieH = OptDialog.tvuCookieH;
+                MainConfig.tvuCookieI = OptDialog.tvuCookieI;
+                MainConfig.tvuCookieT = OptDialog.tvuCookieT;
 
 
                 if (MainConfig.CloseEmuleIfAllIsDone == true)
