@@ -185,7 +185,7 @@ namespace TvUndergroundDownloader
         {
             if (downloaded.ContainsKey(file) == true)
             {
-                return;
+                throw new Exception("File missing in feed");
             }
 
             downloaded.Add(file, DateTime.Now);
@@ -195,7 +195,7 @@ namespace TvUndergroundDownloader
         {
             if (downloaded.ContainsKey(file) == false)
             {
-                return;
+                throw new Exception("File missing in feed");
             }
 
             downloaded.Remove(file);
