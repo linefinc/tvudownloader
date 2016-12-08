@@ -1120,9 +1120,12 @@ namespace TvUndergroundDownloader
             }
             logger.Info("[AutoClose Mule] Login ok");
 
-            logger.Info("[AutoClose Mule] Actual Downloads " + Service.GetCurrentDownloads(null).Count);
+            List<Ed2kfile> knownFiles = new List<Ed2kfile>();
+            MainConfig.RssFeedList.ForEach((file) => knownFiles.AddRange(file.GetDownloadedFiles()));
+                
+            logger.Info("[AutoClose Mule] Actual Downloads " + Service.GetCurrentDownloads(knownFiles).Count);
             // if donwload > 0 ... there' s some download ... end 
-            if (Service.GetCurrentDownloads(null).Count > 0)
+            if (Service.GetCurrentDownloads(knownFiles).Count > 0)
             {
                 logger.Info("[AutoClose Mule] GetActualDownloads return >0");
                 AutoCloseDataTime = DateTime.Now.AddMinutes(30);
