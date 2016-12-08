@@ -1365,9 +1365,10 @@ namespace TvUndergroundDownloader
             }
             Log.logVerbose("[AutoClose Mule] Login ok");
 
-            Log.logVerbose("[AutoClose Mule] Actual Downloads " + Service.GetCurrentDownloads(null).Count);
+            int count = Service.GetCurrentDownloads(MainHistory.GetKnownFiles()).Count;
+            Log.logVerbose("[AutoClose Mule] Actual Downloads {0}" + count);
             // if donwload > 0 ... there' s some download ... end 
-            if (Service.GetCurrentDownloads(null).Count > 0)
+            if (count > 0)
             {
                 Log.logVerbose("[AutoClose Mule] GetActualDownloads return >0");
                 AutoCloseDataTime = DateTime.Now.AddMinutes(30);
