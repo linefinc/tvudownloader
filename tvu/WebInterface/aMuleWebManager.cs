@@ -61,7 +61,6 @@ namespace TvUndergroundDownloader
             {
                 return LoginStatus.ServiceNotAvailable;
             }
-            return LoginStatus.ServiceNotAvailable;
         }
 
         /// <summary>
@@ -190,8 +189,12 @@ namespace TvUndergroundDownloader
         /// <returns></returns>
         public List<Ed2kfile> GetCurrentDownloads(List<Ed2kfile> knownFiles)
         {
-            List<Ed2kfile> ListDownloads = new List<Ed2kfile>();
+            if (knownFiles == null)
+            {
+                throw new NullReferenceException("knownFiles");
+            }
 
+            List<Ed2kfile> ListDownloads = new List<Ed2kfile>();
             // get download page
             string page = RequestGET(string.Format("{0}/amuleweb-main-dload.php", Host));
 
