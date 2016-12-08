@@ -201,6 +201,10 @@ namespace TvUndergroundDownloader
         /// <returns></returns>
         public List<Ed2kfile> GetCurrentDownloads(List<Ed2kfile> knownFiles)
         {
+            if(knownFiles == null)
+            {
+                throw new NullReferenceException("knownFiles");
+            }
             List<Ed2kfile> ListDownloads = new List<Ed2kfile>();
 
             // get download page
