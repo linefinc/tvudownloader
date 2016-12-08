@@ -2,7 +2,6 @@
 using NLog.Config;
 using NLog.Targets;
 using System;
-using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
