@@ -183,9 +183,14 @@ namespace TvUndergroundDownloader
 
         public void SetFileDownloaded(Ed2kfile file)
         {
-            if (downloaded.ContainsKey(file) == true)
+            if (linkCache.ContainsValue(file) == false)
             {
                 throw new Exception("File missing in feed");
+            }
+
+            if (downloaded.ContainsKey(file) == true)
+            {
+                throw new Exception("Duplicate file in feed");
             }
 
             downloaded.Add(file, DateTime.Now);
@@ -193,6 +198,11 @@ namespace TvUndergroundDownloader
 
         public void SetFileNotDownloaded(Ed2kfile file)
         {
+            if (linkCache.ContainsValue(file) == false)
+            {
+                throw new Exception("File missing in feed");
+            }
+
             if (downloaded.ContainsKey(file) == false)
             {
                 throw new Exception("File missing in feed");
