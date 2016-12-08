@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace TvUndergroundDownloader
 {
-   
+
 
     public class Config
     {
@@ -174,128 +174,128 @@ namespace TvUndergroundDownloader
 
         public void Save()
         {
-            XmlTextWriter writter = new XmlTextWriter(Config.FileNameConfig, null);
-            writter.Formatting = Formatting.Indented;
+            XmlTextWriter writer = new XmlTextWriter(Config.FileNameConfig, null);
+            writer.Formatting = Formatting.Indented;
 
-            writter.WriteStartDocument();
-            writter.WriteStartElement("Config");
+            writer.WriteStartDocument();
+            writer.WriteStartElement("Config");
 
-            writter.WriteStartElement("version");
-            writter.WriteString(Version);
-            writter.WriteEndElement();
+            writer.WriteStartElement("version");
+            writer.WriteString(Version);
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("ServiceType");
-            if (ServiceType ==eServiceType.eMule)
+            writer.WriteStartElement("ServiceType");
+            if (ServiceType == eServiceType.eMule)
             {
-                writter.WriteString("eMule");
+                writer.WriteString("eMule");
             }
             else
             {
-                writter.WriteString("aMule");
+                writer.WriteString("aMule");
             }
-            writter.WriteEndElement();
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("ServiceUrl");
-            writter.WriteString(ServiceUrl);
-            writter.WriteEndElement();
+            writer.WriteStartElement("ServiceUrl");
+            writer.WriteString(ServiceUrl);
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("Password");
-            writter.WriteString(Password);
-            writter.WriteEndElement();
+            writer.WriteStartElement("Password");
+            writer.WriteString(Password);
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("tvuCookieH");
-            writter.WriteString(this.tvuCookieH);
-            writter.WriteEndElement();
+            writer.WriteStartElement("tvuCookieH");
+            writer.WriteString(this.tvuCookieH);
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("tvuCookieI");
-            writter.WriteString(this.tvuCookieI);
-            writter.WriteEndElement();
+            writer.WriteStartElement("tvuCookieI");
+            writer.WriteString(this.tvuCookieI);
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("tvuCookieT");
-            writter.WriteString(this.tvuCookieT);
-            writter.WriteEndElement();
+            writer.WriteStartElement("tvuCookieT");
+            writer.WriteString(this.tvuCookieT);
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("IntervalTime");
-            writter.WriteString(IntervalTime.ToString());
-            writter.WriteEndElement();
+            writer.WriteStartElement("IntervalTime");
+            writer.WriteString(IntervalTime.ToString());
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("StartMinimized");
-            writter.WriteString(StartMinimized.ToString());
-            writter.WriteEndElement();
+            writer.WriteStartElement("StartMinimized");
+            writer.WriteString(StartMinimized.ToString());
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("AutoStartEmule");
-            writter.WriteString(StartEmuleIfClose.ToString());
-            writter.WriteEndElement();
+            writer.WriteStartElement("AutoStartEmule");
+            writer.WriteString(StartEmuleIfClose.ToString());
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("CloseWhenAllDone");
-            writter.WriteString(CloseEmuleIfAllIsDone.ToString());
-            writter.WriteEndElement();
+            writer.WriteStartElement("CloseWhenAllDone");
+            writer.WriteString(CloseEmuleIfAllIsDone.ToString());
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("AutoClearLog");
-            writter.WriteString(AutoClearLog.ToString());
-            writter.WriteEndElement();
+            writer.WriteStartElement("AutoClearLog");
+            writer.WriteString(AutoClearLog.ToString());
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("eMuleExe");
-            writter.WriteString(eMuleExe);
-            writter.WriteEndElement();
+            writer.WriteStartElement("eMuleExe");
+            writer.WriteString(eMuleExe);
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("DefaultCategory");
-            writter.WriteString(DefaultCategory);
-            writter.WriteEndElement();
+            writer.WriteStartElement("DefaultCategory");
+            writer.WriteString(DefaultCategory);
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("MinToStartEmule");
-            writter.WriteString(MinToStartEmule.ToString());
-            writter.WriteEndElement();
+            writer.WriteStartElement("MinToStartEmule");
+            writer.WriteString(MinToStartEmule.ToString());
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("MaxSimultaneousFeedDownloads");
-            writter.WriteString(MaxSimultaneousFeedDownloads.ToString());
-            writter.WriteEndElement();
+            writer.WriteStartElement("MaxSimultaneousFeedDownloads");
+            writer.WriteString(MaxSimultaneousFeedDownloads.ToString());
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("Verbose");
-            writter.WriteString(Verbose.ToString());
-            writter.WriteEndElement();
+            writer.WriteStartElement("Verbose");
+            writer.WriteString(Verbose.ToString());
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("EmailNotification");
-            writter.WriteString(EmailNotification.ToString());
-            writter.WriteEndElement();
+            writer.WriteStartElement("EmailNotification");
+            writer.WriteString(EmailNotification.ToString());
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("ServerSMTP");
-            writter.WriteString(ServerSMTP);
-            writter.WriteEndElement();
+            writer.WriteStartElement("ServerSMTP");
+            writer.WriteString(ServerSMTP);
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("MailReceiver");
-            writter.WriteString(MailReceiver.ToString());
-            writter.WriteEndElement();
+            writer.WriteStartElement("MailReceiver");
+            writer.WriteString(MailReceiver.ToString());
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("MailSender");
-            writter.WriteString(MailSender.ToString());
-            writter.WriteEndElement();
+            writer.WriteStartElement("MailSender");
+            writer.WriteString(MailSender.ToString());
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("SaveLog");
-            writter.WriteString(saveLog.ToString());
-            writter.WriteEndElement();
+            writer.WriteStartElement("SaveLog");
+            writer.WriteString(saveLog.ToString());
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("tvudwid");
-            writter.WriteString(tvudwid);
-            writter.WriteEndElement();
+            writer.WriteStartElement("tvudwid");
+            writer.WriteString(tvudwid);
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("intervalBetweenUpgradeCheck");
-            writter.WriteString(intervalBetweenUpgradeCheck.ToString());
-            writter.WriteEndElement();
+            writer.WriteStartElement("intervalBetweenUpgradeCheck");
+            writer.WriteString(intervalBetweenUpgradeCheck.ToString());
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("LastUpgradeCheck");
-            writter.WriteString(LastUpgradeCheck);
-            writter.WriteEndElement();
+            writer.WriteStartElement("LastUpgradeCheck");
+            writer.WriteString(LastUpgradeCheck);
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("TotalDownloads");
-            writter.WriteString(TotalDownloads.ToString());
-            writter.WriteEndElement();
+            writer.WriteStartElement("TotalDownloads");
+            writer.WriteString(TotalDownloads.ToString());
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("useHttpInsteadOfHttps");
-            writter.WriteString(useHttpInsteadOfHttps.ToString());
-            writter.WriteEndElement();
+            writer.WriteStartElement("useHttpInsteadOfHttps");
+            writer.WriteString(useHttpInsteadOfHttps.ToString());
+            writer.WriteEndElement();
 
-            writter.WriteStartElement("RSSChannel");
+            writer.WriteStartElement("RSSChannel");
 
             List<RssSubscrission> myRssFeedList = new List<RssSubscrission>();
             myRssFeedList.AddRange(this.RssFeedList);
@@ -309,65 +309,78 @@ namespace TvUndergroundDownloader
                 //<Pause>False</Pause>
                 //<Category>Anime</Category>
                 //</Channel>
-                writter.WriteStartElement("Channel");
+                writer.WriteStartElement("Channel");
                 {
-                    writter.WriteStartElement("Title");//Title
-                    writter.WriteString(feed.Title);
-                    writter.WriteEndElement();
+                    writer.WriteStartElement("Title");//Title
+                    writer.WriteString(feed.Title);
+                    writer.WriteEndElement();
 
-                    writter.WriteStartElement("Url");//Url
-                    writter.WriteString(feed.Url);
-                    writter.WriteEndElement();
+                    writer.WriteStartElement("Url");//Url
+                    writer.WriteString(feed.Url);
+                    writer.WriteEndElement();
 
-                    writter.WriteStartElement("Pause");//Category
-                    writter.WriteString(feed.PauseDownload.ToString());
-                    writter.WriteEndElement();
+                    writer.WriteStartElement("Pause");//Category
+                    writer.WriteString(feed.PauseDownload.ToString());
+                    writer.WriteEndElement();
 
-                    writter.WriteStartElement("Category");//Category
-                    writter.WriteString(feed.Category);
-                    writter.WriteEndElement();
+                    writer.WriteStartElement("Category");//Category
+                    writer.WriteString(feed.Category);
+                    writer.WriteEndElement();
 
-                    writter.WriteStartElement("LastUpgradeDate");//Last Upgrade Date
-                    writter.WriteString(feed.LastUpgradeDate);
-                    writter.WriteEndElement();
+                    writer.WriteStartElement("LastUpgradeDate");//Last Upgrade Date
+                    writer.WriteString(feed.LastUpgradeDate);
+                    writer.WriteEndElement();
 
                     //TODO: enable not to fix
-                    writter.WriteStartElement("Enabled");
-                    writter.WriteString(feed.Enabled.ToString());
-                    writter.WriteEndElement();
+                    writer.WriteStartElement("Enabled");
+                    writer.WriteString(feed.Enabled.ToString());
+                    writer.WriteEndElement();
 
-                    writter.WriteStartElement("maxSimultaneousDownload"); // max Simultaneous Downloads
-                    writter.WriteString(feed.maxSimultaneousDownload.ToString());
-                    writter.WriteEndElement();
+                    writer.WriteStartElement("maxSimultaneousDownload"); // max Simultaneous Downloads
+                    writer.WriteString(feed.maxSimultaneousDownload.ToString());
+                    writer.WriteEndElement();
 
-                    writter.WriteStartElement("tvuStatus");
+                    writer.WriteStartElement("tvuStatus");
                     switch (feed.tvuStatus)
                     {
                         case tvuStatus.Complete:
-                            writter.WriteString("Complete");
+                            writer.WriteString("Complete");
                             break;
                         case tvuStatus.StillIncomplete:
-                            writter.WriteString("StillIncomplete");
+                            writer.WriteString("StillIncomplete");
                             break;
                         case tvuStatus.StillRunning:
-                            writter.WriteString("StillRunning");
+                            writer.WriteString("StillRunning");
                             break;
                         case tvuStatus.OnHiatus:
-                            writter.WriteString("OnHiatus");
+                            writer.WriteString("OnHiatus");
                             break;
                         case tvuStatus.Unknown:
                         default:
-                            writter.WriteString("Unknown");
+                            writer.WriteString("Unknown");
                             break;
                     }
-                    writter.WriteEndElement();
+                    writer.WriteEndElement();
+                    {
+                        writer.WriteStartElement("Files");
+                        History history = new History();
+                        foreach (var file in history.ExportDownloadedFileByFeedSoruce(feed.Url))
+                        {
+                            writer.WriteStartElement("File");
+                            writer.WriteElementString("LinkED2K", file.Ed2kLink);
+                            writer.WriteElementString("Guid", file.FeedLink);
+                            writer.WriteElementString("Downloaded", file.Date.ToString());
+                            writer.WriteEndElement();// end file
+                        }
+                        writer.WriteEndElement();// end file
+                    }
                 }
 
-                writter.WriteEndElement();// end channel
+                writer.WriteEndElement();// end channel
 
             }
-            writter.WriteEndElement();// end RSSChannel
-            writter.Close();
+            writer.WriteEndElement();// end RSSChannel
+            writer.Close();
 
         }
 
@@ -378,7 +391,7 @@ namespace TvUndergroundDownloader
             XmlDocument xDoc = new XmlDocument();
             xDoc.Load(Config.FileNameConfig);
 
-            switch(ReadString(xDoc, "ServiceType", "eMule"))
+            switch (ReadString(xDoc, "ServiceType", "eMule"))
             {
                 case "aMule":
                     ServiceType = eServiceType.aMule;
