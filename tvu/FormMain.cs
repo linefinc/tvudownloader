@@ -657,9 +657,9 @@ namespace TvUndergroundDownloader
                 }
                 // mark the file download
                 DownloadFile.subscription.SetFileDownloaded(DownloadFile.file);
-                Ed2kfile parser = new Ed2kfile(DownloadFile.file);
-                logger.Info("Add file to emule {0}", parser.GetFileName());
-                SendMailDownload(parser.GetFileName(), DownloadFile.file.Ed2kLink);
+                
+                logger.Info("Add file to emule {0}", DownloadFile.file.GetFileName());
+                SendMailDownload(DownloadFile.file.GetFileName(), DownloadFile.file.Ed2kLink);
                 MainConfig.TotalDownloads++;   //increase Total Downloads for statistic
 
                 // progress bar
