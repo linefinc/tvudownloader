@@ -1254,9 +1254,6 @@ namespace TvUndergroundDownloader
 
                 MainConfig.ServiceUrl = OptDialog.ServiceUrl;
                 MainConfig.Password = OptDialog.Password;
-
-
-
                 MainConfig.DefaultCategory = OptDialog.DefaultCategory;
                 MainConfig.eMuleExe = OptDialog.eMuleExe;
                 MainConfig.IntervalTime = OptDialog.IntervalTime;
@@ -1270,8 +1267,10 @@ namespace TvUndergroundDownloader
                 MainConfig.MaxSimultaneousFeedDownloads = OptDialog.MaxSimultaneousFeedDownloads;
                 MainConfig.saveLog = OptDialog.saveLog;
 
-
-
+                // tvu save cookie
+                MainConfig.tvuCookieH = OptDialog.tvuCookieH;
+                MainConfig.tvuCookieI = OptDialog.tvuCookieI;
+                MainConfig.tvuCookieT = OptDialog.tvuCookieT;
 
 
                 if (MainConfig.CloseEmuleIfAllIsDone == true)
