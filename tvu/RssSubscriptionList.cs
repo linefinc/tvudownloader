@@ -40,7 +40,10 @@ namespace TvUndergroundDownloader
 
             fileList.RemoveAll((temp) => temp.DownloadDate.HasValue == false);
             fileList.Sort((A, B) => A.DownloadDate.Value.CompareTo(B.DownloadDate.Value));
-            fileList.RemoveRange(Size, fileList.Count - Size);
+            if (fileList.Count > Size)
+            {
+                fileList.RemoveRange(Size, fileList.Count - Size);
+            }
             return fileList;
         }
 
