@@ -80,12 +80,13 @@
             this.globalOptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.oPMLExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.autoStartEMuleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testAutoStartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.autoCloseEMuleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testAutoCloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoStartEMuleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoCloseEMuleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.importDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -111,7 +112,11 @@
             this.toolStripButtonAddFeed = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonCheckNow = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.DataGridViewTextBoxColumnTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewTextBoxColumnTotalDownloads = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewTextBoxColumnLastUpdate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewTextBoxColumnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewTextBoxColumnEnabled = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).BeginInit();
@@ -196,6 +201,12 @@
             this.dataGridViewMain.AllowUserToAddRows = false;
             this.dataGridViewMain.AllowUserToDeleteRows = false;
             this.dataGridViewMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewMain.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.DataGridViewTextBoxColumnTitle,
+            this.DataGridViewTextBoxColumnTotalDownloads,
+            this.DataGridViewTextBoxColumnLastUpdate,
+            this.DataGridViewTextBoxColumnStatus,
+            this.DataGridViewTextBoxColumnEnabled});
             this.dataGridViewMain.ContextMenuStrip = this.contextMenuStripFeed;
             this.dataGridViewMain.Location = new System.Drawing.Point(3, 3);
             this.dataGridViewMain.Name = "dataGridViewMain";
@@ -538,14 +549,14 @@
             // checkNowToolStripMenuItem
             // 
             this.checkNowToolStripMenuItem.Name = "checkNowToolStripMenuItem";
-            this.checkNowToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.checkNowToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.checkNowToolStripMenuItem.Text = "Check Now";
             this.checkNowToolStripMenuItem.Click += new System.EventHandler(this.checkNowToolStripMenuItem_Click);
             // 
             // loginToolStripMenuItem
             // 
             this.loginToolStripMenuItem.Name = "loginToolStripMenuItem";
-            this.loginToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.loginToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.loginToolStripMenuItem.Text = "Login";
             this.loginToolStripMenuItem.Click += new System.EventHandler(this.loginToolStripMenuItem_Click);
             // 
@@ -553,7 +564,7 @@
             // 
             this.cancelCheckToolStripMenuItem.Enabled = false;
             this.cancelCheckToolStripMenuItem.Name = "cancelCheckToolStripMenuItem";
-            this.cancelCheckToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cancelCheckToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.cancelCheckToolStripMenuItem.Text = "Cancel Check";
             this.cancelCheckToolStripMenuItem.Click += new System.EventHandler(this.cancelCheckToolStripMenuItem_Click);
             // 
@@ -571,7 +582,7 @@
             this.importDataToolStripMenuItem,
             this.exportDataToolStripMenuItem});
             this.optionToolStripMenuItem.Name = "optionToolStripMenuItem";
-            this.optionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.optionToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.optionToolStripMenuItem.Text = "Options";
             // 
             // globalOptionToolStripMenuItem
@@ -593,26 +604,12 @@
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(165, 6);
             // 
-            // autoStartEMuleToolStripMenuItem
-            // 
-            this.autoStartEMuleToolStripMenuItem.Name = "autoStartEMuleToolStripMenuItem";
-            this.autoStartEMuleToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.autoStartEMuleToolStripMenuItem.Text = "Auto Start eMule";
-            this.autoStartEMuleToolStripMenuItem.Click += new System.EventHandler(this.autoStartEMuleToolStripMenuItem_Click);
-            // 
             // testAutoStartToolStripMenuItem
             // 
             this.testAutoStartToolStripMenuItem.Name = "testAutoStartToolStripMenuItem";
             this.testAutoStartToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.testAutoStartToolStripMenuItem.Text = "Test Auto Start";
             this.testAutoStartToolStripMenuItem.Click += new System.EventHandler(this.testAutoStartToolStripMenuItem_Click);
-            // 
-            // autoCloseEMuleToolStripMenuItem
-            // 
-            this.autoCloseEMuleToolStripMenuItem.Name = "autoCloseEMuleToolStripMenuItem";
-            this.autoCloseEMuleToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.autoCloseEMuleToolStripMenuItem.Text = "Auto Close eMule";
-            this.autoCloseEMuleToolStripMenuItem.Click += new System.EventHandler(this.autoCloseEMuleToolStripMenuItem_Click);
             // 
             // testAutoCloseToolStripMenuItem
             // 
@@ -621,12 +618,24 @@
             this.testAutoCloseToolStripMenuItem.Text = "Test Auto Close";
             this.testAutoCloseToolStripMenuItem.Click += new System.EventHandler(this.testAutoCloseToolStripMenuItem_Click);
             // 
-            // exportDataToolStripMenuItem
+            // autoStartEMuleToolStripMenuItem
             // 
-            this.exportDataToolStripMenuItem.Name = "exportDataToolStripMenuItem";
-            this.exportDataToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.exportDataToolStripMenuItem.Text = "Export Data";
-            this.exportDataToolStripMenuItem.Click += new System.EventHandler(this.exportDataToolStripMenuItem_Click);
+            this.autoStartEMuleToolStripMenuItem.Name = "autoStartEMuleToolStripMenuItem";
+            this.autoStartEMuleToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.autoStartEMuleToolStripMenuItem.Text = "Auto Start eMule";
+            this.autoStartEMuleToolStripMenuItem.Click += new System.EventHandler(this.autoStartEMuleToolStripMenuItem_Click);
+            // 
+            // autoCloseEMuleToolStripMenuItem
+            // 
+            this.autoCloseEMuleToolStripMenuItem.Name = "autoCloseEMuleToolStripMenuItem";
+            this.autoCloseEMuleToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.autoCloseEMuleToolStripMenuItem.Text = "Auto Close eMule";
+            this.autoCloseEMuleToolStripMenuItem.Click += new System.EventHandler(this.autoCloseEMuleToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(165, 6);
             // 
             // importDataToolStripMenuItem
             // 
@@ -635,27 +644,34 @@
             this.importDataToolStripMenuItem.Text = "Import Data";
             this.importDataToolStripMenuItem.Click += new System.EventHandler(this.importDataToolStripMenuItem_Click);
             // 
+            // exportDataToolStripMenuItem
+            // 
+            this.exportDataToolStripMenuItem.Name = "exportDataToolStripMenuItem";
+            this.exportDataToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.exportDataToolStripMenuItem.Text = "Export Data";
+            this.exportDataToolStripMenuItem.Click += new System.EventHandler(this.exportDataToolStripMenuItem_Click);
+            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(143, 6);
             // 
             // hideToolStripMenuItem
             // 
             this.hideToolStripMenuItem.Name = "hideToolStripMenuItem";
-            this.hideToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.hideToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.hideToolStripMenuItem.Text = "Hide";
             this.hideToolStripMenuItem.Click += new System.EventHandler(this.hideToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(143, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -832,10 +848,49 @@
             this.toolStripButtonStop.Text = "Stop";
             this.toolStripButtonStop.Click += new System.EventHandler(this.toolStripButtonStop_Click);
             // 
-            // toolStripSeparator6
+            // DataGridViewTextBoxColumnTitle
             // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(165, 6);
+            this.DataGridViewTextBoxColumnTitle.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.DataGridViewTextBoxColumnTitle.DataPropertyName = "Title";
+            this.DataGridViewTextBoxColumnTitle.HeaderText = "Title";
+            this.DataGridViewTextBoxColumnTitle.Name = "DataGridViewTextBoxColumnTitle";
+            this.DataGridViewTextBoxColumnTitle.ReadOnly = true;
+            // 
+            // DataGridViewTextBoxColumnTotalDownloads
+            // 
+            this.DataGridViewTextBoxColumnTotalDownloads.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.DataGridViewTextBoxColumnTotalDownloads.DataPropertyName = "TotalDownloads";
+            this.DataGridViewTextBoxColumnTotalDownloads.HeaderText = "Total Downloads";
+            this.DataGridViewTextBoxColumnTotalDownloads.Name = "DataGridViewTextBoxColumnTotalDownloads";
+            this.DataGridViewTextBoxColumnTotalDownloads.ReadOnly = true;
+            this.DataGridViewTextBoxColumnTotalDownloads.Width = 5;
+            // 
+            // DataGridViewTextBoxColumnLastUpdate
+            // 
+            this.DataGridViewTextBoxColumnLastUpdate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.DataGridViewTextBoxColumnLastUpdate.DataPropertyName = "LastUpdate";
+            this.DataGridViewTextBoxColumnLastUpdate.HeaderText = "Last Upgrade";
+            this.DataGridViewTextBoxColumnLastUpdate.Name = "DataGridViewTextBoxColumnLastUpdate";
+            this.DataGridViewTextBoxColumnLastUpdate.ReadOnly = true;
+            this.DataGridViewTextBoxColumnLastUpdate.Width = 5;
+            // 
+            // DataGridViewTextBoxColumnStatus
+            // 
+            this.DataGridViewTextBoxColumnStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.DataGridViewTextBoxColumnStatus.DataPropertyName = "Status";
+            this.DataGridViewTextBoxColumnStatus.HeaderText = "Status";
+            this.DataGridViewTextBoxColumnStatus.Name = "DataGridViewTextBoxColumnStatus";
+            this.DataGridViewTextBoxColumnStatus.ReadOnly = true;
+            this.DataGridViewTextBoxColumnStatus.Width = 5;
+            // 
+            // DataGridViewTextBoxColumnEnabled
+            // 
+            this.DataGridViewTextBoxColumnEnabled.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.DataGridViewTextBoxColumnEnabled.DataPropertyName = "Enabled";
+            this.DataGridViewTextBoxColumnEnabled.HeaderText = "Enabled";
+            this.DataGridViewTextBoxColumnEnabled.Name = "DataGridViewTextBoxColumnEnabled";
+            this.DataGridViewTextBoxColumnEnabled.ReadOnly = true;
+            this.DataGridViewTextBoxColumnEnabled.Width = 5;
             // 
             // FormMain
             // 
@@ -959,6 +1014,11 @@
         private System.Windows.Forms.RichTextBox richTextBoxLog;
         private System.Windows.Forms.DataGridView dataGridViewMain;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DataGridViewTextBoxColumnTitle;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DataGridViewTextBoxColumnTotalDownloads;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DataGridViewTextBoxColumnLastUpdate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DataGridViewTextBoxColumnStatus;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DataGridViewTextBoxColumnEnabled;
     }
 }
 

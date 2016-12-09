@@ -41,6 +41,7 @@ namespace TvUndergroundDownloader
         private DateTime DownloadDataTime;
         private DateTime AutoCloseDataTime;
 
+        [Obsolete]
         public class sDonwloadFile
         {
             public RssSubscription subscription { get; private set; } = null;
@@ -300,8 +301,8 @@ namespace TvUndergroundDownloader
         {
             DataTable dataTable = new DataTable();
             dataTable.Columns.Add("Title");
-            dataTable.Columns.Add("Total downloads");
-            dataTable.Columns.Add("Last upgrade");
+            dataTable.Columns.Add("TotalDownloads");
+            dataTable.Columns.Add("LastUpgrade");
             dataTable.Columns.Add("Status");
             dataTable.Columns.Add("Enabled");
 
@@ -309,10 +310,30 @@ namespace TvUndergroundDownloader
             {
                 var newRow = dataTable.NewRow();
                 newRow["Title"] = subscrission.TitleCompact;
-                newRow["Total downloads"] = subscrission.GetDownloadedFiles().Count.ToString();
-                newRow["Last upgrade"] = subscrission.GetLastDownloadDate().ToShortDateString();
-                newRow["Status"] = subscrission.CurrentTVUStatus.ToString();
-                newRow["Enabled"] = subscrission.Enabled == true ? "Enabled" : "Disabled";
+                newRow["TotalDownloads"] = subscrission.GetDownloadedFiles().Count.ToString();
+                newRow["LastUpgrade"] = subscrission.GetLastDownloadDate().ToShortDateString();
+
+                switch(subscrission.CurrentTVUStatus )
+                {
+                    case tvuStatus.Complete:
+                        newRow["Status"] = "Complete";
+                        break;
+                    case tvuStatus.StillIncomplete:
+                        newRow["Status"] = "Still Incomplete";
+                        break;
+                    case tvuStatus.StillRunning:
+                        newRow["Status"] = "Still Running";
+                        break;
+                    case tvuStatus.OnHiatus:
+                        newRow["Status"] = "On Hiatus";
+                        break;
+                    case tvuStatus.Unknown:
+                    default:
+                        newRow["Status"] = "Unknown";
+                        break;
+                }
+                
+                newRow["Enabled"] = subscrission.Enabled == true ? "True" : "False";
                 dataTable.Rows.Add(newRow);
 
 
@@ -569,7 +590,7 @@ namespace TvUndergroundDownloader
                 return;
             }
 
-            logger.Info("Current Download Form Emule " + CourrentDownloadsFormEmule.Count);
+            logger.Info("Current Download Form Emule {0}", CourrentDownloadsFormEmule.Count);
 
             //for debug
             CourrentDownloadsFormEmule.ForEach(delegate (Ed2kfile file) { logger.Info(file.FileName.Replace("%20", " ")); });
@@ -578,8 +599,16 @@ namespace TvUndergroundDownloader
             //  note move this function in MainHistory class
             //
             logger.Info("Start search in history");
-            //List<FileHistory> ActualDownloadFileList = MainHistory.getFileHistoryFromDB(CourrentDownloadsFormEmule);
-            List<DownloadFile> ActualDownloadFileList = MainConfig.RssFeedList.GetDownloadFiles();
+
+            List<DownloadFile> ActualDownloadFileList = new List<DownloadFile>();
+            foreach (var dFile in MainConfig.RssFeedList.GetDownloadFiles())
+            {
+                if (CourrentDownloadsFormEmule.Contains(dFile.File) == true)
+                {
+                    ActualDownloadFileList.Add(dFile);
+                }
+            }
+
             ActualDownloadFileList.ForEach(delegate (DownloadFile file) { logger.Info("Found :{0}", file.File.FileName); });
 
             logger.Info("ActualDownloadFileList.Count = " + ActualDownloadFileList.Count);
@@ -604,7 +633,7 @@ namespace TvUndergroundDownloader
                     MaxSimultaneousDownloadsDictionary[file.Subscription] = counter;
                 }
             }
-            
+
             logger.Info("Download file");
             //
             //  Download file 
@@ -661,7 +690,7 @@ namespace TvUndergroundDownloader
                 // mark the file download
                 DownloadFile.subscription.SetFileDownloaded(DownloadFile.file);
 
-                logger.Info("Add file to emule {0}", DownloadFile.file.GetFileName());
+                logger.Info("Add file to emule \"{0}\"", DownloadFile.file.GetFileName());
                 SendMailDownload(DownloadFile.file.GetFileName(), DownloadFile.file.Ed2kLink);
                 MainConfig.TotalDownloads++;   //increase Total Downloads for statistic
 
@@ -1850,8 +1879,7 @@ namespace TvUndergroundDownloader
                 return;
             }
 
-
-            string TitleCompact = dataGridViewMain.SelectedRows[0].Cells[0].Value.ToString();
+            string TitleCompact = dataGridViewMain.SelectedRows[0].Cells[DataGridViewTextBoxColumnTitle.Name].Value.ToString();
             RssSubscription Feed = MainConfig.RssFeedList.Find(x => (x.TitleCompact == TitleCompact));
             if (Feed == null)
             {
