@@ -37,11 +37,6 @@
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
             this.tabMain = new System.Windows.Forms.TabPage();
             this.dataGridViewMain = new System.Windows.Forms.DataGridView();
-            this.DataGridViewTextBoxColumnTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataGridViewTextBoxColumnTotalDownloads = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataGridViewTextBoxColumnLastUpdate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataGridViewTextBoxColumnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataGridViewTextBoxColumnEnabled = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStripFeed = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemEdit = new System.Windows.Forms.ToolStripMenuItem();
@@ -116,6 +111,11 @@
             this.toolStripButtonAddFeed = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonCheckNow = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
+            this.DataGridViewTextBoxColumnTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewTextBoxColumnTotalDownloads = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewTextBoxColumnLastUpdate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewTextBoxColumnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewTextBoxColumnEnabled = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).BeginInit();
@@ -215,50 +215,6 @@
             this.dataGridViewMain.Size = new System.Drawing.Size(557, 242);
             this.dataGridViewMain.TabIndex = 38;
             this.dataGridViewMain.SelectionChanged += new System.EventHandler(this.dataGridViewMain_SelectionChanged);
-            // 
-            // DataGridViewTextBoxColumnTitle
-            // 
-            this.DataGridViewTextBoxColumnTitle.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.DataGridViewTextBoxColumnTitle.DataPropertyName = "Title";
-            this.DataGridViewTextBoxColumnTitle.HeaderText = "Title";
-            this.DataGridViewTextBoxColumnTitle.Name = "DataGridViewTextBoxColumnTitle";
-            this.DataGridViewTextBoxColumnTitle.ReadOnly = true;
-            // 
-            // DataGridViewTextBoxColumnTotalDownloads
-            // 
-            this.DataGridViewTextBoxColumnTotalDownloads.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.DataGridViewTextBoxColumnTotalDownloads.DataPropertyName = "TotalDownloads";
-            this.DataGridViewTextBoxColumnTotalDownloads.HeaderText = "Total Downloads";
-            this.DataGridViewTextBoxColumnTotalDownloads.Name = "DataGridViewTextBoxColumnTotalDownloads";
-            this.DataGridViewTextBoxColumnTotalDownloads.ReadOnly = true;
-            this.DataGridViewTextBoxColumnTotalDownloads.Width = 103;
-            // 
-            // DataGridViewTextBoxColumnLastUpdate
-            // 
-            this.DataGridViewTextBoxColumnLastUpdate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.DataGridViewTextBoxColumnLastUpdate.DataPropertyName = "LastUpdate";
-            this.DataGridViewTextBoxColumnLastUpdate.HeaderText = "Last Upgrade";
-            this.DataGridViewTextBoxColumnLastUpdate.Name = "DataGridViewTextBoxColumnLastUpdate";
-            this.DataGridViewTextBoxColumnLastUpdate.ReadOnly = true;
-            this.DataGridViewTextBoxColumnLastUpdate.Width = 88;
-            // 
-            // DataGridViewTextBoxColumnStatus
-            // 
-            this.DataGridViewTextBoxColumnStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.DataGridViewTextBoxColumnStatus.DataPropertyName = "Status";
-            this.DataGridViewTextBoxColumnStatus.HeaderText = "Status";
-            this.DataGridViewTextBoxColumnStatus.Name = "DataGridViewTextBoxColumnStatus";
-            this.DataGridViewTextBoxColumnStatus.ReadOnly = true;
-            this.DataGridViewTextBoxColumnStatus.Width = 62;
-            // 
-            // DataGridViewTextBoxColumnEnabled
-            // 
-            this.DataGridViewTextBoxColumnEnabled.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.DataGridViewTextBoxColumnEnabled.DataPropertyName = "Enabled";
-            this.DataGridViewTextBoxColumnEnabled.HeaderText = "Enabled";
-            this.DataGridViewTextBoxColumnEnabled.Name = "DataGridViewTextBoxColumnEnabled";
-            this.DataGridViewTextBoxColumnEnabled.ReadOnly = true;
-            this.DataGridViewTextBoxColumnEnabled.Width = 71;
             // 
             // contextMenuStripFeed
             // 
@@ -882,6 +838,50 @@
             this.toolStripButtonStop.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonStop.Text = "Stop";
             this.toolStripButtonStop.Click += new System.EventHandler(this.toolStripButtonStop_Click);
+            // 
+            // DataGridViewTextBoxColumnTitle
+            // 
+            this.DataGridViewTextBoxColumnTitle.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.DataGridViewTextBoxColumnTitle.DataPropertyName = "Title";
+            this.DataGridViewTextBoxColumnTitle.HeaderText = "Title";
+            this.DataGridViewTextBoxColumnTitle.Name = "DataGridViewTextBoxColumnTitle";
+            this.DataGridViewTextBoxColumnTitle.ReadOnly = true;
+            // 
+            // DataGridViewTextBoxColumnTotalDownloads
+            // 
+            this.DataGridViewTextBoxColumnTotalDownloads.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.DataGridViewTextBoxColumnTotalDownloads.DataPropertyName = "TotalDownloads";
+            this.DataGridViewTextBoxColumnTotalDownloads.HeaderText = "Total Downloads";
+            this.DataGridViewTextBoxColumnTotalDownloads.Name = "DataGridViewTextBoxColumnTotalDownloads";
+            this.DataGridViewTextBoxColumnTotalDownloads.ReadOnly = true;
+            this.DataGridViewTextBoxColumnTotalDownloads.Width = 103;
+            // 
+            // DataGridViewTextBoxColumnLastUpdate
+            // 
+            this.DataGridViewTextBoxColumnLastUpdate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.DataGridViewTextBoxColumnLastUpdate.DataPropertyName = "LastUpgrade";
+            this.DataGridViewTextBoxColumnLastUpdate.HeaderText = "Last Upgrade";
+            this.DataGridViewTextBoxColumnLastUpdate.Name = "DataGridViewTextBoxColumnLastUpdate";
+            this.DataGridViewTextBoxColumnLastUpdate.ReadOnly = true;
+            this.DataGridViewTextBoxColumnLastUpdate.Width = 88;
+            // 
+            // DataGridViewTextBoxColumnStatus
+            // 
+            this.DataGridViewTextBoxColumnStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.DataGridViewTextBoxColumnStatus.DataPropertyName = "Status";
+            this.DataGridViewTextBoxColumnStatus.HeaderText = "Status";
+            this.DataGridViewTextBoxColumnStatus.Name = "DataGridViewTextBoxColumnStatus";
+            this.DataGridViewTextBoxColumnStatus.ReadOnly = true;
+            this.DataGridViewTextBoxColumnStatus.Width = 62;
+            // 
+            // DataGridViewTextBoxColumnEnabled
+            // 
+            this.DataGridViewTextBoxColumnEnabled.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.DataGridViewTextBoxColumnEnabled.DataPropertyName = "Enabled";
+            this.DataGridViewTextBoxColumnEnabled.HeaderText = "Enabled";
+            this.DataGridViewTextBoxColumnEnabled.Name = "DataGridViewTextBoxColumnEnabled";
+            this.DataGridViewTextBoxColumnEnabled.ReadOnly = true;
+            this.DataGridViewTextBoxColumnEnabled.Width = 71;
             // 
             // FormMain
             // 

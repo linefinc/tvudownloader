@@ -310,8 +310,9 @@ namespace TvUndergroundDownloader
             {
                 var newRow = dataTable.NewRow();
                 newRow["Title"] = subscrission.TitleCompact;
-                newRow["TotalDownloads"] = subscrission.GetDownloadedFiles().Count.ToString();
-                newRow["LastUpgrade"] = subscrission.GetLastDownloadDate().ToShortDateString();
+                newRow["TotalDownloads"] = subscrission.GetDownloadedFiles().Count;
+                TimeSpan ts = DateTime.Now - subscrission.GetLastDownloadDate();
+                newRow["LastUpgrade"] = ts.Days;
 
                 switch(subscrission.CurrentTVUStatus )
                 {
@@ -319,10 +320,10 @@ namespace TvUndergroundDownloader
                         newRow["Status"] = "Complete";
                         break;
                     case tvuStatus.StillIncomplete:
-                        newRow["Status"] = "Still Incomplete";
+                        newRow["Status"] = "Incomplete";
                         break;
                     case tvuStatus.StillRunning:
-                        newRow["Status"] = "Still Running";
+                        newRow["Status"] = "Running";
                         break;
                     case tvuStatus.OnHiatus:
                         newRow["Status"] = "On Hiatus";
@@ -1340,7 +1341,8 @@ namespace TvUndergroundDownloader
 
             foreach (DataGridViewRow selectedItem in dataGridViewMain.SelectedRows)
             {
-                string TitleCompact = selectedItem.Cells[0].Value.ToString();
+                DataGridViewColumn col = DataGridViewTextBoxColumnTitle;
+                string TitleCompact = selectedItem.Cells[col.Name].Value.ToString();
                 RssSubscription feed = MainConfig.RssFeedList.Find(x => (x.TitleCompact == TitleCompact));
 
                 if (feed == null)
