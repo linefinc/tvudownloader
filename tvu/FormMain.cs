@@ -1161,7 +1161,8 @@ namespace TvUndergroundDownloader
             timerAutoClose.Enabled = false;
 
             // connect to mule
-
+            try
+            { 
             logger.Info("[AutoClose Mule] Check Login");
             eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
             LoginStatus returnCode = Service.Connect();
@@ -1196,33 +1197,38 @@ namespace TvUndergroundDownloader
             Dialog.ShowDialog();
 
             logger.Info("[AutoClose Mule] Dialog return " + Dialog.AlertChoice.ToString());
-            switch (Dialog.AlertChoice)
+                switch (Dialog.AlertChoice)
+                {
+                    case AlertChoiceEnum.Close:// Close
+                        logger.Info("[AutoClose Mule: CLOSE] Close Service");
+                        Dialog.Dispose();
+                        Service.CloseEmuleApp();
+                        Service.Close();
+                        timerAutoClose.Enabled = true;  // enable timer 
+                        break;
+                    // to fix here                    
+                    case AlertChoiceEnum.Skip: // SKIP
+                        AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
+                        logger.Info("[AutoClose Mule: SKIP] Skip");
+                        logger.Info("[AutoClose Mule: SKIP] Next Tock " + AutoCloseDataTime.ToString());
+                        Dialog.Dispose();
+                        logger.Info("[AutoClose Mule] LogOut");
+                        Service.Close();
+                        timerAutoClose.Enabled = true;  // enable timer 
+                        break;
+                    case AlertChoiceEnum.Disable:    // disable autoclose
+                        logger.Info("[AutoClose Mule: DISABLE] Disable");
+                        Dialog.Dispose();
+                        logger.Info("[AutoClose Mule] LogOut");
+                        Service.Close();
+                        DisableAutoCloseEmule();
+                        timerAutoClose.Enabled = true;  // enable timer 
+                        break;
+                }
+            }
+            catch(Exception ex)
             {
-                case AlertChoiceEnum.Close:// Close
-                    logger.Info("[AutoClose Mule: CLOSE] Close Service");
-                    Dialog.Dispose();
-                    Service.CloseEmuleApp();
-                    Service.Close();
-                    timerAutoClose.Enabled = true;  // enable timer 
-                    break;
-                // to fix here                    
-                case AlertChoiceEnum.Skip: // SKIP
-                    AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
-                    logger.Info("[AutoClose Mule: SKIP] Skip");
-                    logger.Info("[AutoClose Mule: SKIP] Next Tock " + AutoCloseDataTime.ToString());
-                    Dialog.Dispose();
-                    logger.Info("[AutoClose Mule] LogOut");
-                    Service.Close();
-                    timerAutoClose.Enabled = true;  // enable timer 
-                    break;
-                case AlertChoiceEnum.Disable:    // disable autoclose
-                    logger.Info("[AutoClose Mule: DISABLE] Disable");
-                    Dialog.Dispose();
-                    logger.Info("[AutoClose Mule] LogOut");
-                    Service.Close();
-                    DisableAutoCloseEmule();
-                    timerAutoClose.Enabled = true;  // enable timer 
-                    break;
+                logger.Error(ex,"Autoclose error");
             }
         }
 
