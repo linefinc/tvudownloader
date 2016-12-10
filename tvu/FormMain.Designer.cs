@@ -112,6 +112,7 @@
             this.toolStripButtonCheckNow = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
             this.DataGridViewTextBoxColumnTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewImageColumnDubLanguage = new System.Windows.Forms.DataGridViewImageColumn();
             this.DataGridViewTextBoxColumnTotalDownloads = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DataGridViewTextBoxColumnLastUpdate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DataGridViewTextBoxColumnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -202,6 +203,7 @@
             this.dataGridViewMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewMain.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.DataGridViewTextBoxColumnTitle,
+            this.DataGridViewImageColumnDubLanguage,
             this.DataGridViewTextBoxColumnTotalDownloads,
             this.DataGridViewTextBoxColumnLastUpdate,
             this.DataGridViewTextBoxColumnStatus,
@@ -847,6 +849,15 @@
             this.DataGridViewTextBoxColumnTitle.Name = "DataGridViewTextBoxColumnTitle";
             this.DataGridViewTextBoxColumnTitle.ReadOnly = true;
             // 
+            // DataGridViewImageColumnDubLanguage
+            // 
+            this.DataGridViewImageColumnDubLanguage.DataPropertyName = "DubLanguage";
+            this.DataGridViewImageColumnDubLanguage.HeaderText = "Dub";
+            this.DataGridViewImageColumnDubLanguage.Name = "DataGridViewImageColumnDubLanguage";
+            this.DataGridViewImageColumnDubLanguage.ReadOnly = true;
+            this.DataGridViewImageColumnDubLanguage.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.DataGridViewImageColumnDubLanguage.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
             // DataGridViewTextBoxColumnTotalDownloads
             // 
             this.DataGridViewTextBoxColumnTotalDownloads.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
@@ -1005,6 +1016,7 @@
         private System.Windows.Forms.DataGridView dataGridViewMain;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.DataGridViewTextBoxColumn DataGridViewTextBoxColumnTitle;
+        private System.Windows.Forms.DataGridViewImageColumn DataGridViewImageColumnDubLanguage;
         private System.Windows.Forms.DataGridViewTextBoxColumn DataGridViewTextBoxColumnTotalDownloads;
         private System.Windows.Forms.DataGridViewTextBoxColumn DataGridViewTextBoxColumnLastUpdate;
         private System.Windows.Forms.DataGridViewTextBoxColumn DataGridViewTextBoxColumnStatus;

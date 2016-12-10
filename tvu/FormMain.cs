@@ -299,12 +299,15 @@ namespace TvUndergroundDownloader
 
         private void UpdateRssFeedGUI()
         {
+      
             DataTable dataTable = new DataTable();
             dataTable.Columns.Add("Title");
             dataTable.Columns.Add("TotalDownloads");
             dataTable.Columns.Add("LastUpgrade");
             dataTable.Columns.Add("Status");
             dataTable.Columns.Add("Enabled");
+            dataTable.Columns.Add("DubLanguage", typeof(Image));
+
 
             foreach (RssSubscription subscrission in MainConfig.RssFeedList)
             {
@@ -314,7 +317,7 @@ namespace TvUndergroundDownloader
                 TimeSpan ts = DateTime.Now - subscrission.GetLastDownloadDate();
                 newRow["LastUpgrade"] = ts.Days;
 
-                switch(subscrission.CurrentTVUStatus )
+                switch (subscrission.CurrentTVUStatus)
                 {
                     case tvuStatus.Complete:
                         newRow["Status"] = "Complete";
@@ -333,9 +336,33 @@ namespace TvUndergroundDownloader
                         newRow["Status"] = "Unknown";
                         break;
                 }
-                
+
                 newRow["Enabled"] = subscrission.Enabled == true ? "True" : "False";
+                
+
+                if(subscrission.TitleCompact.IndexOf("english") > -1)
+                    newRow["DubLanguage"] = new Bitmap(Properties.Resources.gb);
+
+                if (subscrission.TitleCompact.IndexOf("italian") > -1)
+                    newRow["DubLanguage"] = new Bitmap(Properties.Resources.it);
+
+                if (subscrission.TitleCompact.IndexOf("german") > -1)
+                    newRow["DubLanguage"] = new Bitmap(Properties.Resources.de);
+
+                if (subscrission.TitleCompact.IndexOf("french") > -1)
+                    newRow["DubLanguage"] = new Bitmap(Properties.Resources.fr);
+
+                if (subscrission.TitleCompact.IndexOf("japanese") > -1)
+                    newRow["DubLanguage"] = new Bitmap(Properties.Resources.jp);
+
+                if (subscrission.TitleCompact.IndexOf("spanish") > -1)
+                    newRow["DubLanguage"] = new Bitmap(Properties.Resources.es);
+
+                
+
+                newRow["DubLanguage"] = new Bitmap(Properties.Resources.it);
                 dataTable.Rows.Add(newRow);
+
 
 
             }
@@ -1801,7 +1828,7 @@ namespace TvUndergroundDownloader
             labelFeedCategory.Text = Feed.Category;
             labelFeedPauseDownload.Text = Feed.PauseDownload.ToString();
             labelFeedUrl.Text = Feed.Url;
-            
+
             DateTime lastDownloadDate = Feed.GetLastDownloadDate();
             if (lastDownloadDate == DateTime.MinValue)
             {

@@ -256,14 +256,24 @@
   <ItemGroup>
     <None Include="Resources\icon_stop.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\flag\de.png" />
+    <Resource Include="Resources\flag\fr.png" />
+    <Resource Include="Resources\flag\gb.png" />
+    <Resource Include="Resources\flag\it.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flag\es.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flag\jp.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- import MS Build Tasks comunity -->
   <PropertyGroup>
     <MSBuildCommunityTasksPath>$(SolutionDir)\.build</MSBuildCommunityTasksPath>
   </PropertyGroup>
   <Import Project="..\.build\Version.targets" />
- 
- 
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
