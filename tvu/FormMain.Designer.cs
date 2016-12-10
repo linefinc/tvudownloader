@@ -29,6 +29,11 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.timerRssCheck = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
@@ -191,7 +196,7 @@
             this.tabMain.Location = new System.Drawing.Point(4, 22);
             this.tabMain.Name = "tabMain";
             this.tabMain.Padding = new System.Windows.Forms.Padding(3);
-            this.tabMain.Size = new System.Drawing.Size(563, 441);
+            this.tabMain.Size = new System.Drawing.Size(648, 441);
             this.tabMain.TabIndex = 0;
             this.tabMain.Text = "Feeds";
             this.tabMain.UseVisualStyleBackColor = true;
@@ -214,8 +219,9 @@
             this.dataGridViewMain.ReadOnly = true;
             this.dataGridViewMain.RowHeadersVisible = false;
             this.dataGridViewMain.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewMain.Size = new System.Drawing.Size(557, 242);
+            this.dataGridViewMain.Size = new System.Drawing.Size(642, 242);
             this.dataGridViewMain.TabIndex = 38;
+            this.dataGridViewMain.ColumnWidthChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dataGridViewMain_ColumnWidthChanged);
             this.dataGridViewMain.SelectionChanged += new System.EventHandler(this.dataGridViewMain_SelectionChanged);
             // 
             // contextMenuStripFeed
@@ -387,7 +393,7 @@
             this.listViewFeedFilesList.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.listViewFeedFilesList.Location = new System.Drawing.Point(3, 319);
             this.listViewFeedFilesList.Name = "listViewFeedFilesList";
-            this.listViewFeedFilesList.Size = new System.Drawing.Size(557, 119);
+            this.listViewFeedFilesList.Size = new System.Drawing.Size(642, 119);
             this.listViewFeedFilesList.TabIndex = 24;
             this.listViewFeedFilesList.UseCompatibleStateImageBehavior = false;
             this.listViewFeedFilesList.View = System.Windows.Forms.View.Details;
@@ -479,7 +485,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(3, 27, 3, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(571, 467);
+            this.tabControl1.Size = new System.Drawing.Size(656, 467);
             this.tabControl1.TabIndex = 21;
             // 
             // tabPending
@@ -528,7 +534,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(571, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(656, 24);
             this.menuStrip1.TabIndex = 22;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -688,14 +694,14 @@
             // addToolStripMenuItem
             // 
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-            this.addToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.addToolStripMenuItem.Text = "Add";
             this.addToolStripMenuItem.Click += new System.EventHandler(this.addToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
@@ -714,33 +720,33 @@
             // clearToolStripMenuItem
             // 
             this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.clearToolStripMenuItem.Text = "Clear";
             this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
             // 
             // autoClearToolStripMenuItem
             // 
             this.autoClearToolStripMenuItem.Name = "autoClearToolStripMenuItem";
-            this.autoClearToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.autoClearToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.autoClearToolStripMenuItem.Text = "AutoClear";
             this.autoClearToolStripMenuItem.Click += new System.EventHandler(this.autoClearToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(144, 6);
             // 
             // verboseToolStripMenuItem
             // 
             this.verboseToolStripMenuItem.Name = "verboseToolStripMenuItem";
-            this.verboseToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.verboseToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.verboseToolStripMenuItem.Text = "Verbose";
             this.verboseToolStripMenuItem.Click += new System.EventHandler(this.verboseToolStripMenuItem_Click);
             // 
             // openLogFileToolStripMenuItem
             // 
             this.openLogFileToolStripMenuItem.Name = "openLogFileToolStripMenuItem";
-            this.openLogFileToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openLogFileToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.openLogFileToolStripMenuItem.Text = "Open Log File";
             this.openLogFileToolStripMenuItem.Click += new System.EventHandler(this.openLogFileToolStripMenuItem_Click);
             // 
@@ -804,7 +810,7 @@
             this.toolStripButtonStop});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(571, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(656, 25);
             this.toolStrip1.TabIndex = 23;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -845,6 +851,8 @@
             // 
             this.DataGridViewTextBoxColumnTitle.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.DataGridViewTextBoxColumnTitle.DataPropertyName = "Title";
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.DataGridViewTextBoxColumnTitle.DefaultCellStyle = dataGridViewCellStyle1;
             this.DataGridViewTextBoxColumnTitle.HeaderText = "Title";
             this.DataGridViewTextBoxColumnTitle.Name = "DataGridViewTextBoxColumnTitle";
             this.DataGridViewTextBoxColumnTitle.ReadOnly = true;
@@ -857,29 +865,33 @@
             this.DataGridViewImageColumnDubLanguage.ReadOnly = true;
             this.DataGridViewImageColumnDubLanguage.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.DataGridViewImageColumnDubLanguage.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.DataGridViewImageColumnDubLanguage.Width = 33;
             // 
             // DataGridViewTextBoxColumnTotalDownloads
             // 
-            this.DataGridViewTextBoxColumnTotalDownloads.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.DataGridViewTextBoxColumnTotalDownloads.DataPropertyName = "TotalDownloads";
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.DataGridViewTextBoxColumnTotalDownloads.DefaultCellStyle = dataGridViewCellStyle2;
             this.DataGridViewTextBoxColumnTotalDownloads.HeaderText = "Total Downloads";
             this.DataGridViewTextBoxColumnTotalDownloads.Name = "DataGridViewTextBoxColumnTotalDownloads";
             this.DataGridViewTextBoxColumnTotalDownloads.ReadOnly = true;
-            this.DataGridViewTextBoxColumnTotalDownloads.Width = 103;
+            this.DataGridViewTextBoxColumnTotalDownloads.Width = 40;
             // 
             // DataGridViewTextBoxColumnLastUpdate
             // 
-            this.DataGridViewTextBoxColumnLastUpdate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.DataGridViewTextBoxColumnLastUpdate.DataPropertyName = "LastUpgrade";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.DataGridViewTextBoxColumnLastUpdate.DefaultCellStyle = dataGridViewCellStyle3;
             this.DataGridViewTextBoxColumnLastUpdate.HeaderText = "Last Upgrade";
             this.DataGridViewTextBoxColumnLastUpdate.Name = "DataGridViewTextBoxColumnLastUpdate";
             this.DataGridViewTextBoxColumnLastUpdate.ReadOnly = true;
-            this.DataGridViewTextBoxColumnLastUpdate.Width = 88;
+            this.DataGridViewTextBoxColumnLastUpdate.Width = 40;
             // 
             // DataGridViewTextBoxColumnStatus
             // 
-            this.DataGridViewTextBoxColumnStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.DataGridViewTextBoxColumnStatus.DataPropertyName = "Status";
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.DataGridViewTextBoxColumnStatus.DefaultCellStyle = dataGridViewCellStyle4;
             this.DataGridViewTextBoxColumnStatus.HeaderText = "Status";
             this.DataGridViewTextBoxColumnStatus.Name = "DataGridViewTextBoxColumnStatus";
             this.DataGridViewTextBoxColumnStatus.ReadOnly = true;
@@ -887,18 +899,19 @@
             // 
             // DataGridViewTextBoxColumnEnabled
             // 
-            this.DataGridViewTextBoxColumnEnabled.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.DataGridViewTextBoxColumnEnabled.DataPropertyName = "Enabled";
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.DataGridViewTextBoxColumnEnabled.DefaultCellStyle = dataGridViewCellStyle5;
             this.DataGridViewTextBoxColumnEnabled.HeaderText = "Enabled";
             this.DataGridViewTextBoxColumnEnabled.Name = "DataGridViewTextBoxColumnEnabled";
             this.DataGridViewTextBoxColumnEnabled.ReadOnly = true;
-            this.DataGridViewTextBoxColumnEnabled.Width = 71;
+            this.DataGridViewTextBoxColumnEnabled.Width = 60;
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(571, 516);
+            this.ClientSize = new System.Drawing.Size(656, 516);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
