@@ -402,7 +402,6 @@ namespace TvUndergroundDownloader
             checkNowToolStripMenuItem.Enabled = false;
             deleteToolStripMenuItem.Enabled = false;
             addToolStripMenuItem.Enabled = false;
-            deleteCompleteToolStripMenuItem.Enabled = false;
             toolStripMenuItemAdd.Enabled = false;
             toolStripMenuItemDelete.Enabled = false;
             toolStripMenuItemEdit.Enabled = false;
@@ -726,21 +725,16 @@ namespace TvUndergroundDownloader
             UpdateRssFeedGUI();
 
             menuItemCheckNow.Enabled = true;
-
             deleteToolStripMenuItem.Enabled = true;
             addToolStripMenuItem.Enabled = true;
-
             checkNowToolStripMenuItem.Enabled = true;
             deleteToolStripMenuItem.Enabled = true;
             addToolStripMenuItem.Enabled = true;
-            deleteCompleteToolStripMenuItem.Enabled = true;
             toolStripMenuItemAdd.Enabled = true;
             toolStripMenuItemDelete.Enabled = true;
             toolStripMenuItemEdit.Enabled = true;
-
             toolStripButtonCheckNow.Enabled = true;
             toolStripButtonAddFeed.Enabled = true;
-
             toolStripButtonStop.Enabled = false;
             cancelCheckToolStripMenuItem.Enabled = false;
         }
@@ -1301,8 +1295,6 @@ namespace TvUndergroundDownloader
 
             //Call to update existing Loggers created with GetLogger() or GetCurrentClassLogger()
             LogManager.ReconfigExistingLoggers();
-
-
         }
 
         private void testAutoCloseToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1345,7 +1337,6 @@ namespace TvUndergroundDownloader
             {
                 return;
             }
-
 
             foreach (DataGridViewRow selectedItem in dataGridViewMain.SelectedRows)
             {
@@ -1471,54 +1462,6 @@ namespace TvUndergroundDownloader
 
             UpdateRssFeedGUI();
             StartDownloadThread();
-            return;
-            //if (fastAdd == false)
-            //{
-            //    dialogPage3.ShowDialog();
-            //    if (dialogPage3.DialogResult != DialogResult.OK)
-            //    {
-            //        dialogPage3.Dispose();
-            //        return;
-            //    }
-            //}
-            ////
-            ////  Add rss channel
-            ////
-            //foreach (RssChannel rsschannel in rssChannelList)
-            //{
-            //    RssSubscription RssSubscrission = new RssSubscription(rsschannel.Title, rsschannel.Url);
-            //    RssSubscrission.Category = rsschannel.Category;
-            //    RssSubscrission.PauseDownload = rsschannel.Pause;
-            //    RssSubscrission.Enabled = true;
-            //    RssSubscrission.MaxSimultaneousDownload = rsschannel.maxSimultaneousDownload;
-            //    MainConfig.RssFeedList.Add(RssSubscrission);
-            //}
-            //
-            //  remove all data from history
-            //  note: this is important when you re add a old series
-            //
-            //foreach (FileHistory fh in newFilesList)
-            //{
-            //    MainHistory.DeleteFile(fh);
-            //}
-
-            //
-            //  Add file history
-            //  
-            //dialogPage3.UnselectedFile.ForEach(delegate (FileHistory fh) { logger.Debug("UnselectedHistory {0}", fh.FileName); });
-
-            // Add the unselected file to the history to avoid redownload
-            //foreach (FileHistory fh in dialogPage3.UnselectedFile)
-            //{
-            //    History.Add(fh.Ed2kLink, fh.FeedLink, fh.FeedSource, DateTime.MinValue.ToString("s"));
-            //}
-            //dialogPage3.Dispose();
-
-            //FeedLinkCache.CleanUp();
-
-            MainConfig.Save();
-            UpdateRssFeedGUI();
-            StartDownloadThread();
         }
 
         private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -1540,39 +1483,6 @@ namespace TvUndergroundDownloader
             // finally update GUI
             UpdateRssFeedGUI();
 
-        }
-
-        private void deleteCompleteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("This function is not implemnted");
-
-            //List<RssSubscription> channelToDelete = MainConfig.RssFeedList.FindAll(delegate (RssSubscription t) { return t.CurrentTVUStatus == tvuStatus.Complete; });
-            //foreach (RssSubscription subscrission in channelToDelete)
-            //{
-            //    MainHistory.DeleteFileByFeedSource(subscrission.Url);
-            //}
-
-            //// check user 
-            //DialogResult rc;
-            //rc = MessageBox.Show("Delete all complete feed", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk);
-            //if (rc != DialogResult.OK)
-            //{
-            //    return;
-            //}
-
-            //List<RssSubscription> completeFeed = new List<RssSubscription>();
-            //completeFeed = MainConfig.RssFeedList.FindAll(delegate (RssSubscription t) { return t.CurrentTVUStatus == tvuStatus.Complete; });
-
-            //foreach (RssSubscription feed in completeFeed)
-            //{
-            //    // remove from main configuration
-            //    MainConfig.RssFeedList.Remove(feed);
-            //}
-            //// save changes
-            //MainConfig.Save();
-
-            /////upgrade GUI
-            //UpdateRssFeedGUI();
         }
 
         private void openLogFileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1889,11 +1799,7 @@ namespace TvUndergroundDownloader
             labelFeedCategory.Text = Feed.Category;
             labelFeedPauseDownload.Text = Feed.PauseDownload.ToString();
             labelFeedUrl.Text = Feed.Url;
-
-
-
-
-            //string temp = MainHistory.LastDownloadDateByFeedSource(Feed.Url);
+            
             DateTime lastDownloadDate = Feed.GetLastDownloadDate();
             if (lastDownloadDate == DateTime.MinValue)
             {
@@ -1901,7 +1807,7 @@ namespace TvUndergroundDownloader
             }
             else
             {
-                labelLastDownloadDate.Text = lastDownloadDate.Date.ToString();
+                labelLastDownloadDate.Text = lastDownloadDate.Date.ToString("yyyy-MM-dd");
             }
             labelTotalFiles.Text = Feed.GetDownloadFileCount().ToString();
             labelMaxSimultaneousDownloads.Text = Feed.MaxSimultaneousDownload.ToString();

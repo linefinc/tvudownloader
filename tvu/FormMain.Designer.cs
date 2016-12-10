@@ -37,6 +37,11 @@
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
             this.tabMain = new System.Windows.Forms.TabPage();
             this.dataGridViewMain = new System.Windows.Forms.DataGridView();
+            this.DataGridViewTextBoxColumnTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewTextBoxColumnTotalDownloads = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewTextBoxColumnLastUpdate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewTextBoxColumnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewTextBoxColumnEnabled = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStripFeed = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemEdit = new System.Windows.Forms.ToolStripMenuItem();
@@ -94,7 +99,6 @@
             this.channelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteCompleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoClearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -112,11 +116,6 @@
             this.toolStripButtonAddFeed = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonCheckNow = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
-            this.DataGridViewTextBoxColumnTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataGridViewTextBoxColumnTotalDownloads = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataGridViewTextBoxColumnLastUpdate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataGridViewTextBoxColumnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataGridViewTextBoxColumnEnabled = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).BeginInit();
@@ -216,6 +215,50 @@
             this.dataGridViewMain.Size = new System.Drawing.Size(557, 242);
             this.dataGridViewMain.TabIndex = 38;
             this.dataGridViewMain.SelectionChanged += new System.EventHandler(this.dataGridViewMain_SelectionChanged);
+            // 
+            // DataGridViewTextBoxColumnTitle
+            // 
+            this.DataGridViewTextBoxColumnTitle.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.DataGridViewTextBoxColumnTitle.DataPropertyName = "Title";
+            this.DataGridViewTextBoxColumnTitle.HeaderText = "Title";
+            this.DataGridViewTextBoxColumnTitle.Name = "DataGridViewTextBoxColumnTitle";
+            this.DataGridViewTextBoxColumnTitle.ReadOnly = true;
+            // 
+            // DataGridViewTextBoxColumnTotalDownloads
+            // 
+            this.DataGridViewTextBoxColumnTotalDownloads.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.DataGridViewTextBoxColumnTotalDownloads.DataPropertyName = "TotalDownloads";
+            this.DataGridViewTextBoxColumnTotalDownloads.HeaderText = "Total Downloads";
+            this.DataGridViewTextBoxColumnTotalDownloads.Name = "DataGridViewTextBoxColumnTotalDownloads";
+            this.DataGridViewTextBoxColumnTotalDownloads.ReadOnly = true;
+            this.DataGridViewTextBoxColumnTotalDownloads.Width = 103;
+            // 
+            // DataGridViewTextBoxColumnLastUpdate
+            // 
+            this.DataGridViewTextBoxColumnLastUpdate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.DataGridViewTextBoxColumnLastUpdate.DataPropertyName = "LastUpdate";
+            this.DataGridViewTextBoxColumnLastUpdate.HeaderText = "Last Upgrade";
+            this.DataGridViewTextBoxColumnLastUpdate.Name = "DataGridViewTextBoxColumnLastUpdate";
+            this.DataGridViewTextBoxColumnLastUpdate.ReadOnly = true;
+            this.DataGridViewTextBoxColumnLastUpdate.Width = 88;
+            // 
+            // DataGridViewTextBoxColumnStatus
+            // 
+            this.DataGridViewTextBoxColumnStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.DataGridViewTextBoxColumnStatus.DataPropertyName = "Status";
+            this.DataGridViewTextBoxColumnStatus.HeaderText = "Status";
+            this.DataGridViewTextBoxColumnStatus.Name = "DataGridViewTextBoxColumnStatus";
+            this.DataGridViewTextBoxColumnStatus.ReadOnly = true;
+            this.DataGridViewTextBoxColumnStatus.Width = 62;
+            // 
+            // DataGridViewTextBoxColumnEnabled
+            // 
+            this.DataGridViewTextBoxColumnEnabled.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.DataGridViewTextBoxColumnEnabled.DataPropertyName = "Enabled";
+            this.DataGridViewTextBoxColumnEnabled.HeaderText = "Enabled";
+            this.DataGridViewTextBoxColumnEnabled.Name = "DataGridViewTextBoxColumnEnabled";
+            this.DataGridViewTextBoxColumnEnabled.ReadOnly = true;
+            this.DataGridViewTextBoxColumnEnabled.Width = 71;
             // 
             // contextMenuStripFeed
             // 
@@ -679,8 +722,7 @@
             // 
             this.channelToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addToolStripMenuItem,
-            this.deleteToolStripMenuItem,
-            this.deleteCompleteToolStripMenuItem});
+            this.deleteToolStripMenuItem});
             this.channelToolStripMenuItem.Name = "channelToolStripMenuItem";
             this.channelToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
             this.channelToolStripMenuItem.Text = "Feeds";
@@ -688,23 +730,16 @@
             // addToolStripMenuItem
             // 
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-            this.addToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.addToolStripMenuItem.Text = "Add";
             this.addToolStripMenuItem.Click += new System.EventHandler(this.addToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
-            // 
-            // deleteCompleteToolStripMenuItem
-            // 
-            this.deleteCompleteToolStripMenuItem.Name = "deleteCompleteToolStripMenuItem";
-            this.deleteCompleteToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.deleteCompleteToolStripMenuItem.Text = "Delete Complete";
-            this.deleteCompleteToolStripMenuItem.Click += new System.EventHandler(this.deleteCompleteToolStripMenuItem_Click);
             // 
             // logToolStripMenuItem
             // 
@@ -721,33 +756,33 @@
             // clearToolStripMenuItem
             // 
             this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.clearToolStripMenuItem.Text = "Clear";
             this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
             // 
             // autoClearToolStripMenuItem
             // 
             this.autoClearToolStripMenuItem.Name = "autoClearToolStripMenuItem";
-            this.autoClearToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.autoClearToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.autoClearToolStripMenuItem.Text = "AutoClear";
             this.autoClearToolStripMenuItem.Click += new System.EventHandler(this.autoClearToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(144, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(149, 6);
             // 
             // verboseToolStripMenuItem
             // 
             this.verboseToolStripMenuItem.Name = "verboseToolStripMenuItem";
-            this.verboseToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.verboseToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.verboseToolStripMenuItem.Text = "Verbose";
             this.verboseToolStripMenuItem.Click += new System.EventHandler(this.verboseToolStripMenuItem_Click);
             // 
             // openLogFileToolStripMenuItem
             // 
             this.openLogFileToolStripMenuItem.Name = "openLogFileToolStripMenuItem";
-            this.openLogFileToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.openLogFileToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openLogFileToolStripMenuItem.Text = "Open Log File";
             this.openLogFileToolStripMenuItem.Click += new System.EventHandler(this.openLogFileToolStripMenuItem_Click);
             // 
@@ -848,50 +883,6 @@
             this.toolStripButtonStop.Text = "Stop";
             this.toolStripButtonStop.Click += new System.EventHandler(this.toolStripButtonStop_Click);
             // 
-            // DataGridViewTextBoxColumnTitle
-            // 
-            this.DataGridViewTextBoxColumnTitle.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.DataGridViewTextBoxColumnTitle.DataPropertyName = "Title";
-            this.DataGridViewTextBoxColumnTitle.HeaderText = "Title";
-            this.DataGridViewTextBoxColumnTitle.Name = "DataGridViewTextBoxColumnTitle";
-            this.DataGridViewTextBoxColumnTitle.ReadOnly = true;
-            // 
-            // DataGridViewTextBoxColumnTotalDownloads
-            // 
-            this.DataGridViewTextBoxColumnTotalDownloads.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-            this.DataGridViewTextBoxColumnTotalDownloads.DataPropertyName = "TotalDownloads";
-            this.DataGridViewTextBoxColumnTotalDownloads.HeaderText = "Total Downloads";
-            this.DataGridViewTextBoxColumnTotalDownloads.Name = "DataGridViewTextBoxColumnTotalDownloads";
-            this.DataGridViewTextBoxColumnTotalDownloads.ReadOnly = true;
-            this.DataGridViewTextBoxColumnTotalDownloads.Width = 5;
-            // 
-            // DataGridViewTextBoxColumnLastUpdate
-            // 
-            this.DataGridViewTextBoxColumnLastUpdate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-            this.DataGridViewTextBoxColumnLastUpdate.DataPropertyName = "LastUpdate";
-            this.DataGridViewTextBoxColumnLastUpdate.HeaderText = "Last Upgrade";
-            this.DataGridViewTextBoxColumnLastUpdate.Name = "DataGridViewTextBoxColumnLastUpdate";
-            this.DataGridViewTextBoxColumnLastUpdate.ReadOnly = true;
-            this.DataGridViewTextBoxColumnLastUpdate.Width = 5;
-            // 
-            // DataGridViewTextBoxColumnStatus
-            // 
-            this.DataGridViewTextBoxColumnStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-            this.DataGridViewTextBoxColumnStatus.DataPropertyName = "Status";
-            this.DataGridViewTextBoxColumnStatus.HeaderText = "Status";
-            this.DataGridViewTextBoxColumnStatus.Name = "DataGridViewTextBoxColumnStatus";
-            this.DataGridViewTextBoxColumnStatus.ReadOnly = true;
-            this.DataGridViewTextBoxColumnStatus.Width = 5;
-            // 
-            // DataGridViewTextBoxColumnEnabled
-            // 
-            this.DataGridViewTextBoxColumnEnabled.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-            this.DataGridViewTextBoxColumnEnabled.DataPropertyName = "Enabled";
-            this.DataGridViewTextBoxColumnEnabled.HeaderText = "Enabled";
-            this.DataGridViewTextBoxColumnEnabled.Name = "DataGridViewTextBoxColumnEnabled";
-            this.DataGridViewTextBoxColumnEnabled.ReadOnly = true;
-            this.DataGridViewTextBoxColumnEnabled.Width = 5;
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -976,7 +967,6 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStripFeed;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemDelete;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAdd;
-        private System.Windows.Forms.ToolStripMenuItem deleteCompleteToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripFileFeed;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem openLogFileToolStripMenuItem;
