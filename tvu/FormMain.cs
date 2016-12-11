@@ -301,11 +301,11 @@ namespace TvUndergroundDownloader
         {
       
             DataTable dataTable = new DataTable();
-            dataTable.Columns.Add("Title");
-            dataTable.Columns.Add("TotalDownloads");
-            dataTable.Columns.Add("LastUpgrade");
-            dataTable.Columns.Add("Status");
-            dataTable.Columns.Add("Enabled");
+            dataTable.Columns.Add("Title", typeof(String));
+            dataTable.Columns.Add("TotalDownloads", typeof(Int32));
+            dataTable.Columns.Add("LastUpgrade", typeof(Int32));
+            dataTable.Columns.Add("Status", typeof(String));
+            dataTable.Columns.Add("Enabled", typeof(Boolean));
             dataTable.Columns.Add("DubLanguage", typeof(Image));
 
 
@@ -357,10 +357,7 @@ namespace TvUndergroundDownloader
 
                 if (subscrission.TitleCompact.IndexOf("spanish") > -1)
                     newRow["DubLanguage"] = new Bitmap(Properties.Resources.es);
-
                 
-
-                newRow["DubLanguage"] = new Bitmap(Properties.Resources.it);
                 dataTable.Rows.Add(newRow);
 
 

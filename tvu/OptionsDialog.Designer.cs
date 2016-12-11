@@ -51,6 +51,8 @@
             this.checkBoxEmailNotification = new System.Windows.Forms.CheckBox();
             this.tabPageNetwork = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.comboBoxClientType = new System.Windows.Forms.ComboBox();
             this.label14 = new System.Windows.Forms.Label();
             this.buttonCheckNow = new System.Windows.Forms.Button();
             this.textBoxPassword = new System.Windows.Forms.TextBox();
@@ -83,8 +85,6 @@
             this.textBoxCookieT = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.textBoxCookieH = new System.Windows.Forms.TextBox();
-            this.comboBoxClientType = new System.Windows.Forms.ComboBox();
-            this.label19 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.tabPageLog.SuspendLayout();
             this.tabPageEmail.SuspendLayout();
@@ -340,6 +340,28 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Network";
             // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(11, 19);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(60, 13);
+            this.label19.TabIndex = 37;
+            this.label19.Text = "Client Type";
+            // 
+            // comboBoxClientType
+            // 
+            this.comboBoxClientType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxClientType.FormattingEnabled = true;
+            this.comboBoxClientType.Items.AddRange(new object[] {
+            "eMule",
+            "aMule"});
+            this.comboBoxClientType.Location = new System.Drawing.Point(108, 16);
+            this.comboBoxClientType.Name = "comboBoxClientType";
+            this.comboBoxClientType.Size = new System.Drawing.Size(228, 21);
+            this.comboBoxClientType.TabIndex = 36;
+            this.comboBoxClientType.SelectedIndexChanged += new System.EventHandler(this.comboBoxClientType_SelectedIndexChanged);
+            // 
             // label14
             // 
             this.label14.AutoSize = true;
@@ -438,6 +460,11 @@
             // numericUpDownIntervalCheck
             // 
             this.numericUpDownIntervalCheck.Location = new System.Drawing.Point(295, 207);
+            this.numericUpDownIntervalCheck.Maximum = new decimal(new int[] {
+            7,
+            0,
+            0,
+            0});
             this.numericUpDownIntervalCheck.Minimum = new decimal(new int[] {
             1,
             0,
@@ -678,28 +705,6 @@
             this.textBoxCookieH.Name = "textBoxCookieH";
             this.textBoxCookieH.Size = new System.Drawing.Size(288, 20);
             this.textBoxCookieH.TabIndex = 0;
-            // 
-            // comboBoxClientType
-            // 
-            this.comboBoxClientType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxClientType.FormattingEnabled = true;
-            this.comboBoxClientType.Items.AddRange(new object[] {
-            "eMule",
-            "aMule"});
-            this.comboBoxClientType.Location = new System.Drawing.Point(108, 16);
-            this.comboBoxClientType.Name = "comboBoxClientType";
-            this.comboBoxClientType.Size = new System.Drawing.Size(228, 21);
-            this.comboBoxClientType.TabIndex = 36;
-            this.comboBoxClientType.SelectedIndexChanged += new System.EventHandler(this.comboBoxClientType_SelectedIndexChanged);
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(11, 19);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(60, 13);
-            this.label19.TabIndex = 37;
-            this.label19.Text = "Client Type";
             // 
             // OptionsDialog
             // 

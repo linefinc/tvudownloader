@@ -162,7 +162,7 @@
             this.tabLog.Location = new System.Drawing.Point(4, 22);
             this.tabLog.Name = "tabLog";
             this.tabLog.Padding = new System.Windows.Forms.Padding(3);
-            this.tabLog.Size = new System.Drawing.Size(563, 441);
+            this.tabLog.Size = new System.Drawing.Size(648, 441);
             this.tabLog.TabIndex = 1;
             this.tabLog.Text = "Log";
             this.tabLog.UseVisualStyleBackColor = true;
@@ -173,7 +173,7 @@
             this.richTextBoxLog.Location = new System.Drawing.Point(3, 3);
             this.richTextBoxLog.Name = "richTextBoxLog";
             this.richTextBoxLog.ReadOnly = true;
-            this.richTextBoxLog.Size = new System.Drawing.Size(557, 435);
+            this.richTextBoxLog.Size = new System.Drawing.Size(642, 435);
             this.richTextBoxLog.TabIndex = 0;
             this.richTextBoxLog.Text = "";
             // 
@@ -428,7 +428,7 @@
             this.tabRecentActivity.Controls.Add(this.progressBar1);
             this.tabRecentActivity.Location = new System.Drawing.Point(4, 22);
             this.tabRecentActivity.Name = "tabRecentActivity";
-            this.tabRecentActivity.Size = new System.Drawing.Size(563, 441);
+            this.tabRecentActivity.Size = new System.Drawing.Size(648, 441);
             this.tabRecentActivity.TabIndex = 4;
             this.tabRecentActivity.Text = "Recent Activity";
             this.tabRecentActivity.UseVisualStyleBackColor = true;
@@ -447,7 +447,7 @@
             this.dataGridViewRecentActivity.ReadOnly = true;
             this.dataGridViewRecentActivity.RowHeadersVisible = false;
             this.dataGridViewRecentActivity.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewRecentActivity.Size = new System.Drawing.Size(563, 441);
+            this.dataGridViewRecentActivity.Size = new System.Drawing.Size(648, 441);
             this.dataGridViewRecentActivity.TabIndex = 37;
             // 
             // FileNameDataGridColumn
@@ -494,7 +494,7 @@
             this.tabPending.Location = new System.Drawing.Point(4, 22);
             this.tabPending.Name = "tabPending";
             this.tabPending.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPending.Size = new System.Drawing.Size(563, 441);
+            this.tabPending.Size = new System.Drawing.Size(648, 441);
             this.tabPending.TabIndex = 5;
             this.tabPending.Text = "Pending";
             this.tabPending.UseVisualStyleBackColor = true;
@@ -506,7 +506,7 @@
             this.listBoxPending.FormattingEnabled = true;
             this.listBoxPending.Location = new System.Drawing.Point(3, 3);
             this.listBoxPending.Name = "listBoxPending";
-            this.listBoxPending.Size = new System.Drawing.Size(557, 435);
+            this.listBoxPending.Size = new System.Drawing.Size(642, 435);
             this.listBoxPending.Sorted = true;
             this.listBoxPending.TabIndex = 0;
             // 
@@ -851,7 +851,7 @@
             // 
             this.DataGridViewTextBoxColumnTitle.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.DataGridViewTextBoxColumnTitle.DataPropertyName = "Title";
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             this.DataGridViewTextBoxColumnTitle.DefaultCellStyle = dataGridViewCellStyle1;
             this.DataGridViewTextBoxColumnTitle.HeaderText = "Title";
             this.DataGridViewTextBoxColumnTitle.Name = "DataGridViewTextBoxColumnTitle";
