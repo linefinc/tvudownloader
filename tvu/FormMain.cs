@@ -633,7 +633,7 @@ namespace TvUndergroundDownloader
                 }
             }
 
-            ActualDownloadFileList.ForEach(delegate (DownloadFile file) { logger.Info("Found :{0}", file.File.FileName); });
+            ActualDownloadFileList.ForEach(delegate (DownloadFile file) { logger.Info("Found: \"{0}\"", file.File.FileName); });
 
             logger.Info("ActualDownloadFileList.Count = " + ActualDownloadFileList.Count);
             logger.Info("MainConfig.MaxSimultaneousFeedDownloads = " + MainConfig.MaxSimultaneousFeedDownloadsDefault);
@@ -675,7 +675,7 @@ namespace TvUndergroundDownloader
                 if (MSDD <= 0)
                 {
                     string fileName = new Ed2kfile(DownloadFile.file).FileName;
-                    logger.Info(string.Format("File skipped {0}", fileName));
+                    logger.Info(string.Format("File skipped: \"{0}\"", fileName));
                     //
                     //  Use invoke to avoid thread issue
                     //
