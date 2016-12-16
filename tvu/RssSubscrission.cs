@@ -38,7 +38,7 @@ namespace TvUndergroundDownloader
         public bool Enabled = true;
         public tvuStatus CurrentTVUStatus { get; private set; } = tvuStatus.Unknown;
         public int seasonID { get; private set; }
-        public string TitleCompact { get { return this.Title.Replace("[ed2k] tvunderground.org.ru:", ""); } }
+        public string TitleCompact { get { return this.Title.Replace("[ed2k] tvunderground.org.ru:", "").Trim(); } }
 
         public uint MaxSimultaneousDownload = 3;
 
@@ -119,7 +119,7 @@ namespace TvUndergroundDownloader
         public void AddFile(DownloadFile file)
         {
             this.linkCache.Add(file.Guid, file.File);
-            if(file.DownloadDate.HasValue)
+            if (file.DownloadDate.HasValue)
             {
                 this.downloaded.Add(file.File, file.DownloadDate.Value);
             }
@@ -304,14 +304,14 @@ namespace TvUndergroundDownloader
         public DateTime GetLastDownloadDate()
         {
             DateTime dt = DateTime.MinValue;
-            foreach(DateTime value in this.downloaded.Values)
+            foreach (DateTime value in this.downloaded.Values)
             {
                 if (dt < value)
                 {
                     dt = value;
                 }
             }
-            return dt; 
+            return dt;
         }
 
         public void Write(XmlTextWriter writer)
@@ -404,12 +404,18 @@ namespace TvUndergroundDownloader
                 }
             }
 
-            TimeSpan ts = DateTime.Now - LastSerieStatusUpgradeDate;
-            if (CurrentTVUStatus != tvuStatus.Complete)
+
+            if (CurrentTVUStatus == tvuStatus.Complete)
             {
                 return;
             }
 
+            TimeSpan ts = DateTime.Now - LastSerieStatusUpgradeDate;
+
+            if (ts.TotalDays < 15)
+            {
+                return;
+            }
             UpdateTVUStatus(cookieContainer);
 
         }
@@ -470,5 +476,5 @@ namespace TvUndergroundDownloader
 
         }
     }
-    
+
 }
