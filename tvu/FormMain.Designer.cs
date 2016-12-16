@@ -221,7 +221,6 @@
             this.dataGridViewMain.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewMain.Size = new System.Drawing.Size(642, 242);
             this.dataGridViewMain.TabIndex = 38;
-            this.dataGridViewMain.ColumnWidthChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dataGridViewMain_ColumnWidthChanged);
             this.dataGridViewMain.SelectionChanged += new System.EventHandler(this.dataGridViewMain_SelectionChanged);
             // 
             // contextMenuStripFeed

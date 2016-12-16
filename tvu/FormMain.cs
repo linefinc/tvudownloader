@@ -1871,10 +1871,6 @@ namespace TvUndergroundDownloader
             }
         }
 
-        private void dataGridViewMain_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
-        {
-            logger.Info("New Width {0}", e.Column.Width);
-            
-        }
+        
     }
 }
