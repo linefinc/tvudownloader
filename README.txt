@@ -1,6 +1,6 @@
 TV Underground Downloader
 
-Copyright (C) 2016  linefinc[at]users.sourceforge.net
+Copyright (C) 2017  linefinc[at]users.sourceforge.net
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -17,6 +17,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
+##### Version 0.8.0 XX/12/2016  #####
+* Rewrite all the core engine to be portable on Linux
+* Deep code cleanup
+
+##### Version 0.7.1 XX/11/2016  #####
+* Minor changes made to simplify the migration from new core
+
 ##### Version 0.7.0 12/11/2016  #####
 + Add first support to aMule
 + Add import/export to simplify future migration
