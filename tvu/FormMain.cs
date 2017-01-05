@@ -1498,20 +1498,37 @@ namespace TvUndergroundDownloader
 
         private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
         {
+            if (dataGridViewMain.SelectedRows.Count == 0)
+                return;
+
             if (listViewFeedFilesList.Items.Count == 0)
                 return;
 
             if (listViewFeedFilesList.SelectedItems.Count == 0)
                 return;
 
-            ListViewItem selectedItem = listViewFeedFilesList.SelectedItems[0];
-            string strSelectItemText = selectedItem.Text;   // this contain name file
+            // get the feed
+            DataGridViewColumn col = DataGridViewTextBoxColumnTitle;
+            string TitleCompact = dataGridViewMain.SelectedRows[0].Cells[col.Name].Value.ToString();
+            RssSubscription feed = MainConfig.RssFeedList.Find(x => (x.TitleCompact == TitleCompact));
 
-            logger.Info(string.Format("Delete {0}", strSelectItemText));
+            if (feed == null)
+            {
+                return;
+            }
 
-            // remove from list view
-            listViewFeedFilesList.Items.Remove(selectedItem);
+            foreach (ListViewItem selectedItem in listViewFeedFilesList.SelectedItems)
+            {
+                string strSelectItemText = selectedItem.Text;   // this contain name file
+                logger.Info(string.Format("Delete {0}", strSelectItemText));
 
+                Ed2kfile file = feed.GetDownloadFile().Find(t => t.File.FileName == strSelectItemText).File;
+
+                feed.SetFileNotDownloaded(file);
+
+                // remove from list view
+                listViewFeedFilesList.Items.Remove(selectedItem);
+            }
             // finally update GUI
             UpdateRssFeedGUI();
 
