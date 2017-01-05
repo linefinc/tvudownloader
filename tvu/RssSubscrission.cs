@@ -179,7 +179,26 @@ namespace TvUndergroundDownloader
             return outArray;
         }
 
+        public List<Ed2kfile> GetPendingFile()
+        {
+            List<Ed2kfile> outArray = new List<Ed2kfile>();
 
+            foreach (Ed2kfile file in linkCache.Values)
+            {
+                if (downloaded.ContainsKey(file) != false)
+                {
+                    outArray.Add(file);
+                }
+            }
+
+            outArray.Sort((A, B) => A.FileName.CompareTo(B.FileName));
+            if (outArray.Count > MaxSimultaneousDownload)
+            {
+                outArray.RemoveRange((int)MaxSimultaneousDownload, outArray.Count - (int)MaxSimultaneousDownload);
+            }
+
+            return outArray;
+        }
 
         public void SetFileDownloaded(Ed2kfile file)
         {

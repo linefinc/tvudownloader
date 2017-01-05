@@ -129,7 +129,7 @@ namespace TvUndergroundDownloader
 
             UpdateRecentActivity();
             UpdateRssFeedGUI();
-
+            UpdatePengingFiles();
 #if !DEBUG
             autoStartEMuleToolStripMenuItem.Visible = false;
             autoCloseEMuleToolStripMenuItem.Visible = false;
@@ -676,22 +676,6 @@ namespace TvUndergroundDownloader
                 {
                     string fileName = new Ed2kfile(DownloadFile.file).FileName;
                     logger.Info(string.Format("File skipped: \"{0}\"", fileName));
-                    //
-                    //  Use invoke to avoid thread issue
-                    //
-                    if (this.listBoxPending.InvokeRequired == true)
-                    {
-
-                        Invoke(new MethodInvoker(
-                            delegate { this.AddItemToListBoxPending(fileName); }
-                        ));
-
-                    }
-                    else
-                    {
-                        this.AddItemToListBoxPending(fileName);
-                    }
-
                     continue;
                 }
 
@@ -747,6 +731,7 @@ namespace TvUndergroundDownloader
             }
 
             UpdateRecentActivity();
+            UpdatePengingFiles();
             UpdateRssFeedGUI();
 
             menuItemCheckNow.Enabled = true;
@@ -934,6 +919,21 @@ namespace TvUndergroundDownloader
             }
 
             dataGridViewRecentActivity.DataSource = table;
+        }
+
+        private void UpdatePengingFiles()
+        {
+            listBoxPending.Items.Clear();
+
+            foreach (var subscrission in MainConfig.RssFeedList)
+            {
+                foreach(Ed2kfile file in subscrission.GetPendingFile())
+                {
+                    listBoxPending.Items.Add(file.FileName);
+                }
+                
+            }
+
         }
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -1654,28 +1654,6 @@ namespace TvUndergroundDownloader
             UpdateRssFeedGUI(); ///upgrade GUI
         }
 
-
-
-        void AddItemToListBoxPending(string text)
-        {
-            listBoxPending.Items.Add(text);
-            listBoxPending.Refresh();
-            return;
-
-        }
-
-
-        void RemoveItemToListBoxPending(string text)
-        {
-
-            int index = listBoxPending.Items.IndexOf(text);
-            if (index > -1)
-            {
-                listBoxPending.Items.RemoveAt(index);
-            }
-            return;
-        }
-
         private void loginToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FormLogin form = new FormLogin();
@@ -1802,6 +1780,7 @@ namespace TvUndergroundDownloader
                 ExportImportHelper.Import(MainConfig, openFileDialog1.FileName);
                 UpdateRecentActivity();
                 UpdateRssFeedGUI();
+                UpdatePengingFiles();
             }
 
         }
