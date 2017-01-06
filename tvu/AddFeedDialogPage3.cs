@@ -176,14 +176,23 @@ namespace TvUndergroundDownloader
                 {
                     continue;
                 }
-
+                //
+                // not selected => to not download
+                // selected => to download
+                //
                 if (isChecked == false)
                 {
-                    rssSubscription.SetFileDownloaded(File);
+                    if (!rssSubscription.GetDownloadedFiles().Contains(File))
+                    {
+                        rssSubscription.SetFileDownloaded(File);
+                    }
                 }
                 else
                 {
-                    rssSubscription.SetFileNotDownloaded(File);
+                    if (rssSubscription.GetDownloadedFiles().Contains(File))
+                    {
+                        rssSubscription.SetFileNotDownloaded(File);
+                    }
                 }
 
 
