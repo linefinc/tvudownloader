@@ -50,7 +50,7 @@ namespace TvUndergroundDownloader
 
         private Dictionary<string, Ed2kfile> linkCache = new Dictionary<string, Ed2kfile>();
         private Dictionary<Ed2kfile, DateTime> downloaded = new Dictionary<Ed2kfile, DateTime>();
-        private Dictionary<Ed2kfile, DateTime> PublicationDate = new Dictionary<Ed2kfile, DateTime>();
+        private Dictionary<Ed2kfile, DateTime> ListPublicationDate = new Dictionary<Ed2kfile, DateTime>();
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -144,6 +144,11 @@ namespace TvUndergroundDownloader
                 if (downloaded.ContainsKey(file) == true)
                 {
                     dw.DownloadDate = downloaded[file];
+                }
+
+                if (ListPublicationDate.ContainsKey(file) == true)
+                {
+                    dw.PublicationDate = ListPublicationDate[file];
                 }
 
                 outArray.Add(dw);
@@ -322,7 +327,7 @@ namespace TvUndergroundDownloader
                 if (publicationDateNode != null)
                 {
                     DateTime publicationDateNodeDT = DateTime.Parse(publicationDateNode.InnerText);
-                    newRssSubscrission.PublicationDate.Add(newFile, publicationDateNodeDT);
+                    newRssSubscrission.ListPublicationDate.Add(newFile, publicationDateNodeDT);
                 }
             }
 
@@ -395,9 +400,9 @@ namespace TvUndergroundDownloader
                     writer.WriteElementString("Downloaded", downloaded[file].ToString("s", CultureInfo.InvariantCulture));
                 }
 
-                if (PublicationDate.ContainsKey(file))
+                if (ListPublicationDate.ContainsKey(file))
                 {
-                    writer.WriteElementString("PublicationDate", PublicationDate[file].ToString("s", CultureInfo.InvariantCulture));
+                    writer.WriteElementString("PublicationDate", ListPublicationDate[file].ToString("s", CultureInfo.InvariantCulture));
                 }
 
                 writer.WriteEndElement();// end file
@@ -445,14 +450,14 @@ namespace TvUndergroundDownloader
                 }
 
 
-                if (!PublicationDate.ContainsKey(newFile))
+                if (!ListPublicationDate.ContainsKey(newFile))
                 {
                     XmlNode pubDateNode = itemNode.SelectSingleNode("pubDate");
                     string pubDateStr = HttpUtility.UrlDecode(pubDateNode.InnerText);
                     DateTime pubDateDateTime;
                     if (DateTime.TryParse(pubDateStr, out pubDateDateTime) == true)
                     {
-                        PublicationDate.Add(newFile, pubDateDateTime);
+                        ListPublicationDate.Add(newFile, pubDateDateTime);
                     }
                 }
             }

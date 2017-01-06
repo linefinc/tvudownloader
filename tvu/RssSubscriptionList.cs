@@ -11,6 +11,7 @@ namespace TvUndergroundDownloader
         public Ed2kfile File { get; private set; }
         public string Guid { get; private set; }
         public DateTime? DownloadDate { get; set; }
+        public DateTime? PublicationDate { get; set; }
 
         public DownloadFile(Ed2kfile file, RssSubscription subscription)
         {

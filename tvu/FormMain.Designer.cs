@@ -42,6 +42,12 @@
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
             this.tabMain = new System.Windows.Forms.TabPage();
             this.dataGridViewMain = new System.Windows.Forms.DataGridView();
+            this.DataGridViewTextBoxColumnTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewImageColumnDubLanguage = new System.Windows.Forms.DataGridViewImageColumn();
+            this.DataGridViewTextBoxColumnTotalDownloads = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewTextBoxColumnLastUpdate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewTextBoxColumnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewTextBoxColumnEnabled = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStripFeed = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemEdit = new System.Windows.Forms.ToolStripMenuItem();
@@ -116,12 +122,7 @@
             this.toolStripButtonAddFeed = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonCheckNow = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
-            this.DataGridViewTextBoxColumnTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataGridViewImageColumnDubLanguage = new System.Windows.Forms.DataGridViewImageColumn();
-            this.DataGridViewTextBoxColumnTotalDownloads = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataGridViewTextBoxColumnLastUpdate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataGridViewTextBoxColumnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataGridViewTextBoxColumnEnabled = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).BeginInit();
@@ -222,6 +223,66 @@
             this.dataGridViewMain.Size = new System.Drawing.Size(642, 242);
             this.dataGridViewMain.TabIndex = 38;
             this.dataGridViewMain.SelectionChanged += new System.EventHandler(this.dataGridViewMain_SelectionChanged);
+            // 
+            // DataGridViewTextBoxColumnTitle
+            // 
+            this.DataGridViewTextBoxColumnTitle.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.DataGridViewTextBoxColumnTitle.DataPropertyName = "Title";
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.DataGridViewTextBoxColumnTitle.DefaultCellStyle = dataGridViewCellStyle1;
+            this.DataGridViewTextBoxColumnTitle.HeaderText = "Title";
+            this.DataGridViewTextBoxColumnTitle.Name = "DataGridViewTextBoxColumnTitle";
+            this.DataGridViewTextBoxColumnTitle.ReadOnly = true;
+            // 
+            // DataGridViewImageColumnDubLanguage
+            // 
+            this.DataGridViewImageColumnDubLanguage.DataPropertyName = "DubLanguage";
+            this.DataGridViewImageColumnDubLanguage.HeaderText = "Dub";
+            this.DataGridViewImageColumnDubLanguage.Name = "DataGridViewImageColumnDubLanguage";
+            this.DataGridViewImageColumnDubLanguage.ReadOnly = true;
+            this.DataGridViewImageColumnDubLanguage.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.DataGridViewImageColumnDubLanguage.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.DataGridViewImageColumnDubLanguage.Width = 33;
+            // 
+            // DataGridViewTextBoxColumnTotalDownloads
+            // 
+            this.DataGridViewTextBoxColumnTotalDownloads.DataPropertyName = "TotalDownloads";
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.DataGridViewTextBoxColumnTotalDownloads.DefaultCellStyle = dataGridViewCellStyle2;
+            this.DataGridViewTextBoxColumnTotalDownloads.HeaderText = "Total Downloads";
+            this.DataGridViewTextBoxColumnTotalDownloads.Name = "DataGridViewTextBoxColumnTotalDownloads";
+            this.DataGridViewTextBoxColumnTotalDownloads.ReadOnly = true;
+            this.DataGridViewTextBoxColumnTotalDownloads.Width = 40;
+            // 
+            // DataGridViewTextBoxColumnLastUpdate
+            // 
+            this.DataGridViewTextBoxColumnLastUpdate.DataPropertyName = "LastUpgrade";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.DataGridViewTextBoxColumnLastUpdate.DefaultCellStyle = dataGridViewCellStyle3;
+            this.DataGridViewTextBoxColumnLastUpdate.HeaderText = "Last Upgrade";
+            this.DataGridViewTextBoxColumnLastUpdate.Name = "DataGridViewTextBoxColumnLastUpdate";
+            this.DataGridViewTextBoxColumnLastUpdate.ReadOnly = true;
+            this.DataGridViewTextBoxColumnLastUpdate.Width = 40;
+            // 
+            // DataGridViewTextBoxColumnStatus
+            // 
+            this.DataGridViewTextBoxColumnStatus.DataPropertyName = "Status";
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.DataGridViewTextBoxColumnStatus.DefaultCellStyle = dataGridViewCellStyle4;
+            this.DataGridViewTextBoxColumnStatus.HeaderText = "Status";
+            this.DataGridViewTextBoxColumnStatus.Name = "DataGridViewTextBoxColumnStatus";
+            this.DataGridViewTextBoxColumnStatus.ReadOnly = true;
+            this.DataGridViewTextBoxColumnStatus.Width = 62;
+            // 
+            // DataGridViewTextBoxColumnEnabled
+            // 
+            this.DataGridViewTextBoxColumnEnabled.DataPropertyName = "Enabled";
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.DataGridViewTextBoxColumnEnabled.DefaultCellStyle = dataGridViewCellStyle5;
+            this.DataGridViewTextBoxColumnEnabled.HeaderText = "Enabled";
+            this.DataGridViewTextBoxColumnEnabled.Name = "DataGridViewTextBoxColumnEnabled";
+            this.DataGridViewTextBoxColumnEnabled.ReadOnly = true;
+            this.DataGridViewTextBoxColumnEnabled.Width = 60;
             // 
             // contextMenuStripFeed
             // 
@@ -387,6 +448,7 @@
             // 
             this.listViewFeedFilesList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader5,
+            this.columnHeader1,
             this.columnHeader7});
             this.listViewFeedFilesList.ContextMenuStrip = this.contextMenuStripFileFeed;
             this.listViewFeedFilesList.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -846,65 +908,10 @@
             this.toolStripButtonStop.Text = "Stop";
             this.toolStripButtonStop.Click += new System.EventHandler(this.toolStripButtonStop_Click);
             // 
-            // DataGridViewTextBoxColumnTitle
+            // columnHeader1
             // 
-            this.DataGridViewTextBoxColumnTitle.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.DataGridViewTextBoxColumnTitle.DataPropertyName = "Title";
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.DataGridViewTextBoxColumnTitle.DefaultCellStyle = dataGridViewCellStyle1;
-            this.DataGridViewTextBoxColumnTitle.HeaderText = "Title";
-            this.DataGridViewTextBoxColumnTitle.Name = "DataGridViewTextBoxColumnTitle";
-            this.DataGridViewTextBoxColumnTitle.ReadOnly = true;
-            // 
-            // DataGridViewImageColumnDubLanguage
-            // 
-            this.DataGridViewImageColumnDubLanguage.DataPropertyName = "DubLanguage";
-            this.DataGridViewImageColumnDubLanguage.HeaderText = "Dub";
-            this.DataGridViewImageColumnDubLanguage.Name = "DataGridViewImageColumnDubLanguage";
-            this.DataGridViewImageColumnDubLanguage.ReadOnly = true;
-            this.DataGridViewImageColumnDubLanguage.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.DataGridViewImageColumnDubLanguage.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.DataGridViewImageColumnDubLanguage.Width = 33;
-            // 
-            // DataGridViewTextBoxColumnTotalDownloads
-            // 
-            this.DataGridViewTextBoxColumnTotalDownloads.DataPropertyName = "TotalDownloads";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.DataGridViewTextBoxColumnTotalDownloads.DefaultCellStyle = dataGridViewCellStyle2;
-            this.DataGridViewTextBoxColumnTotalDownloads.HeaderText = "Total Downloads";
-            this.DataGridViewTextBoxColumnTotalDownloads.Name = "DataGridViewTextBoxColumnTotalDownloads";
-            this.DataGridViewTextBoxColumnTotalDownloads.ReadOnly = true;
-            this.DataGridViewTextBoxColumnTotalDownloads.Width = 40;
-            // 
-            // DataGridViewTextBoxColumnLastUpdate
-            // 
-            this.DataGridViewTextBoxColumnLastUpdate.DataPropertyName = "LastUpgrade";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.DataGridViewTextBoxColumnLastUpdate.DefaultCellStyle = dataGridViewCellStyle3;
-            this.DataGridViewTextBoxColumnLastUpdate.HeaderText = "Last Upgrade";
-            this.DataGridViewTextBoxColumnLastUpdate.Name = "DataGridViewTextBoxColumnLastUpdate";
-            this.DataGridViewTextBoxColumnLastUpdate.ReadOnly = true;
-            this.DataGridViewTextBoxColumnLastUpdate.Width = 40;
-            // 
-            // DataGridViewTextBoxColumnStatus
-            // 
-            this.DataGridViewTextBoxColumnStatus.DataPropertyName = "Status";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.DataGridViewTextBoxColumnStatus.DefaultCellStyle = dataGridViewCellStyle4;
-            this.DataGridViewTextBoxColumnStatus.HeaderText = "Status";
-            this.DataGridViewTextBoxColumnStatus.Name = "DataGridViewTextBoxColumnStatus";
-            this.DataGridViewTextBoxColumnStatus.ReadOnly = true;
-            this.DataGridViewTextBoxColumnStatus.Width = 62;
-            // 
-            // DataGridViewTextBoxColumnEnabled
-            // 
-            this.DataGridViewTextBoxColumnEnabled.DataPropertyName = "Enabled";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.DataGridViewTextBoxColumnEnabled.DefaultCellStyle = dataGridViewCellStyle5;
-            this.DataGridViewTextBoxColumnEnabled.HeaderText = "Enabled";
-            this.DataGridViewTextBoxColumnEnabled.Name = "DataGridViewTextBoxColumnEnabled";
-            this.DataGridViewTextBoxColumnEnabled.ReadOnly = true;
-            this.DataGridViewTextBoxColumnEnabled.Width = 60;
+            this.columnHeader1.Text = "Pub Date";
+            this.columnHeader1.Width = 100;
             // 
             // FormMain
             // 
@@ -1033,6 +1040,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn DataGridViewTextBoxColumnLastUpdate;
         private System.Windows.Forms.DataGridViewTextBoxColumn DataGridViewTextBoxColumnStatus;
         private System.Windows.Forms.DataGridViewTextBoxColumn DataGridViewTextBoxColumnEnabled;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
     }
 }
 

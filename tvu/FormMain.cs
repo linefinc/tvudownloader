@@ -129,7 +129,7 @@ namespace TvUndergroundDownloader
 
             UpdateRecentActivity();
             UpdateRssFeedGUI();
-            UpdatePengingFiles();
+            UpdatePendingFiles();
 #if !DEBUG
             autoStartEMuleToolStripMenuItem.Visible = false;
             autoCloseEMuleToolStripMenuItem.Visible = false;
@@ -299,7 +299,7 @@ namespace TvUndergroundDownloader
 
         private void UpdateRssFeedGUI()
         {
-      
+
             DataTable dataTable = new DataTable();
             dataTable.Columns.Add("Title", typeof(String));
             dataTable.Columns.Add("TotalDownloads", typeof(Int32));
@@ -728,7 +728,7 @@ namespace TvUndergroundDownloader
             }
 
             UpdateRecentActivity();
-            UpdatePengingFiles();
+            UpdatePendingFiles();
             UpdateRssFeedGUI();
 
             menuItemCheckNow.Enabled = true;
@@ -918,7 +918,7 @@ namespace TvUndergroundDownloader
             dataGridViewRecentActivity.DataSource = table;
         }
 
-        private void UpdatePengingFiles()
+        private void UpdatePendingFiles()
         {
             listBoxPending.Items.Clear();
 
@@ -961,10 +961,21 @@ namespace TvUndergroundDownloader
 
             // extract file by feedLink
             List<DownloadFile> ldf = feed.GetDownloadFile();
-
-            foreach (DownloadFile file in feed.GetDownloadFile())
+            var listFile = feed.GetDownloadFile();
+            listFile.Sort((a, b) => b.File.FileName.CompareTo(a.File.FileName));
+            foreach (DownloadFile file in listFile)
             {
                 ListViewItem item = new ListViewItem(file.File.GetFileName());
+
+
+                if (file.PublicationDate.HasValue == true)
+                {
+                    item.SubItems.Add(file.PublicationDate.Value.ToString("d", CultureInfo.InvariantCulture));
+                }
+                else
+                {
+                    item.SubItems.Add(string.Empty);
+                }
 
                 if (file.DownloadDate.HasValue == true)
                 {
@@ -974,10 +985,15 @@ namespace TvUndergroundDownloader
                     }
                     else
                     {
-                        string date = file.DownloadDate.ToString();
+                        string date = file.DownloadDate.Value.ToString("o", CultureInfo.InvariantCulture);
                         item.SubItems.Add(date);
                     }
                 }
+                else
+                {
+                    item.SubItems.Add(string.Empty);
+                }
+
                 listViewFeedFilesList.Items.Add(item);
             }
         }
@@ -1842,7 +1858,7 @@ namespace TvUndergroundDownloader
                 ExportImportHelper.Import(MainConfig, openFileDialog1.FileName);
                 UpdateRecentActivity();
                 UpdateRssFeedGUI();
-                UpdatePengingFiles();
+                UpdatePendingFiles();
             }
 
         }
