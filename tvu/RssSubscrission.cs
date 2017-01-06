@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -49,6 +50,7 @@ namespace TvUndergroundDownloader
 
         private Dictionary<string, Ed2kfile> linkCache = new Dictionary<string, Ed2kfile>();
         private Dictionary<Ed2kfile, DateTime> downloaded = new Dictionary<Ed2kfile, DateTime>();
+        private Dictionary<Ed2kfile, DateTime> PublicationDate = new Dictionary<Ed2kfile, DateTime>();
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -315,6 +317,13 @@ namespace TvUndergroundDownloader
                     DateTime dtDownloaded = DateTime.Parse(downloadedNode.InnerText);
                     newRssSubscrission.downloaded.Add(newFile, dtDownloaded);
                 }
+
+                XmlNode publicationDateNode = fileNode.SelectSingleNode("PublicationDate");
+                if (publicationDateNode != null)
+                {
+                    DateTime publicationDateNodeDT = DateTime.Parse(publicationDateNode.InnerText);
+                    newRssSubscrission.PublicationDate.Add(newFile, publicationDateNodeDT);
+                }
             }
 
             return newRssSubscrission;
@@ -383,8 +392,14 @@ namespace TvUndergroundDownloader
                 writer.WriteElementString("Guid", fileKeys);
                 if (downloaded.ContainsKey(linkCache[fileKeys]))
                 {
-                    writer.WriteElementString("Downloaded", downloaded[file].ToString());
+                    writer.WriteElementString("Downloaded", downloaded[file].ToString("s", CultureInfo.InvariantCulture));
                 }
+
+                if (PublicationDate.ContainsKey(file))
+                {
+                    writer.WriteElementString("PublicationDate", PublicationDate[file].ToString("s", CultureInfo.InvariantCulture));
+                }
+
                 writer.WriteEndElement();// end file
             }
             writer.WriteEndElement();// end file
@@ -406,6 +421,8 @@ namespace TvUndergroundDownloader
             XmlNodeList nodeList = doc.SelectNodes(@"/rss/channel/item");
             foreach (XmlNode itemNode in nodeList)
             {
+                Ed2kfile newFile = null;
+
                 XmlNode guidNode = itemNode.SelectSingleNode("guid");
                 string guid = HttpUtility.UrlDecode(guidNode.InnerText);
 
@@ -413,12 +430,29 @@ namespace TvUndergroundDownloader
                 {
                     try
                     {
-                        var newFile = ProcessGUID(guid, cookieContainer);
+                        newFile = ProcessGUID(guid, cookieContainer);
                         linkCache.Add(guid, newFile);
                     }
                     catch (Exception ex)
                     {
                         logger.Error(ex, "Error while try to parse or fatch GUID");
+                        continue;
+                    }
+                }
+                else
+                {
+                    newFile = linkCache[guid];
+                }
+
+
+                if (!PublicationDate.ContainsKey(newFile))
+                {
+                    XmlNode pubDateNode = itemNode.SelectSingleNode("pubDate");
+                    string pubDateStr = HttpUtility.UrlDecode(pubDateNode.InnerText);
+                    DateTime pubDateDateTime;
+                    if (DateTime.TryParse(pubDateStr, out pubDateDateTime) == true)
+                    {
+                        PublicationDate.Add(newFile, pubDateDateTime);
                     }
                 }
             }
