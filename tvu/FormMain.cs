@@ -338,9 +338,9 @@ namespace TvUndergroundDownloader
                 }
 
                 newRow["Enabled"] = subscrission.Enabled == true ? "True" : "False";
-                
 
-                if(subscrission.TitleCompact.IndexOf("english") > -1)
+
+                if (subscrission.TitleCompact.IndexOf("english") > -1)
                     newRow["DubLanguage"] = new Bitmap(Properties.Resources.gb);
 
                 if (subscrission.TitleCompact.IndexOf("italian") > -1)
@@ -357,16 +357,13 @@ namespace TvUndergroundDownloader
 
                 if (subscrission.TitleCompact.IndexOf("spanish") > -1)
                     newRow["DubLanguage"] = new Bitmap(Properties.Resources.es);
-                
+
                 dataTable.Rows.Add(newRow);
 
 
 
             }
             dataGridViewMain.DataSource = dataTable;
-
-
-
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -898,7 +895,7 @@ namespace TvUndergroundDownloader
         }
 
 
-        public void UpdateRecentActivity()
+        private void UpdateRecentActivity()
         {
             DataTable table = new DataTable();
             table.Columns.Add("FileName");
@@ -927,15 +924,63 @@ namespace TvUndergroundDownloader
 
             foreach (var subscrission in MainConfig.RssFeedList)
             {
-                foreach(Ed2kfile file in subscrission.GetPendingFile())
+                foreach (Ed2kfile file in subscrission.GetPendingFile())
                 {
                     listBoxPending.Items.Add(file.FileName);
                 }
-                
+
             }
 
         }
 
+        private void UpdateSubscriptionFilesList()
+        {
+            if (dataGridViewMain.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
+
+            DataGridViewRow selectedItem = dataGridViewMain.SelectedRows[0];
+            if (selectedItem == null)
+            {
+                return;
+            }
+
+            DataGridViewColumn col = DataGridViewTextBoxColumnTitle;
+            string TitleCompact = selectedItem.Cells[col.Name].Value.ToString();
+            RssSubscription feed = MainConfig.RssFeedList.Find(x => (x.TitleCompact == TitleCompact));
+
+            if (feed == null)
+            {
+                return;
+            }
+
+            // update list history
+            listViewFeedFilesList.Items.Clear();
+
+            // extract file by feedLink
+            List<DownloadFile> ldf = feed.GetDownloadFile();
+
+            foreach (DownloadFile file in feed.GetDownloadFile())
+            {
+                ListViewItem item = new ListViewItem(file.File.GetFileName());
+
+                if (file.DownloadDate.HasValue == true)
+                {
+                    if (file.DownloadDate.Value == DateTime.MinValue)
+                    {
+                        item.SubItems.Add("Skipped");
+                    }
+                    else
+                    {
+                        string date = file.DownloadDate.ToString();
+                        item.SubItems.Add(date);
+                    }
+                }
+                listViewFeedFilesList.Items.Add(item);
+            }
+        }
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             progressBar1.Value = e.ProgressPercentage;
@@ -1159,41 +1204,41 @@ namespace TvUndergroundDownloader
 
             // connect to mule
             try
-            { 
-            logger.Info("[AutoClose Mule] Check Login");
-            eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
-            LoginStatus returnCode = Service.Connect();
-
-
-            // if mule close ... end of game
-            if (returnCode != LoginStatus.Logged)
             {
-                AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do control every 30 minutes
-                logger.Info("[AutoClose Mule] Login failed");
-                return;
-            }
-            logger.Info("[AutoClose Mule] Login ok");
+                logger.Info("[AutoClose Mule] Check Login");
+                eMuleWebManager Service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
+                LoginStatus returnCode = Service.Connect();
 
-            List<Ed2kfile> knownFiles = new List<Ed2kfile>();
-            MainConfig.RssFeedList.ForEach((file) => knownFiles.AddRange(file.GetDownloadedFiles()));
 
-            logger.Info("[AutoClose Mule] Actual Downloads " + Service.GetCurrentDownloads(knownFiles).Count);
-            // if donwload > 0 ... there' s some download ... end 
-            if (Service.GetCurrentDownloads(knownFiles).Count > 0)
-            {
-                logger.Info("[AutoClose Mule] GetActualDownloads return >0");
-                AutoCloseDataTime = DateTime.Now.AddMinutes(30);
-                logger.Info("[AutoClose Mule] LogOut");
-                Service.Close();
-                return;
-            }
+                // if mule close ... end of game
+                if (returnCode != LoginStatus.Logged)
+                {
+                    AutoCloseDataTime = DateTime.Now.AddMinutes(30); // do control every 30 minutes
+                    logger.Info("[AutoClose Mule] Login failed");
+                    return;
+                }
+                logger.Info("[AutoClose Mule] Login ok");
 
-            logger.Info("[AutoClose Mule] Show dialog ");
-            // pop up form to advise user
-            FormAlerteMuleClose Dialog = new FormAlerteMuleClose();
-            Dialog.ShowDialog();
+                List<Ed2kfile> knownFiles = new List<Ed2kfile>();
+                MainConfig.RssFeedList.ForEach((file) => knownFiles.AddRange(file.GetDownloadedFiles()));
 
-            logger.Info("[AutoClose Mule] Dialog return " + Dialog.AlertChoice.ToString());
+                logger.Info("[AutoClose Mule] Actual Downloads " + Service.GetCurrentDownloads(knownFiles).Count);
+                // if donwload > 0 ... there' s some download ... end 
+                if (Service.GetCurrentDownloads(knownFiles).Count > 0)
+                {
+                    logger.Info("[AutoClose Mule] GetActualDownloads return >0");
+                    AutoCloseDataTime = DateTime.Now.AddMinutes(30);
+                    logger.Info("[AutoClose Mule] LogOut");
+                    Service.Close();
+                    return;
+                }
+
+                logger.Info("[AutoClose Mule] Show dialog ");
+                // pop up form to advise user
+                FormAlerteMuleClose Dialog = new FormAlerteMuleClose();
+                Dialog.ShowDialog();
+
+                logger.Info("[AutoClose Mule] Dialog return " + Dialog.AlertChoice.ToString());
                 switch (Dialog.AlertChoice)
                 {
                     case AlertChoiceEnum.Close:// Close
@@ -1223,9 +1268,9 @@ namespace TvUndergroundDownloader
                         break;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                logger.Error(ex,"Autoclose error");
+                logger.Error(ex, "Autoclose error");
             }
         }
 
@@ -1530,7 +1575,7 @@ namespace TvUndergroundDownloader
                 listViewFeedFilesList.Items.Remove(selectedItem);
             }
             // finally update GUI
-            UpdateRssFeedGUI();
+            UpdateSubscriptionFilesList();
 
         }
 
@@ -1840,33 +1885,9 @@ namespace TvUndergroundDownloader
             labelTotalFiles.Text = Feed.GetDownloadFileCount().ToString();
             labelMaxSimultaneousDownloads.Text = Feed.MaxSimultaneousDownload.ToString();
 
-            // update list history
-            listViewFeedFilesList.Items.Clear();
-
-
-            // extract file by feedLink
-            List<DownloadFile> ldf = Feed.GetDownloadFile();
-
-            foreach (DownloadFile file in Feed.GetDownloadFile())
-            {
-                ListViewItem item = new ListViewItem(file.File.GetFileName());
-
-                if (file.DownloadDate.HasValue == true)
-                {
-                    if (file.DownloadDate.Value == DateTime.MinValue)
-                    {
-                        item.SubItems.Add("Skipped");
-                    }
-                    else
-                    {
-                        string date = file.DownloadDate.ToString();
-                        item.SubItems.Add(date);
-                    }
-                }
-                listViewFeedFilesList.Items.Add(item);
-            }
+            UpdateSubscriptionFilesList();
         }
 
-        
+
     }
 }
