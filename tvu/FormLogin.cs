@@ -8,7 +8,7 @@ namespace TvUndergroundDownloader
     {
         static private Logger logger = LogManager.GetCurrentClassLogger();
 
-        static char[] charsToTrim = { ' ', 't', 'h', 'i', '=' };
+        private static char[] charsToTrim = { ' ', 't', 'h', 'i', '=' };
 
         public string cookieT { private set; get; }
         public string cookieI { private set; get; }
@@ -24,7 +24,7 @@ namespace TvUndergroundDownloader
             //  this avoid strang behaviour
             //
             this.DialogResult = DialogResult.Cancel;
-            
+
             InitializeComponent();
         }
 
@@ -48,7 +48,6 @@ namespace TvUndergroundDownloader
 
             if (string.IsNullOrEmpty(page.Cookie) == true)
                 return;
-
 
             string[] cookies = page.Cookie.Split(';');
 
@@ -93,7 +92,7 @@ namespace TvUndergroundDownloader
             //
             //  check that all 3 cookies (T, I , H) are not empty
             //
-            if ((tempT == string.Empty) |(tempI == string.Empty) |(tempH == string.Empty))
+            if ((tempT == string.Empty) | (tempI == string.Empty) | (tempH == string.Empty))
             {
                 return;
             }
@@ -108,7 +107,6 @@ namespace TvUndergroundDownloader
 
             this.DialogResult = DialogResult.OK;
             this.Close();
-            
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
@@ -116,6 +114,5 @@ namespace TvUndergroundDownloader
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
-
     }
 }

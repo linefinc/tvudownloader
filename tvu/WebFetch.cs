@@ -2,20 +2,13 @@
 using System.Net;
 using System.Text;
 
-
 /// <summary>
 /// Fetches a Web Page
 /// </summary>
-class WebFetch
+internal class WebFetch
 {
-
-    
-    
-
     public static string Fetch(string page, bool clean, CookieContainer cookieContainer, int myDelay = 0)
     {
-
-
         System.Threading.Thread.Sleep(myDelay);
 
         try
@@ -32,7 +25,6 @@ class WebFetch
 
             // execute the request
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            
 
             // we will read data via the response stream
             Stream resStream = response.GetResponseStream();
@@ -77,5 +69,4 @@ class WebFetch
             return null;
         }
     }
-      
 }

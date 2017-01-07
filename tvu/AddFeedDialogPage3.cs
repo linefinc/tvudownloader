@@ -35,6 +35,7 @@ namespace TvUndergroundDownloader
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
+
         /// <summary>
         /// Select all element in checkedListBox
         /// </summary>
@@ -61,11 +62,11 @@ namespace TvUndergroundDownloader
                     continue;
                 }
                 rssSubscription.SetFileNotDownloaded(File);
-
             }
         }
+
         /// <summary>
-        /// deSelect all element present in checkListBox1 
+        /// deSelect all element present in checkListBox1
         /// </summary>
         private void buttonSelectNone_Click(object sender, EventArgs e)
         {
@@ -87,10 +88,8 @@ namespace TvUndergroundDownloader
                     continue;
                 }
                 rssSubscription.SetFileDownloaded(File);
-
             }
         }
-
 
         private void buttonNext_Click(object sender, EventArgs e)
         {
@@ -119,7 +118,6 @@ namespace TvUndergroundDownloader
             tempDec = Math.Min(tempDec, numericUpDownMaxSimulDown.Maximum);
             numericUpDownMaxSimulDown.Value = tempDec;
 
-
             //// add file
             checkedListBox1.Items.Clear();
             List<Ed2kfile> listDownloadedFile = rssSubscription.GetDownloadedFiles();
@@ -133,6 +131,7 @@ namespace TvUndergroundDownloader
             buttonNext.Enabled = (rssSubscriptionList.Count - 1) != subscriptionListIndex;
             buttonPrevious.Enabled = subscriptionListIndex != 0;
         }
+
         /// <summary>
         /// close dialog
         /// </summary>
@@ -141,7 +140,6 @@ namespace TvUndergroundDownloader
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
-
 
         private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -157,7 +155,6 @@ namespace TvUndergroundDownloader
         {
             checkedListBox1_SelectedValueChanged(sender, e);
         }
-
 
         private void checkedListBox1_SelectedValueChanged(object sender, EventArgs e)
         {
@@ -194,8 +191,6 @@ namespace TvUndergroundDownloader
                         rssSubscription.SetFileNotDownloaded(File);
                     }
                 }
-
-
             }
         }
 
@@ -215,10 +210,5 @@ namespace TvUndergroundDownloader
             RssSubscription rssSubscription = rssSubscriptionList[subscriptionListIndex];
             rssSubscription.MaxSimultaneousDownload = Convert.ToUInt32(numericUpDownMaxSimulDown.Value);
         }
-
-
-
-
-
     }
 }

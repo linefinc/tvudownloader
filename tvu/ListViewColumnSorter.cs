@@ -13,10 +13,12 @@ namespace TvUndergroundDownloader
         /// Specifies the column to be sorted
         /// </summary>
         private int ColumnToSort;
+
         /// <summary>
         /// Specifies the order in which to sort (i.e. 'Ascending').
         /// </summary>
         private SortOrder OrderOfSort;
+
         /// <summary>
         /// Case insensitive comparer object
         /// </summary>
@@ -51,7 +53,7 @@ namespace TvUndergroundDownloader
             // Cast the objects to be compared to ListViewItem objects
             listviewX = (ListViewItem)x;
             listviewY = (ListViewItem)y;
-            
+
             string strX = listviewX.SubItems[ColumnToSort].Text;
             string strY = listviewY.SubItems[ColumnToSort].Text;
 
@@ -77,7 +79,6 @@ namespace TvUndergroundDownloader
                         compareResult = ObjectCompare.Compare(strX, strY);
                         break;
                     }
-
             }
 
             // Calculate correct return value based on object comparison
@@ -141,8 +142,6 @@ namespace TvUndergroundDownloader
             }
 
             return temp;
-
         }
-
     }
 }

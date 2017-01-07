@@ -9,8 +9,6 @@ using System.Xml;
 
 namespace TvUndergroundDownloader
 {
-
-
     public class Config
     {
         public enum eServiceType { eMule = 0, aMule };
@@ -23,6 +21,7 @@ namespace TvUndergroundDownloader
                 return temp.GetName().Version.ToString();
             }
         }
+
         public static string VersionFull
         {
             get
@@ -31,6 +30,7 @@ namespace TvUndergroundDownloader
                                 .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false)[0]).InformationalVersion;
             }
         }
+
         public eServiceType ServiceType;
         public string ServiceUrl;
         public string Password;
@@ -73,6 +73,7 @@ namespace TvUndergroundDownloader
                 return basePath;
             }
         }
+
         public static string FileNameConfig
         {
             get
@@ -80,6 +81,7 @@ namespace TvUndergroundDownloader
                 return Path.Combine(ConfigFolder, "config.xml");
             }
         }
+
         public static string FileNameLog
         {
             get
@@ -105,6 +107,7 @@ namespace TvUndergroundDownloader
         }
 
         public bool saveLog;
+
         public static bool StartWithWindows
         {
             get
@@ -123,7 +126,6 @@ namespace TvUndergroundDownloader
                     return false;
                 }
                 return true;
-
             }
             set
             {
@@ -152,7 +154,6 @@ namespace TvUndergroundDownloader
 
         public Config()
         {
-
             //
             //  Enable web browser emulation
             //
@@ -178,7 +179,6 @@ namespace TvUndergroundDownloader
         {
             XmlTextWriter writer = new XmlTextWriter(Config.FileNameConfig, new UTF8Encoding(false));
             writer.Formatting = Formatting.Indented;
-
 
             writer.WriteStartDocument();
             writer.WriteStartElement("Config");
@@ -235,7 +235,7 @@ namespace TvUndergroundDownloader
             writer.WriteEndElement();
 
             writer.WriteElementString("PauseDownloadDefault", PauseDownloadDefault.ToString());
-            
+
             writer.WriteStartElement("Verbose");
             writer.WriteString(Verbose.ToString());
             writer.WriteEndElement();
@@ -298,7 +298,6 @@ namespace TvUndergroundDownloader
             }
             writer.WriteEndElement();// end RSSChannel
             writer.Close();
-
         }
 
         public void Load()
@@ -308,10 +307,9 @@ namespace TvUndergroundDownloader
             XmlDocument xDoc = new XmlDocument();
             xDoc.Load(Config.FileNameConfig);
 
-
             // Check configuration version to avoid bad behaviors
             string configVersionStr = ReadString(xDoc, "version", string.Empty);
-            if(!string.IsNullOrEmpty(configVersionStr))
+            if (!string.IsNullOrEmpty(configVersionStr))
             {
                 System.Version configVersion = new System.Version(configVersionStr);
                 System.Version appVersion = new System.Version(Version);
@@ -326,6 +324,7 @@ namespace TvUndergroundDownloader
                 case "aMule":
                     ServiceType = eServiceType.aMule;
                     break;
+
                 case "eMule":
                 default:
                     ServiceType = eServiceType.eMule;
@@ -362,7 +361,7 @@ namespace TvUndergroundDownloader
 
             DefaultCategory = ReadString(xDoc, "DefaultCategory", "");
 
-            debug =Convert.ToBoolean(ReadString(xDoc, "Debug", "false"));
+            debug = Convert.ToBoolean(ReadString(xDoc, "Debug", "false"));
 #if DEBUG
             Verbose = true;
 #else
@@ -401,8 +400,6 @@ namespace TvUndergroundDownloader
 
             RssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title));
         }
-
-
 
         public static string ReadString(XmlDocument xDoc, string NodeName, string defaultValue)
         {

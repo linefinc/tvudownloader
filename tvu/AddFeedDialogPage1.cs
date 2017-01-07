@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Text.RegularExpressions;
 using System.IO;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace TvUndergroundDownloader
 {
     public partial class AddFeedDialogPage1 : Form
     {
-
         public List<string> RssUrlList { private set; get; }
-        private List<string> CurrentRssUrlList ;
+        private List<string> CurrentRssUrlList;
         public bool FastAdd { private set; get; }
 
         public AddFeedDialogPage1(List<string> CurrentRssUrlList)
@@ -48,17 +47,14 @@ namespace TvUndergroundDownloader
                         textToParse += input;
                     }
                     frStream.Close();
-
                 }
                 catch
                 {
                     MessageBox.Show("Error: Could not read file from disk.");
                     return;
                 }
-
-
             }
-        
+
             // Static Regex "http(s)?://(www\.)?tvunderground.org.ru/rss.php\?se_id=(\d{1,10})"
             MatchCollection mc = RssSubscription.regexFeedSource.Matches(textToParse);
             foreach (Match p in mc)
@@ -75,7 +71,7 @@ namespace TvUndergroundDownloader
                 }
             }
 
-            RssUrlList.RemoveAll(delegate(string temp) { return CurrentRssUrlList.IndexOf(temp) > -1; });
+            RssUrlList.RemoveAll(delegate (string temp) { return CurrentRssUrlList.IndexOf(temp) > -1; });
 
             this.DialogResult = DialogResult.OK;
             this.Close();
@@ -93,7 +89,6 @@ namespace TvUndergroundDownloader
             buttonBrowse.Enabled = true;
             textBox1.Enabled = true;
             textUrl.Enabled = false;
-            
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
@@ -106,7 +101,7 @@ namespace TvUndergroundDownloader
         private void buttonBrowse_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            
+
             List<string> Feed = new List<string>();
 
             openFileDialog1.Filter = "All files (*.*)|*.*|OPML (*.opml)|*.opml";
@@ -120,13 +115,6 @@ namespace TvUndergroundDownloader
             }
             textBox1.Text = string.Empty;
             return;
-            
         }
-
-      
-
-       
-
     }
-
 }

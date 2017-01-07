@@ -1,9 +1,9 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows.Forms;
 using System.Net;
-using NLog;
+using System.Windows.Forms;
 
 namespace TvUndergroundDownloader
 {
@@ -30,8 +30,6 @@ namespace TvUndergroundDownloader
             this.cookieContainer = cookieContainer;
             this.ServiceUrl = ServiceUrl;
             this.Password = Password;
-
-
         }
 
         private void AddFeedDialogPage2_Load(object sender, EventArgs e)
@@ -41,10 +39,8 @@ namespace TvUndergroundDownloader
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-
             foreach (string url in RssUrlList)
             {
-
                 if (backgroundWorker1.CancellationPending)
                 {
                     e.Cancel = true;
@@ -66,7 +62,6 @@ namespace TvUndergroundDownloader
                 backgroundWorker1.ReportProgress(100 * RssUrlList.IndexOf(url) / RssUrlList.Count);
             }
 
-
             //
             // update category list from mule
             //
@@ -84,15 +79,11 @@ namespace TvUndergroundDownloader
 
                 Service.Close();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.Error(ex, "Error while try to connect to server \"{0}\"", ServiceUrl);
             }
-
-
         }
-
-
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
@@ -119,4 +110,3 @@ namespace TvUndergroundDownloader
         }
     }
 }
-

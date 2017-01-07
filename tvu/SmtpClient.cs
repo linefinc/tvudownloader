@@ -1,10 +1,9 @@
 ﻿namespace TvUndergroundDownloader
 {
-    class SmtpClient
+    internal class SmtpClient
     {
         public static bool SendEmail(string SmtpServer, string EmailReceiver, string EmailSender, string Subject, string Message)
         {
-
             //Notifica eMule: Viene terminato un Download
             //
             //Scaricato:

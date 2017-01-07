@@ -4,13 +4,12 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
 
 namespace TvUndergroundDownloader
 {
-    class aMuleWebManager : IMuleWebManager
+    internal class aMuleWebManager : IMuleWebManager
     {
         private string Host;
         private string Password;
@@ -19,6 +18,7 @@ namespace TvUndergroundDownloader
         private string DefaultCategory;
 
         public bool isConnected { private set; get; }
+
         /// <summary>
         /// constructor
         /// </summary>
@@ -91,9 +91,7 @@ namespace TvUndergroundDownloader
 
             string requestUri = string.Format("{0}/footer.php", Host);
             RequestPOST(requestUri, outgoingQueryString);
-
         }
-
 
         /// <summary>
         /// Force start download
@@ -110,9 +108,7 @@ namespace TvUndergroundDownloader
             string requestUri = string.Format("{0}/amuleweb-main-dload.php", Host);
 
             RequestPOST(requestUri, outgoingQueryString);
-
         }
-
 
         /// <summary>
         /// force stop download
@@ -128,7 +124,6 @@ namespace TvUndergroundDownloader
 
             string requestUri = string.Format("{0}/amuleweb-main-dload.php", Host);
             RequestPOST(requestUri, outgoingQueryString);
-
         }
 
         /// <summary>
@@ -182,7 +177,6 @@ namespace TvUndergroundDownloader
             return categories;
         }
 
-
         /// <summary>
         /// get list of actual file in download
         /// </summary>
@@ -213,7 +207,6 @@ namespace TvUndergroundDownloader
 
             return ListDownloads;
         }
-
 
         public void CloseEmuleApp()
         {
@@ -272,7 +265,6 @@ namespace TvUndergroundDownloader
                 response.Close();
                 return tempBuffer;
             }
-
         }
 
         private string RequestPOST(string uri, NameValueCollection outgoingQueryString)
@@ -327,6 +319,5 @@ namespace TvUndergroundDownloader
                 return tempBuffer;
             }
         }
-
     }
 }

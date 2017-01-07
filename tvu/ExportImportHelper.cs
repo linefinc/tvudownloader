@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Text;
 using System.Xml;
 
 namespace TvUndergroundDownloader
 {
-    class ExportImportHelper
+    internal class ExportImportHelper
     {
         public static void Export(Config config, Stream steam)
         {
@@ -100,13 +99,14 @@ namespace TvUndergroundDownloader
                         case "Title":
                             newFeedTitle = t.FirstChild.Value;
                             break;
+
                         case "Url":
                             newFeedUrl = t.FirstChild.Value;
                             break;
+
                         default:
                             break;
                     }
-
                 }
 
                 if (string.IsNullOrEmpty(newFeedTitle) == true)
@@ -144,19 +144,22 @@ namespace TvUndergroundDownloader
                         case "Link":
                             newLink = temp.FirstChild.Value;
                             break;
+
                         case "FeedLink":
                             newFeedLink = temp.FirstChild.Value;
                             break;
+
                         case "FeedSource":
                             newFeedSource = temp.FirstChild.Value;
                             break;
+
                         case "Date":
                             newDate = temp.FirstChild.Value;
                             break;
+
                         default:
                             break;
                     }
-
                 }
 
                 if (string.IsNullOrEmpty(newLink) == true)
@@ -174,10 +177,10 @@ namespace TvUndergroundDownloader
                 var file = new Ed2kfile(newLink);
                 RssSubscription subscription = config.RssFeedList.Find((temp) => temp.Url == newFeedLink);
                 var dw = new DownloadFile(file, subscription);
-                if( string.IsNullOrEmpty(newDate) == false)
+                if (string.IsNullOrEmpty(newDate) == false)
                 {
                     DateTime dt;
-                    if (DateTime.TryParse(newDate, out dt)== true)
+                    if (DateTime.TryParse(newDate, out dt) == true)
                     {
                         dw.DownloadDate = dt;
                     }
@@ -193,9 +196,7 @@ namespace TvUndergroundDownloader
                 //History.Add(newLink, newFeedLink, newFeedSource, newDate);
 
                 //history.Save();
-
             }
-
         }
     }
 }

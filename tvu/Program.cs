@@ -3,12 +3,11 @@ using NLog.Config;
 using NLog.Targets;
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Windows.Forms;
 
 namespace TvUndergroundDownloader
 {
-    static class Program
+    internal static class Program
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -16,7 +15,7 @@ namespace TvUndergroundDownloader
         /// Punto di ingresso principale dell'applicazione.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             Process aProcess = Process.GetCurrentProcess();
             string aProcName = aProcess.ProcessName;
@@ -28,7 +27,6 @@ namespace TvUndergroundDownloader
                 return;
             }
 
-
             //
             //  Setup Nlog
             //
@@ -37,7 +35,7 @@ namespace TvUndergroundDownloader
             {
                 config = new LoggingConfiguration();
             }
-           
+
             FileTarget fileTarget = new FileTarget();
             fileTarget.Name = "logfile";
             fileTarget.FileName = Config.FileNameLog;
@@ -50,6 +48,5 @@ namespace TvUndergroundDownloader
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormMain());
         }
-
     }
 }

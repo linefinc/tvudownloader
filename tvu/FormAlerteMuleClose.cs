@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace TvUndergroundDownloader
@@ -14,8 +9,6 @@ namespace TvUndergroundDownloader
         Close,
         Disable
     }
-
-
 
     public partial class FormAlerteMuleClose : Form
     {
@@ -57,6 +50,5 @@ namespace TvUndergroundDownloader
                 this.Close();
             }
         }
-
     }
 }

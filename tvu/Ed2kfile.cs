@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TvUndergroundDownloader
 {
@@ -14,7 +12,6 @@ namespace TvUndergroundDownloader
 
         public Ed2kfile(string link)
         {
-
             HashSHA1 = null;
 
             if (link == null)
@@ -49,11 +46,9 @@ namespace TvUndergroundDownloader
             string tempo = link.Substring(start, stop - start);
             FileSize = UInt64.Parse(tempo);
 
-
             start = stop + 1;
-            stop = link.IndexOf('|', start );    // position of 5th vertical bar
+            stop = link.IndexOf('|', start);    // position of 5th vertical bar
             HashMD4 = link.Substring(start, stop - start);
-
 
             start = link.IndexOf("|h=");
             if (start == -1)    //check if exist AICH
@@ -65,7 +60,6 @@ namespace TvUndergroundDownloader
 
             HashSHA1 = link.Substring(start, stop - start);
             return;
-
         }
 
         public Ed2kfile(Ed2kfile file)
@@ -125,7 +119,6 @@ namespace TvUndergroundDownloader
             }
         }
 
-       
         public override int GetHashCode()
         {
             //
@@ -146,6 +139,5 @@ namespace TvUndergroundDownloader
             }
             return count;
         }
-
     }
 }

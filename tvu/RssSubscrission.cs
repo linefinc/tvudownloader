@@ -1,15 +1,12 @@
 ﻿using NLog;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Globalization;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Windows.Forms;
 using System.Xml;
-
 
 namespace TvUndergroundDownloader
 {
@@ -23,7 +20,7 @@ namespace TvUndergroundDownloader
     }
 
     /// <summary>
-    /// Rss submission container 
+    /// Rss submission container
     /// </summary>
     public class RssSubscription
     {
@@ -74,7 +71,6 @@ namespace TvUndergroundDownloader
             int integerBuffer;
             if (int.TryParse(matchCollection[0].Groups["seid"].ToString(), out integerBuffer) == false)
             {
-
                 throw new ApplicationException("Wrong URL");
             }
 
@@ -277,22 +273,25 @@ namespace TvUndergroundDownloader
             node = doc.SelectSingleNode("Enabled");
             newRssSubscrission.Enabled = Convert.ToBoolean(node.InnerText);
 
-
             node = doc.SelectSingleNode("tvuStatus");
             switch (node.InnerText)
             {
                 case "Complete":
                     newRssSubscrission.CurrentTVUStatus = tvuStatus.Complete;
                     break;
+
                 case "StillIncomplete":
                     newRssSubscrission.CurrentTVUStatus = tvuStatus.StillIncomplete;
                     break;
+
                 case "StillRunning":
                     newRssSubscrission.CurrentTVUStatus = tvuStatus.StillRunning;
                     break;
+
                 case "OnHiatus":
                     newRssSubscrission.CurrentTVUStatus = tvuStatus.OnHiatus;
                     break;
+
                 case "Unknown":
                 default:
                     newRssSubscrission.CurrentTVUStatus = tvuStatus.Unknown;
@@ -371,15 +370,19 @@ namespace TvUndergroundDownloader
                 case tvuStatus.Complete:
                     writer.WriteElementString("tvuStatus", "Complete");
                     break;
+
                 case tvuStatus.StillIncomplete:
                     writer.WriteElementString("tvuStatus", "StillIncomplete");
                     break;
+
                 case tvuStatus.StillRunning:
                     writer.WriteElementString("tvuStatus", "StillRunning");
                     break;
+
                 case tvuStatus.OnHiatus:
                     writer.WriteElementString("tvuStatus", "OnHiatus");
                     break;
+
                 case tvuStatus.Unknown:
                 default:
                     writer.WriteElementString("tvuStatus", "Unknown");
@@ -449,7 +452,6 @@ namespace TvUndergroundDownloader
                     newFile = linkCache[guid];
                 }
 
-
                 if (!ListPublicationDate.ContainsKey(newFile))
                 {
                     XmlNode pubDateNode = itemNode.SelectSingleNode("pubDate");
@@ -461,7 +463,6 @@ namespace TvUndergroundDownloader
                     }
                 }
             }
-
 
             if (CurrentTVUStatus == tvuStatus.Complete)
             {
@@ -475,7 +476,6 @@ namespace TvUndergroundDownloader
                 return;
             }
             UpdateTVUStatus(cookieContainer);
-
         }
 
         private Ed2kfile ProcessGUID(string url, CookieContainer cookieContainer)
@@ -491,7 +491,6 @@ namespace TvUndergroundDownloader
 
         public void UpdateTVUStatus(CookieContainer cookieContainer)
         {
-
             logger.Info("Checking serie status");
             string url = string.Format("http://tvunderground.org.ru/index.php?show=episodes&sid={0}", this.seasonID);
 
@@ -501,7 +500,6 @@ namespace TvUndergroundDownloader
             {
                 if (WebPage.IndexOf("Still Running") > 0)
                 {
-
                     CurrentTVUStatus = tvuStatus.StillRunning;
                     logger.Info("Serie status: Still Running");
                     return;
@@ -531,8 +529,6 @@ namespace TvUndergroundDownloader
 
             this.CurrentTVUStatus = tvuStatus.Unknown;
             logger.Info("Serie status: Unknown");
-
         }
     }
-
 }

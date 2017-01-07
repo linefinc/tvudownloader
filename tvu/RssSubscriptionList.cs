@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace TvUndergroundDownloader
 {
@@ -26,7 +24,6 @@ namespace TvUndergroundDownloader
             this.Guid = guid;
         }
     }
-
 
     public class RssSubscriptionList : List<RssSubscription>
     {

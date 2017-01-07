@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Net;
 using System.IO;
-using System.Text.RegularExpressions;
-
+using System.Net;
+using System.Text;
 
 namespace TvUndergroundDownloader
 {
-    class eMuleWebManager : IMuleWebManager
+    internal class eMuleWebManager : IMuleWebManager
     {
         private string Host;
         private string Password;
@@ -17,7 +15,6 @@ namespace TvUndergroundDownloader
 
         public bool isConnected { private set; get; }
         public string DefaultCategory { get; private set; }
-
 
         /// <summary>
         /// constructor
@@ -53,11 +50,10 @@ namespace TvUndergroundDownloader
             }
             catch
             {
-
                 return LoginStatus.ServiceNotAvailable;
             }
 
-            // check login 
+            // check login
             // if we not found logout, there's a password error
             j = page.IndexOf("logout");
             if (j < 0)
@@ -117,7 +113,6 @@ namespace TvUndergroundDownloader
             webSocketGET(string.Format("{0}/?ses={1}&w=transfer&ed2k={2}&cat={3}", Host, SesID, Ed2kLink.GetEscapedLink(), CategoryId));
         }
 
-
         /// <summary>
         /// Force start download
         /// </summary>
@@ -127,7 +122,6 @@ namespace TvUndergroundDownloader
             webSocketGET(string.Format("{0}/?ses={1}&w=transfer&op=resume&file={2}", Host, SesID, Ed2kLink.GetHash()));
         }
 
-
         /// <summary>
         /// force stop download
         /// </summary>
@@ -135,7 +129,6 @@ namespace TvUndergroundDownloader
         public void StopDownload(Ed2kfile Ed2kLink)
         {
             webSocketGET(string.Format("{0}/?ses={1}&w=transfer&op=stop&file={2}", Host, SesID, Ed2kLink.GetHash()));
-
         }
 
         /// <summary>
@@ -186,14 +179,12 @@ namespace TvUndergroundDownloader
                 temp = temp.Substring(j);
             }
             this.CategoryCache = myList;
-            if(myList.Count > 0)
+            if (myList.Count > 0)
             {
                 this.DefaultCategory = myList[0];
             }
             return myList;
-
         }
-
 
         /// <summary>
         /// get list of actual file in download
@@ -201,7 +192,7 @@ namespace TvUndergroundDownloader
         /// <returns></returns>
         public List<Ed2kfile> GetCurrentDownloads(List<Ed2kfile> knownFiles)
         {
-            if(knownFiles == null)
+            if (knownFiles == null)
             {
                 throw new NullReferenceException("knownFiles");
             }
@@ -226,7 +217,6 @@ namespace TvUndergroundDownloader
             return ListDownloads;
         }
 
-
         public void CloseEmuleApp()
         {
             webSocketGET(string.Format("{0}/?ses={1}&w=close", Host, SesID));
@@ -245,7 +235,6 @@ namespace TvUndergroundDownloader
         /// <returns>html page</returns>
         private string webSocketGET(string uri)
         {
-
             // create a request
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
             request.KeepAlive = false;
@@ -259,7 +248,6 @@ namespace TvUndergroundDownloader
 
             using (StreamReader reader = new StreamReader(response.GetResponseStream(), new UTF8Encoding()))
             {
-
                 string tempBuffer = reader.ReadToEnd();
 #if DEBUG   // save log file
                 string fileName = string.Format("emule-{0:yyyy-MM-dd-HH-mm-ss-ff}.html", DateTime.Now);
@@ -271,8 +259,6 @@ namespace TvUndergroundDownloader
 #endif
                 response.Close();
                 return tempBuffer;
-
-
             }
         }
     }

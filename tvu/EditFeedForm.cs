@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace TvUndergroundDownloader
@@ -16,7 +13,6 @@ namespace TvUndergroundDownloader
         public bool feedEnable { private set; get; }
         private Config MainConfig;
 
-
         public EditFeedForm(Config MainConfig, string Category, bool PauseDownload, bool feedEnable, uint maxSimultaneousDownload)
         {
             InitializeComponent();
@@ -27,9 +23,6 @@ namespace TvUndergroundDownloader
             this.feedEnable = feedEnable;
             this.MainConfig = MainConfig;
         }
-
-  
-
 
         private void EditFeedForm_Load(object sender, EventArgs e)
         {
@@ -79,42 +72,34 @@ namespace TvUndergroundDownloader
                     return;
                 }
 
-
                 ListCategories.AddRange(Service.GetCategories(true));
 
                 Service.Close();
 
-                foreach(string category in ListCategories)
+                foreach (string category in ListCategories)
                 {
                     //
                     //  Use invoke to avoid thread issue
                     //
                     if (this.comboBoxCategory.InvokeRequired == true)
                     {
-
                         Invoke(new MethodInvoker(
                             delegate { this.comboBoxCategory.Items.Add(category); }
                         ));
-
                     }
                     else
                     {
                         this.comboBoxCategory.Items.Add(category);
                     }
                 }
-
             }
             catch
             {
-
             }
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-           
         }
-
-
     }
 }

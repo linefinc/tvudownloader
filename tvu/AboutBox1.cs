@@ -8,7 +8,7 @@ namespace TvUndergroundDownloader
         public AboutBox1()
         {
             InitializeComponent();
-            
+
             this.labelProductName.Text = "TV Underground Downloader";
             this.labelVersion.Text = Config.VersionFull.ToString();
             this.labelCopyright.Text = "GNU General Public License 3";
@@ -109,8 +109,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.";
                 return ((AssemblyCompanyAttribute)attributes[0]).Company;
             }
         }
-        #endregion
 
-
+        #endregion Assembly Attribute Accessors
     }
 }

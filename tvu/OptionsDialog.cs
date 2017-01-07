@@ -7,6 +7,7 @@ namespace TvUndergroundDownloader
     {
         //public Config LocalConfig;
         public Config.eServiceType ServiceType;
+
         public string ServiceUrl { private set; get; }
         public string Password;
         public string tvuUsername;
@@ -46,6 +47,7 @@ namespace TvUndergroundDownloader
                 case Config.eServiceType.aMule:
                     comboBoxClientType.Text = "aMule";
                     break;
+
                 case Config.eServiceType.eMule:
                 default:
                     comboBoxClientType.Text = "eMule";
@@ -81,8 +83,6 @@ namespace TvUndergroundDownloader
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            
-
             //
             // StartMinimized
             //
@@ -182,7 +182,6 @@ namespace TvUndergroundDownloader
             //
             MaxSimultaneousFeedDownloads = Convert.ToUInt32(numericUpDownMaxSimultaneousDownloadForFeed.Value);
 
-
             tvuCookieH = textBoxCookieH.Text;
             tvuCookieI = textBoxCookieI.Text;
             tvuCookieT = textBoxCookieT.Text;
@@ -196,7 +195,6 @@ namespace TvUndergroundDownloader
                 saveLog = true;
             }
 
-
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
@@ -209,6 +207,7 @@ namespace TvUndergroundDownloader
                 case Config.eServiceType.aMule:
                     service = new aMuleWebManager(textBoxServiceUrl.Text, textBoxPassword.Text);
                     break;
+
                 case Config.eServiceType.eMule:
                 default:
                     service = new eMuleWebManager(textBoxServiceUrl.Text, textBoxPassword.Text);
@@ -246,7 +245,6 @@ namespace TvUndergroundDownloader
             string Subject = "Email Test";
             string message = "Email Test";
             SmtpClient.SendEmail(stmpServer, EmailReceiver, EmailSender, Subject, message);
-
         }
 
         private void comboBoxClientType_SelectedIndexChanged(object sender, EventArgs e)
@@ -256,6 +254,7 @@ namespace TvUndergroundDownloader
                 case "aMule":
                     ServiceType = Config.eServiceType.aMule;
                     break;
+
                 case "eMule":
                 default:
                     ServiceType = Config.eServiceType.eMule;
