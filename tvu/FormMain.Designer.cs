@@ -69,6 +69,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.listViewFeedFilesList = new System.Windows.Forms.ListView();
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStripFileFeed = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -122,7 +123,7 @@
             this.toolStripButtonAddFeed = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonCheckNow = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.markAsDownloadedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).BeginInit();
@@ -464,6 +465,11 @@
             this.columnHeader5.Text = "File";
             this.columnHeader5.Width = 400;
             // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Pub Date";
+            this.columnHeader1.Width = 100;
+            // 
             // columnHeader7
             // 
             this.columnHeader7.Text = "Date";
@@ -472,14 +478,15 @@
             // contextMenuStripFileFeed
             // 
             this.contextMenuStripFileFeed.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.deleteToolStripMenuItem1});
+            this.deleteToolStripMenuItem1,
+            this.markAsDownloadedToolStripMenuItem});
             this.contextMenuStripFileFeed.Name = "contextMenuStrip2";
-            this.contextMenuStripFileFeed.Size = new System.Drawing.Size(141, 26);
+            this.contextMenuStripFileFeed.Size = new System.Drawing.Size(186, 70);
             // 
             // deleteToolStripMenuItem1
             // 
             this.deleteToolStripMenuItem1.Name = "deleteToolStripMenuItem1";
-            this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(140, 22);
+            this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(185, 22);
             this.deleteToolStripMenuItem1.Text = "Redownload";
             this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.deleteToolStripMenuItem1_Click);
             // 
@@ -908,10 +915,12 @@
             this.toolStripButtonStop.Text = "Stop";
             this.toolStripButtonStop.Click += new System.EventHandler(this.toolStripButtonStop_Click);
             // 
-            // columnHeader1
+            // markAsDownloadedToolStripMenuItem
             // 
-            this.columnHeader1.Text = "Pub Date";
-            this.columnHeader1.Width = 100;
+            this.markAsDownloadedToolStripMenuItem.Name = "markAsDownloadedToolStripMenuItem";
+            this.markAsDownloadedToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.markAsDownloadedToolStripMenuItem.Text = "Mark as Downloaded";
+            this.markAsDownloadedToolStripMenuItem.Click += new System.EventHandler(this.markAsDownloadedToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -1041,6 +1050,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn DataGridViewTextBoxColumnStatus;
         private System.Windows.Forms.DataGridViewTextBoxColumn DataGridViewTextBoxColumnEnabled;
         private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ToolStripMenuItem markAsDownloadedToolStripMenuItem;
     }
 }
 

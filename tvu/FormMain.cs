@@ -1515,14 +1515,11 @@ namespace TvUndergroundDownloader
             foreach (ListViewItem selectedItem in listViewFeedFilesList.SelectedItems)
             {
                 string strSelectItemText = selectedItem.Text;   // this contain name file
-                logger.Info(string.Format("Delete {0}", strSelectItemText));
+                logger.Info("Marked as not Downloaded \"{0}\"", strSelectItemText);
 
                 Ed2kfile file = feed.GetDownloadFile().Find(t => t.File.FileName == strSelectItemText).File;
 
                 feed.SetFileNotDownloaded(file);
-
-                // remove from list view
-                listViewFeedFilesList.Items.Remove(selectedItem);
             }
             // finally update GUI
             UpdateSubscriptionFilesList();
@@ -1820,6 +1817,40 @@ namespace TvUndergroundDownloader
             labelTotalFiles.Text = Feed.GetDownloadFileCount().ToString();
             labelMaxSimultaneousDownloads.Text = Feed.MaxSimultaneousDownload.ToString();
 
+            UpdateSubscriptionFilesList();
+        }
+
+        private void markAsDownloadedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewMain.SelectedRows.Count == 0)
+                return;
+
+            if (listViewFeedFilesList.Items.Count == 0)
+                return;
+
+            if (listViewFeedFilesList.SelectedItems.Count == 0)
+                return;
+
+            // get the feed
+            DataGridViewColumn col = DataGridViewTextBoxColumnTitle;
+            string TitleCompact = dataGridViewMain.SelectedRows[0].Cells[col.Name].Value.ToString();
+            RssSubscription feed = MainConfig.RssFeedList.Find(x => (x.TitleCompact == TitleCompact));
+
+            if (feed == null)
+            {
+                return;
+            }
+
+            foreach (ListViewItem selectedItem in listViewFeedFilesList.SelectedItems)
+            {
+                string strSelectItemText = selectedItem.Text;   // this contain name file
+                logger.Info("Marked as Downloaded file:\"{0}\"", strSelectItemText);
+
+                Ed2kfile file = feed.GetDownloadFile().Find(t => t.File.FileName == strSelectItemText).File;
+
+                feed.SetFileDownloaded(file);
+            }
+            // finally update GUI
             UpdateSubscriptionFilesList();
         }
     }
