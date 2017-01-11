@@ -686,6 +686,12 @@ namespace TvUndergroundDownloader
 
             logger.Info("Statistics");
             logger.Info(string.Format("Total file added {0}", MainConfig.TotalDownloads));
+
+            //   MainConfig.LastUpgradeCheck = DateTime.Now.AddYears(-1).ToString("yyyy-MM-dd");
+            if (CheckNewVersion() == true)
+            {
+                logger.Info("New Version is available at http://tvudownloader.sourceforge.net/");
+            }
         }
 
         /// <summary>

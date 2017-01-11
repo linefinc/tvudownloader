@@ -21,8 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * Rewrite all the core engine to be portable on Linux
 * Deep code cleanup
 
-##### Version 0.7.1 XX/11/2016  #####
-* Minor changes made to simplify the migration from new core
+##### Version 0.7.1 11/01/2017 #####
++ Bug fix 
++ Add small changes for a better support for future version 
 
 ##### Version 0.7.0 12/11/2016  #####
 + Add first support to aMule
