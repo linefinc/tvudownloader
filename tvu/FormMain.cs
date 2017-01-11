@@ -1053,13 +1053,17 @@ namespace TvUndergroundDownloader
 
                 OperatingSystem osv = Environment.OSVersion;
 
+                GeoIP geoIP = GeoIP.GetCountryFromWeb();
+
                 // require update status
                 XmlDocument doc = new XmlDocument();
-                doc.Load(string.Format("http://tvudownloader.sourceforge.net/version.php?ver={0}&tvuid={1}&TotalDownloads={2}&osv={3}",
+                string url = string.Format("http://tvudownloader.sourceforge.net/version.php?ver={0}&tvuid={1}&TotalDownloads={2}&osv={3}&countryCode={4}",
                     Config.VersionFull.Replace(" ", "%20"),
                     MainConfig.tvudwid,
                     MainConfig.TotalDownloads,
-                    osv.VersionString.Replace(" ", "%20")));
+                    osv.VersionString.Replace(" ", "%20"),
+                   geoIP.countryCode);
+                doc.Load(url);
 
                 string lastVersionStr = "";
 
