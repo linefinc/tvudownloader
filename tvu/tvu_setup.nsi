@@ -13,7 +13,7 @@ Name "Tv Underground Downloader"
 
 ;--------------------------------
 ; The file to write
-OutFile ".\bin\Release\tvud_installer_0.7.0.exe"
+OutFile ".\bin\Release\tvud_installer_0.7.1.exe"
 SetCompress force			; force compressor
 SetCompressor /SOLID LZMA	; define lzma compressor
 
