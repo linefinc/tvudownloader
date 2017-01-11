@@ -915,7 +915,10 @@ namespace TvUndergroundDownloader
             Log.logInfo(string.Format("Total file added {0}", MainConfig.TotalDownloads));
             MainHistory.Save();
 
-
+            if (CheckNewVersion() == true)
+            {
+                Log.logInfo("New version is available at http://tvudownloader.sourceforge.net/");
+            }
         }
 
         /// <summary>
