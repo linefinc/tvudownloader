@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
-	<PropertyGroup>
-		<AssemblyVersion>0.7.0</AssemblyVersion>
-		<BuildTime>$([System.DateTime]::UtcNow.ToString("yyyy-MM-dd"))</BuildTime>
-		<MSBuildCommunityTasksPath>.</MSBuildCommunityTasksPath>
-	</PropertyGroup>
-	<Import Project="MSBuild.Community.Tasks.targets" />
-	<PropertyGroup>
-		<BuildDependsOn>
+  <PropertyGroup>
+    <AssemblyVersion>0.7.1</AssemblyVersion>
+    <BuildTime>$([System.DateTime]::UtcNow.ToString("yyyy-MM-dd"))</BuildTime>
+    <MSBuildCommunityTasksPath>.</MSBuildCommunityTasksPath>
+  </PropertyGroup>
+  <Import Project="MSBuild.Community.Tasks.targets" />
+  <PropertyGroup>
+    <BuildDependsOn>
       GenerateAssemblyInfo;
       $(BuildDependsOn)
-		</BuildDependsOn>
-	</PropertyGroup>
+    </BuildDependsOn>
+  </PropertyGroup>
 
-	<Target Name="ExtractRevision">
-		<GitVersion LocalPath="..">
-			<Output TaskParameter="CommitHash" PropertyName="Revision" />
-		</GitVersion>
-		<Message Text="Version : $(Revision)" />
-	</Target>
+  <Target Name="ExtractRevision">
+    <GitVersion LocalPath="..">
+      <Output TaskParameter="CommitHash" PropertyName="Revision" />
+    </GitVersion>
+    <Message Text="Version : $(Revision)" />
+  </Target>
 
-	<Target Name="GenerateAssemblyInfo"
+  <Target Name="GenerateAssemblyInfo"
           DependsOnTargets="ExtractRevision">
-		<PropertyGroup Condition="'$(Revision)' == ''">
-			<Revision>0000000</Revision>
-		</PropertyGroup>
-		<CreateProperty Value="$(MSBuildProjectDirectory)\..\..">
-			<Output TaskParameter="Value" PropertyName="SolutionDirectory"/>
-		</CreateProperty>
-		<CreateProperty Value="$(Revision)">
-			<Output TaskParameter="Value" PropertyName="AssemblyVersionCommitHash"/>
-		</CreateProperty>
+    <PropertyGroup Condition="'$(Revision)' == ''">
+      <Revision>0000000</Revision>
+    </PropertyGroup>
+    <CreateProperty Value="$(MSBuildProjectDirectory)\..\..">
+      <Output TaskParameter="Value" PropertyName="SolutionDirectory"/>
+    </CreateProperty>
+    <CreateProperty Value="$(Revision)">
+      <Output TaskParameter="Value" PropertyName="AssemblyVersionCommitHash"/>
+    </CreateProperty>
 
+    <PropertyGroup>
+      <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
+    </PropertyGroup>
 
     <AssemblyInfo CodeLanguage="CS"
               OutputFile="$(SolutionDirectory)\tvudownloader\tvu\Properties\AssemblyInfo.cs"
@@ -39,7 +42,9 @@
               AssemblyFileVersion="$(AssemblyVersion)"
               AssemblyInformationalVersion="$(AssemblyVersion) $(AssemblyVersionCommitHash) [$(BuildTime)]"
 			        AssemblyTitle ="TvUndergroundDownloader"
-              AssemblyProduct ="TvUndergroundDownloader"/>
+              AssemblyProduct ="TvUndergroundDownloader"
+			  AssemblyCopyright = "Copyright(C) $(CurrentYear) linefinc[at]users.sourceforge.net"
+			  />
 
   </Target>
 </Project>
