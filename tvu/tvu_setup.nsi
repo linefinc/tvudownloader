@@ -29,7 +29,7 @@ InstallDirRegKey HKLM "Software\TVUndergroundDownloader" "Install_Dir"
 
 ;--------------------------------
 ;Version Information
-VIProductVersion "0.7.0.0"
+VIProductVersion "0.7.1.0"
 VIAddVersionKey /LANG=0 "ProductName" "Tv Underground Downloader"
 VIAddVersionKey /LANG=0 "Comments" "Tv Underground Downloader"
 VIAddVersionKey /LANG=0 "FileVersion" "0.7.1.0"

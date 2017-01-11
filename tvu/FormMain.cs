@@ -915,9 +915,16 @@ namespace TvUndergroundDownloader
             Log.logInfo(string.Format("Total file added {0}", MainConfig.TotalDownloads));
             MainHistory.Save();
 
-            if (CheckNewVersion() == true)
+            try
             {
-                Log.logInfo("New version is available at http://tvudownloader.sourceforge.net/");
+                if (CheckNewVersion(true) == true)
+                {
+                    Log.logInfo("New version is available at http://tvudownloader.sourceforge.net/");
+                }
+            }
+            catch
+            {
+
             }
         }
 
@@ -1031,7 +1038,7 @@ namespace TvUndergroundDownloader
 
         /// <summary>check if a new version is avable on web</summary>
         /// <returns>true if new version is available or false in other case</returns>
-        private bool CheckNewVersion()
+        private bool CheckNewVersion(bool force = false)
         {
             if (MainConfig.intervalBetweenUpgradeCheck == 0)
             {
@@ -1047,7 +1054,7 @@ namespace TvUndergroundDownloader
 
                 lastCheckDateTime = DateTime.ParseExact(MainConfig.LastUpgradeCheck, "yyyy-MM-dd", provider);
 
-                if (DateTime.Now < nextCheck)
+                if ((DateTime.Now < nextCheck) & (force == false))
                 {
                     return false;
                 }
