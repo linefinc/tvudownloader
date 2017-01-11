@@ -391,6 +391,19 @@ namespace TvUndergroundDownloader
             XmlDocument xDoc = new XmlDocument();
             xDoc.Load(Config.FileNameConfig);
 
+
+            // Check configuration version to avoid bad behaviors
+            string configVersionStr = ReadString(xDoc, "version", string.Empty);
+            if(!string.IsNullOrEmpty(configVersionStr))
+            {
+                System.Version configVersion = new System.Version(configVersionStr);
+                System.Version appVersion = new System.Version(Version);
+                if (configVersion > appVersion)
+                {
+                    throw new Exception("Critical Error: the configuration file was created from a future version");
+                }
+            }
+
             switch (ReadString(xDoc, "ServiceType", "eMule"))
             {
                 case "aMule":
