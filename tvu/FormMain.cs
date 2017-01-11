@@ -377,9 +377,7 @@ namespace TvUndergroundDownloader
 
         private void versionCheckToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MainConfig.LastUpgradeCheck = DateTime.Now.AddYears(-1).ToString("yyyy-MM-dd");
-
-            if (CheckNewVersion() == true)
+            if (CheckNewVersion(true) == true)
             {
                 MessageBox.Show("New Version is available at http://tvudownloader.sourceforge.net/");
             }
@@ -687,10 +685,16 @@ namespace TvUndergroundDownloader
             logger.Info("Statistics");
             logger.Info(string.Format("Total file added {0}", MainConfig.TotalDownloads));
 
-            //   MainConfig.LastUpgradeCheck = DateTime.Now.AddYears(-1).ToString("yyyy-MM-dd");
-            if (CheckNewVersion() == true)
+            try
             {
-                logger.Info("New Version is available at http://tvudownloader.sourceforge.net/");
+                if (CheckNewVersion(true) == true)
+                {
+                    logger.Info("New Version is available at http://tvudownloader.sourceforge.net/");
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex);
             }
         }
 
@@ -794,7 +798,7 @@ namespace TvUndergroundDownloader
 
         /// <summary>check if a new version is avable on web</summary>
         /// <returns>true if new version is available or false in other case</returns>
-        private bool CheckNewVersion()
+        private bool CheckNewVersion(bool force = false)
         {
             if (MainConfig.intervalBetweenUpgradeCheck == 0)
             {
@@ -810,7 +814,7 @@ namespace TvUndergroundDownloader
 
                 lastCheckDateTime = DateTime.ParseExact(MainConfig.LastUpgradeCheck, "yyyy-MM-dd", provider);
 
-                if (DateTime.Now < nextCheck)
+                if ((DateTime.Now < nextCheck) & (force == false))
                 {
                     return false;
                 }
