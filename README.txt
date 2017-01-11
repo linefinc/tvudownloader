@@ -17,7 +17,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
-##### Version 0.7.0 12/11/2016  #####
+##### Version 0.7.1 11/01/2017 #####
++ Bug fix 
++ Add small changes for a better support for future version 
+
+##### Version 0.7.0 12/11/2016 #####
 + Add first support to aMule
 + Add import/export to simplify future migration
 + Add cookies section on options form (so we can manually setup)
