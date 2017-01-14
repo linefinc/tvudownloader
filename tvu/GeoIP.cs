@@ -1,27 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Net;
-using System.Text;
 using System.Xml;
 
 namespace TvUndergroundDownloader
 {
-    class GeoIP
+    internal class GeoIP
     {
+        public string City;
         public string ClientIP;
-        public string status;
-        public string country;
-        public string countryCode;
-        public string region;
-        public string regionName;
-        public string city;
-        public string zip;
-        public string lat;
-        public string lon;
-        public string timezone;
-        public string isp;
+        public string Country;
+        public string CountryCode;
+        public string Isp;
+        public string Lat;
+        public string Lon;
+        public string Region;
+        public string RegionName;
+        public string Status;
+        public string Zip;
 
         public static GeoIP GetCountryFromWeb(string ipAddress = "")
         {
@@ -43,22 +38,22 @@ namespace TvUndergroundDownloader
             XmlNodeList responseXML = ipInfoXML.GetElementsByTagName("status");
             XmlNode statusXmlNode = responseXML[0];
 
-            result.status = statusXmlNode.InnerText;
+            result.Status = statusXmlNode.InnerText;
 
-            if (result.status == "fail")
+            if (result.Status == "fail")
             {
                 return result;
             }
 
-            result.country = ipInfoXML.GetElementsByTagName("country")[0].InnerText;
-            result.countryCode = ipInfoXML.GetElementsByTagName("countryCode")[0].InnerText;
-            result.region = ipInfoXML.GetElementsByTagName("region")[0].InnerText;
-            result.regionName = ipInfoXML.GetElementsByTagName("regionName")[0].InnerText;
-            result.city = ipInfoXML.GetElementsByTagName("city")[0].InnerText;
-            result.zip = ipInfoXML.GetElementsByTagName("zip")[0].InnerText;
-            result.lat = ipInfoXML.GetElementsByTagName("lat")[0].InnerText;
-            result.lon = ipInfoXML.GetElementsByTagName("lon")[0].InnerText;
-            result.isp = ipInfoXML.GetElementsByTagName("isp")[0].InnerText;
+            result.Country = ipInfoXML.GetElementsByTagName("country")[0].InnerText;
+            result.CountryCode = ipInfoXML.GetElementsByTagName("countryCode")[0].InnerText;
+            result.Region = ipInfoXML.GetElementsByTagName("region")[0].InnerText;
+            result.RegionName = ipInfoXML.GetElementsByTagName("regionName")[0].InnerText;
+            result.City = ipInfoXML.GetElementsByTagName("city")[0].InnerText;
+            result.Zip = ipInfoXML.GetElementsByTagName("zip")[0].InnerText;
+            result.Lat = ipInfoXML.GetElementsByTagName("lat")[0].InnerText;
+            result.Lon = ipInfoXML.GetElementsByTagName("lon")[0].InnerText;
+            result.Isp = ipInfoXML.GetElementsByTagName("isp")[0].InnerText;
 
             return result;
         }

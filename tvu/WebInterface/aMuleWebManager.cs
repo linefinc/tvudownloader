@@ -11,25 +11,25 @@ namespace TvUndergroundDownloader
 {
     internal class aMuleWebManager : IMuleWebManager
     {
-        private string Host;
-        private string Password;
-        private Cookie CookieSessionID;
-        private List<string> CategoryCache;
-        private string DefaultCategory;
+        private string host;
+        private string password;
+        private Cookie cookieSessionID;
+        private List<string> categoryCache;
+        private string defaultCategory;
 
-        public bool isConnected { private set; get; }
+        public bool IsConnected { private set; get; }
 
         /// <summary>
         /// constructor
         /// </summary>
-        /// <param name="Host">host uri</param>
-        /// <param name="Password">emule web interface password</param>
-        public aMuleWebManager(string Host, string Password)
+        /// <param name="host">host uri</param>
+        /// <param name="password">emule web interface password</param>
+        public aMuleWebManager(string host, string password)
         {
-            this.Host = Host;
-            this.Password = Password;
-            this.CategoryCache = new List<string>();
-            this.isConnected = false;
+            this.host = host;
+            this.password = password;
+            this.categoryCache = new List<string>();
+            this.IsConnected = false;
         }
 
         /// <summary>
@@ -38,20 +38,20 @@ namespace TvUndergroundDownloader
         /// <returns></returns>
         public LoginStatus Connect()
         {
-            CookieSessionID = null;
+            cookieSessionID = null;
             //
             // generate login uri
             //ex: http://localhost:4000/?w=password&p=PASSWORD
             //
-            this.isConnected = false;   // reset connection status
+            this.IsConnected = false;   // reset connection status
 
-            string requestUri = string.Format("{0}/?pass={1}", Host, Password);
+            string requestUri = string.Format("{0}/?pass={1}", host, password);
             try
             {
                 RequestGET(requestUri);
-                if (this.CookieSessionID != null)
+                if (this.cookieSessionID != null)
                 {
-                    this.isConnected = true;
+                    this.IsConnected = true;
                     return LoginStatus.Logged;
                 }
 
@@ -69,27 +69,27 @@ namespace TvUndergroundDownloader
         /// <remarks>reset Session ID</remarks>
         public void Close()
         {
-            RequestGET(string.Format("{0}/logout.php", Host));
-            this.isConnected = false;
-            this.CookieSessionID = null;
+            RequestGET(string.Format("{0}/logout.php", host));
+            this.IsConnected = false;
+            this.cookieSessionID = null;
         }
 
         /// <summary>
         /// Add a file to download
         /// </summary>
         /// <param name="link">ed2k link</param>
-        /// <param name="Category">name of catogery</param>
-        public void AddToDownload(Ed2kfile link, string Category)
+        /// <param name="category">name of catogery</param>
+        public void AddToDownload(Ed2kfile link, string category)
         {
             NameValueCollection outgoingQueryString = HttpUtility.ParseQueryString(String.Empty);
             outgoingQueryString.Add("ed2klink", link.Ed2kLink);
-            if (string.IsNullOrEmpty(Category))
-                outgoingQueryString.Add("selectcat", DefaultCategory);
+            if (string.IsNullOrEmpty(category))
+                outgoingQueryString.Add("selectcat", defaultCategory);
             else
-                outgoingQueryString.Add("selectcat", Category);
+                outgoingQueryString.Add("selectcat", category);
             outgoingQueryString.Add("Submit", "Download link");
 
-            string requestUri = string.Format("{0}/footer.php", Host);
+            string requestUri = string.Format("{0}/footer.php", host);
             RequestPOST(requestUri, outgoingQueryString);
         }
 
@@ -102,10 +102,10 @@ namespace TvUndergroundDownloader
             NameValueCollection outgoingQueryString = HttpUtility.ParseQueryString(String.Empty);
             outgoingQueryString.Add("command", "resume");
             outgoingQueryString.Add("status", "all");
-            outgoingQueryString.Add("category", DefaultCategory);
+            outgoingQueryString.Add("category", defaultCategory);
             outgoingQueryString.Add(link.HashMD4, "on");
 
-            string requestUri = string.Format("{0}/amuleweb-main-dload.php", Host);
+            string requestUri = string.Format("{0}/amuleweb-main-dload.php", host);
 
             RequestPOST(requestUri, outgoingQueryString);
         }
@@ -119,10 +119,10 @@ namespace TvUndergroundDownloader
             NameValueCollection outgoingQueryString = HttpUtility.ParseQueryString(String.Empty);
             outgoingQueryString.Add("command", "pause");
             outgoingQueryString.Add("status", "all");
-            outgoingQueryString.Add("category", DefaultCategory);
+            outgoingQueryString.Add("category", defaultCategory);
             outgoingQueryString.Add(link.HashMD4, "on");
 
-            string requestUri = string.Format("{0}/amuleweb-main-dload.php", Host);
+            string requestUri = string.Format("{0}/amuleweb-main-dload.php", host);
             RequestPOST(requestUri, outgoingQueryString);
         }
 
@@ -143,20 +143,20 @@ namespace TvUndergroundDownloader
             //      < option > Test2 </ option >
             //</select>
 
-            const string startString = "<select name=\"category\" id=\"category\">";
-            const string endString = "</select>";
-            string page = RequestGET(string.Format("{0}/amuleweb-main-dload.php", Host));
+            const string StartString = "<select name=\"category\" id=\"category\">";
+            const string EndString = "</select>";
+            string page = RequestGET(string.Format("{0}/amuleweb-main-dload.php", host));
 
-            int start = page.IndexOf(startString);
+            int start = page.IndexOf(StartString);
 
             if (start == -1)
             {
                 return categories;
             }
 
-            start += startString.Length;
+            start += StartString.Length;
 
-            int stop = page.IndexOf(endString, start);
+            int stop = page.IndexOf(EndString, start);
             if (stop == -1)
             {
                 return categories;
@@ -171,7 +171,7 @@ namespace TvUndergroundDownloader
             categories.AddRange(page.Split(';'));
             if (categories.Count > 0)
             {
-                this.DefaultCategory = categories[0];
+                this.defaultCategory = categories[0];
             }
 
             return categories;
@@ -188,24 +188,24 @@ namespace TvUndergroundDownloader
                 throw new NullReferenceException("knownFiles");
             }
 
-            List<Ed2kfile> ListDownloads = new List<Ed2kfile>();
+            List<Ed2kfile> listDownloads = new List<Ed2kfile>();
             // get download page
-            string page = RequestGET(string.Format("{0}/amuleweb-main-dload.php", Host));
+            string page = RequestGET(string.Format("{0}/amuleweb-main-dload.php", host));
 
             if (page == null)
             {
-                return ListDownloads;
+                return listDownloads;
             }
 
             foreach (Ed2kfile file in knownFiles)
             {
                 if (page.IndexOf(file.HashMD4) > -1)
                 {
-                    ListDownloads.Add(new Ed2kfile(file));
+                    listDownloads.Add(new Ed2kfile(file));
                 }
             }
 
-            return ListDownloads;
+            return listDownloads;
         }
 
         public void CloseEmuleApp()
@@ -231,10 +231,10 @@ namespace TvUndergroundDownloader
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
             request.CookieContainer = new CookieContainer();
 
-            if (this.CookieSessionID != null)
+            if (this.cookieSessionID != null)
             {
                 request.CookieContainer = new CookieContainer();
-                request.CookieContainer.Add(this.CookieSessionID);
+                request.CookieContainer.Add(this.cookieSessionID);
             }
 
             // grab te response and print it out to the console along with the status code
@@ -245,7 +245,7 @@ namespace TvUndergroundDownloader
             {
                 if (coockie.Name == "amuleweb_session_id")
                 {
-                    CookieSessionID = coockie;
+                    cookieSessionID = coockie;
                 }
             }
 
@@ -277,9 +277,9 @@ namespace TvUndergroundDownloader
             request.ContentType = "application/x-www-form-urlencoded";
 
             request.CookieContainer = new CookieContainer();
-            if (this.CookieSessionID != null)
+            if (this.cookieSessionID != null)
             {
-                request.CookieContainer.Add(new Uri(uri), new Cookie(this.CookieSessionID.Name, this.CookieSessionID.Value));
+                request.CookieContainer.Add(new Uri(uri), new Cookie(this.cookieSessionID.Name, this.cookieSessionID.Value));
             }
 
             // Create POST data and convert it to a byte array.

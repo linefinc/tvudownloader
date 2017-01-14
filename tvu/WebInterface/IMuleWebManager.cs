@@ -6,24 +6,24 @@ namespace TvUndergroundDownloader
 
     internal interface IMuleWebManager
     {
-        bool isConnected { get; }
+        bool IsConnected { get; }
 
-        LoginStatus Connect();
+        void AddToDownload(Ed2kfile link, string category);
 
         void Close();
 
-        void AddToDownload(Ed2kfile link, string Category);
-
-        void StartDownload(Ed2kfile link);
-
-        void StopDownload(Ed2kfile link);
-
         void CloseEmuleApp();
+
+        LoginStatus Connect();
 
         void ForceRefreshSharedFileList();
 
         List<string> GetCategories(bool forceUpdate);
 
         List<Ed2kfile> GetCurrentDownloads(List<Ed2kfile> knownFiles);
+
+        void StartDownload(Ed2kfile link);
+
+        void StopDownload(Ed2kfile link);
     }
 }

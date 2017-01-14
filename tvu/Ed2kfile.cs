@@ -4,12 +4,6 @@ namespace TvUndergroundDownloader
 {
     public class Ed2kfile
     {
-        public string Ed2kLink { get; private set; }
-        public string FileName { get; private set; }
-        public string HashMD4 { get; private set; }
-        public string HashSHA1 { get; private set; }
-        public ulong FileSize { get; private set; }
-
         public Ed2kfile(string link)
         {
             HashSHA1 = null;
@@ -71,30 +65,11 @@ namespace TvUndergroundDownloader
             this.FileSize = file.FileSize;
         }
 
-        public string GetLink()
-        {
-            return Ed2kLink;
-        }
-
-        public string GetEscapedLink()
-        {
-            return Uri.EscapeDataString(Ed2kLink);
-        }
-
-        public string GetFileName()
-        {
-            return FileName;
-        }
-
-        public ulong GetFileSize()
-        {
-            return FileSize;
-        }
-
-        public string GetHash()
-        {
-            return HashMD4;
-        }
+        public string Ed2kLink { get; private set; }
+        public string FileName { get; private set; }
+        public ulong FileSize { get; private set; }
+        public string HashMD4 { get; private set; }
+        public string HashSHA1 { get; private set; }
 
         public override bool Equals(Object obj)
         {
@@ -119,12 +94,37 @@ namespace TvUndergroundDownloader
             }
         }
 
+        public string GetEscapedLink()
+        {
+            return Uri.EscapeDataString(Ed2kLink);
+        }
+
+        public string GetFileName()
+        {
+            return FileName;
+        }
+
+        public ulong GetFileSize()
+        {
+            return FileSize;
+        }
+
+        public string GetHash()
+        {
+            return HashMD4;
+        }
+
         public override int GetHashCode()
         {
             //
             //  https://msdn.microsoft.com/it-it/library/system.object.gethashcode(v=vs.110).aspx
             //
             return this.HashMD4.GetHashCode();
+        }
+
+        public string GetLink()
+        {
+            return Ed2kLink;
         }
 
         private int CountChar(string str, char c)

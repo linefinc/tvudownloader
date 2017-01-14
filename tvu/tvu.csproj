@@ -143,7 +143,6 @@
     <Compile Include="FormAlerteMuleClose.Designer.cs">
       <DependentUpon>FormAlerteMuleClose.cs</DependentUpon>
     </Compile>
-    <Compile Include="ListViewColumnSorter.cs" />
     <Compile Include="OptionsDialog.cs">
       <SubType>Form</SubType>
     </Compile>

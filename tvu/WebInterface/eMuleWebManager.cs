@@ -8,25 +8,57 @@ namespace TvUndergroundDownloader
 {
     internal class eMuleWebManager : IMuleWebManager
     {
-        private string Host;
-        private string Password;
-        private string SesID;
-        private List<string> CategoryCache;
-
-        public bool isConnected { private set; get; }
-        public string DefaultCategory { get; private set; }
+        private List<string> categoryCache;
+        private string host;
+        private string password;
+        private string sesID;
 
         /// <summary>
         /// constructor
         /// </summary>
-        /// <param name="Host">host uri</param>
-        /// <param name="Password">emule web interface password</param>
-        public eMuleWebManager(string Host, string Password)
+        /// <param name="host">host uri</param>
+        /// <param name="password">emule web interface password</param>
+        public eMuleWebManager(string host, string password)
         {
-            this.Host = Host;
-            this.Password = Password;
-            this.CategoryCache = new List<string>();
-            this.isConnected = false;
+            this.host = host;
+            this.password = password;
+            this.categoryCache = new List<string>();
+            this.IsConnected = false;
+        }
+
+        public string DefaultCategory { get; private set; }
+        public bool IsConnected { private set; get; }
+
+        /// <summary>
+        /// Add a file to download
+        /// </summary>
+        /// <param name="ed2kLink">ed2k link</param>
+        /// <param name="category">name of catogery</param>
+        public void AddToDownload(Ed2kfile ed2kLink, string category)
+        {
+            int categoryId = categoryCache.IndexOf(category);
+            if (categoryId == -1)
+            {
+                categoryId = 0;
+            }
+
+            WebSocketGET(string.Format("{0}/?ses={1}&w=transfer&ed2k={2}&cat={3}", host, sesID, ed2kLink.GetEscapedLink(), categoryId));
+        }
+
+        /// <summary>
+        /// Close connection with emule (Logout)
+        /// </summary>
+        /// <remarks>reset Session ID</remarks>
+        public void Close()
+        {
+            string temp = string.Format("{0}/?ses={1}&w=logout", host, sesID);
+            WebSocketGET(temp);
+            this.IsConnected = false;
+        }
+
+        public void CloseEmuleApp()
+        {
+            WebSocketGET(string.Format("{0}/?ses={1}&w=close", host, sesID));
         }
 
         /// <summary>
@@ -40,13 +72,13 @@ namespace TvUndergroundDownloader
             // generate login uri
             //ex: http://localhost:4000/?w=password&p=PASSWORD
             //
-            this.isConnected = false;   // reset connection status
+            this.IsConnected = false;   // reset connection status
 
-            string request = string.Format("{0}/?w=password&p={1}", Host, Password);
+            string request = string.Format("{0}/?w=password&p={1}", host, password);
             string page;
             try
             {
-                page = webSocketGET(request);
+                page = WebSocketGET(request);
             }
             catch
             {
@@ -75,60 +107,21 @@ namespace TvUndergroundDownloader
                 return LoginStatus.PasswordError;
             }
 
-            SesID = temp.Substring(j, i - j);
+            sesID = temp.Substring(j, i - j);
 
-            if (SesID.Length == 0)
+            if (sesID.Length == 0)
             {
                 return LoginStatus.PasswordError;
             }
 
-            this.isConnected = true;
+            this.IsConnected = true;
             return LoginStatus.Logged;
         }
 
-        /// <summary>
-        /// Close connection with emule (Logout)
-        /// </summary>
-        /// <remarks>reset Session ID</remarks>
-        public void Close()
+        public void ForceRefreshSharedFileList()
         {
-            string temp = string.Format("{0}/?ses={1}&w=logout", Host, SesID);
-            webSocketGET(temp);
-            this.isConnected = false;
-        }
-
-        /// <summary>
-        /// Add a file to download
-        /// </summary>
-        /// <param name="Ed2kLink">ed2k link</param>
-        /// <param name="Category">name of catogery</param>
-        public void AddToDownload(Ed2kfile Ed2kLink, string Category)
-        {
-            int CategoryId = CategoryCache.IndexOf(Category);
-            if (CategoryId == -1)
-            {
-                CategoryId = 0;
-            }
-
-            webSocketGET(string.Format("{0}/?ses={1}&w=transfer&ed2k={2}&cat={3}", Host, SesID, Ed2kLink.GetEscapedLink(), CategoryId));
-        }
-
-        /// <summary>
-        /// Force start download
-        /// </summary>
-        /// <param name="Ed2kLink"></param>
-        public void StartDownload(Ed2kfile Ed2kLink)
-        {
-            webSocketGET(string.Format("{0}/?ses={1}&w=transfer&op=resume&file={2}", Host, SesID, Ed2kLink.GetHash()));
-        }
-
-        /// <summary>
-        /// force stop download
-        /// </summary>
-        /// <param name="Ed2kLink"></param>
-        public void StopDownload(Ed2kfile Ed2kLink)
-        {
-            webSocketGET(string.Format("{0}/?ses={1}&w=transfer&op=stop&file={2}", Host, SesID, Ed2kLink.GetHash()));
+            //  "self.location.href='/?ses=-1051561950&w=shared&reload=true'
+            WebSocketGET(string.Format("{0}/?ses={1}&w=shared&reload=true", host, sesID));
         }
 
         /// <summary>
@@ -138,17 +131,17 @@ namespace TvUndergroundDownloader
         /// <returns></returns>
         public List<string> GetCategories(bool forceUpdate)
         {
-            if ((this.CategoryCache.Count > 0) ^ (forceUpdate == false))
+            if ((this.categoryCache.Count > 0) ^ (forceUpdate == false))
             {
-                return this.CategoryCache;
+                return this.categoryCache;
             }
 
             List<string> myList = new List<string>();
             int i, j;
             string temp;
 
-            temp = string.Format("{0}/?ses={1}&w=search", Host, SesID);
-            temp = webSocketGET(temp);
+            temp = string.Format("{0}/?ses={1}&w=search", host, sesID);
+            temp = WebSocketGET(temp);
 
             //
             //  Parse html to find category
@@ -178,7 +171,7 @@ namespace TvUndergroundDownloader
                 myList.Add(sValue);
                 temp = temp.Substring(j);
             }
-            this.CategoryCache = myList;
+            this.categoryCache = myList;
             if (myList.Count > 0)
             {
                 this.DefaultCategory = myList[0];
@@ -196,10 +189,10 @@ namespace TvUndergroundDownloader
             {
                 throw new NullReferenceException("knownFiles");
             }
-            List<Ed2kfile> ListDownloads = new List<Ed2kfile>();
+            List<Ed2kfile> listDownloads = new List<Ed2kfile>();
 
             // get download page
-            string page = webSocketGET(string.Format("{0}/?ses={1}&w=transfer&showuploadqueue=false&cat=0", Host, SesID));
+            string page = WebSocketGET(string.Format("{0}/?ses={1}&w=transfer&showuploadqueue=false&cat=0", host, sesID));
 
             if (page == null)
             {
@@ -210,22 +203,29 @@ namespace TvUndergroundDownloader
             {
                 if (page.IndexOf(file.HashMD4) > -1)
                 {
-                    ListDownloads.Add(new Ed2kfile(file));
+                    listDownloads.Add(new Ed2kfile(file));
                 }
             }
 
-            return ListDownloads;
+            return listDownloads;
         }
 
-        public void CloseEmuleApp()
+        /// <summary>
+        /// Force start download
+        /// </summary>
+        /// <param name="ed2kLink"></param>
+        public void StartDownload(Ed2kfile ed2kLink)
         {
-            webSocketGET(string.Format("{0}/?ses={1}&w=close", Host, SesID));
+            WebSocketGET(string.Format("{0}/?ses={1}&w=transfer&op=resume&file={2}", host, sesID, ed2kLink.GetHash()));
         }
 
-        public void ForceRefreshSharedFileList()
+        /// <summary>
+        /// force stop download
+        /// </summary>
+        /// <param name="ed2kLink"></param>
+        public void StopDownload(Ed2kfile ed2kLink)
         {
-            //  "self.location.href='/?ses=-1051561950&w=shared&reload=true'
-            webSocketGET(string.Format("{0}/?ses={1}&w=shared&reload=true", Host, SesID));
+            WebSocketGET(string.Format("{0}/?ses={1}&w=transfer&op=stop&file={2}", host, sesID, ed2kLink.GetHash()));
         }
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace TvUndergroundDownloader
         /// </summary>
         /// <param name="uri"></param>
         /// <returns>html page</returns>
-        private string webSocketGET(string uri)
+        private string WebSocketGET(string uri)
         {
             // create a request
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);

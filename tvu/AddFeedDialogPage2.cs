@@ -70,7 +70,7 @@ namespace TvUndergroundDownloader
                 eMuleWebManager Service = new eMuleWebManager(ServiceUrl, Password);
                 Service.Connect();
 
-                if (Service.isConnected == false)
+                if (Service.IsConnected == false)
                 {
                     return;
                 }
