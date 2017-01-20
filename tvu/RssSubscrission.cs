@@ -292,24 +292,30 @@ namespace TvUndergroundDownloader
             return outArray;
         }
 
+        /// <summary>
+        /// Return all files that are waiting for download 
+        /// </summary>
+        /// <returns></returns>
         public List<Ed2kfile> GetPendingFile()
         {
             List<Ed2kfile> outArray = new List<Ed2kfile>();
 
             foreach (Ed2kfile file in linkCache.Values)
             {
-                if (downloaded.ContainsKey(file) != false)
+                bool addMe = true;
+                foreach (Ed2kfile fileDonlowaded in downloaded.Keys)
+                {
+                    if (fileDonlowaded.HashMD4 == file.HashMD4)
+                    {
+                        addMe = false;
+                    }
+
+                }
+                if (addMe == true)
                 {
                     outArray.Add(file);
                 }
             }
-
-            outArray.Sort((A, B) => A.FileName.CompareTo(B.FileName));
-            if (outArray.Count > MaxSimultaneousDownload)
-            {
-                outArray.RemoveRange((int)MaxSimultaneousDownload, outArray.Count - (int)MaxSimultaneousDownload);
-            }
-
             return outArray;
         }
 
