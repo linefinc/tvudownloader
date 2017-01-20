@@ -293,10 +293,10 @@ namespace TvUndergroundDownloader
         }
 
         /// <summary>
-        /// Return all files that are waiting for download 
+        /// Return all files that are waiting for download
         /// </summary>
         /// <returns></returns>
-        public List<Ed2kfile> GetPendingFile()
+        public List<Ed2kfile> GetPendingFiles()
         {
             List<Ed2kfile> outArray = new List<Ed2kfile>();
 
@@ -309,7 +309,6 @@ namespace TvUndergroundDownloader
                     {
                         addMe = false;
                     }
-
                 }
                 if (addMe == true)
                 {

@@ -1654,7 +1654,7 @@ namespace TvUndergroundDownloader
 
             foreach (var subscrission in MainConfig.RssFeedList)
             {
-                foreach (Ed2kfile file in subscrission.GetPendingFile())
+                foreach (Ed2kfile file in subscrission.GetPendingFiles())
                 {
                     listBoxPending.Items.Add(file.FileName);
                 }
