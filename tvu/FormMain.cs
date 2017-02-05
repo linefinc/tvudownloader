@@ -36,8 +36,6 @@ namespace TvUndergroundDownloader
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private EmbendedWebServer.EmbendedWebServer embendedWebServer;
 
-
-
         public FormMain()
         {
             // load configuration
@@ -1706,9 +1704,9 @@ namespace TvUndergroundDownloader
             {
                 var newRow = dataTable.NewRow();
                 newRow["Title"] = subscrission.TitleCompact;
-                newRow["TotalDownloads"] = subscrission.GetDownloadedFiles().Count;
-                TimeSpan ts = DateTime.Now - subscrission.GetLastDownloadDate();
-                newRow["LastUpgrade"] = ts.Days;
+                newRow["TotalDownloads"] = subscrission.TotalFilesDownloaded;
+
+                newRow["LastUpgrade"] = subscrission.LastChannelUpdate.Days;
 
                 switch (subscrission.CurrentTVUStatus)
                 {
@@ -1736,28 +1734,32 @@ namespace TvUndergroundDownloader
 
                 newRow["Enabled"] = subscrission.Enabled == true ? "True" : "False";
 
-                switch( subscrission.DubLanguage )
+                switch (subscrission.DubLanguage)
                 {
                     case "gb":
                         newRow["DubLanguage"] = new Bitmap(Properties.Resources.gb);
                         break;
+
                     case "it":
                         newRow["DubLanguage"] = new Bitmap(Properties.Resources.it);
                         break;
+
                     case "fr":
                         newRow["DubLanguage"] = new Bitmap(Properties.Resources.fr);
                         break;
+
                     case "jp":
                         newRow["DubLanguage"] = new Bitmap(Properties.Resources.jp);
                         break;
+
                     case "es":
                         newRow["DubLanguage"] = new Bitmap(Properties.Resources.es);
                         break;
+
                     default:
                         break;
                 }
-                   
-                
+
                 dataTable.Rows.Add(newRow);
             }
             dataGridViewMain.DataSource = dataTable;

@@ -27,6 +27,7 @@ namespace TvUndergroundDownloader
         static public Regex regexFeedSource = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/rss.php\?se_id=(?<seid>\d{1,10})");
         public DateTime LastSerieStatusUpgradeDate = DateTime.MinValue;
         public string LastUpgradeDate = string.Empty;
+
         [Obsolete]
         public ListViewItem listViewItem = null;
 
@@ -37,6 +38,7 @@ namespace TvUndergroundDownloader
         private Dictionary<Ed2kfile, DateTime> downloaded = new Dictionary<Ed2kfile, DateTime>();
         private Dictionary<string, Ed2kfile> linkCache = new Dictionary<string, Ed2kfile>();
         private Dictionary<Ed2kfile, DateTime> ListPublicationDate = new Dictionary<Ed2kfile, DateTime>();
+
         /// <summary>
         /// Build a Rss Subscription
         /// </summary>
@@ -61,8 +63,6 @@ namespace TvUndergroundDownloader
             }
 
             this.seasonID = integerBuffer;
-
-
         }
 
         public RssSubscription(string newUrl, CookieContainer cookieContainer)
@@ -98,14 +98,11 @@ namespace TvUndergroundDownloader
                 throw new ApplicationException("Wrong RSS file format");
             }
             this.Title = node.InnerText;
-
-           
-
-
         }
 
         public string Category { get; set; } = string.Empty;
         public TvuStatus CurrentTVUStatus { get; private set; } = TvuStatus.Unknown;
+
         public string DubLanguage
         {
             get
@@ -118,7 +115,6 @@ namespace TvUndergroundDownloader
                 if (this.Title.IndexOf("spanish") > -1) return "es";
                 return string.Empty;
             }
-
         }
 
         public bool Enabled { get; set; } = true;
@@ -128,6 +124,21 @@ namespace TvUndergroundDownloader
         public string TitleCompact { get { return this.Title.Replace("[ed2k] tvunderground.org.ru:", "").Trim(); } }
         public string Url { private set; get; }
 
+        public int TotalFilesDownloaded
+        {
+            get
+            {
+                return downloaded.Count;
+            }
+        }
+
+        public TimeSpan LastChannelUpdate
+        {
+            get
+            {
+                return DateTime.Now - this.GetLastDownloadDate();
+            }
+        }
         /// <summary>
         /// Load data from xml
         /// </summary>
@@ -546,6 +557,7 @@ namespace TvUndergroundDownloader
 
             writer.WriteEndElement();// end channel
         }
+
         private Ed2kfile ProcessGUID(string url, CookieContainer cookieContainer)
         {
             string webPage = WebFetch.Fetch(url, false, cookieContainer);
