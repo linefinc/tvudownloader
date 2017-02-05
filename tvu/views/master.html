@@ -4,10 +4,43 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
+    <style>
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333333;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: #111111;
+}
+</style>
 </head>
 <body>
-    <a href="\files" >File</a> <br />
-    <a href="\channels" >Channels</a>
+
+    <ul>
+        <li><a href="\files">File</a></li>
+        <li><a href="\channels">Channels</a></li>
+        <li><a href="\update">Update</a></li>
+        <li><a href="\log">Log</a></li>
+        <li><a href="\setup">Setup</a></li>
+        <li><a href="#about">About</a></li>
+    </ul>
+
     @Section['Content'];
 </body>
 </html>

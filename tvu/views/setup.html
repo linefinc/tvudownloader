@@ -1,0 +1,159 @@
+﻿@Master['master.html']
+
+@Section['Content']
+
+<form method="POST" action="/setup">
+    <input type="hidden" name="action" value="update_setup" />
+    <table id="location" border='1'>
+
+        <tr>
+            <th>Service type</th>
+            <th>
+                <select name="ServiceType">
+                    <option value="aMule">aMule</option>
+                    <option value="eMule">eMule</option>
+                </select>
+
+            </th>
+        </tr>
+        <tr>
+            <th>Service Url</th>
+            <th>
+                <input type="text" name="ServiceUrl" value="@Model.ServiceUrl" />
+            </th>
+        </tr>
+        <tr>
+            <th>Service Password</th>
+            <th>
+                <input type="text" name="Password" value="@Model.Password" />
+            </th>
+        </tr>
+        <tr>
+            <th>Cookie H</th>
+            <th>
+                <input type="text" name="tvuCookieH" value="@Model.tvuCookieH" />
+            </th>
+        </tr>
+        <tr>
+            <th>Cookie I</th>
+            <th>
+                <input type="text" name="tvuCookieI" value="@Model.tvuCookieI" />
+            </th>
+        </tr>
+        <tr>
+            <th>Cookie T</th>
+            <th>
+                <input type="text" name="tvuCookieT" value="@Model.tvuCookieT" />
+            </th>
+        </tr>
+        <tr>
+            <th>Close Emule If All Is Done</th>
+            <th>
+                <input type="text" name="tvuCookieT" value="@Model.CloseEmuleIfAllIsDone" />
+            </th>
+        </tr>
+        <tr>
+            <th>Max Simultaneous Feed Downloads Default</th>
+            <th>
+                <input type="text" name="tvuCookieT" value="@Model.MaxSimultaneousFeedDownloadsDefault" />
+            </th>
+        </tr>
+        <tr>
+            <th>PauseDownloadDefault T</th>
+            <th>
+                <input type="text" name="tvuCookieT" value="@Model.PauseDownloadDefault" />
+            </th>
+        </tr>
+
+        <tr>
+            <th>Min To Start Emule</th>
+            <th>
+                <input type="text" name="tvuCookieT" value="@Model.MinToStartEmule" />
+            </th>
+        </tr>
+        <tr>
+            <th>eMule Exe</th>
+            <th>
+                <input type="text" name="tvuCookieT" value="@Model.eMuleExe" />
+            </th>
+        </tr>
+        <tr>
+            <th>Email Notification</th>
+            <th>
+                <input type="text" name="tvuCookieT" value="@Model.EmailNotification" />
+            </th>
+        </tr>
+        <tr>
+            <th>Server SMTP</th>
+            <th>
+                <input type="text" name="tvuCookieT" value="@Model.ServerSMTP" />
+            </th>
+        </tr>
+        <tr>
+            <th>Mail Sender</th>
+            <th>
+                <input type="text" name="tvuCookieT" value="@Model.MailSender" />
+            </th>
+        </tr>
+
+        <tr>
+            <th>Mail Receiver</th>
+            <th>
+                <input type="text" name="tvuCookieT" value="@Model.MailReceiver" />
+            </th>
+        </tr>
+
+        <tr>
+            <th></th>
+            <th>
+                <input type="submit" value="Setup" />
+            </th>
+        </tr>
+    </table>
+
+    <!--
+    
+
+            StartMinimized = Convert.ToBoolean(ReadString(xDoc, "StartMinimized", "false"));
+
+            CloseEmuleIfAllIsDone = Convert.ToBoolean(ReadString(xDoc, "CloseWhenAllDone", "false"));
+
+            StartEmuleIfClose = Convert.ToBoolean(ReadString(xDoc, "AutoStartEmule", "false"));
+
+            AutoClearLog = Convert.ToBoolean(ReadString(xDoc, "AutoClearLog", "false"));
+            MaxSimultaneousFeedDownloadsDefault = ReadUInt(xDoc, "MaxSimultaneousFeedDownloads", 3, 0, 50);
+            PauseDownloadDefault = Convert.ToBoolean(ReadString(xDoc, "PauseDownloadDefault", "false"));
+            MinToStartEmule = ReadInt(xDoc, "MinToStartEmule", 0, 0, 50);
+            eMuleExe = ReadString(xDoc, "eMuleExe", "");
+
+            DefaultCategory = ReadString(xDoc, "DefaultCategory", "");
+
+            debug = Convert.ToBoolean(ReadString(xDoc, "Debug", "false"));
+#if DEBUG
+            Verbose = true;
+#else
+            Verbose = Convert.ToBoolean(ReadString(xDoc, "Verbose", "false"));
+#endif
+            saveLog = Convert.ToBoolean(ReadString(xDoc, "SaveLog", "false"));
+
+            EmailNotification = Convert.ToBoolean(ReadString(xDoc, "EmailNotification", "false"));
+
+            ServerSMTP = ReadString(xDoc, "ServerSMTP", "");
+
+            MailReceiver = ReadString(xDoc, "MailReceiver", "");
+
+            MailSender = ReadString(xDoc, "MailSender", "");
+
+            tvudwid = ReadString(xDoc, "tvudwid", RandomIDGenerator());
+
+            intervalBetweenUpgradeCheck = ReadInt(xDoc, "intervalBetweenUpgradeCheck", 5, 1, 15);
+
+            LastUpgradeCheck = ReadString(xDoc, "LastUpgradeCheck", DateTime.Now.ToString("yyyy-MM-dd"));
+
+            TotalDownloads = ReadInt(xDoc, "TotalDownloads", 0);
+
+            UseHttpInsteadOfHttps = (bool)Convert.ToBoolean(ReadString(xDoc, "useHttpInsteadOfHttps", "false"));
+    -->
+
+</form>
+@EndSection

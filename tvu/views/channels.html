@@ -20,12 +20,7 @@
             <th>@Current.LastChannelUpdate.Days </th>
             <th>@Current.CurrentTVUStatus</th>
             <th>@Current.Enabled</th>
-            <td><a href="/RssSubscription/Delete/@Current.seasonID">
-                DELETE 
-
-                </a>
-                
-            </td>
+            <td><a href="/RssSubscription/Delete/@Current.seasonID">Delete</a></td>
         </tr>
         @EndEach
     </table>
@@ -40,4 +35,25 @@
 
     <input type="submit" value="Add" />
 </form>
+
+<table id="location" border='1'>
+    <tr>
+        <th>seasonID</th>
+        <th>Title</th>
+        <th>Dub</th>
+    </tr>
+    @Each.DownloadFile
+    <tr>
+        <th>@Current.File.FileName</th>
+        <th>@Current.DownloadDate</th>
+        <th>@Current.DubLanguage</th>
+        <td><a href="/RssSubscription/Delete/@Current.seasonID">Delete</a></td>
+        <th>@Current.File.HashMD4</th>
+    </tr>
+    @EndEach
+</table>
+
+
+
+
 @EndSection

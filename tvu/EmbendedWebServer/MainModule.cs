@@ -1,6 +1,10 @@
 ﻿using Nancy;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
 using System;
 using System.Dynamic;
+using System.IO;
 using System.Net;
 
 //namespace TvUndergroundDownloader.EmbendedWebServer
@@ -9,33 +13,50 @@ namespace TvUndergroundDownloader.EmbendedWebServer
     public class MainModule : NancyModule
     {
         public dynamic Model = new ExpandoObject();
+        private Logger logger = LogManager.GetCurrentClassLogger();
 
         public MainModule()
         {
-            Get["/"] = _ =>
+            Get["/"] = args =>
             {
                 Model.RssFeedList = GlobalVar.Config.RssFeedList;
                 Model.LastActivity = GlobalVar.Config.RssFeedList.GetLastActivity();
                 return View["files", Model];
             };
 
-            Get["/files"] = _ =>
+            Get["/files"] = args =>
             {
                 Model.RssFeedList = GlobalVar.Config.RssFeedList;
                 Model.LastActivity = GlobalVar.Config.RssFeedList.GetLastActivity();
                 return View["files", Model];
             };
 
-            Get["/channels"] = _ =>
+            Get["/update"] = args =>
             {
+                return View["log"];
+            };
+
+            Get["/channels/{id}"] = args =>
+            {
+                int sessionID = (int)args["id"];
+                var channel = GlobalVar.Config.RssFeedList.Find((obj) => obj.seasonID == sessionID);
+
                 Model.RssFeedList = GlobalVar.Config.RssFeedList;
-                Model.LastActivity = GlobalVar.Config.RssFeedList.GetLastActivity();
+                Model.DownloadFile = channel.GetDownloadFile();
                 return View["channels", Model];
+            };
+
+
+
+            Get["/log"] = args =>
+            {
+                LoggingConfiguration config = LogManager.Configuration;
+                MemoryTarget memoryTarget = config.FindTargetByName("MemoryTarget") as MemoryTarget;
+                return View["log", memoryTarget.Logs];
             };
 
             Get["/RssSubscription/Delete/{id}"] = args =>
             {
-
                 int sessionID = (int)args["id"];
                 var channel = GlobalVar.Config.RssFeedList.Find((obj) => obj.seasonID == sessionID);
                 GlobalVar.Config.RssFeedList.Remove(channel);
@@ -43,9 +64,26 @@ namespace TvUndergroundDownloader.EmbendedWebServer
                 return Response.AsRedirect("/channels");
             };
 
-            Get["/fff"] = x =>
+            Get["/fff"] = args =>
             {
                 return Response.AsJson(GlobalVar.Config.RssFeedList.GetLastActivity());
+            };
+
+            Get["/setup"] = args =>
+            {
+                return View["setup", GlobalVar.Config];
+            };
+
+            Post["/setup"] = args =>
+            {
+                var action = (string)this.Request.Form.action;
+                if (action == "update_setup")
+                {
+                    logger.Info("WebInterface change setup");
+                    string password = (string)this.Request.Form.password;
+
+                }
+                return Response.AsRedirect("/setup");
             };
 
             Post["/RssSubscription"] = args =>
@@ -65,9 +103,9 @@ namespace TvUndergroundDownloader.EmbendedWebServer
                     GlobalVar.Config.RssFeedList.Add(newSubscription);
                     GlobalVar.Config.Save();
 
-                    if(GlobalVar.MainBackgroundWorker != null)
+                    if (GlobalVar.MainBackgroundWorker != null)
                     {
-                        if(GlobalVar.MainBackgroundWorker.IsBusy== false)
+                        if (GlobalVar.MainBackgroundWorker.IsBusy == false)
                         {
                             GlobalVar.MainBackgroundWorker.RunWorkerAsync();
                         }
