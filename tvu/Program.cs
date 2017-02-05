@@ -27,6 +27,7 @@ namespace TvUndergroundDownloader
                 return;
             }
 
+          
             //
             //  Setup Nlog
             //

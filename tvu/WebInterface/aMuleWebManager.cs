@@ -309,7 +309,7 @@ namespace TvUndergroundDownloader
                     writer.WriteLine("<!-- POST: {0} -->", uri);
                     writer.WriteLine("<!-- DateTime: {0:yyyy-MM-dd HH:mm:ss.ff} -->", DateTime.Now);
                     writer.WriteLine("<!-- OutgoingQuery: {0} -->", outgoingQueryString.ToString());
-                    writer.WriteLine("<!-- OutgoingCookie: \"{0}\":\"{1}\"-->", this.CookieSessionID.Name, this.CookieSessionID.Value);
+                    writer.WriteLine("<!-- OutgoingCookie: \"{0}\":\"{1}\"-->", this.cookieSessionID.Name, this.cookieSessionID.Value);
                     writer.Write(tempBuffer);
                 }
 #endif

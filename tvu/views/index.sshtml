@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Login</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+</head>
+<body>
+
+    <table id="location" border='1'>
+        <tr>
+            <th>seasonID</th>
+			<th>Title</th>
+			<th>Dub</th>
+            <th>Total Downloads</th>
+			<th>Last update</th>
+			<th>Status</th>
+			<th>Enabled</th>
+        </tr>
+@Each.RssFeedList
+        <tr>
+			<th>@Current.seasonID</th>
+            <th>@Current.TitleCompact</th>
+            <th>@Current.Dub</th>
+			<th>@Current.Dub</th>
+			<th>@Current.CurrentTVUStatus</th>
+			<th>@Current.Enabled</th>
+			<td><a href="/delete/@Current.Id">Delete With JavaScript</a></td>
+			<td><a href="/delete/@Current.Id">Delete Without JavaScript</a></td>
+        </tr>
+@EndEach
+    </table>
+
+	<body>
+
+    <table id="location" border='1'>
+        <tr>
+            <th>File Name</th>
+			<th>Date</th>
+        </tr>
+@Each.RssFeedList
+        <tr>
+			<th>@Current.seasonID</th>
+            <th>@Current.TitleCompact</th>
+            
+        </tr>
+@EndEach
+    </table>
+
+
+	@Model.Deleted<br>
+	<br>
+	<br>
+	@Model[.Products.ID]
+
+	<br>
+	<br><br>
+@foreach (var product in Model.Products)
+  {
+    <tr>
+      <td>@product.Id</td>
+      <td>@product.Name</td>
+      <td>@product.Price.ToString("c")</td>
+      <td><a href="/delete/@product.Id">Delete With JavaScript</a></td>
+      <td><a href="/delete/@product.Id">Delete Without JavaScript</a></td>
+    </tr>  
+  }
+
+    <form method="POST">
+        <input type="hidden" name="action" value="AddNewFeed" />
+        Username
+        <input type="text" name="newFeedUrl" value="" />
+        <br />
+
+        <input type="submit" value="Add" />
+    </form>
+</body>
+</html>
+<!--<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <form method="POST">
+        Username <input type="text" name="Username" value="user"/>
+        <br />
+        Password <input name="Password" type="password" value="password"/>
+        <br />
+        Remember Me <input name="RememberMe" type="checkbox" value="True" />
+        <br />
+        <input type="submit" value="Login" />
+    </form>
+    @if (Model.Errored) {
+        <div id="errorBox" class="floatingError">Invalid Username or Password</div>
+    }
+</body>
+</html>
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="/lib/index.css" />
+    <title>TV U DONW</title>
+</head>
+<body>
+    prova
+    <br />
+    ciao<br />
+
+    <form action="login">
+        <div class="imgcontainer">
+            <img src="img_avatar2.png" alt="Avatar" class="avatar" />
+        </div>
+
+        <div class="container">
+            <label><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="pwd" required />
+            <button type="submit">Login</button>
+        </div>
+
+        <div class="container" style="background-color: #f1f1f1">
+            <button type="button" class="cancelbtn">Cancel</button>
+        </div>
+    </form>
+</body>
+</html> -->

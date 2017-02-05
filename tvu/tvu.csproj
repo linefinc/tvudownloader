@@ -70,6 +70,15 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Nancy, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nancy.1.4.1\lib\net40\Nancy.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nancy.Hosting.Self, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nancy.Hosting.Self.1.4.1\lib\net40\Nancy.Hosting.Self.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.3.11\lib\net40\NLog.dll</HintPath>
       <Private>True</Private>
@@ -120,6 +129,10 @@
     <Compile Include="EditFeedForm.Designer.cs">
       <DependentUpon>EditFeedForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="EmbendedWebServer\Bootstrapper.cs" />
+    <Compile Include="EmbendedWebServer\EmbendedWebServer.cs" />
+    <Compile Include="EmbendedWebServer\GlobalVar.cs" />
+    <Compile Include="EmbendedWebServer\MainModule.cs" />
     <Compile Include="ExportImportHelper.cs" />
     <Compile Include="GeoIP.cs" />
     <Compile Include="RssSubscriptionList.cs" />
@@ -189,6 +202,9 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.manifest" />
+    <None Include="EmbendedWebServer\View\index.sshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -205,6 +221,9 @@
     <Compile Include="SmtpClient.cs" />
     <Compile Include="WebFetch.cs" />
     <Compile Include="WebInterface\IMuleWebManager.cs" />
+    <None Include="views\index.sshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -267,6 +286,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\flag\jp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="EmbendedWebServer\View\favicon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="views\favicon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- import MS Build Tasks comunity -->

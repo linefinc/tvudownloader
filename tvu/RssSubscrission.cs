@@ -25,10 +25,8 @@ namespace TvUndergroundDownloader
     public class RssSubscription
     {
         static public Regex regexFeedSource = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/rss.php\?se_id=(?<seid>\d{1,10})");
-        public bool Enabled = true;
         public DateTime LastSerieStatusUpgradeDate = DateTime.MinValue;
         public string LastUpgradeDate = string.Empty;
-
         [Obsolete]
         public ListViewItem listViewItem = null;
 
@@ -39,7 +37,6 @@ namespace TvUndergroundDownloader
         private Dictionary<Ed2kfile, DateTime> downloaded = new Dictionary<Ed2kfile, DateTime>();
         private Dictionary<string, Ed2kfile> linkCache = new Dictionary<string, Ed2kfile>();
         private Dictionary<Ed2kfile, DateTime> ListPublicationDate = new Dictionary<Ed2kfile, DateTime>();
-
         /// <summary>
         /// Build a Rss Subscription
         /// </summary>
@@ -97,6 +94,7 @@ namespace TvUndergroundDownloader
 
         public string Category { get; set; } = string.Empty;
         public TvuStatus CurrentTVUStatus { get; private set; } = TvuStatus.Unknown;
+        public bool Enabled { get; set; } = true;
         public bool PauseDownload { get; set; } = false;
         public int seasonID { get; private set; }
         public string Title { private set; get; }

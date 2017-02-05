@@ -34,6 +34,9 @@ namespace TvUndergroundDownloader
         private System.Windows.Forms.MenuItem menuItemExit;
         private bool mVisible = true;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private EmbendedWebServer.EmbendedWebServer embendedWebServer;
+
+
 
         public FormMain()
         {
@@ -43,6 +46,11 @@ namespace TvUndergroundDownloader
 
             InitializeComponent();
             SetupNotify();
+
+            embendedWebServer = new EmbendedWebServer.EmbendedWebServer();
+            embendedWebServer.Start();
+
+            EmbendedWebServer.GlobalVar.Config = MainConfig;
         }
 
         public static string GetUserAppDataPath()
