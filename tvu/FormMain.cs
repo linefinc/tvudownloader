@@ -49,6 +49,7 @@ namespace TvUndergroundDownloader
             embendedWebServer.Start();
 
             EmbendedWebServer.GlobalVar.Config = MainConfig;
+            EmbendedWebServer.GlobalVar.MainBackgroundWorker = backgroundWorker1;
         }
 
         public static string GetUserAppDataPath()

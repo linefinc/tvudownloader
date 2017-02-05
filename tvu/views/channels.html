@@ -1,0 +1,43 @@
+﻿@Master['master.html']
+
+@Section['Content']
+    <table id="location" border='1'>
+        <tr>
+            <th>seasonID</th>
+            <th>Title</th>
+            <th>Dub</th>
+            <th>Total Downloads</th>
+            <th>Last update</th>
+            <th>Status</th>
+            <th>Enabled</th>
+        </tr>
+        @Each.RssFeedList
+        <tr>
+            <th>@Current.seasonID</th>
+            <th>@Current.TitleCompact</th>
+            <th>@Current.DubLanguage</th>
+            <th>@Current.TotalFilesDownloaded</th>
+            <th>@Current.LastChannelUpdate.Days </th>
+            <th>@Current.CurrentTVUStatus</th>
+            <th>@Current.Enabled</th>
+            <td><a href="/RssSubscription/Delete/@Current.seasonID">
+                DELETE 
+
+                </a>
+                
+            </td>
+        </tr>
+        @EndEach
+    </table>
+
+<br />
+
+<form method="POST" action="/RssSubscription">
+    <input type="hidden" name="action" value="add_new_feed" />
+    Url
+        <input type="text" name="newFeedUrl" value="" />
+    <br />
+
+    <input type="submit" value="Add" />
+</form>
+@EndSection

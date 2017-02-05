@@ -1,11 +1,7 @@
 ﻿using Nancy;
-using Nancy.Responses.Negotiation;
 using System;
-using System.Collections.Generic;
 using System.Dynamic;
-using System.Linq;
 using System.Net;
-using System.Text;
 
 //namespace TvUndergroundDownloader.EmbendedWebServer
 namespace TvUndergroundDownloader.EmbendedWebServer
@@ -16,11 +12,35 @@ namespace TvUndergroundDownloader.EmbendedWebServer
 
         public MainModule()
         {
-            Get["/"] = x =>
+            Get["/"] = _ =>
             {
                 Model.RssFeedList = GlobalVar.Config.RssFeedList;
                 Model.LastActivity = GlobalVar.Config.RssFeedList.GetLastActivity();
-                return View["index", Model];
+                return View["files", Model];
+            };
+
+            Get["/files"] = _ =>
+            {
+                Model.RssFeedList = GlobalVar.Config.RssFeedList;
+                Model.LastActivity = GlobalVar.Config.RssFeedList.GetLastActivity();
+                return View["files", Model];
+            };
+
+            Get["/channels"] = _ =>
+            {
+                Model.RssFeedList = GlobalVar.Config.RssFeedList;
+                Model.LastActivity = GlobalVar.Config.RssFeedList.GetLastActivity();
+                return View["channels", Model];
+            };
+
+            Get["/RssSubscription/Delete/{id}"] = args =>
+            {
+
+                int sessionID = (int)args["id"];
+                var channel = GlobalVar.Config.RssFeedList.Find((obj) => obj.seasonID == sessionID);
+                GlobalVar.Config.RssFeedList.Remove(channel);
+                GlobalVar.Config.Save();
+                return Response.AsRedirect("/channels");
             };
 
             Get["/fff"] = x =>
@@ -30,11 +50,10 @@ namespace TvUndergroundDownloader.EmbendedWebServer
 
             Post["/RssSubscription"] = args =>
             {
-
                 var action = (string)this.Request.Form.action;
                 var newFeedUrl = (string)this.Request.Form.newFeedUrl;
 
-                if(action == "add_new_feed")
+                if (action == "add_new_feed")
                 {
                     CookieContainer cookieContainer = new CookieContainer();
                     Uri uriTvunderground = new Uri("http://tvunderground.org.ru/");
@@ -44,6 +63,15 @@ namespace TvUndergroundDownloader.EmbendedWebServer
                     var newSubscription = new RssSubscription(newFeedUrl, cookieContainer);
 
                     GlobalVar.Config.RssFeedList.Add(newSubscription);
+                    GlobalVar.Config.Save();
+
+                    if(GlobalVar.MainBackgroundWorker != null)
+                    {
+                        if(GlobalVar.MainBackgroundWorker.IsBusy== false)
+                        {
+                            GlobalVar.MainBackgroundWorker.RunWorkerAsync();
+                        }
+                    }
                 }
 
                 //Files.Add(new File() { Name = newFeedUrl });
@@ -53,7 +81,6 @@ namespace TvUndergroundDownloader.EmbendedWebServer
                 //Model.Deleted = true;
 
                 return Response.AsRedirect("/");
-
             };
 
             Get["/favicon.ico"] = x => { return View["favicon.ico"]; };
