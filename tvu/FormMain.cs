@@ -1736,24 +1736,28 @@ namespace TvUndergroundDownloader
 
                 newRow["Enabled"] = subscrission.Enabled == true ? "True" : "False";
 
-                if (subscrission.TitleCompact.IndexOf("english") > -1)
-                    newRow["DubLanguage"] = new Bitmap(Properties.Resources.gb);
-
-                if (subscrission.TitleCompact.IndexOf("italian") > -1)
-                    newRow["DubLanguage"] = new Bitmap(Properties.Resources.it);
-
-                if (subscrission.TitleCompact.IndexOf("german") > -1)
-                    newRow["DubLanguage"] = new Bitmap(Properties.Resources.de);
-
-                if (subscrission.TitleCompact.IndexOf("french") > -1)
-                    newRow["DubLanguage"] = new Bitmap(Properties.Resources.fr);
-
-                if (subscrission.TitleCompact.IndexOf("japanese") > -1)
-                    newRow["DubLanguage"] = new Bitmap(Properties.Resources.jp);
-
-                if (subscrission.TitleCompact.IndexOf("spanish") > -1)
-                    newRow["DubLanguage"] = new Bitmap(Properties.Resources.es);
-
+                switch( subscrission.DubLanguage )
+                {
+                    case "gb":
+                        newRow["DubLanguage"] = new Bitmap(Properties.Resources.gb);
+                        break;
+                    case "it":
+                        newRow["DubLanguage"] = new Bitmap(Properties.Resources.it);
+                        break;
+                    case "fr":
+                        newRow["DubLanguage"] = new Bitmap(Properties.Resources.fr);
+                        break;
+                    case "jp":
+                        newRow["DubLanguage"] = new Bitmap(Properties.Resources.jp);
+                        break;
+                    case "es":
+                        newRow["DubLanguage"] = new Bitmap(Properties.Resources.es);
+                        break;
+                    default:
+                        break;
+                }
+                   
+                
                 dataTable.Rows.Add(newRow);
             }
             dataGridViewMain.DataSource = dataTable;

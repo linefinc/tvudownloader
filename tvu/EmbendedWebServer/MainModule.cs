@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Net;
 using System.Text;
 
 //namespace TvUndergroundDownloader.EmbendedWebServer
@@ -17,23 +18,9 @@ namespace TvUndergroundDownloader.EmbendedWebServer
         {
             Get["/"] = x =>
             {
-                return View["index.sshtml"];
-            };
-
-            Get["/test"] = x =>
-            {
-                //if(GlobalVar.Config == null)
-                //{
-                //    return 404;
-                //}
-
                 Model.RssFeedList = GlobalVar.Config.RssFeedList;
                 Model.LastActivity = GlobalVar.Config.RssFeedList.GetLastActivity();
-
-                return View["index.sshtml", Model];
-                //                Model.RssFeedList = GlobalVar.Config.RssFeedList;
-
-                //return GlobalVar.Config.RssFeedList;
+                return View["index", Model];
             };
 
             Get["/fff"] = x =>
@@ -41,9 +28,23 @@ namespace TvUndergroundDownloader.EmbendedWebServer
                 return Response.AsJson(GlobalVar.Config.RssFeedList.GetLastActivity());
             };
 
-            Post["/"] = args =>
-        {
-                // var newFeedUrl = (string)this.Request.Form.newFeedUrl;
+            Post["/RssSubscription"] = args =>
+            {
+
+                var action = (string)this.Request.Form.action;
+                var newFeedUrl = (string)this.Request.Form.newFeedUrl;
+
+                if(action == "add_new_feed")
+                {
+                    CookieContainer cookieContainer = new CookieContainer();
+                    Uri uriTvunderground = new Uri("http://tvunderground.org.ru/");
+                    cookieContainer.Add(uriTvunderground, new Cookie("h", GlobalVar.Config.tvuCookieH));
+                    cookieContainer.Add(uriTvunderground, new Cookie("i", GlobalVar.Config.tvuCookieI));
+                    cookieContainer.Add(uriTvunderground, new Cookie("t", GlobalVar.Config.tvuCookieT));
+                    var newSubscription = new RssSubscription(newFeedUrl, cookieContainer);
+
+                    GlobalVar.Config.RssFeedList.Add(newSubscription);
+                }
 
                 //Files.Add(new File() { Name = newFeedUrl });
 
@@ -51,9 +52,9 @@ namespace TvUndergroundDownloader.EmbendedWebServer
                 //Model.Products = Products;
                 //Model.Deleted = true;
 
-                return View["index"];
+                return Response.AsRedirect("/");
 
-        };
+            };
 
             Get["/favicon.ico"] = x => { return View["favicon.ico"]; };
         }

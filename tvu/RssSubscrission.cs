@@ -61,6 +61,8 @@ namespace TvUndergroundDownloader
             }
 
             this.seasonID = integerBuffer;
+
+
         }
 
         public RssSubscription(string newUrl, CookieContainer cookieContainer)
@@ -71,6 +73,13 @@ namespace TvUndergroundDownloader
             {
                 throw new ApplicationException("Wrong URL");
             }
+
+            int integerBuffer;
+            if (int.TryParse(matchCollection[0].Groups["seid"].ToString(), out integerBuffer) == false)
+            {
+                throw new ApplicationException("Wrong URL");
+            }
+            this.seasonID = integerBuffer;
 
             string webPageUrl = Url;
             string webPage = WebFetch.Fetch(Url, false, cookieContainer);
@@ -88,12 +97,30 @@ namespace TvUndergroundDownloader
             {
                 throw new ApplicationException("Wrong RSS file format");
             }
-
             this.Title = node.InnerText;
+
+           
+
+
         }
 
         public string Category { get; set; } = string.Empty;
         public TvuStatus CurrentTVUStatus { get; private set; } = TvuStatus.Unknown;
+        public string DubLanguage
+        {
+            get
+            {
+                if (this.Title.IndexOf("english") > -1) return "gb";
+                if (this.Title.IndexOf("french") > -1) return "fr";
+                if (this.Title.IndexOf("german") > -1) return "de";
+                if (this.Title.IndexOf("italian") > -1) return "it";
+                if (this.Title.IndexOf("japanese") > -1) return "jp";
+                if (this.Title.IndexOf("spanish") > -1) return "es";
+                return string.Empty;
+            }
+
+        }
+
         public bool Enabled { get; set; } = true;
         public bool PauseDownload { get; set; } = false;
         public int seasonID { get; private set; }
@@ -519,7 +546,6 @@ namespace TvUndergroundDownloader
 
             writer.WriteEndElement();// end channel
         }
-
         private Ed2kfile ProcessGUID(string url, CookieContainer cookieContainer)
         {
             string webPage = WebFetch.Fetch(url, false, cookieContainer);

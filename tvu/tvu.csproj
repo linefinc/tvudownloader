@@ -202,9 +202,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.manifest" />
-    <None Include="EmbendedWebServer\View\index.sshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -221,9 +218,9 @@
     <Compile Include="SmtpClient.cs" />
     <Compile Include="WebFetch.cs" />
     <Compile Include="WebInterface\IMuleWebManager.cs" />
-    <None Include="views\index.sshtml">
+    <Content Include="views\index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -288,9 +285,6 @@
     <None Include="Resources\flag\jp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="EmbendedWebServer\View\favicon.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="views\favicon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
