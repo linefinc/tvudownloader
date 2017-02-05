@@ -3,3 +3,5 @@
 /packages
 /.vs
 /tvu/Properties/AssemblyInfo.cs
+/TvUndergroundDownloaderLib/obj
+/TvUndergroundDownloaderLib/bin
