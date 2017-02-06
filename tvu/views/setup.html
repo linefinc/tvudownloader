@@ -2,112 +2,115 @@
 
 @Section['Content']
 
-<form method="POST" action="/setup">
+<form metdod="POST" action="/setup">
     <input type="hidden" name="action" value="update_setup" />
     <table id="location" border='1'>
-
+		<tr>
+            <th> Name </th>
+            
+		</tr>
         <tr>
-            <th>Service type</th>
-            <th>
+            <td>Service type</td>
+            <td>
                 <select name="ServiceType">
                     <option value="aMule">aMule</option>
                     <option value="eMule">eMule</option>
                 </select>
 
-            </th>
+            </td>
         </tr>
         <tr>
-            <th>Service Url</th>
-            <th>
+            <td>Service Url</td>
+            <td>
                 <input type="text" name="ServiceUrl" value="@Model.ServiceUrl" />
-            </th>
+            </td>
         </tr>
         <tr>
-            <th>Service Password</th>
-            <th>
+            <td>Service Password</td>
+            <td>
                 <input type="text" name="Password" value="@Model.Password" />
-            </th>
+            </td>
         </tr>
         <tr>
-            <th>Cookie H</th>
-            <th>
+            <td>Cookie H</td>
+            <td>
                 <input type="text" name="tvuCookieH" value="@Model.tvuCookieH" />
-            </th>
+            </td>
         </tr>
         <tr>
-            <th>Cookie I</th>
-            <th>
+            <td>Cookie I</td>
+            <td>
                 <input type="text" name="tvuCookieI" value="@Model.tvuCookieI" />
-            </th>
+            </td>
         </tr>
         <tr>
-            <th>Cookie T</th>
-            <th>
+            <td>Cookie T</td>
+            <td>
                 <input type="text" name="tvuCookieT" value="@Model.tvuCookieT" />
-            </th>
+            </td>
         </tr>
         <tr>
-            <th>Close Emule If All Is Done</th>
-            <th>
+            <td>Close Emule If All Is Done</td>
+            <td>
                 <input type="text" name="tvuCookieT" value="@Model.CloseEmuleIfAllIsDone" />
-            </th>
+            </td>
         </tr>
         <tr>
-            <th>Max Simultaneous Feed Downloads Default</th>
-            <th>
+            <td>Max Simultaneous Feed Downloads Default</td>
+            <td>
                 <input type="text" name="tvuCookieT" value="@Model.MaxSimultaneousFeedDownloadsDefault" />
-            </th>
+            </td>
         </tr>
         <tr>
-            <th>PauseDownloadDefault T</th>
-            <th>
+            <td>PauseDownloadDefault T</td>
+            <td>
                 <input type="text" name="tvuCookieT" value="@Model.PauseDownloadDefault" />
-            </th>
+            </td>
         </tr>
 
         <tr>
-            <th>Min To Start Emule</th>
-            <th>
+            <td>Min To Start Emule</td>
+            <td>
                 <input type="text" name="tvuCookieT" value="@Model.MinToStartEmule" />
-            </th>
+            </td>
         </tr>
         <tr>
-            <th>eMule Exe</th>
-            <th>
+            <td>eMule Exe</td>
+            <td>
                 <input type="text" name="tvuCookieT" value="@Model.eMuleExe" />
-            </th>
+            </td>
         </tr>
         <tr>
-            <th>Email Notification</th>
-            <th>
+            <td>Email Notification</td>
+            <td>
                 <input type="text" name="tvuCookieT" value="@Model.EmailNotification" />
-            </th>
+            </td>
         </tr>
         <tr>
-            <th>Server SMTP</th>
-            <th>
+            <td>Server SMTP</td>
+            <td>
                 <input type="text" name="tvuCookieT" value="@Model.ServerSMTP" />
-            </th>
+            </td>
         </tr>
         <tr>
-            <th>Mail Sender</th>
-            <th>
+            <td>Mail Sender</td>
+            <td>
                 <input type="text" name="tvuCookieT" value="@Model.MailSender" />
-            </th>
+            </td>
         </tr>
 
         <tr>
-            <th>Mail Receiver</th>
-            <th>
+            <td>Mail Receiver</td>
+            <td>
                 <input type="text" name="tvuCookieT" value="@Model.MailReceiver" />
-            </th>
+            </td>
         </tr>
 
         <tr>
-            <th></th>
-            <th>
+            <td></td>
+            <td>
                 <input type="submit" value="Setup" />
-            </th>
+            </td>
         </tr>
     </table>
 
