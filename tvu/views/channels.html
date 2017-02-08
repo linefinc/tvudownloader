@@ -10,11 +10,13 @@
             <th>Last update</th>
             <th>Status</th>
             <th>Enabled</th>
-			<th>Action</th>
+            <th>Action</th>
         </tr>
         @Each.RssFeedList
         <tr>
-            <td>@Current.seasonID</td>
+            <td><a href="/channels/@Current.seasonID">
+                <img src="/Content/Info.png" height="36" width="36" /><a>
+            </td>
             <td>@Current.TitleCompact</td>
             <td>@Current.DubLanguage</td>
             <td>@Current.TotalFilesDownloaded</td>
@@ -42,14 +44,18 @@
     <tr>
         <th>File name</th>
         <th>Date</th>
-        <th>Action</th>
+        <th>Mark As Not Downloaded</th>
+        <th>Mark As Downloaded</th>
     </tr>
     @Each.DownloadFile
     <tr>
         <td>@Current.File.FileName</td>
         <td>@Current.DownloadDate</td>
-        <td><a href="/RssSubscription/Delete/@Current.seasonID">Delete</a></td>
-	<!--<td>@Current.File.HashMD4</td>-->
+        <td><a href="/RssSubscription/DownloadFile/@Current.File.HashMD4">
+            <img src="/Content/Download.png" height="36" width="36" alt="Mark As Not Downloaded" /></a></td>
+        <td><a href="/RssSubscription/DownloadFile/@Current.File.HashMD4">
+            <img src="/Content/Undownload.png" height="36" width="36" alt="Mark As Downloaded" /></a></td>
+
     </tr>
     @EndEach
 </table>

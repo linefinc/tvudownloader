@@ -36,6 +36,18 @@ namespace TvUndergroundDownloader.EmbendedWebServer
                 return View["log"];
             };
 
+            Get["/channels"] = args =>
+            {
+                Model.RssFeedList = GlobalVar.Config.RssFeedList;
+
+                if (GlobalVar.Config.RssFeedList.Count > 0)
+                {
+                    var channel = GlobalVar.Config.RssFeedList[0];
+                    Model.DownloadFile = channel.GetDownloadFile();
+                }
+                return View["channels", Model];
+            };
+
             Get["/channels/{id}"] = args =>
             {
                 int sessionID = (int)args["id"];
@@ -43,11 +55,14 @@ namespace TvUndergroundDownloader.EmbendedWebServer
 
                 Model.RssFeedList = GlobalVar.Config.RssFeedList;
                 Model.DownloadFile = channel.GetDownloadFile();
+                foreach(DownloadFile file in Model.DownloadFile)
+                {
+                    
+                }
                 return View["channels", Model];
             };
 
-
-
+          
             Get["/log"] = args =>
             {
                 LoggingConfiguration config = LogManager.Configuration;
@@ -61,6 +76,24 @@ namespace TvUndergroundDownloader.EmbendedWebServer
                 var channel = GlobalVar.Config.RssFeedList.Find((obj) => obj.seasonID == sessionID);
                 GlobalVar.Config.RssFeedList.Remove(channel);
                 GlobalVar.Config.Save();
+                return Response.AsRedirect("/channels");
+            };
+
+            Get["/RssSubscription/MarkAsDownloaded/{id}"] = args =>
+            {
+               /* int sessionID = (int)args["id"];
+                var channel = GlobalVar.Config.RssFeedList.Find((obj) => obj.seasonID == sessionID);
+                GlobalVar.Config.RssFeedList.Remove(channel);
+                GlobalVar.Config.Save();*/
+                return Response.AsRedirect("/channels");
+            };
+
+            Get["/RssSubscription/MarkAsNotDownloaded/{id}"] = args =>
+            {
+                /* int sessionID = (int)args["id"];
+                 var channel = GlobalVar.Config.RssFeedList.Find((obj) => obj.seasonID == sessionID);
+                 GlobalVar.Config.RssFeedList.Remove(channel);
+                 GlobalVar.Config.Save();*/
                 return Response.AsRedirect("/channels");
             };
 
