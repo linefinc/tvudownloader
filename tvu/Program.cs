@@ -17,6 +17,11 @@ namespace TvUndergroundDownloader
         [STAThread]
         private static void Main()
         {
+            //
+            //  Enable app level error traking
+            //
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(AppDomain_CurrentDomain_UnhandledException);
+
             Process aProcess = Process.GetCurrentProcess();
             string aProcName = aProcess.ProcessName;
 
@@ -47,6 +52,12 @@ namespace TvUndergroundDownloader
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormMain());
+        }
+
+        private static void AppDomain_CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs args)
+        {
+            Exception ex = (Exception)args.ExceptionObject;
+            logger.Error(ex);
         }
     }
 }
