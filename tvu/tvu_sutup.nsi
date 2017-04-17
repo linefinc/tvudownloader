@@ -112,6 +112,7 @@ Section "Tvunderground Downloader (required)"
   File ".\bin\Release\TvUndergroundDownloader.exe"
   File ".\bin\Release\TvUndergroundDownloader.exe.manifest"
   File /r ".\bin\Release\*.dll"
+  File /r ".\bin\Release\*.pdb"
   File  ".\bin\Release\NLog.dll"
   File  ".\bin\Release\NLog.xml"
   File  ".\bin\Release\NLog.Windows.Forms.dll"
@@ -160,6 +161,7 @@ Section "Uninstall"
   
   ; Remove files and uninstaller
   Delete $INSTDIR\TvUndergroundDownloader.exe
+  Delete $INSTDIR\TvUndergroundDownloader.pdb
   Delete $INSTDIR\TvUndergroundDownloader.exe.manifest
   Delete $INSTDIR\TvUndergroundDownloader.exe.config
   Delete $INSTDIR\System.Data.SQLite.dll
