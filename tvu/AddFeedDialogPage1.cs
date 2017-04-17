@@ -116,5 +116,10 @@ namespace TvUndergroundDownloader
             textBox1.Text = string.Empty;
             return;
         }
+
+        private void AddFeedDialogPage1_Load(object sender, EventArgs e)
+        {
+            GoogleAnalyticsHelper.TrackScreen("AddFeedPage1");
+        }
     }
 }

@@ -261,5 +261,10 @@ namespace TvUndergroundDownloader
                     break;
             }
         }
+
+        private void OptionsDialog_Load(object sender, EventArgs e)
+        {
+            GoogleAnalyticsHelper.TrackScreen("Options");
+        }
     }
 }

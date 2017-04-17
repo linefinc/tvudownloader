@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Net;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
@@ -21,12 +22,12 @@ namespace TvUndergroundDownloader
     {
         public Config MainConfig;
         private static Logger logger = LogManager.GetCurrentClassLogger();
+        private bool allowClose = false;
         private DateTime autoCloseDataTime;
         private System.Windows.Forms.ContextMenu contextMenu1;
         private DateTime downloadDataTime;
         private Icon iconDown;
         private Icon iconUp;
-        private bool allowClose = false;
         private System.Windows.Forms.MenuItem menuItemAutoCloseEmule;
         private System.Windows.Forms.MenuItem menuItemAutoStartEmule;
         private System.Windows.Forms.MenuItem menuItemCheckNow;
@@ -40,6 +41,9 @@ namespace TvUndergroundDownloader
             // load configuration
             MainConfig = new Config();
             MainConfig.Load();
+
+            GoogleAnalyticsHelper.cid = MainConfig.tvudwid;
+            GoogleAnalyticsHelper.appVersion = Config.Version;
 
             InitializeComponent();
             SetupNotify();
@@ -393,6 +397,7 @@ namespace TvUndergroundDownloader
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
+            GoogleAnalyticsHelper.TrackEvent("BackgroundWorker_Start");
             //
             //  Load Cookies from configure
             //
@@ -651,6 +656,7 @@ namespace TvUndergroundDownloader
 
             try
             {
+                GoogleAnalyticsHelper.TrackEvent("BackgroundWorker_Ended");
                 if (CheckNewVersion(true) == true)
                 {
                     logger.Info("New Version is available at http://tvudownloader.sourceforge.net/");
@@ -1115,6 +1121,12 @@ namespace TvUndergroundDownloader
             autoCloseEMuleToolStripMenuItem.Visible = false;
 #endif
             // attach textBox to the logger
+            GoogleAnalyticsHelper.TrackEvent("AppStart");
+        }
+
+        private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            GoogleAnalyticsHelper.TrackEvent("AppClose");
         }
 
         private void forumToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1555,6 +1567,11 @@ namespace TvUndergroundDownloader
             listBoxPending.Items.Clear();
             listBoxPending.Refresh();
             backgroundWorker1.RunWorkerAsync();
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GoogleAnalyticsHelper.TrackScreen("MainPage_" + tabControl1.SelectedTab.Text);
         }
 
         private void testAutoCloseToolStripMenuItem_Click(object sender, EventArgs e)

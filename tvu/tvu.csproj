@@ -122,6 +122,7 @@
     </Compile>
     <Compile Include="ExportImportHelper.cs" />
     <Compile Include="GeoIP.cs" />
+    <Compile Include="GoogleAnalyticsHelper.cs" />
     <Compile Include="RssSubscriptionList.cs" />
     <Compile Include="WebInterface\eMuleWebManager.cs" />
     <Compile Include="WebInterface\aMuleWebManager.cs" />

@@ -36,6 +36,7 @@ namespace TvUndergroundDownloader
             this.checkBoxEnable.Checked = this.feedEnable;
 
             backgroundWorker1.RunWorkerAsync();
+            GoogleAnalyticsHelper.TrackScreen("EditFeed");
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)

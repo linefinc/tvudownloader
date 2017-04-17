@@ -35,6 +35,7 @@ namespace TvUndergroundDownloader
         private void AddFeedDialogPage2_Load(object sender, EventArgs e)
         {
             backgroundWorker1.RunWorkerAsync();
+            GoogleAnalyticsHelper.TrackEvent("AddFeedPage2");
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)

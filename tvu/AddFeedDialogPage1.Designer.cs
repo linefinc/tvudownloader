@@ -161,6 +161,7 @@
             this.Name = "AddFeedDialogPage1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add Feed";
+            this.Load += new System.EventHandler(this.AddFeedDialogPage1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

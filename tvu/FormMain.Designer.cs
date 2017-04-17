@@ -73,6 +73,7 @@
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStripFileFeed = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.markAsDownloadedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabRecentActivity = new System.Windows.Forms.TabPage();
             this.dataGridViewRecentActivity = new System.Windows.Forms.DataGridView();
             this.FileNameDataGridColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -123,7 +124,6 @@
             this.toolStripButtonAddFeed = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonCheckNow = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
-            this.markAsDownloadedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).BeginInit();
@@ -481,7 +481,7 @@
             this.deleteToolStripMenuItem1,
             this.markAsDownloadedToolStripMenuItem});
             this.contextMenuStripFileFeed.Name = "contextMenuStrip2";
-            this.contextMenuStripFileFeed.Size = new System.Drawing.Size(186, 70);
+            this.contextMenuStripFileFeed.Size = new System.Drawing.Size(186, 48);
             // 
             // deleteToolStripMenuItem1
             // 
@@ -489,6 +489,13 @@
             this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(185, 22);
             this.deleteToolStripMenuItem1.Text = "Redownload";
             this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.deleteToolStripMenuItem1_Click);
+            // 
+            // markAsDownloadedToolStripMenuItem
+            // 
+            this.markAsDownloadedToolStripMenuItem.Name = "markAsDownloadedToolStripMenuItem";
+            this.markAsDownloadedToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.markAsDownloadedToolStripMenuItem.Text = "Mark as Downloaded";
+            this.markAsDownloadedToolStripMenuItem.Click += new System.EventHandler(this.markAsDownloadedToolStripMenuItem_Click);
             // 
             // tabRecentActivity
             // 
@@ -555,6 +562,7 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(656, 467);
             this.tabControl1.TabIndex = 21;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabPending
             // 
@@ -915,13 +923,6 @@
             this.toolStripButtonStop.Text = "Stop";
             this.toolStripButtonStop.Click += new System.EventHandler(this.toolStripButtonStop_Click);
             // 
-            // markAsDownloadedToolStripMenuItem
-            // 
-            this.markAsDownloadedToolStripMenuItem.Name = "markAsDownloadedToolStripMenuItem";
-            this.markAsDownloadedToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-            this.markAsDownloadedToolStripMenuItem.Text = "Mark as Downloaded";
-            this.markAsDownloadedToolStripMenuItem.Click += new System.EventHandler(this.markAsDownloadedToolStripMenuItem_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -937,6 +938,7 @@
             this.Name = "FormMain";
             this.Text = "TvUnderground Downloader";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormMain_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabLog.ResumeLayout(false);
             this.tabMain.ResumeLayout(false);
