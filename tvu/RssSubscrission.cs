@@ -183,20 +183,28 @@ namespace TvUndergroundDownloader
                 Ed2kfile newFile = new Ed2kfile(ed2kLinkNode.InnerText);
 
                 XmlNode guidLinkNode = fileNode.SelectSingleNode("Guid");
-                newRssSubscrission.linkCache.Add(guidLinkNode.InnerText, newFile);
-
+                if (!newRssSubscrission.linkCache.ContainsKey(guidLinkNode.InnerText))
+                {
+                    newRssSubscrission.linkCache.Add(guidLinkNode.InnerText, newFile);
+                }
                 XmlNode downloadedNode = fileNode.SelectSingleNode("Downloaded");
                 if (downloadedNode != null)
                 {
                     DateTime dtDownloaded = DateTime.Parse(downloadedNode.InnerText);
-                    newRssSubscrission.downloaded.Add(newFile, dtDownloaded);
+                    if (!newRssSubscrission.downloaded.ContainsKey(newFile))
+                    {
+                        newRssSubscrission.downloaded.Add(newFile, dtDownloaded);
+                    }
                 }
 
                 XmlNode publicationDateNode = fileNode.SelectSingleNode("PublicationDate");
                 if (publicationDateNode != null)
                 {
                     DateTime publicationDateNodeDT = DateTime.Parse(publicationDateNode.InnerText);
-                    newRssSubscrission.ListPublicationDate.Add(newFile, publicationDateNodeDT);
+                    if (!newRssSubscrission.ListPublicationDate.ContainsKey(newFile))
+                    {
+                        newRssSubscrission.ListPublicationDate.Add(newFile, publicationDateNodeDT);
+                    }
                 }
             }
 
