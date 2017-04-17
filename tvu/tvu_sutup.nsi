@@ -13,7 +13,7 @@ Name "Tv Underground Downloader"
 
 ;--------------------------------
 ; The file to write
-OutFile ".\bin\Release\tvud_installer_0.8.0.exe"
+OutFile ".\bin\Release\tvud_installer_0.8.1.exe"
 SetCompress force			; force compressor
 SetCompressor /SOLID LZMA	; define lzma compressor
 
@@ -29,10 +29,10 @@ InstallDirRegKey HKLM "Software\TVUndergroundDownloader" "Install_Dir"
 
 ;--------------------------------
 ;Version Information
-VIProductVersion "0.8.0.0"
+VIProductVersion "0.8.1.0"
 VIAddVersionKey /LANG=0 "ProductName" "Tv Underground Downloader"
 VIAddVersionKey /LANG=0 "Comments" "Tv Underground Downloader"
-VIAddVersionKey /LANG=0 "FileVersion" "0.8.0.0"
+VIAddVersionKey /LANG=0 "FileVersion" "0.8.1.0"
 VIAddVersionKey /LANG=0 "FileDescription" "Tv Underground Downloader"
 VIAddVersionKey /LANG=0 "LegalCopyright" "Copyright(C) 2017 linefinc[at]users.sourceforge.net"
 
