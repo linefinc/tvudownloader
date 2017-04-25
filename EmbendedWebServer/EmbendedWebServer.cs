@@ -27,6 +27,18 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
             }
         }
 
+        public Worker Worker
+        {
+            set
+            {
+                GlobalVar.Worker = value;
+            }
+            get
+            {
+                return GlobalVar.Worker;
+            }
+        }
+
 
         public void Start()
         {

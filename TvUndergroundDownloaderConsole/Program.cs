@@ -13,7 +13,7 @@ namespace TvUndergroundDownloaderConsole
     class Program
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        static private TvUndergroundDownloaderLib.Config MainConfig;
+        static private TvUndergroundDownloaderLib.Config mainConfig;
         private static TvUndergroundDownloaderLib.Worker worker;
 
         static void Main(string[] args)
@@ -43,21 +43,30 @@ namespace TvUndergroundDownloaderConsole
             LogManager.Configuration = nLogConfig;
             #endregion
 
+
+
             //
             //  Load config
             //
             logger.Info("TvUnderground Downloader starting");
-            MainConfig = new TvUndergroundDownloaderLib.Config();
-            MainConfig.Load();
+            mainConfig = new TvUndergroundDownloaderLib.Config();
+            mainConfig.Load();
             logger.Info("Loading config");
+
+            //
+            //  Setup Worker
+            //
+            #region SetupWorker
+            worker = new TvUndergroundDownloaderLib.Worker();
+            worker.Config = mainConfig;
+            #endregion
 
             #region Stat Web Server
             var embendedWebServer = new TvUndergroundDownloaderLib.EmbendedWebServer.EmbendedWebServer();
-            embendedWebServer.Config = MainConfig;
+            embendedWebServer.Config = mainConfig;
+            embendedWebServer.Worker = worker;
             embendedWebServer.Start();
             #endregion
-
-
 
             bool exitProgram = true;
             while (exitProgram)
@@ -65,8 +74,6 @@ namespace TvUndergroundDownloaderConsole
                 //
                 //  run worker
                 //
-                worker = new TvUndergroundDownloaderLib.Worker();
-                worker.Config = MainConfig;
                 worker.Run();
                 System.Threading.Thread.Sleep(TimeSpan.FromMinutes(10));
             }

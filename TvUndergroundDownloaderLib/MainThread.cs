@@ -1,31 +1,58 @@
 ﻿using NLog;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace TvUndergroundDownloaderLib
 {
     public class Worker
     {
-        private Logger logger = LogManager.GetCurrentClassLogger();
-        private Thread thread;
         public Config Config = null;
         private bool cancellationPending = false;
-
-
+        private Logger logger = LogManager.GetCurrentClassLogger();
+        private Thread thread;
         public Worker()
         {
             thread = new Thread(this.WorkerThreadFunc);
             thread.Name = "TvUndergroundDownloaderLib";
         }
 
+        public System.Threading.ThreadState ThreadState
+        {
+            get
+            {
+                return thread.ThreadState;
+            }
+        }
+        public bool IsBusy
+        {
+            get
+            {
+                return thread.ThreadState == System.Threading.ThreadState.Stopped;
+            }
+        }
 
+        public void Abort()
+        {
+            cancellationPending = true;
+            if (!thread.Join(3000))
+            {
+                // give the thread 3 seconds to stop
+                thread.Abort();
+            }
+        }
+        public void Run()
+        {
+            thread.IsBackground = true;
+            thread.Start();
+        }
+
+        public void Stop()
+        {
+            throw new NotImplementedException();
+        }
 
         public void WorkerThreadFunc()
         {
@@ -33,8 +60,6 @@ namespace TvUndergroundDownloaderLib
             {
                 throw new NullReferenceException("Config");
             }
-
-
 
             //
             //  Load Cookies from configure
@@ -309,26 +334,6 @@ namespace TvUndergroundDownloaderLib
                 }
 
             }
-        }
-
-        public void Run()
-        {
-            thread.IsBackground = true;
-            thread.Start();
-        }
-
-        public void Abort()
-        {
-            cancellationPending = true;
-            if (!thread.Join(3000))
-            { // give the thread 3 seconds to stop
-                thread.Abort();
-            }
-        }
-
-        public void Stop()
-        {
-            throw new NotImplementedException();
         }
     }
 }

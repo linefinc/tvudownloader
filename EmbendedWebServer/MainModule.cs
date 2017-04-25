@@ -36,6 +36,21 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
                 return View["channels", Model];
             };
 
+            Get["/update"] = _ =>
+            {
+                //GlobalVar.Worker.Run();
+                if(GlobalVar.Worker.IsBusy)
+                {
+                    logger.Info("Thread is busy");
+                }
+                else
+                {
+                    GlobalVar.Worker.Run();
+                }
+
+                return Response.AsRedirect("/log");
+            };
+
             Get["/setup"] = agrs =>
             {
                 var configModel = new ConfigModel();
