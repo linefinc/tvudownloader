@@ -13,6 +13,7 @@ namespace TvUndergroundDownloaderLib
         private bool cancellationPending = false;
         private Logger logger = LogManager.GetCurrentClassLogger();
         private Thread thread;
+
         public Worker()
         {
             thread = new Thread(this.WorkerThreadFunc);
@@ -26,6 +27,7 @@ namespace TvUndergroundDownloaderLib
                 return thread.ThreadState;
             }
         }
+
         public bool IsBusy
         {
             get
@@ -43,6 +45,7 @@ namespace TvUndergroundDownloaderLib
                 thread.Abort();
             }
         }
+
         public void Run()
         {
             thread.IsBackground = true;
@@ -287,7 +290,6 @@ namespace TvUndergroundDownloaderLib
                 logger.Info("Add file to emule \"{0}\"", downloadFile.File.GetFileName());
                 SendMailDownload(downloadFile.File.GetFileName(), downloadFile.File.Ed2kLink);
                 Config.TotalDownloads++;   //increase Total Downloads for statistic
-
             }
             Config.Save();
 
@@ -313,7 +315,7 @@ namespace TvUndergroundDownloaderLib
             }
         }
 
-        void SendMailDownload(string fileName, string ed2kLink)
+        private void SendMailDownload(string fileName, string ed2kLink)
         {
             if (Config.EmailNotification == true)
             {
@@ -332,7 +334,6 @@ namespace TvUndergroundDownloaderLib
                 {
                     logger.Error(ex);
                 }
-
             }
         }
     }

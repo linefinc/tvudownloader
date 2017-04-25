@@ -9,3 +9,8 @@
 /TvUndergroundDownloaderConsole/bin
 /EmbendedWebServer/bin
 /EmbendedWebServer/obj
+/EmbendedWebServer/StyleCop.Cache
+/StyleCop.Cache
+/TvUndergroundDownloaderConsole/StyleCop.Cache
+/TvUndergroundDownloaderLib/StyleCop.Cache
+/tvu/StyleCop.Cache

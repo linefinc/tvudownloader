@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using TvUndergroundDownloaderLib;
 
 namespace TvUndergroundDownloader
 {
@@ -37,7 +38,7 @@ namespace TvUndergroundDownloader
         public bool saveLog;
         public bool StartWithWindows;
 
-        public OptionsDialog(Config inConfig)
+        public OptionsDialog(ConfigWindows inConfig)
         {
             InitializeComponent();
 
@@ -71,14 +72,14 @@ namespace TvUndergroundDownloader
             checkBoxStartMinimized.Checked = StartMinimized = inConfig.StartMinimized;
             checkBoxStartEmuleIfClose.Checked = StartEmuleIfClose = inConfig.StartEmuleIfClose;
             checkBoxCloseEmuleIfAllIsDone.Checked = CloseEmuleIfAllIsDone = inConfig.CloseEmuleIfAllIsDone;
-            checkBoxStartWithWindows.Checked = StartWithWindows = Config.StartWithWindows;
+            checkBoxStartWithWindows.Checked = StartWithWindows = ConfigWindows.StartWithWindows;
             checkBoxAutoClear.Checked = AutoClearLog = inConfig.AutoClearLog;
             checkBoxVerbose.Checked = Verbose = inConfig.Verbose;
             checkBoxEmailNotification.Checked = EmailNotification = inConfig.EmailNotification;
             checkBoxSaveLogToFile.Checked = saveLog = inConfig.saveLog;
-            tvuCookieH = textBoxCookieH.Text = inConfig.tvuCookieH;
-            tvuCookieI = textBoxCookieI.Text = inConfig.tvuCookieI;
-            tvuCookieT = textBoxCookieT.Text = inConfig.tvuCookieT;
+            tvuCookieH = textBoxCookieH.Text = inConfig.TVUCookieH;
+            tvuCookieI = textBoxCookieI.Text = inConfig.TVUCookieI;
+            tvuCookieT = textBoxCookieT.Text = inConfig.TVUCookieT;
         }
 
         private void buttonSave_Click(object sender, EventArgs e)

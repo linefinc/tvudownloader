@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TvUndergroundDownloaderLib
 {
-    internal class eMuleWebManager : IMuleWebManager
+    public class eMuleWebManager : IMuleWebManager
     {
         private List<string> categoryCache;
         private string host;

@@ -3,7 +3,7 @@ using System;
 
 namespace TvUndergroundDownloaderLib
 {
-    internal class SmtpClient
+    public class SmtpClient
     {
         public static bool SendEmail(string SmtpServer, string EmailReceiver, string EmailSender, string Subject, string Message)
         {

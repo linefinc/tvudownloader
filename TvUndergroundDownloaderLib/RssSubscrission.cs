@@ -135,6 +135,7 @@ namespace TvUndergroundDownloaderLib
                 return DateTime.Now - this.GetLastDownloadDate();
             }
         }
+
         /// <summary>
         /// Load data from xml
         /// </summary>

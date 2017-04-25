@@ -4,7 +4,7 @@ namespace TvUndergroundDownloaderLib
 {
     public enum LoginStatus { Logged, PasswordError, ServiceNotAvailable };
 
-    internal interface IMuleWebManager
+    public interface IMuleWebManager
     {
         bool IsConnected { get; }
 

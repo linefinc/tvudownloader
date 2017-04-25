@@ -113,8 +113,7 @@
     <Compile Include="AddFeedDialogPage3.designer.cs">
       <DependentUpon>AddFeedDialogPage3.cs</DependentUpon>
     </Compile>
-    <Compile Include="Config.cs" />
-    <Compile Include="Ed2kfile.cs" />
+    <Compile Include="ConfigWindows.cs" />
     <Compile Include="EditFeedForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,10 +121,6 @@
       <DependentUpon>EditFeedForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ExportImportHelper.cs" />
-    <Compile Include="GeoIP.cs" />
-    <Compile Include="RssSubscriptionList.cs" />
-    <Compile Include="WebInterface\eMuleWebManager.cs" />
-    <Compile Include="WebInterface\aMuleWebManager.cs" />
     <Compile Include="FormLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -202,10 +197,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="RssSubscrission.cs" />
-    <Compile Include="SmtpClient.cs" />
-    <Compile Include="WebFetch.cs" />
-    <Compile Include="WebInterface\IMuleWebManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -269,7 +260,12 @@
   <ItemGroup>
     <None Include="Resources\flag\jp.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TvUndergroundDownloaderLib\TvUndergroundDownloaderLib.csproj">
+      <Project>{21CFFC29-3DCA-43A4-AA90-0A5332E2E1FF}</Project>
+      <Name>TvUndergroundDownloaderLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- import MS Build Tasks comunity -->
   <PropertyGroup>

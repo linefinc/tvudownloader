@@ -9,7 +9,7 @@ using System.Web;
 
 namespace TvUndergroundDownloaderLib
 {
-    internal class aMuleWebManager : IMuleWebManager
+    public class aMuleWebManager : IMuleWebManager
     {
         private string host;
         private string password;

@@ -36,7 +36,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.timerRssCheck = new System.Windows.Forms.Timer(this.components);
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.tabLog = new System.Windows.Forms.TabPage();
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
@@ -73,6 +72,7 @@
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStripFileFeed = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.markAsDownloadedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabRecentActivity = new System.Windows.Forms.TabPage();
             this.dataGridViewRecentActivity = new System.Windows.Forms.DataGridView();
             this.FileNameDataGridColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -123,7 +123,6 @@
             this.toolStripButtonAddFeed = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonCheckNow = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
-            this.markAsDownloadedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).BeginInit();
@@ -143,14 +142,6 @@
             this.timerRssCheck.Enabled = true;
             this.timerRssCheck.Interval = 60000;
             this.timerRssCheck.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // backgroundWorker1
-            // 
-            this.backgroundWorker1.WorkerReportsProgress = true;
-            this.backgroundWorker1.WorkerSupportsCancellation = true;
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
             // timer2
             // 
@@ -481,7 +472,7 @@
             this.deleteToolStripMenuItem1,
             this.markAsDownloadedToolStripMenuItem});
             this.contextMenuStripFileFeed.Name = "contextMenuStrip2";
-            this.contextMenuStripFileFeed.Size = new System.Drawing.Size(186, 70);
+            this.contextMenuStripFileFeed.Size = new System.Drawing.Size(186, 48);
             // 
             // deleteToolStripMenuItem1
             // 
@@ -489,6 +480,13 @@
             this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(185, 22);
             this.deleteToolStripMenuItem1.Text = "Redownload";
             this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.deleteToolStripMenuItem1_Click);
+            // 
+            // markAsDownloadedToolStripMenuItem
+            // 
+            this.markAsDownloadedToolStripMenuItem.Name = "markAsDownloadedToolStripMenuItem";
+            this.markAsDownloadedToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.markAsDownloadedToolStripMenuItem.Text = "Mark as Downloaded";
+            this.markAsDownloadedToolStripMenuItem.Click += new System.EventHandler(this.markAsDownloadedToolStripMenuItem_Click);
             // 
             // tabRecentActivity
             // 
@@ -915,13 +913,6 @@
             this.toolStripButtonStop.Text = "Stop";
             this.toolStripButtonStop.Click += new System.EventHandler(this.toolStripButtonStop_Click);
             // 
-            // markAsDownloadedToolStripMenuItem
-            // 
-            this.markAsDownloadedToolStripMenuItem.Name = "markAsDownloadedToolStripMenuItem";
-            this.markAsDownloadedToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-            this.markAsDownloadedToolStripMenuItem.Text = "Mark as Downloaded";
-            this.markAsDownloadedToolStripMenuItem.Click += new System.EventHandler(this.markAsDownloadedToolStripMenuItem_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -963,7 +954,6 @@
         #endregion
 
         private System.Windows.Forms.Timer timerRssCheck;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.TabPage tabLog;
         private System.Windows.Forms.TabPage tabMain;

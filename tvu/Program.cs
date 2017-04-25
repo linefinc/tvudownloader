@@ -4,6 +4,7 @@ using NLog.Targets;
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+using TvUndergroundDownloaderLib;
 
 namespace TvUndergroundDownloader
 {
@@ -27,7 +28,6 @@ namespace TvUndergroundDownloader
                 return;
             }
 
-          
             //
             //  Setup Nlog
             //

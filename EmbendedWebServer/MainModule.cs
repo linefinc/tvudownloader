@@ -39,7 +39,7 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
             Get["/update"] = _ =>
             {
                 //GlobalVar.Worker.Run();
-                if(GlobalVar.Worker.IsBusy)
+                if (GlobalVar.Worker.IsBusy)
                 {
                     logger.Info("Thread is busy");
                 }

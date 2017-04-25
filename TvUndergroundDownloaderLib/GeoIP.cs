@@ -65,13 +65,19 @@ namespace TvUndergroundDownloaderLib
             WebRequest wrGETURL;
             wrGETURL = WebRequest.Create(sURL);
 
+            string buffer;
+
             using (Stream objStream = wrGETURL.GetResponse().GetResponseStream())
             {
                 using (StreamReader objReader = new StreamReader(objStream))
                 {
-                    return objReader.ReadToEnd();
+                    buffer = objReader.ReadToEnd();
+                    objReader.Close();
                 }
+                objStream.Close();
             }
+
+            return buffer;
         }
     }
 }

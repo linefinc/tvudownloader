@@ -1,18 +1,10 @@
 ﻿using Nancy;
-using Nancy.Bootstrapper;
 using Nancy.Diagnostics;
-using Nancy.TinyIoc;
-using Nancy.ViewEngines;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace TvUndergroundDownloaderLib.EmbendedWebServer
 {
     public class Bootstrapper : DefaultNancyBootstrapper
     {
-
         protected override DiagnosticsConfiguration DiagnosticsConfiguration
         {
             get { return new DiagnosticsConfiguration { Password = @"123456" }; }

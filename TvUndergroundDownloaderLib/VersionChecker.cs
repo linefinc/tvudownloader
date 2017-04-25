@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace TvUndergroundDownloaderLib
 {
-    class VersionChecker
+    static public class VersionChecker
     {
         public static bool CheckNewVersion(Config config, bool force = false)
         {
@@ -76,6 +72,5 @@ namespace TvUndergroundDownloaderLib
                 return false;
             }
         }
-
     }
 }

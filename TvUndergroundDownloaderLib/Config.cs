@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -13,9 +12,7 @@ namespace TvUndergroundDownloaderLib
         public bool AutoClearLog;
 
         public bool CloseEmuleIfAllIsDone;
-        [Obsolete]
-        public bool debug;
-
+        
         public string DefaultCategory;
 
         public bool EmailNotification;
@@ -72,10 +69,7 @@ namespace TvUndergroundDownloaderLib
 
         public Config()
         {
-            //
-            //  Enable web browser emulation
-            //
-            EnableWebBrowserEmulation();
+            
 
             //
             // get local user application data path, remove version directory and add config.xml
@@ -146,50 +140,9 @@ namespace TvUndergroundDownloaderLib
             }
         }
 
-        //   public static bool StartWithWindows
-        //{
-        //    get
-        //    {
-        //        RegistryKey hkcu = Registry.CurrentUser;
-        //        hkcu = hkcu.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", RegistryKeyPermissionCheck.ReadWriteSubTree);
-
-        //        List<string> RegValueNames = new List<string>();
-        //        foreach (string valueName in hkcu.GetValueNames())
-        //        {
-        //            RegValueNames.Add(valueName);
-        //        }
-
-        //        if (RegValueNames.IndexOf(Application.ProductName) == -1)
-        //        {
-        //            return false;
-        //        }
-        //        return true;
-        //    }
-        //    set
-        //    {
-        //        RegistryKey hkcu = Registry.CurrentUser;
-        //        hkcu = hkcu.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", RegistryKeyPermissionCheck.ReadWriteSubTree);
-
-        //        if (value == true)
-        //        {
-        //            hkcu.SetValue(Application.ProductName, Environment.CommandLine, RegistryValueKind.String);
-        //            return;
-        //        }
-
-        //        List<string> RegValueNames = new List<string>();
-        //        foreach (string valueName in hkcu.GetValueNames())
-        //        {
-        //            RegValueNames.Add(valueName);
-        //        }
-
-        //        if (RegValueNames.IndexOf(Application.ProductName) == -1)
-        //        {
-        //            return;
-        //        }
-        //        hkcu.DeleteValue(Application.ProductName);
-        //    }
-        //}
-
+        /// <summary>
+        /// Get current assembly version
+        /// </summary>
         public static string Version
         {
             get
@@ -199,25 +152,15 @@ namespace TvUndergroundDownloaderLib
             }
         }
 
+        /// <summary>
+        /// Get full assembly version
+        /// </summary>
         public static string VersionFull
         {
             get
             {
                 return ((AssemblyInformationalVersionAttribute)Assembly.GetAssembly(typeof(Config))
                                 .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false)[0]).InformationalVersion;
-            }
-        }
-
-        public static string ReadString(XmlDocument xDoc, string NodeName, string defaultValue)
-        {
-            XmlNodeList t = xDoc.GetElementsByTagName(NodeName);
-            if (t.Count == 0)
-            {
-                return defaultValue;
-            }
-            else
-            {
-                return t[0].InnerText;
             }
         }
 
@@ -281,8 +224,6 @@ namespace TvUndergroundDownloaderLib
             eMuleExe = ReadString(xDoc, "eMuleExe", "");
 
             DefaultCategory = ReadString(xDoc, "DefaultCategory", "");
-
-            debug = Convert.ToBoolean(ReadString(xDoc, "Debug", "false"));
 #if DEBUG
             Verbose = true;
 #else
@@ -447,23 +388,6 @@ namespace TvUndergroundDownloaderLib
             writer.Close();
         }
 
-        private static void EnableWebBrowserEmulation()
-        {
-            //RegistryKey hkcu = Registry.CurrentUser;
-            //hkcu = hkcu.OpenSubKey(@"Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION", RegistryKeyPermissionCheck.ReadWriteSubTree);
-            //if (hkcu != null)
-            //{
-            //    hkcu.SetValue(Application.ProductName, 0x00002ee1, RegistryValueKind.DWord);
-            //}
-
-            //hkcu = Registry.CurrentUser;
-            //hkcu = hkcu.OpenSubKey(@"Software\WOW6432Node\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION", RegistryKeyPermissionCheck.ReadWriteSubTree);
-            //if (hkcu != null)
-            //{
-            //    hkcu.SetValue(Application.ProductName, 0x00002ee1, RegistryValueKind.DWord);
-            //}
-        }
-
         private static string RandomIDGenerator()
         {
             string temp = "";
@@ -476,6 +400,18 @@ namespace TvUndergroundDownloaderLib
             return temp;
         }
 
+        private static string ReadString(XmlDocument xDoc, string NodeName, string defaultValue)
+        {
+            XmlNodeList t = xDoc.GetElementsByTagName(NodeName);
+            if (t.Count == 0)
+            {
+                return defaultValue;
+            }
+            else
+            {
+                return t[0].InnerText;
+            }
+        }
         private int ReadInt(XmlDocument xDoc, string NodeName, int defaultValue)
         {
             XmlNodeList t = xDoc.GetElementsByTagName(NodeName);

@@ -55,6 +55,7 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="ConfigModel.cs" />
     <Compile Include="EmbendedWebServer.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="GlobalVar.cs" />
     <Compile Include="MainModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

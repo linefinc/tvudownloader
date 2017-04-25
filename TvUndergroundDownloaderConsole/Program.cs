@@ -2,26 +2,23 @@
 using NLog.Config;
 using NLog.Targets;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 
 namespace TvUndergroundDownloaderConsole
 {
-    class Program
+    internal class Program
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         static private TvUndergroundDownloaderLib.Config mainConfig;
         private static TvUndergroundDownloaderLib.Worker worker;
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             //
             //  Setup Nlog
             //
+
             #region NLog setup
+
             LoggingConfiguration nLogConfig = LogManager.Configuration;
             if (nLogConfig == null)
             {
@@ -41,9 +38,8 @@ namespace TvUndergroundDownloaderConsole
             nLogConfig.LoggingRules.Insert(0, new LoggingRule("*", LogLevel.Info, consoleTarget));
 
             LogManager.Configuration = nLogConfig;
-            #endregion
 
-
+            #endregion NLog setup
 
             //
             //  Load config
@@ -56,17 +52,22 @@ namespace TvUndergroundDownloaderConsole
             //
             //  Setup Worker
             //
+
             #region SetupWorker
+
             worker = new TvUndergroundDownloaderLib.Worker();
             worker.Config = mainConfig;
-            #endregion
+
+            #endregion SetupWorker
 
             #region Stat Web Server
+
             var embendedWebServer = new TvUndergroundDownloaderLib.EmbendedWebServer.EmbendedWebServer();
             embendedWebServer.Config = mainConfig;
             embendedWebServer.Worker = worker;
             embendedWebServer.Start();
-            #endregion
+
+            #endregion Stat Web Server
 
             bool exitProgram = true;
             while (exitProgram)

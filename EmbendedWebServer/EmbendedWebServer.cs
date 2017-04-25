@@ -39,12 +39,12 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
             }
         }
 
-
         public void Start()
         {
             //
             //  Setup Nlog
             //
+
             #region Setup NLog
 
             LoggingConfiguration nLogConfig = LogManager.Configuration;
@@ -61,16 +61,16 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
 
             LogManager.Configuration = nLogConfig;
 
-            #endregion
+            #endregion Setup NLog
 
             logger.Info("Starting server...");
             HostConfiguration nancyHostConfiguration = new HostConfiguration();
-            nancyHostConfiguration.RewriteLocalhost = false;
+            nancyHostConfiguration.RewriteLocalhost = true;
 
             nancyHost = new NancyHost(nancyHostConfiguration, new Uri(nancyUrl));
 
             nancyHost.Start();
-            logger.Info("Server is listenign on {0}", nancyUrl);
+            logger.Info("Server is listening on {0}", nancyUrl);
         }
 
         public void Stop()
