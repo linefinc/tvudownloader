@@ -41,9 +41,9 @@ namespace TvUndergroundDownloaderLib
             //
             CookieContainer cookieContainer = new CookieContainer();
             Uri uriTvunderground = new Uri("http://tvunderground.org.ru/");
-            cookieContainer.Add(uriTvunderground, new Cookie("h", Config.tvuCookieH));
-            cookieContainer.Add(uriTvunderground, new Cookie("i", Config.tvuCookieI));
-            cookieContainer.Add(uriTvunderground, new Cookie("t", Config.tvuCookieT));
+            cookieContainer.Add(uriTvunderground, new Cookie("h", Config.TVUCookieH));
+            cookieContainer.Add(uriTvunderground, new Cookie("i", Config.TVUCookieI));
+            cookieContainer.Add(uriTvunderground, new Cookie("t", Config.TVUCookieT));
 
             //
             //  start RSS Check

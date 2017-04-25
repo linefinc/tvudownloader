@@ -1,4 +1,7 @@
-﻿namespace TvUndergroundDownloaderLib
+﻿using NLog;
+using System;
+
+namespace TvUndergroundDownloaderLib
 {
     internal class SmtpClient
     {
@@ -14,8 +17,10 @@
             {
                 smtp.Send(message);
             }
-            catch
+            catch (Exception ex)
             {
+                Logger logger = LogManager.GetCurrentClassLogger();
+                logger.Error(ex, "Unable to send email");
                 return false;
             }
             return true;

@@ -13,7 +13,7 @@ namespace TvUndergroundDownloaderLib
         public bool AutoClearLog;
 
         public bool CloseEmuleIfAllIsDone;
-
+        [Obsolete]
         public bool debug;
 
         public string DefaultCategory;
@@ -58,11 +58,11 @@ namespace TvUndergroundDownloaderLib
 
         public int TotalDownloads;
 
-        public string tvuCookieH;
+        public string TVUCookieH;
 
-        public string tvuCookieI;
+        public string TVUCookieI;
 
-        public string tvuCookieT;
+        public string TVUCookieT;
 
         public string tvudwid;//Unique id
 
@@ -93,7 +93,12 @@ namespace TvUndergroundDownloaderLib
             Load();
         }
 
-        public enum eServiceType { eMule = 0, aMule };
+        [Flags]
+        public enum eServiceType
+        {
+            eMule = 0,
+            aMule
+        };
 
         public static string ConfigFolder
         {
@@ -141,7 +146,7 @@ namespace TvUndergroundDownloaderLib
             }
         }
 
-     //   public static bool StartWithWindows
+        //   public static bool StartWithWindows
         //{
         //    get
         //    {
@@ -251,11 +256,11 @@ namespace TvUndergroundDownloaderLib
 
             Password = ReadString(xDoc, "Password", "password");
 
-            tvuCookieH = ReadString(xDoc, "tvuCookieH", string.Empty);
+            TVUCookieH = ReadString(xDoc, "tvuCookieH", string.Empty);
 
-            tvuCookieI = ReadString(xDoc, "tvuCookieI", string.Empty);
+            TVUCookieI = ReadString(xDoc, "tvuCookieI", string.Empty);
 
-            tvuCookieT = ReadString(xDoc, "tvuCookieT", string.Empty);
+            TVUCookieT = ReadString(xDoc, "tvuCookieT", string.Empty);
 
             IntervalTime = ReadInt(xDoc, "IntervalTime", 30, 1, 24 * 60 * 60);
 
@@ -342,9 +347,9 @@ namespace TvUndergroundDownloaderLib
 
             writer.WriteElementString("ServiceUrl", ServiceUrl);
             writer.WriteElementString("Password", Password);
-            writer.WriteElementString("tvuCookieH", tvuCookieH);
-            writer.WriteElementString("tvuCookieI", tvuCookieI);
-            writer.WriteElementString("tvuCookieT", tvuCookieT);
+            writer.WriteElementString("tvuCookieH", TVUCookieH);
+            writer.WriteElementString("tvuCookieI", TVUCookieI);
+            writer.WriteElementString("tvuCookieT", TVUCookieT);
             writer.WriteElementString("IntervalTime", IntervalTime.ToString());
             writer.WriteElementString("StartMinimized", StartMinimized.ToString());
 

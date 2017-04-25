@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="ConfigModel.cs" />
     <Compile Include="EmbendedWebServer.cs" />
     <Compile Include="GlobalVar.cs" />
     <Compile Include="MainModule.cs" />

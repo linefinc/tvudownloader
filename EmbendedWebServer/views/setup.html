@@ -2,20 +2,31 @@
 
 @Section['Content']
 
-<form metdod="POST" action="/setup">
+<form method="post" action="/setup">
     <input type="hidden" name="action" value="update_setup" />
     <table id="location" border='1'>
-		<tr>
-            <th> Name </th>
-            
-		</tr>
         <tr>
-            <td>Service type</td>
-            <td>
+            <th>Name </th>
+        </tr>
+        <tr>
+            <td>Service type
+            </td>
+            <td>@If.ServiceTypeAmule
                 <select name="ServiceType">
-                    <option value="aMule">aMule</option>
+                    <option value="aMule" selected="selected">aMule</option>
                     <option value="eMule">eMule</option>
                 </select>
+                @EndIf        
+@If.ServiceTypeEmule
+                    <select name="ServiceType">
+                        <option value="aMule">aMule</option>
+                        <option value="eMule" selected="selected">eMule</option>
+                    </select>
+                @EndIf
+                        
+                        
+                        
+                
 
             </td>
         </tr>
@@ -34,129 +45,120 @@
         <tr>
             <td>Cookie H</td>
             <td>
-                <input type="text" name="tvuCookieH" value="@Model.tvuCookieH" />
+                <input type="text" name="TVUCookieH" value="@Model.TVUCookieH" />
             </td>
         </tr>
         <tr>
             <td>Cookie I</td>
             <td>
-                <input type="text" name="tvuCookieI" value="@Model.tvuCookieI" />
+                <input type="text" name="TVUCookieI" value="@Model.TVUCookieI" />
             </td>
         </tr>
         <tr>
             <td>Cookie T</td>
             <td>
-                <input type="text" name="tvuCookieT" value="@Model.tvuCookieT" />
+                <input type="text" name="TVUCookieT" value="@Model.TVUCookieT" />
             </td>
         </tr>
         <tr>
             <td>Close Emule If All Is Done</td>
-            <td>
-                <input type="text" name="tvuCookieT" value="@Model.CloseEmuleIfAllIsDone" />
+            <td>@If.CloseEmuleIfAllIsDone
+                    <select name="CloseEmuleIfAllIsDone">
+                        <option value="true" selected="selected">True</option>
+                        <option value="false">False</option>
+                    </select>
+                @EndIf        
+
+@IfNot.CloseEmuleIfAllIsDone
+                <select name="CloseEmuleIfAllIsDone">
+                    <option value="true">True</option>
+                    <option value="false" selected="selected">False</option>
+                </select>
+                @EndIf
+                
             </td>
         </tr>
         <tr>
             <td>Max Simultaneous Feed Downloads Default</td>
             <td>
-                <input type="text" name="tvuCookieT" value="@Model.MaxSimultaneousFeedDownloadsDefault" />
+                <input type="text" name="MaxSimultaneousFeedDownloadsDefault" value="@Model.MaxSimultaneousFeedDownloadsDefault" />
             </td>
         </tr>
         <tr>
-            <td>PauseDownloadDefault T</td>
-            <td>
-                <input type="text" name="tvuCookieT" value="@Model.PauseDownloadDefault" />
+            <td>Pause Download Default</td>
+            <td>@If.PauseDownloadDefault
+                <select name="PauseDownloadDefault">
+                    <option value="true" selected="selected">True</option>
+                    <option value="false">False</option>
+                </select>
+                @EndIf        
+@IfNot.PauseDownloadDefault
+                    <select name="PauseDownloadDefault">
+                        <option value="true">True</option>
+                        <option value="false" selected="selected">False</option>
+                    </select>
+                @EndIf
+                
+
+
             </td>
         </tr>
 
         <tr>
             <td>Min To Start Emule</td>
             <td>
-                <input type="text" name="tvuCookieT" value="@Model.MinToStartEmule" />
+                <input type="text" name="MinToStartEmule" value="@Model.MinToStartEmule" />
             </td>
         </tr>
         <tr>
             <td>eMule Exe</td>
             <td>
-                <input type="text" name="tvuCookieT" value="@Model.eMuleExe" />
+                <input type="text" name="eMuleExe" value="@Model.eMuleExe" />
             </td>
         </tr>
         <tr>
             <td>Email Notification</td>
-            <td>
-                <input type="text" name="tvuCookieT" value="@Model.EmailNotification" />
+            <td>@If.EmailNotification
+                <select name="EmailNotification">
+                    <option value="true" selected="selected">True</option>
+                    <option value="false">False</option>
+                </select>
+                @EndIf        
+@IfNot.EmailNotification
+                <select name="EmailNotification">
+                    <option value="true">True</option>
+                    <option value="false" selected="selected">False</option>
+                </select>
+                @EndIf
+                
             </td>
         </tr>
         <tr>
             <td>Server SMTP</td>
             <td>
-                <input type="text" name="tvuCookieT" value="@Model.ServerSMTP" />
+                <input type="text" name="ServerSMTP" value="@Model.ServerSMTP" />
             </td>
         </tr>
         <tr>
             <td>Mail Sender</td>
             <td>
-                <input type="text" name="tvuCookieT" value="@Model.MailSender" />
+                <input type="text" name="MailSender" value="@Model.MailSender" />
             </td>
         </tr>
 
         <tr>
             <td>Mail Receiver</td>
             <td>
-                <input type="text" name="tvuCookieT" value="@Model.MailReceiver" />
+                <input type="text" name="MailReceiver" value="@Model.MailReceiver" />
             </td>
         </tr>
 
         <tr>
             <td></td>
             <td>
-                <input type="submit" value="Setup" />
+                <input type="submit" value="Save" />
             </td>
         </tr>
     </table>
-
-    <!--
-    
-
-            StartMinimized = Convert.ToBoolean(ReadString(xDoc, "StartMinimized", "false"));
-
-            CloseEmuleIfAllIsDone = Convert.ToBoolean(ReadString(xDoc, "CloseWhenAllDone", "false"));
-
-            StartEmuleIfClose = Convert.ToBoolean(ReadString(xDoc, "AutoStartEmule", "false"));
-
-            AutoClearLog = Convert.ToBoolean(ReadString(xDoc, "AutoClearLog", "false"));
-            MaxSimultaneousFeedDownloadsDefault = ReadUInt(xDoc, "MaxSimultaneousFeedDownloads", 3, 0, 50);
-            PauseDownloadDefault = Convert.ToBoolean(ReadString(xDoc, "PauseDownloadDefault", "false"));
-            MinToStartEmule = ReadInt(xDoc, "MinToStartEmule", 0, 0, 50);
-            eMuleExe = ReadString(xDoc, "eMuleExe", "");
-
-            DefaultCategory = ReadString(xDoc, "DefaultCategory", "");
-
-            debug = Convert.ToBoolean(ReadString(xDoc, "Debug", "false"));
-#if DEBUG
-            Verbose = true;
-#else
-            Verbose = Convert.ToBoolean(ReadString(xDoc, "Verbose", "false"));
-#endif
-            saveLog = Convert.ToBoolean(ReadString(xDoc, "SaveLog", "false"));
-
-            EmailNotification = Convert.ToBoolean(ReadString(xDoc, "EmailNotification", "false"));
-
-            ServerSMTP = ReadString(xDoc, "ServerSMTP", "");
-
-            MailReceiver = ReadString(xDoc, "MailReceiver", "");
-
-            MailSender = ReadString(xDoc, "MailSender", "");
-
-            tvudwid = ReadString(xDoc, "tvudwid", RandomIDGenerator());
-
-            intervalBetweenUpgradeCheck = ReadInt(xDoc, "intervalBetweenUpgradeCheck", 5, 1, 15);
-
-            LastUpgradeCheck = ReadString(xDoc, "LastUpgradeCheck", DateTime.Now.ToString("yyyy-MM-dd"));
-
-            TotalDownloads = ReadInt(xDoc, "TotalDownloads", 0);
-
-            UseHttpInsteadOfHttps = (bool)Convert.ToBoolean(ReadString(xDoc, "useHttpInsteadOfHttps", "false"));
-    -->
-
 </form>
 @EndSection

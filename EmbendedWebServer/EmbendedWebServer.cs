@@ -1,14 +1,20 @@
 ﻿using Nancy.Hosting.Self;
 using NLog;
+using NLog.Config;
+using NLog.Targets;
 using System;
 
 namespace TvUndergroundDownloaderLib.EmbendedWebServer
 {
     public class EmbendedWebServer
     {
-        private NancyHost nancyHost;
+        private const string nancyUrl = "http://localhost:9696";
         private Logger logger = LogManager.GetCurrentClassLogger();
+        private NancyHost nancyHost;
 
+        /// <summary>
+        /// configuration class
+        /// </summary>
         public Config Config
         {
             set
@@ -24,14 +30,35 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
 
         public void Start()
         {
-            logger.Info("Starting server...");
-            var NancyHostConfiguration = new HostConfiguration();
-            NancyHostConfiguration.RewriteLocalhost = false;
+            //
+            //  Setup Nlog
+            //
+            #region Setup NLog
 
-            nancyHost = new NancyHost(NancyHostConfiguration, new Uri("http://localhost:9696"));
+            LoggingConfiguration nLogConfig = LogManager.Configuration;
+            if (nLogConfig == null)
+            {
+                nLogConfig = new LoggingConfiguration();
+            }
+
+            GlobalVar.LogMemoryTarget = new MemoryTarget();
+            GlobalVar.LogMemoryTarget.Layout = "${message}";
+
+            LoggingRule loggingRule = new LoggingRule("*", LogLevel.Info, GlobalVar.LogMemoryTarget);
+            nLogConfig.LoggingRules.Insert(0, loggingRule);
+
+            LogManager.Configuration = nLogConfig;
+
+            #endregion
+
+            logger.Info("Starting server...");
+            HostConfiguration nancyHostConfiguration = new HostConfiguration();
+            nancyHostConfiguration.RewriteLocalhost = false;
+
+            nancyHost = new NancyHost(nancyHostConfiguration, new Uri(nancyUrl));
 
             nancyHost.Start();
-            logger.Info("Server is listenign on {0}", "http://localhost:9696");
+            logger.Info("Server is listenign on {0}", nancyUrl);
         }
 
         public void Stop()

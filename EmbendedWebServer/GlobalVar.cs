@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NLog.Targets;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 
 namespace TvUndergroundDownloaderLib.EmbendedWebServer
 {
@@ -10,5 +7,6 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
     {
         public static Config Config;
         public static BackgroundWorker MainBackgroundWorker;
+        public static MemoryTarget LogMemoryTarget;
     }
 }
