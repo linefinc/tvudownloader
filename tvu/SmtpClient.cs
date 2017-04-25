@@ -1,7 +1,7 @@
 ﻿using NLog;
 using System;
 
-namespace TvUndergroundDownloaderLib
+namespace TvUndergroundDownloader
 {
     internal class SmtpClient
     {
