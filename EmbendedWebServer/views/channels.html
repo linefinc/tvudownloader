@@ -1,0 +1,66 @@
+﻿@Master['master.html']
+
+@Section['Content']
+    <table id="location" border='1'>
+        <tr>
+            <th>Season ID</th>
+            <th>Title</th>
+            <th>Dub</th>
+            <th>Total Downloads</th>
+            <th>Last update</th>
+            <th>Status</th>
+            <th>Enabled</th>
+            <th>Action</th>
+        </tr>
+        @Each.RssFeedList
+        <tr>
+            <td><a href="/channels/@Current.seasonID">
+                <img src="/Content/Info.png" height="36" width="36" /><a>
+            </td>
+            <td>@Current.TitleCompact</td>
+            <td>@Current.DubLanguage</td>
+            <td>@Current.TotalFilesDownloaded</td>
+            <td>@Current.LastChannelUpdate.Days </td>
+            <td>@Current.CurrentTVUStatus</td>
+            <td>@Current.Enabled</td>
+            <td><a href="/RssSubscription/Delete/@Current.seasonID">Delete</a></td>
+        </tr>
+        @EndEach
+    </table>
+
+<br />
+
+<form metdod="post" action="/RssSubscription">
+    <input type="submit" value="Add" />
+    <input type="hidden" name="action" value="add_new_feed" />
+    Url
+        <input type="text" name="newFeedUrl" value="" />
+    <br />
+
+
+</form>
+
+<table id="location" border='1'>
+    <tr>
+        <th>File name</th>
+        <th>Date</th>
+        <th>Mark As Not Downloaded</th>
+        <th>Mark As Downloaded</th>
+    </tr>
+    @Each.DownloadFile
+    <tr>
+        <td>@Current.File.FileName</td>
+        <td>@Current.DownloadDate</td>
+        <td><a href="/RssSubscription/DownloadFile/@Current.File.HashMD4">
+            <img src="/Content/Download.png" height="36" width="36" alt="Mark As Not Downloaded" /></a></td>
+        <td><a href="/RssSubscription/DownloadFile/@Current.File.HashMD4">
+            <img src="/Content/Undownload.png" height="36" width="36" alt="Mark As Downloaded" /></a></td>
+
+    </tr>
+    @EndEach
+</table>
+
+
+
+
+@EndSection

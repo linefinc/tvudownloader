@@ -11,20 +11,6 @@ using System.Threading.Tasks;
 
 namespace TvUndergroundDownloaderLib
 {
-
-    [Obsolete]
-    public class sDonwloadFile
-    {
-        public sDonwloadFile(Ed2kfile ed2kLink, RssSubscription subscription)
-        {
-            this.File = ed2kLink;
-            this.Subscription = subscription;
-        }
-
-        public Ed2kfile File { get; private set; }
-        public RssSubscription Subscription { get; private set; } = null;
-    };
-
     public class Worker
     {
         private Logger logger = LogManager.GetCurrentClassLogger();
@@ -64,7 +50,7 @@ namespace TvUndergroundDownloaderLib
             //
             logger.Info("Start RSS Check");
 
-            List<sDonwloadFile> downloadFileList = new List<sDonwloadFile>();
+            List<DownloadFile> downloadFileList = new List<DownloadFile>();
 
             // select only enabled RSS
             List<RssSubscription> rssFeedList = Config.RssFeedList.FindAll(delegate (RssSubscription rss) { return rss.Enabled == true; });
@@ -77,7 +63,7 @@ namespace TvUndergroundDownloaderLib
                     feed.Update(cookieContainer);
                     foreach (Ed2kfile file in feed.GetNewDownload())
                     {
-                        sDonwloadFile sfile = new sDonwloadFile(file, feed);
+                        DownloadFile sfile = new DownloadFile(file, feed);
                         downloadFileList.Add(sfile);
                         logger.Info(@"Found new file ""{0}""", file.FileName);
                     }
@@ -238,7 +224,7 @@ namespace TvUndergroundDownloaderLib
             //
             //  Download file
             //
-            foreach (sDonwloadFile downloadFile in downloadFileList)
+            foreach (DownloadFile downloadFile in downloadFileList)
             {
                 //  this code allow to block anytime the loop
                 if (cancellationPending)
