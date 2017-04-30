@@ -55,7 +55,7 @@ namespace TvUndergroundDownloaderLib
                         writter.WriteStartElement("File");
 
                         writter.WriteStartElement("Link");
-                        writter.WriteString(file.File.Ed2kLink);
+                        writter.WriteString(file.Ed2kLink);
                         writter.WriteEndElement();
                         writter.WriteStartElement("FeedLink");
                         writter.WriteString(file.Guid);

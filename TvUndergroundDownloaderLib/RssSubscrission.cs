@@ -238,10 +238,10 @@ namespace TvUndergroundDownloaderLib
 
         public void AddFile(DownloadFile file)
         {
-            this.linkCache.Add(file.Guid, file.File);
+            this.linkCache.Add(file.Guid, file);
             if (file.DownloadDate.HasValue)
             {
-                this.downloaded.Add(file.File, file.DownloadDate.Value);
+                this.downloaded.Add(file, file.DownloadDate.Value);
             }
         }
 

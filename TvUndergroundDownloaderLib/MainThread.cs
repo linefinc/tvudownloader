@@ -195,7 +195,7 @@ namespace TvUndergroundDownloaderLib
             logger.Debug("Clean download list (step 1) find channel from ed2k");
 
             List<Ed2kfile> knownFiles = new List<Ed2kfile>();
-            Config.RssFeedList.GetDownloadFiles().ForEach((x) => knownFiles.Add(x.File));
+            Config.RssFeedList.GetDownloadFiles().ForEach((x) => knownFiles.Add(x));
 
             List<Ed2kfile> courrentDownloadsFormEmule = service.GetCurrentDownloads(knownFiles);/// file downloaded with this program and now in download in emule
             if (courrentDownloadsFormEmule == null)
@@ -217,13 +217,13 @@ namespace TvUndergroundDownloaderLib
             List<DownloadFile> actualDownloadFileList = new List<DownloadFile>();
             foreach (var downloadedFile in Config.RssFeedList.GetDownloadFiles())
             {
-                if (courrentDownloadsFormEmule.Contains(downloadedFile.File) == true)
+                if (courrentDownloadsFormEmule.Contains(downloadedFile) == true)
                 {
                     actualDownloadFileList.Add(downloadedFile);
                 }
             }
 
-            actualDownloadFileList.ForEach(delegate (DownloadFile file) { logger.Info("Found: \"{0}\"", file.File.FileName); });
+            actualDownloadFileList.ForEach(delegate (DownloadFile file) { logger.Info("Found: \"{0}\"", file.FileName); });
 
             logger.Info("ActualDownloadFileList.Count = " + actualDownloadFileList.Count);
             logger.Info("Config.MaxSimultaneousFeedDownloads = " + Config.MaxSimultaneousFeedDownloadsDefault);
@@ -263,14 +263,14 @@ namespace TvUndergroundDownloaderLib
                 int msdd = maxSimultaneousDownloadsDictionary[downloadFile.Subscription];
                 if (msdd <= 0)
                 {
-                    string fileName = new Ed2kfile(downloadFile.File).FileName;
+                    string fileName = new Ed2kfile(downloadFile).FileName;
                     logger.Info(string.Format("File skipped: \"{0}\"", fileName));
                     continue;
                 }
 
                 maxSimultaneousDownloadsDictionary[downloadFile.Subscription] = Math.Max(0, msdd - 1);
 
-                Ed2kfile ed2klink = new Ed2kfile(downloadFile.File);
+                Ed2kfile ed2klink = new Ed2kfile(downloadFile);
                 logger.Info("Add file to download");
                 service.AddToDownload(ed2klink, downloadFile.Subscription.Category);
 
@@ -285,10 +285,10 @@ namespace TvUndergroundDownloaderLib
                     service.StartDownload(ed2klink);
                 }
                 // mark the file download
-                downloadFile.Subscription.SetFileDownloaded(downloadFile.File);
+                downloadFile.Subscription.SetFileDownloaded(downloadFile);
 
-                logger.Info("Add file to emule \"{0}\"", downloadFile.File.GetFileName());
-                SendMailDownload(downloadFile.File.GetFileName(), downloadFile.File.Ed2kLink);
+                logger.Info("Add file to emule \"{0}\"", downloadFile.GetFileName());
+                SendMailDownload(downloadFile.GetFileName(), downloadFile.Ed2kLink);
                 Config.TotalDownloads++;   //increase Total Downloads for statistic
             }
             Config.Save();
