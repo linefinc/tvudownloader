@@ -1,49 +1,36 @@
-﻿using NLog;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
+using System.Net.Mail;
 using System.Threading;
+using NLog;
+using ThreadState = System.Threading.ThreadState;
 
 namespace TvUndergroundDownloaderLib
 {
     public class Worker
     {
+        private bool cancellationPending;
         public Config Config = null;
-        private bool cancellationPending = false;
-        private Logger logger = LogManager.GetCurrentClassLogger();
-        private Thread thread;
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly Thread thread;
 
         public Worker()
         {
-            thread = new Thread(this.WorkerThreadFunc);
+            thread = new Thread(WorkerThreadFunc);
             thread.Name = "TvUndergroundDownloaderLib";
         }
 
-        public System.Threading.ThreadState ThreadState
-        {
-            get
-            {
-                return thread.ThreadState;
-            }
-        }
+        public ThreadState ThreadState => thread.ThreadState;
 
-        public bool IsBusy
-        {
-            get
-            {
-                return thread.ThreadState == System.Threading.ThreadState.Stopped;
-            }
-        }
+        public bool IsBusy => thread.ThreadState == ThreadState.Stopped;
 
         public void Abort()
         {
             cancellationPending = true;
             if (!thread.Join(3000))
-            {
-                // give the thread 3 seconds to stop
                 thread.Abort();
-            }
         }
 
         public void Run()
@@ -60,15 +47,13 @@ namespace TvUndergroundDownloaderLib
         public void WorkerThreadFunc()
         {
             if (Config == null)
-            {
                 throw new NullReferenceException("Config");
-            }
 
             //
             //  Load Cookies from configure
             //
-            CookieContainer cookieContainer = new CookieContainer();
-            Uri uriTvunderground = new Uri("http://tvunderground.org.ru/");
+            var cookieContainer = new CookieContainer();
+            var uriTvunderground = new Uri("http://tvunderground.org.ru/");
             cookieContainer.Add(uriTvunderground, new Cookie("h", Config.TVUCookieH));
             cookieContainer.Add(uriTvunderground, new Cookie("i", Config.TVUCookieI));
             cookieContainer.Add(uriTvunderground, new Cookie("t", Config.TVUCookieT));
@@ -78,20 +63,20 @@ namespace TvUndergroundDownloaderLib
             //
             logger.Info("Start RSS Check");
 
-            List<DownloadFile> downloadFileList = new List<DownloadFile>();
+            var downloadFileList = new List<DownloadFile>();
 
             // select only enabled RSS
-            List<RssSubscription> rssFeedList = Config.RssFeedList.FindAll(delegate (RssSubscription rss) { return rss.Enabled == true; });
+            var rssFeedList = Config.RssFeedList.FindAll(delegate(RssSubscription rss) { return rss.Enabled; });
 
-            foreach (RssSubscription feed in rssFeedList)
+            foreach (var feed in rssFeedList)
             {
                 try
                 {
                     logger.Info(@"Read RSS ""{0}""", feed.TitleCompact);
                     feed.Update(cookieContainer);
-                    foreach (Ed2kfile file in feed.GetNewDownload((int)this.Config.MaxSimultaneousFeedDownloadsDefault))
+                    foreach (var file in feed.GetNewDownload((int) Config.MaxSimultaneousFeedDownloadsDefault))
                     {
-                        DownloadFile sfile = new DownloadFile(feed, file);
+                        var sfile = new DownloadFile(feed, file);
                         downloadFileList.Add(sfile);
                         logger.Info(@"Found new file ""{0}""", file.FileName);
                     }
@@ -102,9 +87,7 @@ namespace TvUndergroundDownloaderLib
                 }
 
                 if (cancellationPending)
-                {
                     return;
-                }
 
                 //update RSS feed
                 int progress = (Config.RssFeedList.IndexOf(feed) + 1) * 100;
@@ -118,10 +101,7 @@ namespace TvUndergroundDownloaderLib
                 logger.Info("Nothing to download");
                 return;
             }
-            else
-            {
-                logger.Info("Total file found " + downloadFileList.Count);
-            }
+            logger.Info("Total file found " + downloadFileList.Count);
 
             IMuleWebManager service = null;
 
@@ -154,12 +134,10 @@ namespace TvUndergroundDownloaderLib
 
             for (int cont = 1; (cont <= 5) & (service.Connect() != LoginStatus.Logged); cont++)
             {
-                if (cancellationPending == true)
-                {
+                if (cancellationPending)
                     return;
-                }
 
-                logger.Info(string.Format("Start eMule Now (try {0}/5)", cont));
+                logger.Info("Start eMule Now (try {0}/5)", cont);
                 logger.Info("Wait 60 sec");
                 try
                 {
@@ -174,9 +152,7 @@ namespace TvUndergroundDownloaderLib
                 for (int n = 0; n < 10; n++)
                 {
                     if (cancellationPending)
-                    {
                         return;
-                    }
 
                     Thread.Sleep(500);
                 }
@@ -190,14 +166,16 @@ namespace TvUndergroundDownloaderLib
             }
 
             logger.Info("Retrieve list category");
-            service.GetCategories(true);  // force upgrade category list
+            service.GetCategories(true); // force upgrade category list
 
             logger.Debug("Clean download list (step 1) find channel from ed2k");
 
-            List<Ed2kfile> knownFiles = new List<Ed2kfile>();
-            Config.RssFeedList.GetDownloadFiles().ForEach((x) => knownFiles.Add(x));
+            var knownFiles = new List<Ed2kfile>();
+            Config.RssFeedList.GetDownloadFiles().ForEach(x => knownFiles.Add(x));
 
-            List<Ed2kfile> courrentDownloadsFormEmule = service.GetCurrentDownloads(knownFiles);/// file downloaded with this program and now in download in emule
+            var courrentDownloadsFormEmule =
+                service.GetCurrentDownloads(
+                    knownFiles); /// file downloaded with this program and now in download in emule
             if (courrentDownloadsFormEmule == null)
             {
                 logger.Error("eMule web server not respond");
@@ -207,74 +185,68 @@ namespace TvUndergroundDownloaderLib
             logger.Info("Current Download Form Emule {0}", courrentDownloadsFormEmule.Count);
 
             //for debug
-            courrentDownloadsFormEmule.ForEach(delegate (Ed2kfile file) { logger.Info(file.FileName.Replace("%20", " ")); });
+            courrentDownloadsFormEmule.ForEach(delegate(Ed2kfile file)
+            {
+                logger.Info(file.FileName.Replace("%20", " "));
+            });
 
             //
             //  note move this function in MainHistory class
             //
             logger.Info("Start search in history");
 
-            List<DownloadFile> actualDownloadFileList = new List<DownloadFile>();
+            var actualDownloadFileList = new List<DownloadFile>();
             foreach (var downloadedFile in Config.RssFeedList.GetDownloadFiles())
-            {
-                if (courrentDownloadsFormEmule.Contains(downloadedFile) == true)
-                {
+                if (courrentDownloadsFormEmule.Contains(downloadedFile))
                     actualDownloadFileList.Add(downloadedFile);
-                }
-            }
 
-            actualDownloadFileList.ForEach(delegate (DownloadFile file) { logger.Info("Found: \"{0}\"", file.FileName); });
+            actualDownloadFileList.ForEach(
+                delegate(DownloadFile file) { logger.Info("Found: \"{0}\"", file.FileName); });
 
             logger.Info("ActualDownloadFileList.Count = " + actualDownloadFileList.Count);
             logger.Info("Config.MaxSimultaneousFeedDownloads = " + Config.MaxSimultaneousFeedDownloadsDefault);
 
             // create a dictionary to count
-            Dictionary<RssSubscription, int> maxSimultaneousDownloadsDictionary = new Dictionary<RssSubscription, int>();
+            var maxSimultaneousDownloadsDictionary = new Dictionary<RssSubscription, int>();
             // set starting point for each feed
-            foreach (RssSubscription rssFeed in Config.RssFeedList)
-            {
-                maxSimultaneousDownloadsDictionary.Add(rssFeed, (int)rssFeed.MaxSimultaneousDownload);
-            }
+            foreach (var rssFeed in Config.RssFeedList)
+                maxSimultaneousDownloadsDictionary.Add(rssFeed, (int) rssFeed.MaxSimultaneousDownload);
 
             //
             //  remove all file already in download
             //
-            foreach (DownloadFile file in actualDownloadFileList)
-            {
-                if (maxSimultaneousDownloadsDictionary.ContainsKey(file.Subscription) == true)
+            foreach (var file in actualDownloadFileList)
+                if (maxSimultaneousDownloadsDictionary.ContainsKey(file.Subscription))
                 {
                     int counter = Math.Max(0, maxSimultaneousDownloadsDictionary[file.Subscription] - 1);
                     maxSimultaneousDownloadsDictionary[file.Subscription] = counter;
                 }
-            }
 
             logger.Info("Download file");
             //
             //  Download file
             //
-            foreach (DownloadFile downloadFile in downloadFileList)
+            foreach (var downloadFile in downloadFileList)
             {
                 //  this code allow to block anytime the loop
                 if (cancellationPending)
-                {
                     return;
-                }
 
                 int msdd = maxSimultaneousDownloadsDictionary[downloadFile.Subscription];
                 if (msdd <= 0)
                 {
                     string fileName = new Ed2kfile(downloadFile).FileName;
-                    logger.Info(string.Format("File skipped: \"{0}\"", fileName));
+                    logger.Info("File skipped: \"{0}\"", fileName);
                     continue;
                 }
 
                 maxSimultaneousDownloadsDictionary[downloadFile.Subscription] = Math.Max(0, msdd - 1);
 
-                Ed2kfile ed2klink = new Ed2kfile(downloadFile);
+                var ed2klink = new Ed2kfile(downloadFile);
                 logger.Info("Add file to download");
                 service.AddToDownload(ed2klink, downloadFile.Subscription.Category);
 
-                if (downloadFile.Subscription.PauseDownload == true)
+                if (downloadFile.Subscription.PauseDownload)
                 {
                     logger.Info("Pause download");
                     service.StopDownload(ed2klink);
@@ -289,7 +261,7 @@ namespace TvUndergroundDownloaderLib
 
                 logger.Info("Add file to emule \"{0}\"", downloadFile.GetFileName());
                 SendMailDownload(downloadFile.GetFileName(), downloadFile.Ed2kLink);
-                Config.TotalDownloads++;   //increase Total Downloads for statistic
+                Config.TotalDownloads++; //increase Total Downloads for statistic
             }
             Config.Save();
 
@@ -300,14 +272,12 @@ namespace TvUndergroundDownloaderLib
             service.Close();
 
             logger.Info("Statistics");
-            logger.Info(string.Format("Total file added {0}", Config.TotalDownloads));
+            logger.Info("Total file added {0}", Config.TotalDownloads);
 
             try
             {
-                if (VersionChecker.CheckNewVersion(Config, true) == true)
-                {
+                if (VersionChecker.CheckNewVersion(Config, true))
                     logger.Info("New Version is available at http://tvudownloader.sourceforge.net/");
-                }
             }
             catch (Exception ex)
             {
@@ -317,16 +287,15 @@ namespace TvUndergroundDownloaderLib
 
         private void SendMailDownload(string fileName, string ed2kLink)
         {
-            if (Config.EmailNotification == true)
-            {
+            if (Config.EmailNotification)
                 try
                 {
-                    System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
+                    var message = new MailMessage();
                     message.To.Add(Config.MailReceiver);
                     message.Subject = "TV Underground Downloader Notification";
-                    message.From = new System.Net.Mail.MailAddress(Config.MailSender);
+                    message.From = new MailAddress(Config.MailSender);
                     message.Body = "New file add\r\n" + fileName + "\r\n";
-                    System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(Config.ServerSMTP);
+                    var smtp = new System.Net.Mail.SmtpClient(Config.ServerSMTP);
 
                     smtp.Send(message);
                 }
@@ -334,7 +303,6 @@ namespace TvUndergroundDownloaderLib
                 {
                     logger.Error(ex);
                 }
-            }
         }
     }
 }

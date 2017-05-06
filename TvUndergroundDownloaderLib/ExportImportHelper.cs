@@ -10,7 +10,7 @@ namespace TvUndergroundDownloaderLib
     {
         public static void Export(Config config, Stream steam)
         {
-            XmlTextWriter writter = new XmlTextWriter(steam, Encoding.UTF8);
+            var writter = new XmlTextWriter(steam, Encoding.UTF8);
             writter.Formatting = Formatting.Indented;
 
             writter.WriteStartDocument();
@@ -18,11 +18,11 @@ namespace TvUndergroundDownloaderLib
             writter.WriteStartElement("Channels");
             writter.WriteAttributeString("version", Config.Version);
 
-            List<RssSubscription> myRssFeedList = new List<RssSubscription>();
+            var myRssFeedList = new List<RssSubscription>();
             myRssFeedList.AddRange(config.RssFeedList);
             myRssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title));
 
-            foreach (RssSubscription feed in myRssFeedList)
+            foreach (var feed in myRssFeedList)
             {
                 //<Channel>
                 //<Title>[ed2k] tvunderground.org.ru: Lie To Me - Season 2 (HDTV) italian </Title>
@@ -32,15 +32,15 @@ namespace TvUndergroundDownloaderLib
                 //</Channel>
                 writter.WriteStartElement("Channel");
                 {
-                    writter.WriteStartElement("Title");//Title
+                    writter.WriteStartElement("Title"); //Title
                     writter.WriteString(feed.Title);
                     writter.WriteEndElement();
 
-                    writter.WriteStartElement("Url");//Url
+                    writter.WriteStartElement("Url"); //Url
                     writter.WriteString(feed.Url);
                     writter.WriteEndElement();
 
-                    writter.WriteStartElement("Category");//Category
+                    writter.WriteStartElement("Category"); //Category
                     writter.WriteString(feed.Category);
                     writter.WriteEndElement();
 
@@ -74,18 +74,18 @@ namespace TvUndergroundDownloaderLib
                     }
                     writter.WriteEndElement();
                 }
-                writter.WriteEndElement();// end channel
+                writter.WriteEndElement(); // end channel
             }
-            writter.WriteEndElement();// end RSSChannel
+            writter.WriteEndElement(); // end RSSChannel
             writter.Close();
         }
 
         public static void Import(Config config, string fileName)
         {
-            XmlDocument xDoc = new XmlDocument();
+            var xDoc = new XmlDocument();
             xDoc.Load(fileName);
 
-            XmlNodeList Channels = xDoc.GetElementsByTagName("Channel");
+            var Channels = xDoc.GetElementsByTagName("Channel");
             foreach (XmlNode Channel in Channels)
             {
                 string newFeedTitle = string.Empty;
@@ -93,8 +93,7 @@ namespace TvUndergroundDownloaderLib
                 RssSubscription newFeed = null;
 
                 foreach (XmlNode t in Channel)
-                {
-                    switch (t.Name.ToString())
+                    switch (t.Name)
                     {
                         case "Title":
                             newFeedTitle = t.FirstChild.Value;
@@ -107,16 +106,15 @@ namespace TvUndergroundDownloaderLib
                         default:
                             break;
                     }
-                }
 
-                if (string.IsNullOrEmpty(newFeedTitle) == true)
+                if (string.IsNullOrEmpty(newFeedTitle))
                     continue;
 
-                if (string.IsNullOrEmpty(newFeedUrl) == true)
+                if (string.IsNullOrEmpty(newFeedUrl))
                     continue;
 
-                bool exist = config.RssFeedList.Exists(delegate (RssSubscription rs) { return rs.Url == newFeedUrl; });
-                if (exist == true)
+                bool exist = config.RssFeedList.Exists(delegate(RssSubscription rs) { return rs.Url == newFeedUrl; });
+                if (exist)
                     continue;
 
                 newFeed = new RssSubscription(newFeedTitle, newFeedUrl);
@@ -129,7 +127,7 @@ namespace TvUndergroundDownloaderLib
                 config.RssFeedList.Add(newFeed);
             }
 
-            XmlNodeList downloadFiles = xDoc.GetElementsByTagName("File");
+            var downloadFiles = xDoc.GetElementsByTagName("File");
             foreach (XmlNode fileXmlNode in downloadFiles)
             {
                 string newLink = string.Empty;
@@ -138,8 +136,7 @@ namespace TvUndergroundDownloaderLib
                 string newDate = string.Empty;
 
                 foreach (XmlNode temp in fileXmlNode)
-                {
-                    switch (temp.Name.ToString())
+                    switch (temp.Name)
                     {
                         case "Link":
                             newLink = temp.FirstChild.Value;
@@ -160,30 +157,27 @@ namespace TvUndergroundDownloaderLib
                         default:
                             break;
                     }
-                }
 
-                if (string.IsNullOrEmpty(newLink) == true)
+                if (string.IsNullOrEmpty(newLink))
                     continue;
 
-                if (string.IsNullOrEmpty(newFeedLink) == true)
+                if (string.IsNullOrEmpty(newFeedLink))
                     continue;
 
-                if (string.IsNullOrEmpty(newFeedSource) == true)
+                if (string.IsNullOrEmpty(newFeedSource))
                     continue;
 
-                if (string.IsNullOrEmpty(newDate) == true)
+                if (string.IsNullOrEmpty(newDate))
                     continue;
 
                 var file = new Ed2kfile(newLink);
-                RssSubscription subscription = config.RssFeedList.Find((temp) => temp.Url == newFeedLink);
+                var subscription = config.RssFeedList.Find(temp => temp.Url == newFeedLink);
                 var dw = new DownloadFile(subscription, file);
                 if (string.IsNullOrEmpty(newDate) == false)
                 {
                     DateTime dt;
-                    if (DateTime.TryParse(newDate, out dt) == true)
-                    {
+                    if (DateTime.TryParse(newDate, out dt))
                         dw.DownloadDate = dt;
-                    }
                 }
 
                 //subscription.

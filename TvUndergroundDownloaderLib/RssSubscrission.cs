@@ -1,11 +1,11 @@
-﻿using NLog;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
+using NLog;
 
 namespace TvUndergroundDownloaderLib
 {
@@ -19,24 +19,30 @@ namespace TvUndergroundDownloaderLib
     }
 
     /// <summary>
-    /// Rss submission container
+    ///     Rss submission container
     /// </summary>
     public class RssSubscription
     {
-        static public Regex regexFeedSource = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/rss.php\?se_id=(?<seid>\d{1,10})");
+        public static Regex regexFeedSource =
+            new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/rss.php\?se_id=(?<seid>\d{1,10})");
+
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private static Regex regexEDK2Link = new Regex(@"ed2k://\|file\|(.*)\|\d+\|\w+\|/");
+
+        private static Regex regexFeedLink =
+                new Regex(
+                    @"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=ed2k&season=(?<season>\d{1,10})&sid\[(?<sid>\d{1,10})\]=\d{1,10}")
+            ;
+
+        private readonly List<DownloadFile> _downloadFiles = new List<DownloadFile>();
         public DateTime LastSerieStatusUpgradeDate = DateTime.MinValue;
         public string LastUpgradeDate = string.Empty;
 
         public uint MaxSimultaneousDownload = 3;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
-        static private Regex regexEDK2Link = new Regex(@"ed2k://\|file\|(.*)\|\d+\|\w+\|/");
-        static private Regex regexFeedLink = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=ed2k&season=(?<season>\d{1,10})&sid\[(?<sid>\d{1,10})\]=\d{1,10}");
-
-        private List<DownloadFile> _downloadFiles = new List<DownloadFile>();
 
 
         /// <summary>
-        /// Build a Rss Subscription
+        ///     Build a Rss Subscription
         /// </summary>
         /// <param name="Title"></param>
         /// <param name="Url"></param>
@@ -46,54 +52,42 @@ namespace TvUndergroundDownloaderLib
             this.Url = Url;
 
             // Static Regex "http(s)?://(www\.)?tvunderground.org.ru/rss.php\?se_id=(\d{1,10})"
-            MatchCollection matchCollection = regexFeedSource.Matches(this.Url);
+            var matchCollection = regexFeedSource.Matches(this.Url);
             if (matchCollection.Count == 0)
-            {
                 throw new ApplicationException("Wrong URL");
-            }
 
             int integerBuffer;
             if (int.TryParse(matchCollection[0].Groups["seid"].ToString(), out integerBuffer) == false)
-            {
                 throw new ApplicationException("Wrong URL");
-            }
 
-            this.seasonID = integerBuffer;
+            seasonID = integerBuffer;
         }
 
         public RssSubscription(string newUrl, CookieContainer cookieContainer)
         {
-            this.Url = newUrl;
-            MatchCollection matchCollection = regexFeedSource.Matches(newUrl);
+            Url = newUrl;
+            var matchCollection = regexFeedSource.Matches(newUrl);
             if (matchCollection.Count == 0)
-            {
                 throw new ApplicationException("Wrong URL");
-            }
 
             int integerBuffer;
             if (int.TryParse(matchCollection[0].Groups["seid"].ToString(), out integerBuffer) == false)
-            {
                 throw new ApplicationException("Wrong URL");
-            }
-            this.seasonID = integerBuffer;
+            seasonID = integerBuffer;
 
             string webPageUrl = Url;
             string webPage = WebFetch.Fetch(Url, false, cookieContainer);
 
-            XmlDocument doc = new XmlDocument();
+            var doc = new XmlDocument();
             doc.LoadXml(webPage);
 
-            XmlNode node = doc.SelectSingleNode(@"/rss/channel/title");
+            var node = doc.SelectSingleNode(@"/rss/channel/title");
 
             if (node == null)
-            {
                 throw new ApplicationException("Wrong RSS file format");
-            }
-            if (string.IsNullOrEmpty(node.InnerText) == true)
-            {
+            if (string.IsNullOrEmpty(node.InnerText))
                 throw new ApplicationException("Wrong RSS file format");
-            }
-            this.Title = node.InnerText;
+            Title = node.InnerText;
         }
 
         public string Category { get; set; } = string.Empty;
@@ -103,66 +97,51 @@ namespace TvUndergroundDownloaderLib
         {
             get
             {
-                if (this.Title.IndexOf("english") > -1) return "gb";
-                if (this.Title.IndexOf("french") > -1) return "fr";
-                if (this.Title.IndexOf("german") > -1) return "de";
-                if (this.Title.IndexOf("italian") > -1) return "it";
-                if (this.Title.IndexOf("japanese") > -1) return "jp";
-                if (this.Title.IndexOf("spanish") > -1) return "es";
+                if (Title.IndexOf("english") > -1) return "gb";
+                if (Title.IndexOf("french") > -1) return "fr";
+                if (Title.IndexOf("german") > -1) return "de";
+                if (Title.IndexOf("italian") > -1) return "it";
+                if (Title.IndexOf("japanese") > -1) return "jp";
+                if (Title.IndexOf("spanish") > -1) return "es";
                 return string.Empty;
             }
         }
 
         public bool Enabled { get; set; } = true;
-        public bool PauseDownload { get; set; } = false;
-        public int seasonID { get; private set; }
-        public string Title { private set; get; }
-        public string TitleCompact { get { return this.Title.Replace("[ed2k] tvunderground.org.ru:", "").Trim(); } }
-        public string Url { private set; get; }
+        public bool PauseDownload { get; set; }
+        public int seasonID { get; }
+        public string Title { get; }
+        public string TitleCompact => Title.Replace("[ed2k] tvunderground.org.ru:", "").Trim();
+        public string Url { get; }
 
         public int TotalFilesDownloaded
         {
-            get
-            {
-                return _downloadFiles.FindAll(o => o.DownloadDate.HasValue == true).Count;
-            }
+            get { return _downloadFiles.FindAll(o => o.DownloadDate.HasValue).Count; }
         }
 
-        public TimeSpan LastChannelUpdate
-        {
-            get
-            {
-                return DateTime.Now - this.GetLastDownloadDate();
-            }
-        }
+        public TimeSpan LastChannelUpdate => DateTime.Now - GetLastDownloadDate();
 
         /// <summary>
-        /// Load data from xml
+        ///     Load data from xml
         /// </summary>
         /// <param name="doc">XML node with RSS subscription data</param>
         /// <returns></returns>
-        static public RssSubscription LoadFormXml(XmlNode doc)
+        public static RssSubscription LoadFormXml(XmlNode doc)
         {
             if (doc == null)
-            {
                 throw new NullReferenceException("Doc is null");
-            }
 
-            XmlNode node = doc.SelectSingleNode("Title");
+            var node = doc.SelectSingleNode("Title");
             if (node == null)
-            {
                 throw new Exception("Error while loading xml: Missing RssSubscrission\\Title");
-            }
             string title = node.InnerText;
 
             node = doc.SelectSingleNode("Url");
             if (node == null)
-            {
                 throw new Exception("Error while loading xml: Missing RssSubscrission\\Url");
-            }
             string url = node.InnerText;
 
-            RssSubscription newRssSubscrission = new RssSubscription(title, url);
+            var newRssSubscrission = new RssSubscription(title, url);
 
             node = doc.SelectSingleNode("Pause");
             newRssSubscrission.PauseDownload = Convert.ToBoolean(node.InnerText);
@@ -204,41 +183,36 @@ namespace TvUndergroundDownloaderLib
             node = doc.SelectSingleNode("maxSimultaneousDownload");
             newRssSubscrission.MaxSimultaneousDownload = Convert.ToUInt16(node.InnerText);
 
-            XmlNodeList filesNode = doc.SelectNodes("Files/File");
+            var filesNode = doc.SelectNodes("Files/File");
             foreach (XmlNode fileNode in filesNode)
             {
-                XmlNode ed2kLinkNode = fileNode.SelectSingleNode("LinkED2K");
+                var ed2kLinkNode = fileNode.SelectSingleNode("LinkED2K");
                 if (ed2kLinkNode == null)
-                {
                     continue;
-                }
 
-                Ed2kfile newFile = new Ed2kfile(ed2kLinkNode.InnerText);
+                var newFile = new Ed2kfile(ed2kLinkNode.InnerText);
 
 
-                XmlNode guidLinkNode = fileNode.SelectSingleNode("Guid");
+                var guidLinkNode = fileNode.SelectSingleNode("Guid");
                 if (guidLinkNode == null)
-                {
                     continue;
-                }
 
-                DownloadFile dwFile = new DownloadFile(newRssSubscrission, newFile, guidLinkNode.InnerText);
+                var dwFile = new DownloadFile(newRssSubscrission, newFile, guidLinkNode.InnerText);
                 newRssSubscrission._downloadFiles.Add(dwFile);
 
-                XmlNode downloadedNode = fileNode.SelectSingleNode("Downloaded");
+                var downloadedNode = fileNode.SelectSingleNode("Downloaded");
                 if (downloadedNode != null)
                 {
-                    DateTime dtDownloaded = DateTime.Parse(downloadedNode.InnerText);
+                    var dtDownloaded = DateTime.Parse(downloadedNode.InnerText);
                     dwFile.DownloadDate = dtDownloaded;
                 }
 
-                XmlNode publicationDateNode = fileNode.SelectSingleNode("PublicationDate");
+                var publicationDateNode = fileNode.SelectSingleNode("PublicationDate");
                 if (publicationDateNode != null)
                 {
-                    DateTime publicationDateNodeDt = DateTime.Parse(publicationDateNode.InnerText);
+                    var publicationDateNodeDt = DateTime.Parse(publicationDateNode.InnerText);
                     dwFile.PublicationDate = publicationDateNodeDt;
                 }
-
             }
 
             return newRssSubscrission;
@@ -247,10 +221,8 @@ namespace TvUndergroundDownloaderLib
         [Obsolete]
         public void AddFile(DownloadFile file)
         {
-            if (!this._downloadFiles.Contains(file))
-            {
+            if (!_downloadFiles.Contains(file))
                 _downloadFiles.Add(file);
-            }
         }
 
         public List<Ed2kfile> GetAllFile()
@@ -260,20 +232,20 @@ namespace TvUndergroundDownloaderLib
 
         public List<Ed2kfile> GetDownloadedFiles()
         {
-            List<Ed2kfile> outArray = new List<Ed2kfile>();
-            outArray.AddRange(_downloadFiles.FindAll(o => o.DownloadDate.HasValue == true));
+            var outArray = new List<Ed2kfile>();
+            outArray.AddRange(_downloadFiles.FindAll(o => o.DownloadDate.HasValue));
             outArray.Sort((A, B) => A.FileName.CompareTo(B.FileName));
             return outArray;
         }
 
         /// <summary>
-        /// Return all files available in the subscrission download or not
+        ///     Return all files available in the subscrission download or not
         /// </summary>
         /// <returns></returns>
         /// TODO: Convert to property
         public List<DownloadFile> GetDownloadFile()
         {
-            List<DownloadFile> outArray = new List<DownloadFile>();
+            var outArray = new List<DownloadFile>();
             outArray.AddRange(_downloadFiles);
             return outArray;
         }
@@ -285,42 +257,36 @@ namespace TvUndergroundDownloaderLib
 
         public DateTime GetLastDownloadDate()
         {
-            DateTime dt = DateTime.MinValue;
-            foreach (var file in this._downloadFiles)
-            {
+            var dt = DateTime.MinValue;
+            foreach (var file in _downloadFiles)
                 if (file.DownloadDate.HasValue)
                 {
-                    DateTime value = file.DownloadDate.Value;
+                    var value = file.DownloadDate.Value;
                     if (dt < value)
-                    {
                         dt = value;
-                    }
                 }
-            }
             return dt;
         }
 
         public List<Ed2kfile> GetNewDownload(int maxSimultaneousDownload)
         {
-            List<Ed2kfile> outArray = new List<Ed2kfile>();
+            var outArray = new List<Ed2kfile>();
 
             outArray.AddRange(_downloadFiles.FindAll(o => o.DownloadDate.HasValue == false));
             outArray.Sort((A, B) => A.FileName.CompareTo(B.FileName));
             if (outArray.Count > MaxSimultaneousDownload)
-            {
-                outArray.RemoveRange((int)maxSimultaneousDownload, outArray.Count - (int)maxSimultaneousDownload);
-            }
+                outArray.RemoveRange(maxSimultaneousDownload, outArray.Count - maxSimultaneousDownload);
 
             return outArray;
         }
 
         /// <summary>
-        /// Return all files that are waiting for download
+        ///     Return all files that are waiting for download
         /// </summary>
         /// <returns></returns>
         public List<DownloadFile> GetPendingFiles()
         {
-            List<DownloadFile> outArray = new List<DownloadFile>();
+            var outArray = new List<DownloadFile>();
 
             outArray.AddRange(_downloadFiles.FindAll(o => o.DownloadDate.HasValue == false));
 
@@ -331,46 +297,38 @@ namespace TvUndergroundDownloaderLib
         {
             var localFile = _downloadFiles.Find(o => o.Equals(file as DownloadFile));
             if (localFile == null)
-            {
                 throw new Exception("File missing in feed");
-            }
             localFile.DownloadDate = DateTime.Now;
-
-
         }
 
         public void SetFileNotDownloaded(Ed2kfile file)
         {
             var localFile = _downloadFiles.Find(o => o.Equals(file as DownloadFile));
             if (localFile == null)
-            {
                 throw new Exception("File missing in feed");
-            }
             localFile.DownloadDate = null;
         }
 
 
-
         /// <summary>
-        /// Update feed from Web server
+        ///     Update feed from Web server
         /// </summary>
         public void Update(CookieContainer cookieContainer)
         {
             string webPage = WebFetch.Fetch(Url, false, cookieContainer);
 
-            XmlDocument doc = new XmlDocument();
+            var doc = new XmlDocument();
             doc.LoadXml(webPage);
 
-            XmlNodeList nodeList = doc.SelectNodes(@"/rss/channel/item");
+            var nodeList = doc.SelectNodes(@"/rss/channel/item");
             foreach (XmlNode itemNode in nodeList)
             {
-                XmlNode guidNode = itemNode.SelectSingleNode("guid");
+                var guidNode = itemNode.SelectSingleNode("guid");
                 string guid = HttpUtility.UrlDecode(guidNode.InnerText);
 
-                DownloadFile newFile = _downloadFiles.Find(o => o.Guid == guid);
+                var newFile = _downloadFiles.Find(o => o.Guid == guid);
 
                 if (newFile == null)
-                {
                     try
                     {
                         //
@@ -386,43 +344,35 @@ namespace TvUndergroundDownloaderLib
                         logger.Error(ex, "Error while try to parse or fatch GUID");
                         continue;
                     }
-                }
 
                 //
                 //  try to update pudDate
                 //
                 if (!newFile.PublicationDate.HasValue)
                 {
-                    XmlNode pubDateNode = itemNode.SelectSingleNode("pubDate");
+                    var pubDateNode = itemNode.SelectSingleNode("pubDate");
 
                     string pubDateStr = HttpUtility.UrlDecode(pubDateNode.InnerText);
                     DateTime pubDateDateTime;
-                    if (DateTime.TryParse(pubDateStr, out pubDateDateTime) == true)
-                    {
+                    if (DateTime.TryParse(pubDateStr, out pubDateDateTime))
                         newFile.PublicationDate = pubDateDateTime;
-                    }
-
                 }
             }
 
             if (CurrentTVUStatus == TvuStatus.Complete)
-            {
                 return;
-            }
 
-            TimeSpan ts = DateTime.Now - LastSerieStatusUpgradeDate;
+            var ts = DateTime.Now - LastSerieStatusUpgradeDate;
 
             if (ts.TotalDays < 15)
-            {
                 return;
-            }
             UpdateTVUStatus(cookieContainer);
         }
 
         public void UpdateTVUStatus(CookieContainer cookieContainer)
         {
             logger.Info("Checking serie status");
-            string url = string.Format("http://tvunderground.org.ru/index.php?show=episodes&sid={0}", this.seasonID);
+            string url = string.Format(@"http://tvunderground.org.ru/index.php?show=episodes&sid={0}", seasonID);
 
             string WebPage = WebFetch.Fetch(url, true, cookieContainer);
             LastSerieStatusUpgradeDate = DateTime.Now;
@@ -457,7 +407,7 @@ namespace TvUndergroundDownloaderLib
                 }
             }
 
-            this.CurrentTVUStatus = TvuStatus.Unknown;
+            CurrentTVUStatus = TvuStatus.Unknown;
             logger.Info("Serie status: Unknown");
         }
 
@@ -470,13 +420,13 @@ namespace TvUndergroundDownloaderLib
             //  <Category>Anime</Category>
             //</Channel>
 
-            writer.WriteStartElement("Channel");//Title
+            writer.WriteStartElement("Channel"); //Title
             writer.WriteAttributeString("type", "TVU");
-            writer.WriteElementString("Title", Title);//Title
-            writer.WriteElementString("Url", Url);//Url
-            writer.WriteElementString("Pause", PauseDownload.ToString());//Category
-            writer.WriteElementString("Category", Category);//Category
-            writer.WriteElementString("LastUpgradeDate", LastUpgradeDate);//Last Upgrade Date
+            writer.WriteElementString("Title", Title); //Title
+            writer.WriteElementString("Url", Url); //Url
+            writer.WriteElementString("Pause", PauseDownload.ToString()); //Category
+            writer.WriteElementString("Category", Category); //Category
+            writer.WriteElementString("LastUpgradeDate", LastUpgradeDate); //Last Upgrade Date
             writer.WriteElementString("Enabled", Enabled.ToString());
             writer.WriteElementString("maxSimultaneousDownload", MaxSimultaneousDownload.ToString());
 
@@ -511,19 +461,17 @@ namespace TvUndergroundDownloaderLib
                 writer.WriteElementString("LinkED2K", file.Ed2kLink);
                 writer.WriteElementString("Guid", file.Guid);
                 if (file.DownloadDate.HasValue)
-                {
-                    writer.WriteElementString("Downloaded", file.DownloadDate.Value.ToString("s", CultureInfo.InvariantCulture));
-                }
+                    writer.WriteElementString("Downloaded",
+                        file.DownloadDate.Value.ToString("s", CultureInfo.InvariantCulture));
 
                 if (file.PublicationDate.HasValue)
-                {
-                    writer.WriteElementString("PublicationDate", file.PublicationDate.Value.ToString("s", CultureInfo.InvariantCulture));
-                }
-                writer.WriteEndElement();// end file
+                    writer.WriteElementString("PublicationDate",
+                        file.PublicationDate.Value.ToString("s", CultureInfo.InvariantCulture));
+                writer.WriteEndElement(); // end file
             }
-            writer.WriteEndElement();// end file
+            writer.WriteEndElement(); // end file
 
-            writer.WriteEndElement();// end channel
+            writer.WriteEndElement(); // end channel
         }
 
         private Ed2kfile ProcessGUID(string url, CookieContainer cookieContainer)
