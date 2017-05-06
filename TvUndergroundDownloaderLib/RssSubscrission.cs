@@ -217,6 +217,7 @@ namespace TvUndergroundDownloaderLib
 
                 Ed2kfile newFile = new Ed2kfile(ed2kLinkNode.InnerText);
 
+
                 XmlNode guidLinkNode = fileNode.SelectSingleNode("Guid");
                 newRssSubscrission.linkCache.Add(guidLinkNode.InnerText, newFile);
 
@@ -233,6 +234,9 @@ namespace TvUndergroundDownloaderLib
                     DateTime publicationDateNodeDT = DateTime.Parse(publicationDateNode.InnerText);
                     newRssSubscrission.ListPublicationDate.Add(newFile, publicationDateNodeDT);
                 }
+
+                DownloadFile dwFile = new DownloadFile(newRssSubscrission, newFile, guidLinkNode.InnerText);
+                newRssSubscrission._downloadFiles.Add(dwFile);
             }
 
             return newRssSubscrission;
@@ -241,6 +245,11 @@ namespace TvUndergroundDownloaderLib
         [Obsolete]
         public void AddFile(DownloadFile file)
         {
+            if (!this._downloadFiles.Contains(file))
+            {
+                _downloadFiles.Add(file);
+            }
+
             this.linkCache.Add(file.Guid, file);
             if (file.DownloadDate.HasValue)
             {
@@ -264,28 +273,15 @@ namespace TvUndergroundDownloaderLib
             return outArray;
         }
 
+        /// <summary>
+        /// Return all files available in the subscrission download or not
+        /// </summary>
+        /// <returns></returns>
+        /// TODO: Convert to property
         public List<DownloadFile> GetDownloadFile()
         {
             List<DownloadFile> outArray = new List<DownloadFile>();
-
-            foreach (string guid in linkCache.Keys)
-            {
-                Ed2kfile file = linkCache[guid];
-
-                DownloadFile dw = new DownloadFile(this, file, guid);
-                if (downloaded.ContainsKey(file) == true)
-                {
-                    dw.DownloadDate = downloaded[file];
-                }
-
-                if (ListPublicationDate.ContainsKey(file) == true)
-                {
-                    dw.PublicationDate = ListPublicationDate[file];
-                }
-
-                outArray.Add(dw);
-            }
-
+            outArray.AddRange(_downloadFiles);
             return outArray;
         }
 
