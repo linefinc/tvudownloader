@@ -1,33 +1,33 @@
-﻿using System.IO;
-using System.Net;
+﻿using System.Net;
 using System.Text;
+using System.Threading;
 
 /// <summary>
-/// Fetches a Web Page
+///     Fetches a Web Page
 /// </summary>
 internal class WebFetch
 {
     public static string Fetch(string page, bool clean, CookieContainer cookieContainer, int myDelay = 0)
     {
-        System.Threading.Thread.Sleep(myDelay);
+        Thread.Sleep(myDelay);
 
         try
         {
             // used to build entire input
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             // used on each read operation
-            byte[] buf = new byte[8192];
+            var buf = new byte[8192];
 
             // prepare the web page we will be asking for
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(page);
+            var request = (HttpWebRequest) WebRequest.Create(page);
             request.CookieContainer = cookieContainer;
 
             // execute the request
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            var response = (HttpWebResponse) request.GetResponse();
 
             // we will read data via the response stream
-            Stream resStream = response.GetResponseStream();
+            var resStream = response.GetResponseStream();
 
             string tempString = null;
             int count = 0;
@@ -46,10 +46,9 @@ internal class WebFetch
                     // continue building the string
                     sb.Append(tempString);
                 }
-            }
-            while (count > 0); // any more data to read?
+            } while (count > 0); // any more data to read?
 
-            if (clean == true)
+            if (clean)
             {
                 sb.Replace("&quot;", "\""); //&quot;
                 sb.Replace("&apos;", "'"); //&quot;

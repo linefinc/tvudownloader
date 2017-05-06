@@ -1,25 +1,27 @@
-﻿using NLog;
-using System;
+﻿using System;
+using System.Net.Mail;
+using NLog;
 
 namespace TvUndergroundDownloaderLib
 {
     public class SmtpClient
     {
-        public static bool SendEmail(string SmtpServer, string EmailReceiver, string EmailSender, string Subject, string Message)
+        public static bool SendEmail(string SmtpServer, string EmailReceiver, string EmailSender, string Subject,
+            string Message)
         {
-            System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
+            var message = new MailMessage();
             message.To.Add(EmailReceiver);
             message.Subject = Subject;
-            message.From = new System.Net.Mail.MailAddress(EmailSender);
+            message.From = new MailAddress(EmailSender);
             message.Body = Message;
-            System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(SmtpServer);
+            var smtp = new System.Net.Mail.SmtpClient(SmtpServer);
             try
             {
                 smtp.Send(message);
             }
             catch (Exception ex)
             {
-                Logger logger = LogManager.GetCurrentClassLogger();
+                var logger = LogManager.GetCurrentClassLogger();
                 logger.Error(ex, "Unable to send email");
                 return false;
             }

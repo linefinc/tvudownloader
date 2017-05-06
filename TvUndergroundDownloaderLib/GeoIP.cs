@@ -20,7 +20,7 @@ namespace TvUndergroundDownloaderLib
 
         public static GeoIP GetCountryFromWeb(string ipAddress = "")
         {
-            GeoIP result = new GeoIP();
+            var result = new GeoIP();
             string ipResponse;
             try
             {
@@ -33,17 +33,15 @@ namespace TvUndergroundDownloaderLib
 
             result.ClientIP = ipAddress;
 
-            XmlDocument ipInfoXML = new XmlDocument();
+            var ipInfoXML = new XmlDocument();
             ipInfoXML.LoadXml(ipResponse);
-            XmlNodeList responseXML = ipInfoXML.GetElementsByTagName("status");
-            XmlNode statusXmlNode = responseXML[0];
+            var responseXML = ipInfoXML.GetElementsByTagName("status");
+            var statusXmlNode = responseXML[0];
 
             result.Status = statusXmlNode.InnerText;
 
             if (result.Status == "fail")
-            {
                 return result;
-            }
 
             result.Country = ipInfoXML.GetElementsByTagName("country")[0].InnerText;
             result.CountryCode = ipInfoXML.GetElementsByTagName("countryCode")[0].InnerText;
@@ -67,9 +65,9 @@ namespace TvUndergroundDownloaderLib
 
             string buffer;
 
-            using (Stream objStream = wrGETURL.GetResponse().GetResponseStream())
+            using (var objStream = wrGETURL.GetResponse().GetResponseStream())
             {
-                using (StreamReader objReader = new StreamReader(objStream))
+                using (var objReader = new StreamReader(objStream))
                 {
                     buffer = objReader.ReadToEnd();
                     objReader.Close();

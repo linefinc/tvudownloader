@@ -2,7 +2,12 @@
 
 namespace TvUndergroundDownloaderLib
 {
-    public enum LoginStatus { Logged, PasswordError, ServiceNotAvailable };
+    public enum LoginStatus
+    {
+        Logged,
+        PasswordError,
+        ServiceNotAvailable
+    }
 
     public interface IMuleWebManager
     {

@@ -9,10 +9,17 @@ namespace TvUndergroundDownloaderLib
 {
     public class Config
     {
+        [Flags]
+        public enum eServiceType
+        {
+            eMule = 0,
+            aMule
+        }
+
         public bool AutoClearLog;
 
         public bool CloseEmuleIfAllIsDone;
-        
+
         public string DefaultCategory;
 
         public bool EmailNotification;
@@ -61,24 +68,22 @@ namespace TvUndergroundDownloaderLib
 
         public string TVUCookieT;
 
-        public string tvudwid;//Unique id
+        public string tvudwid; //Unique id
 
-        public bool UseHttpInsteadOfHttps;// to implement
+        public bool UseHttpInsteadOfHttps; // to implement
 
         public bool Verbose;
 
         public Config()
         {
-            
-
             //
             // get local user application data path, remove version directory and add config.xml
             //
             RssFeedList = new RssSubscriptionList();
-            if (!File.Exists(Config.FileNameConfig))
+            if (!File.Exists(FileNameConfig))
             {
                 // empty configure file
-                XmlTextWriter textWritter = new XmlTextWriter(Config.FileNameConfig, null);
+                var textWritter = new XmlTextWriter(FileNameConfig, null);
                 textWritter.WriteStartDocument();
                 textWritter.WriteStartElement("Config");
                 textWritter.WriteEndElement();
@@ -87,100 +92,50 @@ namespace TvUndergroundDownloaderLib
             Load();
         }
 
-        [Flags]
-        public enum eServiceType
-        {
-            eMule = 0,
-            aMule
-        };
+        public static string ConfigFolder => "./";
 
-        public static string ConfigFolder
-        {
-            get
-            {
-                //// base path = C:\Users\User\AppData\Local\TvUndergroundDownloader\TvUndergroundDownloader\version
-                //// return  C:\Users\User\AppData\Local\TvUndergroundDownloader
-                //string basePath = Application.LocalUserAppDataPath;
-                //basePath = Directory.GetParent(basePath).FullName;
-                //basePath = Directory.GetParent(basePath).FullName;
-                //return basePath;
-                return "./";
-            }
-        }
+        public static string FileNameConfig => Path.Combine(ConfigFolder, "config.xml");
 
-        public static string FileNameConfig
-        {
-            get
-            {
-                return Path.Combine(ConfigFolder, "config.xml");
-            }
-        }
+        public static string FileNameDB => Path.Combine(ConfigFolder, "storage.sqlitedb");
 
-        public static string FileNameDB
-        {
-            get
-            {
-                return Path.Combine(ConfigFolder, "storage.sqlitedb");
-            }
-        }
+        public static string FileNameHistory => Path.Combine(ConfigFolder, "History.xml");
 
-        public static string FileNameHistory
-        {
-            get
-            {
-                return Path.Combine(ConfigFolder, "History.xml");
-            }
-        }
-
-        public static string FileNameLog
-        {
-            get
-            {
-                return Path.Combine(ConfigFolder, "log.txt");
-            }
-        }
+        public static string FileNameLog => Path.Combine(ConfigFolder, "log.txt");
 
         /// <summary>
-        /// Get current assembly version
+        ///     Get current assembly version
         /// </summary>
         public static string Version
         {
             get
             {
-                Assembly temp = typeof(Config).Assembly;
+                var temp = typeof(Config).Assembly;
                 return temp.GetName().Version.ToString();
             }
         }
 
         /// <summary>
-        /// Get full assembly version
+        ///     Get full assembly version
         /// </summary>
-        public static string VersionFull
-        {
-            get
-            {
-                return ((AssemblyInformationalVersionAttribute)Assembly.GetAssembly(typeof(Config))
-                                .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false)[0]).InformationalVersion;
-            }
-        }
+        public static string VersionFull => ((AssemblyInformationalVersionAttribute) Assembly
+            .GetAssembly(typeof(Config))
+            .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false)[0]).InformationalVersion;
 
         public void Load()
         {
             RssFeedList.Clear();
 
-            XmlDocument xDoc = new XmlDocument();
-            xDoc.Load(Config.FileNameConfig);
+            var xDoc = new XmlDocument();
+            xDoc.Load(FileNameConfig);
 
             // Check configuration version to avoid bad behaviors
             string configVersionStr = ReadString(xDoc, "version", string.Empty);
             if (!string.IsNullOrEmpty(configVersionStr))
             {
-                System.Version configVersion = new System.Version(configVersionStr);
-                System.Version appVersion = new System.Version(Version);
+                var configVersion = new Version(configVersionStr);
+                var appVersion = new Version(Version);
                 if (configVersion > appVersion)
-                {
                     throw new Exception("Critical Error: the configuration file was created from a future version");
-                }
             }
 
             switch (ReadString(xDoc, "ServiceType", "eMule"))
@@ -247,16 +202,16 @@ namespace TvUndergroundDownloaderLib
 
             TotalDownloads = ReadInt(xDoc, "TotalDownloads", 0);
 
-            UseHttpInsteadOfHttps = (bool)Convert.ToBoolean(ReadString(xDoc, "useHttpInsteadOfHttps", "false"));
+            UseHttpInsteadOfHttps = Convert.ToBoolean(ReadString(xDoc, "useHttpInsteadOfHttps", "false"));
 
             //
             //  Load Channel
             //
-            XmlNodeList Channels = xDoc.GetElementsByTagName("Channel");
+            var Channels = xDoc.GetElementsByTagName("Channel");
 
             for (int i = 0; i < Channels.Count; i++)
             {
-                RssSubscription newfeed = RssSubscription.LoadFormXml(Channels[i]);
+                var newfeed = RssSubscription.LoadFormXml(Channels[i]);
                 RssFeedList.Add(newfeed);
             }
 
@@ -265,7 +220,7 @@ namespace TvUndergroundDownloaderLib
 
         public void Save()
         {
-            XmlTextWriter writer = new XmlTextWriter(Config.FileNameConfig, new UTF8Encoding(false));
+            var writer = new XmlTextWriter(FileNameConfig, new UTF8Encoding(false));
             writer.Formatting = Formatting.Indented;
 
             writer.WriteStartDocument();
@@ -277,13 +232,9 @@ namespace TvUndergroundDownloaderLib
 
             writer.WriteStartElement("ServiceType");
             if (ServiceType == eServiceType.eMule)
-            {
                 writer.WriteString("eMule");
-            }
             else
-            {
                 writer.WriteString("aMule");
-            }
             writer.WriteEndElement();
 
             writer.WriteElementString("ServiceUrl", ServiceUrl);
@@ -337,11 +288,11 @@ namespace TvUndergroundDownloaderLib
             writer.WriteEndElement();
 
             writer.WriteStartElement("MailReceiver");
-            writer.WriteString(MailReceiver.ToString());
+            writer.WriteString(MailReceiver);
             writer.WriteEndElement();
 
             writer.WriteStartElement("MailSender");
-            writer.WriteString(MailSender.ToString());
+            writer.WriteString(MailSender);
             writer.WriteEndElement();
 
             writer.WriteStartElement("SaveLog");
@@ -370,12 +321,11 @@ namespace TvUndergroundDownloaderLib
 
             writer.WriteStartElement("RSSChannel");
 
-            List<RssSubscription> myRssFeedList = new List<RssSubscription>();
-            myRssFeedList.AddRange(this.RssFeedList);
+            var myRssFeedList = new List<RssSubscription>();
+            myRssFeedList.AddRange(RssFeedList);
             myRssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title));
 
-            foreach (RssSubscription feed in myRssFeedList)
-            {
+            foreach (var feed in myRssFeedList)
                 //<Channel>
                 //<Title>[ed2k] tvunderground.org.ru: Lie To Me - Season 2 (HDTV) italian </Title>
                 //<Url>http://tvunderground.org.ru/rss.php?se_id=32672</Url>
@@ -383,8 +333,7 @@ namespace TvUndergroundDownloaderLib
                 //<Category>Anime</Category>
                 //</Channel>
                 feed.Write(writer);
-            }
-            writer.WriteEndElement();// end RSSChannel
+            writer.WriteEndElement(); // end RSSChannel
             writer.Close();
         }
 
@@ -392,37 +341,26 @@ namespace TvUndergroundDownloaderLib
         {
             string temp = "";
 
-            Random rand = new Random();
+            var rand = new Random();
             for (int i = 0; i < 24; i++)
-            {
                 temp += string.Format("{0:X}", rand.Next(0, 15));
-            }
             return temp;
         }
 
         private static string ReadString(XmlDocument xDoc, string NodeName, string defaultValue)
         {
-            XmlNodeList t = xDoc.GetElementsByTagName(NodeName);
+            var t = xDoc.GetElementsByTagName(NodeName);
             if (t.Count == 0)
-            {
                 return defaultValue;
-            }
-            else
-            {
-                return t[0].InnerText;
-            }
+            return t[0].InnerText;
         }
+
         private int ReadInt(XmlDocument xDoc, string NodeName, int defaultValue)
         {
-            XmlNodeList t = xDoc.GetElementsByTagName(NodeName);
+            var t = xDoc.GetElementsByTagName(NodeName);
             if (t.Count == 0)
-            {
                 return defaultValue;
-            }
-            else
-            {
-                return (int)Convert.ToInt32(t[0].InnerText);
-            }
+            return Convert.ToInt32(t[0].InnerText);
         }
 
         private int ReadInt(XmlDocument xDoc, string NodeName, int defaultValue, int Min, int Max)
@@ -435,15 +373,10 @@ namespace TvUndergroundDownloaderLib
 
         private uint ReadUInt(XmlDocument xDoc, string NodeName, uint defaultValue)
         {
-            XmlNodeList t = xDoc.GetElementsByTagName(NodeName);
+            var t = xDoc.GetElementsByTagName(NodeName);
             if (t.Count == 0)
-            {
                 return defaultValue;
-            }
-            else
-            {
-                return Convert.ToUInt32(t[0].InnerText);
-            }
+            return Convert.ToUInt32(t[0].InnerText);
         }
 
         private uint ReadUInt(XmlDocument xDoc, string NodeName, uint defaultValue, uint Min, uint Max)
