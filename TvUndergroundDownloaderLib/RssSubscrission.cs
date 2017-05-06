@@ -32,6 +32,7 @@ namespace TvUndergroundDownloaderLib
         static private Regex regexEDK2Link = new Regex(@"ed2k://\|file\|(.*)\|\d+\|\w+\|/");
         static private Regex regexFeedLink = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=ed2k&season=(?<season>\d{1,10})&sid\[(?<sid>\d{1,10})\]=\d{1,10}");
         private Dictionary<Ed2kfile, DateTime> downloaded = new Dictionary<Ed2kfile, DateTime>();
+        [Obsolete]
         private Dictionary<string, Ed2kfile> linkCache = new Dictionary<string, Ed2kfile>();
         private Dictionary<Ed2kfile, DateTime> ListPublicationDate = new Dictionary<Ed2kfile, DateTime>();
         private List<DownloadFile> _downloadFiles = new List<DownloadFile>();
@@ -380,16 +381,17 @@ namespace TvUndergroundDownloaderLib
             downloaded.Remove(file);
         }
 
+        
+
         /// <summary>
         /// Update feed from Web server
         /// </summary>
         public void Update(CookieContainer cookieContainer)
         {
-            string webPageUrl = Url;
-            string WebPage = WebFetch.Fetch(Url, false, cookieContainer);
+            string webPage = WebFetch.Fetch(Url, false, cookieContainer);
 
             XmlDocument doc = new XmlDocument();
-            doc.LoadXml(WebPage);
+            doc.LoadXml(webPage);
 
             XmlNodeList nodeList = doc.SelectNodes(@"/rss/channel/item");
             foreach (XmlNode itemNode in nodeList)

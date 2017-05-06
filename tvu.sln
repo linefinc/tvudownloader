@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbendedWebServerLib", "Emb
 		{21CFFC29-3DCA-43A4-AA90-0A5332E2E1FF} = {21CFFC29-3DCA-43A4-AA90-0A5332E2E1FF}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TvUndergroundDownloaderLibTests", "TvUndergroundDownloaderLibTests\TvUndergroundDownloaderLibTests.csproj", "{9F0F37E5-AE9A-4C7F-8378-733B22A84E7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{5B06F03D-7CE9-44EF-A5EC-0E33DA321649}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B06F03D-7CE9-44EF-A5EC-0E33DA321649}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B06F03D-7CE9-44EF-A5EC-0E33DA321649}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F0F37E5-AE9A-4C7F-8378-733B22A84E7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F0F37E5-AE9A-4C7F-8378-733B22A84E7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F0F37E5-AE9A-4C7F-8378-733B22A84E7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F0F37E5-AE9A-4C7F-8378-733B22A84E7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
