@@ -32,8 +32,6 @@ namespace TvUndergroundDownloaderLib
         static private Regex regexEDK2Link = new Regex(@"ed2k://\|file\|(.*)\|\d+\|\w+\|/");
         static private Regex regexFeedLink = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=ed2k&season=(?<season>\d{1,10})&sid\[(?<sid>\d{1,10})\]=\d{1,10}");
 
-        [Obsolete]
-        private Dictionary<string, Ed2kfile> linkCache = new Dictionary<string, Ed2kfile>();
         private List<DownloadFile> _downloadFiles = new List<DownloadFile>();
 
 
@@ -219,8 +217,10 @@ namespace TvUndergroundDownloaderLib
 
 
                 XmlNode guidLinkNode = fileNode.SelectSingleNode("Guid");
-                newRssSubscrission.linkCache.Add(guidLinkNode.InnerText, newFile);
-
+                if (guidLinkNode == null)
+                {
+                    continue;
+                }
 
                 DownloadFile dwFile = new DownloadFile(newRssSubscrission, newFile, guidLinkNode.InnerText);
                 newRssSubscrission._downloadFiles.Add(dwFile);
@@ -251,16 +251,11 @@ namespace TvUndergroundDownloaderLib
             {
                 _downloadFiles.Add(file);
             }
-
-            this.linkCache.Add(file.Guid, file);
         }
 
         public List<Ed2kfile> GetAllFile()
         {
-            List<Ed2kfile> outArray = new List<Ed2kfile>();
-            outArray.AddRange(linkCache.Values);
-            outArray.Sort((A, B) => A.FileName.CompareTo(B.FileName));
-            return outArray;
+            return new List<Ed2kfile>(GetDownloadFile());
         }
 
         public List<Ed2kfile> GetDownloadedFiles()
@@ -334,11 +329,6 @@ namespace TvUndergroundDownloaderLib
 
         public void SetFileDownloaded(Ed2kfile file)
         {
-            if (linkCache.ContainsValue(file) == false)
-            {
-                throw new Exception("File missing in feed");
-            }
-
             var localFile = _downloadFiles.Find(o => o.Equals(file as DownloadFile));
             if (localFile == null)
             {
@@ -351,11 +341,6 @@ namespace TvUndergroundDownloaderLib
 
         public void SetFileNotDownloaded(Ed2kfile file)
         {
-            if (linkCache.ContainsValue(file) == false)
-            {
-                throw new Exception("File missing in feed");
-            }
-
             var localFile = _downloadFiles.Find(o => o.Equals(file as DownloadFile));
             if (localFile == null)
             {
@@ -394,7 +379,6 @@ namespace TvUndergroundDownloaderLib
                         var newEd2kFile = ProcessGUID(guid, cookieContainer);
                         newFile = new DownloadFile(this, newEd2kFile);
 
-                        linkCache.Add(guid, newFile);
                         _downloadFiles.Add(newFile);
                     }
                     catch (Exception ex)
