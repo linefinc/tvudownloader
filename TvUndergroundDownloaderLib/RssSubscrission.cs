@@ -31,10 +31,9 @@ namespace TvUndergroundDownloaderLib
         private static Logger logger = LogManager.GetCurrentClassLogger();
         static private Regex regexEDK2Link = new Regex(@"ed2k://\|file\|(.*)\|\d+\|\w+\|/");
         static private Regex regexFeedLink = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=ed2k&season=(?<season>\d{1,10})&sid\[(?<sid>\d{1,10})\]=\d{1,10}");
-        private Dictionary<Ed2kfile, DateTime> downloaded = new Dictionary<Ed2kfile, DateTime>();
+
         [Obsolete]
         private Dictionary<string, Ed2kfile> linkCache = new Dictionary<string, Ed2kfile>();
-        private Dictionary<Ed2kfile, DateTime> ListPublicationDate = new Dictionary<Ed2kfile, DateTime>();
         private List<DownloadFile> _downloadFiles = new List<DownloadFile>();
 
 
@@ -127,7 +126,7 @@ namespace TvUndergroundDownloaderLib
         {
             get
             {
-                return downloaded.Count;
+                return _downloadFiles.FindAll(o => o.DownloadDate.HasValue == true).Count;
             }
         }
 
@@ -222,22 +221,24 @@ namespace TvUndergroundDownloaderLib
                 XmlNode guidLinkNode = fileNode.SelectSingleNode("Guid");
                 newRssSubscrission.linkCache.Add(guidLinkNode.InnerText, newFile);
 
+
+                DownloadFile dwFile = new DownloadFile(newRssSubscrission, newFile, guidLinkNode.InnerText);
+                newRssSubscrission._downloadFiles.Add(dwFile);
+
                 XmlNode downloadedNode = fileNode.SelectSingleNode("Downloaded");
                 if (downloadedNode != null)
                 {
                     DateTime dtDownloaded = DateTime.Parse(downloadedNode.InnerText);
-                    newRssSubscrission.downloaded.Add(newFile, dtDownloaded);
+                    dwFile.DownloadDate = dtDownloaded;
                 }
 
                 XmlNode publicationDateNode = fileNode.SelectSingleNode("PublicationDate");
                 if (publicationDateNode != null)
                 {
-                    DateTime publicationDateNodeDT = DateTime.Parse(publicationDateNode.InnerText);
-                    newRssSubscrission.ListPublicationDate.Add(newFile, publicationDateNodeDT);
+                    DateTime publicationDateNodeDt = DateTime.Parse(publicationDateNode.InnerText);
+                    dwFile.PublicationDate = publicationDateNodeDt;
                 }
 
-                DownloadFile dwFile = new DownloadFile(newRssSubscrission, newFile, guidLinkNode.InnerText);
-                newRssSubscrission._downloadFiles.Add(dwFile);
             }
 
             return newRssSubscrission;
@@ -252,10 +253,6 @@ namespace TvUndergroundDownloaderLib
             }
 
             this.linkCache.Add(file.Guid, file);
-            if (file.DownloadDate.HasValue)
-            {
-                this.downloaded.Add(file, file.DownloadDate.Value);
-            }
         }
 
         public List<Ed2kfile> GetAllFile()
@@ -269,7 +266,7 @@ namespace TvUndergroundDownloaderLib
         public List<Ed2kfile> GetDownloadedFiles()
         {
             List<Ed2kfile> outArray = new List<Ed2kfile>();
-            outArray.AddRange(downloaded.Keys);
+            outArray.AddRange(_downloadFiles.FindAll(o => o.DownloadDate.HasValue == true));
             outArray.Sort((A, B) => A.FileName.CompareTo(B.FileName));
             return outArray;
         }
@@ -288,38 +285,35 @@ namespace TvUndergroundDownloaderLib
 
         public int GetDownloadFileCount()
         {
-            return downloaded.Count;
+            return _downloadFiles.Count;
         }
 
         public DateTime GetLastDownloadDate()
         {
             DateTime dt = DateTime.MinValue;
-            foreach (DateTime value in this.downloaded.Values)
+            foreach (var file in this._downloadFiles)
             {
-                if (dt < value)
+                if (file.DownloadDate.HasValue)
                 {
-                    dt = value;
+                    DateTime value = file.DownloadDate.Value;
+                    if (dt < value)
+                    {
+                        dt = value;
+                    }
                 }
             }
             return dt;
         }
 
-        public List<Ed2kfile> GetNewDownload()
+        public List<Ed2kfile> GetNewDownload(int maxSimultaneousDownload)
         {
             List<Ed2kfile> outArray = new List<Ed2kfile>();
 
-            foreach (Ed2kfile file in linkCache.Values)
-            {
-                if (downloaded.ContainsKey(file) == false)
-                {
-                    outArray.Add(file);
-                }
-            }
-
+            outArray.AddRange(_downloadFiles.FindAll(o => o.DownloadDate.HasValue == false));
             outArray.Sort((A, B) => A.FileName.CompareTo(B.FileName));
             if (outArray.Count > MaxSimultaneousDownload)
             {
-                outArray.RemoveRange((int)MaxSimultaneousDownload, outArray.Count - (int)MaxSimultaneousDownload);
+                outArray.RemoveRange((int)maxSimultaneousDownload, outArray.Count - (int)maxSimultaneousDownload);
             }
 
             return outArray;
@@ -329,25 +323,12 @@ namespace TvUndergroundDownloaderLib
         /// Return all files that are waiting for download
         /// </summary>
         /// <returns></returns>
-        public List<Ed2kfile> GetPendingFiles()
+        public List<DownloadFile> GetPendingFiles()
         {
-            List<Ed2kfile> outArray = new List<Ed2kfile>();
+            List<DownloadFile> outArray = new List<DownloadFile>();
 
-            foreach (Ed2kfile file in linkCache.Values)
-            {
-                bool addMe = true;
-                foreach (Ed2kfile fileDonlowaded in downloaded.Keys)
-                {
-                    if (fileDonlowaded.HashMD4 == file.HashMD4)
-                    {
-                        addMe = false;
-                    }
-                }
-                if (addMe == true)
-                {
-                    outArray.Add(file);
-                }
-            }
+            outArray.AddRange(_downloadFiles.FindAll(o => o.DownloadDate.HasValue == false));
+
             return outArray;
         }
 
@@ -358,12 +339,14 @@ namespace TvUndergroundDownloaderLib
                 throw new Exception("File missing in feed");
             }
 
-            if (downloaded.ContainsKey(file) == true)
+            var localFile = _downloadFiles.Find(o => o.Equals(file as DownloadFile));
+            if (localFile == null)
             {
-                throw new Exception("Duplicate file in feed");
+                throw new Exception("File missing in feed");
             }
+            localFile.DownloadDate = DateTime.Now;
 
-            downloaded.Add(file, DateTime.Now);
+
         }
 
         public void SetFileNotDownloaded(Ed2kfile file)
@@ -373,15 +356,15 @@ namespace TvUndergroundDownloaderLib
                 throw new Exception("File missing in feed");
             }
 
-            if (downloaded.ContainsKey(file) == false)
+            var localFile = _downloadFiles.Find(o => o.Equals(file as DownloadFile));
+            if (localFile == null)
             {
                 throw new Exception("File missing in feed");
             }
-
-            downloaded.Remove(file);
+            localFile.DownloadDate = null;
         }
 
-        
+
 
         /// <summary>
         /// Update feed from Web server
@@ -396,18 +379,23 @@ namespace TvUndergroundDownloaderLib
             XmlNodeList nodeList = doc.SelectNodes(@"/rss/channel/item");
             foreach (XmlNode itemNode in nodeList)
             {
-                Ed2kfile newFile = null;
-
                 XmlNode guidNode = itemNode.SelectSingleNode("guid");
                 string guid = HttpUtility.UrlDecode(guidNode.InnerText);
 
-                if (linkCache.ContainsKey(guid) == false)
+                DownloadFile newFile = _downloadFiles.Find(o => o.Guid == guid);
+
+                if (newFile == null)
                 {
                     try
                     {
-                        newFile = ProcessGUID(guid, cookieContainer);
+                        //
+                        //  try to load data from remote server
+                        //
+                        var newEd2kFile = ProcessGUID(guid, cookieContainer);
+                        newFile = new DownloadFile(this, newEd2kFile);
+
                         linkCache.Add(guid, newFile);
-                        _downloadFiles.Add(new DownloadFile(this, newFile, guid));
+                        _downloadFiles.Add(newFile);
                     }
                     catch (Exception ex)
                     {
@@ -415,20 +403,21 @@ namespace TvUndergroundDownloaderLib
                         continue;
                     }
                 }
-                else
-                {
-                    newFile = linkCache[guid];
-                }
 
-                if (!ListPublicationDate.ContainsKey(newFile))
+                //
+                //  try to update pudDate
+                //
+                if (!newFile.PublicationDate.HasValue)
                 {
                     XmlNode pubDateNode = itemNode.SelectSingleNode("pubDate");
+
                     string pubDateStr = HttpUtility.UrlDecode(pubDateNode.InnerText);
                     DateTime pubDateDateTime;
                     if (DateTime.TryParse(pubDateStr, out pubDateDateTime) == true)
                     {
-                        ListPublicationDate.Add(newFile, pubDateDateTime);
+                        newFile.PublicationDate = pubDateDateTime;
                     }
+
                 }
             }
 
@@ -532,24 +521,20 @@ namespace TvUndergroundDownloaderLib
             }
 
             writer.WriteStartElement("Files");
-            foreach (var fileKeys in linkCache.Keys)
+            foreach (var file in _downloadFiles)
             {
                 writer.WriteStartElement("File");
-
-                Ed2kfile file = linkCache[fileKeys];
                 writer.WriteElementString("LinkED2K", file.Ed2kLink);
-
-                writer.WriteElementString("Guid", fileKeys);
-                if (downloaded.ContainsKey(linkCache[fileKeys]))
+                writer.WriteElementString("Guid", file.Guid);
+                if (file.DownloadDate.HasValue)
                 {
-                    writer.WriteElementString("Downloaded", downloaded[file].ToString("s", CultureInfo.InvariantCulture));
+                    writer.WriteElementString("Downloaded", file.DownloadDate.Value.ToString("s", CultureInfo.InvariantCulture));
                 }
 
-                if (ListPublicationDate.ContainsKey(file))
+                if (file.PublicationDate.HasValue)
                 {
-                    writer.WriteElementString("PublicationDate", ListPublicationDate[file].ToString("s", CultureInfo.InvariantCulture));
+                    writer.WriteElementString("PublicationDate", file.PublicationDate.Value.ToString("s", CultureInfo.InvariantCulture));
                 }
-
                 writer.WriteEndElement();// end file
             }
             writer.WriteEndElement();// end file

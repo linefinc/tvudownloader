@@ -89,7 +89,7 @@ namespace TvUndergroundDownloaderLib
                 {
                     logger.Info(@"Read RSS ""{0}""", feed.TitleCompact);
                     feed.Update(cookieContainer);
-                    foreach (Ed2kfile file in feed.GetNewDownload())
+                    foreach (Ed2kfile file in feed.GetNewDownload((int)this.Config.MaxSimultaneousFeedDownloadsDefault))
                     {
                         DownloadFile sfile = new DownloadFile(feed, file);
                         downloadFileList.Add(sfile);
