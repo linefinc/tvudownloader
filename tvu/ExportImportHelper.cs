@@ -56,7 +56,7 @@ namespace TvUndergroundDownloader
                         writter.WriteStartElement("File");
 
                         writter.WriteStartElement("Link");
-                        writter.WriteString(file.File.Ed2kLink);
+                        writter.WriteString(file.Ed2kLink);
                         writter.WriteEndElement();
                         writter.WriteStartElement("FeedLink");
                         writter.WriteString(file.Guid);
@@ -177,7 +177,7 @@ namespace TvUndergroundDownloader
 
                 var file = new Ed2kfile(newLink);
                 RssSubscription subscription = config.RssFeedList.Find((temp) => temp.Url == newFeedLink);
-                var dw = new DownloadFile(file, subscription);
+                var dw = new DownloadFile(subscription, file);
                 if (string.IsNullOrEmpty(newDate) == false)
                 {
                     DateTime dt;

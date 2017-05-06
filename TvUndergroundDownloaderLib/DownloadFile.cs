@@ -9,12 +9,17 @@ namespace TvUndergroundDownloaderLib
         public DateTime? DownloadDate { get; set; }
         public DateTime? PublicationDate { get; set; }
 
-        public DownloadFile(Ed2kfile file, RssSubscription subscription) : base(file)
+        public DownloadFile(RssSubscription subscription, Ed2kfile file) : base(file)
         {
             this.Subscription = subscription;
         }
-
-        public DownloadFile(Ed2kfile file, RssSubscription subscription, string guid) : base(file)
+        /// <summary>
+        /// Constructor 
+        /// </summary>
+        /// <param name="subscription"></param>
+        /// <param name="file"></param>
+        /// <param name="guid"></param>
+        public DownloadFile(RssSubscription subscription, Ed2kfile file, string guid) : base(file)
         {
             this.Subscription = subscription;
             this.Guid = guid;

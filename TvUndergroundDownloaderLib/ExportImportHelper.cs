@@ -176,7 +176,7 @@ namespace TvUndergroundDownloaderLib
 
                 var file = new Ed2kfile(newLink);
                 RssSubscription subscription = config.RssFeedList.Find((temp) => temp.Url == newFeedLink);
-                var dw = new DownloadFile(file, subscription);
+                var dw = new DownloadFile(subscription, file);
                 if (string.IsNullOrEmpty(newDate) == false)
                 {
                     DateTime dt;

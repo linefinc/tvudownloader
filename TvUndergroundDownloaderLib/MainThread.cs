@@ -91,7 +91,7 @@ namespace TvUndergroundDownloaderLib
                     feed.Update(cookieContainer);
                     foreach (Ed2kfile file in feed.GetNewDownload())
                     {
-                        DownloadFile sfile = new DownloadFile(file, feed);
+                        DownloadFile sfile = new DownloadFile(feed, file);
                         downloadFileList.Add(sfile);
                         logger.Info(@"Found new file ""{0}""", file.FileName);
                     }

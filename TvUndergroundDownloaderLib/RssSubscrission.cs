@@ -34,6 +34,8 @@ namespace TvUndergroundDownloaderLib
         private Dictionary<Ed2kfile, DateTime> downloaded = new Dictionary<Ed2kfile, DateTime>();
         private Dictionary<string, Ed2kfile> linkCache = new Dictionary<string, Ed2kfile>();
         private Dictionary<Ed2kfile, DateTime> ListPublicationDate = new Dictionary<Ed2kfile, DateTime>();
+        private List<DownloadFile> _downloadFiles = new List<DownloadFile>();
+
 
         /// <summary>
         /// Build a Rss Subscription
@@ -236,6 +238,7 @@ namespace TvUndergroundDownloaderLib
             return newRssSubscrission;
         }
 
+        [Obsolete]
         public void AddFile(DownloadFile file)
         {
             this.linkCache.Add(file.Guid, file);
@@ -269,7 +272,7 @@ namespace TvUndergroundDownloaderLib
             {
                 Ed2kfile file = linkCache[guid];
 
-                DownloadFile dw = new DownloadFile(file, this, guid);
+                DownloadFile dw = new DownloadFile(this, file, guid);
                 if (downloaded.ContainsKey(file) == true)
                 {
                     dw.DownloadDate = downloaded[file];
@@ -382,7 +385,7 @@ namespace TvUndergroundDownloaderLib
         }
 
         /// <summary>
-        /// Update feed
+        /// Update feed from Web server
         /// </summary>
         public void Update(CookieContainer cookieContainer)
         {
@@ -406,6 +409,7 @@ namespace TvUndergroundDownloaderLib
                     {
                         newFile = ProcessGUID(guid, cookieContainer);
                         linkCache.Add(guid, newFile);
+                        _downloadFiles.Add(new DownloadFile(this, newFile, guid));
                     }
                     catch (Exception ex)
                     {
