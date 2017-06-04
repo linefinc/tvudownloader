@@ -9,7 +9,7 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
     public class EmbendedWebServer
     {
         private const string nancyUrl = "http://localhost:9696";
-        private Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private NancyHost nancyHost;
 
         /// <summary>
@@ -39,6 +39,7 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
             }
         }
 
+
         public void Start()
         {
             //
@@ -65,12 +66,33 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
 
             logger.Info("Starting server...");
             HostConfiguration nancyHostConfiguration = new HostConfiguration();
-            nancyHostConfiguration.RewriteLocalhost = true;
 
-            nancyHost = new NancyHost(nancyHostConfiguration, new Uri(nancyUrl));
+            bool reservationCreationFailure = false;
 
-            nancyHost.Start();
-            logger.Info("Server is listening on {0}", nancyUrl);
+            try
+            {
+                nancyHostConfiguration.RewriteLocalhost = true;
+                nancyHost = new NancyHost(nancyHostConfiguration, new Uri(nancyUrl));
+                nancyHost.Start();
+                logger.Info("Server is listening on {0}", nancyUrl);
+            }
+            catch (AutomaticUrlReservationCreationFailureException e)
+            {
+                logger.Error(e, "Reservation Creation Failure Exception");
+                reservationCreationFailure = true;
+            }
+
+
+            if (reservationCreationFailure == true)
+            {
+                logger.Info("Try to restart without reservation");
+
+                nancyHostConfiguration.RewriteLocalhost = false;
+                nancyHost = new NancyHost(nancyHostConfiguration, new Uri(nancyUrl));
+                nancyHost.Start();
+                logger.Info("Server is listening on {0}", nancyUrl);
+            }
+
         }
 
         public void Stop()
