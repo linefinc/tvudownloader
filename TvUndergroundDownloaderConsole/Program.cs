@@ -52,7 +52,6 @@ namespace TvUndergroundDownloaderConsole
             //
             //  Setup Worker
             //
-
             #region SetupWorker
 
             worker = new TvUndergroundDownloaderLib.Worker();
@@ -60,6 +59,9 @@ namespace TvUndergroundDownloaderConsole
 
             #endregion SetupWorker
 
+            //
+            //  Start Web Server
+            //
             #region Stat Web Server
 
             var embendedWebServer = new TvUndergroundDownloaderLib.EmbendedWebServer.EmbendedWebServer();
@@ -76,6 +78,7 @@ namespace TvUndergroundDownloaderConsole
                 //  run worker
                 //
                 worker.Run();
+                
                 System.Threading.Thread.Sleep(TimeSpan.FromMinutes(10));
             }
 

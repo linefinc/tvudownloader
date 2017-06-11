@@ -26,21 +26,18 @@ namespace TvUndergroundDownloaderLib
         public static Regex regexFeedSource =
             new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/rss.php\?se_id=(?<seid>\d{1,10})");
 
+        public DateTime LastSerieStatusUpgradeDate = DateTime.MinValue;
+        public string LastUpgradeDate = string.Empty;
+        public uint MaxSimultaneousDownload = 3;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private static Regex regexEDK2Link = new Regex(@"ed2k://\|file\|(.*)\|\d+\|\w+\|/");
+        private static Regex _regexEdk2Link = new Regex(@"ed2k://\|file\|(.*)\|\d+\|\w+\|/");
 
-        private static Regex regexFeedLink =
+        private static Regex _regexFeedLink =
                 new Regex(
                     @"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=ed2k&season=(?<season>\d{1,10})&sid\[(?<sid>\d{1,10})\]=\d{1,10}")
             ;
 
         private readonly List<DownloadFile> _downloadFiles = new List<DownloadFile>();
-        public DateTime LastSerieStatusUpgradeDate = DateTime.MinValue;
-        public string LastUpgradeDate = string.Empty;
-
-        public uint MaxSimultaneousDownload = 3;
-
-
         /// <summary>
         ///     Build a Rss Subscription
         /// </summary>
@@ -60,7 +57,7 @@ namespace TvUndergroundDownloaderLib
             if (int.TryParse(matchCollection[0].Groups["seid"].ToString(), out integerBuffer) == false)
                 throw new ApplicationException("Wrong URL");
 
-            seasonID = integerBuffer;
+            SeasonId = integerBuffer;
         }
 
         public RssSubscription(string newUrl, CookieContainer cookieContainer)
@@ -73,7 +70,7 @@ namespace TvUndergroundDownloaderLib
             int integerBuffer;
             if (int.TryParse(matchCollection[0].Groups["seid"].ToString(), out integerBuffer) == false)
                 throw new ApplicationException("Wrong URL");
-            seasonID = integerBuffer;
+            SeasonId = integerBuffer;
 
             string webPageUrl = Url;
             string webPage = WebFetch.Fetch(Url, false, cookieContainer);
@@ -108,18 +105,17 @@ namespace TvUndergroundDownloaderLib
         }
 
         public bool Enabled { get; set; } = true;
+        public TimeSpan LastChannelUpdate => DateTime.Now - GetLastDownloadDate();
         public bool PauseDownload { get; set; }
-        public int seasonID { get; }
+        public int SeasonId { get; }
         public string Title { get; }
         public string TitleCompact => Title.Replace("[ed2k] tvunderground.org.ru:", "").Trim();
-        public string Url { get; }
-
         public int TotalFilesDownloaded
         {
             get { return _downloadFiles.FindAll(o => o.DownloadDate.HasValue).Count; }
         }
 
-        public TimeSpan LastChannelUpdate => DateTime.Now - GetLastDownloadDate();
+        public string Url { get; }
 
         /// <summary>
         ///     Load data from xml
@@ -129,60 +125,85 @@ namespace TvUndergroundDownloaderLib
         public static RssSubscription LoadFormXml(XmlNode doc)
         {
             if (doc == null)
+            {
                 throw new NullReferenceException("Doc is null");
+            }
 
             var node = doc.SelectSingleNode("Title");
             if (node == null)
+            {
                 throw new Exception("Error while loading xml: Missing RssSubscrission\\Title");
+            }
             string title = node.InnerText;
 
             node = doc.SelectSingleNode("Url");
             if (node == null)
+            {
                 throw new Exception("Error while loading xml: Missing RssSubscrission\\Url");
-            string url = node.InnerText;
+            }
 
+            string url = node.InnerText;
             var newRssSubscrission = new RssSubscription(title, url);
 
             node = doc.SelectSingleNode("Pause");
-            newRssSubscrission.PauseDownload = Convert.ToBoolean(node.InnerText);
-
-            node = doc.SelectSingleNode("Category");
-            newRssSubscrission.Category = node.InnerText;
-
-            node = doc.SelectSingleNode("LastUpgradeDate");
-            newRssSubscrission.LastUpgradeDate = node.InnerText;
-
-            node = doc.SelectSingleNode("Enabled");
-            newRssSubscrission.Enabled = Convert.ToBoolean(node.InnerText);
-
-            node = doc.SelectSingleNode("tvuStatus");
-            switch (node.InnerText)
+            if (node != null)
             {
-                case "Complete":
-                    newRssSubscrission.CurrentTVUStatus = TvuStatus.Complete;
-                    break;
-
-                case "StillIncomplete":
-                    newRssSubscrission.CurrentTVUStatus = TvuStatus.StillIncomplete;
-                    break;
-
-                case "StillRunning":
-                    newRssSubscrission.CurrentTVUStatus = TvuStatus.StillRunning;
-                    break;
-
-                case "OnHiatus":
-                    newRssSubscrission.CurrentTVUStatus = TvuStatus.OnHiatus;
-                    break;
-
-                case "Unknown":
-                default:
-                    newRssSubscrission.CurrentTVUStatus = TvuStatus.Unknown;
-                    break;
+                newRssSubscrission.PauseDownload = Convert.ToBoolean(node.InnerText);
             }
 
-            node = doc.SelectSingleNode("maxSimultaneousDownload");
-            newRssSubscrission.MaxSimultaneousDownload = Convert.ToUInt16(node.InnerText);
+            node = doc.SelectSingleNode("Category");
+            if (node != null)
+            {
+                newRssSubscrission.Category = node.InnerText;
+            }
 
+            node = doc.SelectSingleNode("LastUpgradeDate");
+            if (node != null)
+            {
+                newRssSubscrission.LastUpgradeDate = node.InnerText;
+            }
+
+            node = doc.SelectSingleNode("Enabled");
+            if (node != null)
+            {
+                newRssSubscrission.Enabled = Convert.ToBoolean(node.InnerText);
+            }
+
+            if (node != null)
+            {
+                node = doc.SelectSingleNode("tvuStatus");
+            }
+            if (node != null)
+            {
+                switch (node.InnerText)
+                {
+                    case "Complete":
+                        newRssSubscrission.CurrentTVUStatus = TvuStatus.Complete;
+                        break;
+
+                    case "StillIncomplete":
+                        newRssSubscrission.CurrentTVUStatus = TvuStatus.StillIncomplete;
+                        break;
+
+                    case "StillRunning":
+                        newRssSubscrission.CurrentTVUStatus = TvuStatus.StillRunning;
+                        break;
+
+                    case "OnHiatus":
+                        newRssSubscrission.CurrentTVUStatus = TvuStatus.OnHiatus;
+                        break;
+
+                    case "Unknown":
+                    default:
+                        newRssSubscrission.CurrentTVUStatus = TvuStatus.Unknown;
+                        break;
+                }
+            }
+            node = doc.SelectSingleNode("maxSimultaneousDownload");
+            if (node != null)
+            {
+                newRssSubscrission.MaxSimultaneousDownload = Convert.ToUInt16(node.InnerText);
+            }
             var filesNode = doc.SelectNodes("Files/File");
             foreach (XmlNode fileNode in filesNode)
             {
@@ -315,6 +336,29 @@ namespace TvUndergroundDownloaderLib
         /// </summary>
         public void Update(CookieContainer cookieContainer)
         {
+            if (cookieContainer.Count == 0)
+            {
+                throw new LoginException();
+            }
+
+            var uri = new Uri(Url);
+            var cookies = cookieContainer.GetCookies(uri);
+
+            if (string.IsNullOrWhiteSpace(cookies["h"].Value))
+            {
+                throw new LoginException();
+            }
+
+            if (string.IsNullOrWhiteSpace(cookies["i"].Value))
+            {
+                throw new LoginException();
+            }
+
+            if (string.IsNullOrWhiteSpace(cookies["t"].Value))
+            {
+                throw new LoginException();
+            }
+
             string webPage = WebFetch.Fetch(Url, false, cookieContainer);
 
             var doc = new XmlDocument();
@@ -372,7 +416,7 @@ namespace TvUndergroundDownloaderLib
         public void UpdateTVUStatus(CookieContainer cookieContainer)
         {
             logger.Info("Checking serie status");
-            string url = string.Format(@"http://tvunderground.org.ru/index.php?show=episodes&sid={0}", seasonID);
+            string url = string.Format(@"http://tvunderground.org.ru/index.php?show=episodes&sid={0}", SeasonId);
 
             string WebPage = WebFetch.Fetch(url, true, cookieContainer);
             LastSerieStatusUpgradeDate = DateTime.Now;
@@ -474,7 +518,7 @@ namespace TvUndergroundDownloaderLib
             writer.WriteEndElement(); // end channel
         }
 
-        private Ed2kfile ProcessGUID(string url, CookieContainer cookieContainer)
+        private static Ed2kfile ProcessGUID(string url, CookieContainer cookieContainer)
         {
             string webPage = WebFetch.Fetch(url, false, cookieContainer);
             //

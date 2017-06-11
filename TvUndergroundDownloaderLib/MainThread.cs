@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
+using System.Runtime.Remoting.Channels;
 using System.Threading;
 using NLog;
 using ThreadState = System.Threading.ThreadState;
@@ -14,17 +15,16 @@ namespace TvUndergroundDownloaderLib
         private bool cancellationPending;
         public Config Config = null;
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private readonly Thread thread;
+        private Thread thread;
 
         public Worker()
         {
-            thread = new Thread(WorkerThreadFunc);
-            thread.Name = "TvUndergroundDownloaderLib";
+
         }
 
         public ThreadState ThreadState => thread.ThreadState;
 
-        public bool IsBusy => thread.ThreadState == ThreadState.Stopped;
+        public bool IsBusy => thread.IsAlive;
 
         public void Abort()
         {
@@ -35,6 +35,14 @@ namespace TvUndergroundDownloaderLib
 
         public void Run()
         {
+            //if (thread.IsAlive == true)
+            //{
+            //    throw new ThreadStartException();
+            //}
+
+            thread = new Thread(WorkerThreadFunc);
+            thread.Name = "TvUndergroundDownloaderLib";
+
             thread.IsBackground = true;
             thread.Start();
         }
@@ -54,9 +62,14 @@ namespace TvUndergroundDownloaderLib
             //
             var cookieContainer = new CookieContainer();
             var uriTvunderground = new Uri("http://tvunderground.org.ru/");
-            cookieContainer.Add(uriTvunderground, new Cookie("h", Config.TVUCookieH));
-            cookieContainer.Add(uriTvunderground, new Cookie("i", Config.TVUCookieI));
-            cookieContainer.Add(uriTvunderground, new Cookie("t", Config.TVUCookieT));
+            if (string.IsNullOrEmpty(Config.TVUCookieH))
+                cookieContainer.Add(uriTvunderground, new Cookie("h", Config.TVUCookieH));
+
+            if (string.IsNullOrEmpty(Config.TVUCookieI))
+                cookieContainer.Add(uriTvunderground, new Cookie("i", Config.TVUCookieI));
+
+            if (string.IsNullOrEmpty(Config.TVUCookieT))
+                cookieContainer.Add(uriTvunderground, new Cookie("t", Config.TVUCookieT));
 
             //
             //  start RSS Check
@@ -66,7 +79,7 @@ namespace TvUndergroundDownloaderLib
             var downloadFileList = new List<DownloadFile>();
 
             // select only enabled RSS
-            var rssFeedList = Config.RssFeedList.FindAll(delegate(RssSubscription rss) { return rss.Enabled; });
+            var rssFeedList = Config.RssFeedList.FindAll(delegate (RssSubscription rss) { return rss.Enabled; });
 
             foreach (var feed in rssFeedList)
             {
@@ -74,7 +87,7 @@ namespace TvUndergroundDownloaderLib
                 {
                     logger.Info(@"Read RSS ""{0}""", feed.TitleCompact);
                     feed.Update(cookieContainer);
-                    foreach (var file in feed.GetNewDownload((int) Config.MaxSimultaneousFeedDownloadsDefault))
+                    foreach (var file in feed.GetNewDownload((int)Config.MaxSimultaneousFeedDownloadsDefault))
                     {
                         var sfile = new DownloadFile(feed, file);
                         downloadFileList.Add(sfile);
@@ -185,7 +198,7 @@ namespace TvUndergroundDownloaderLib
             logger.Info("Current Download Form Emule {0}", courrentDownloadsFormEmule.Count);
 
             //for debug
-            courrentDownloadsFormEmule.ForEach(delegate(Ed2kfile file)
+            courrentDownloadsFormEmule.ForEach(delegate (Ed2kfile file)
             {
                 logger.Info(file.FileName.Replace("%20", " "));
             });
@@ -201,7 +214,7 @@ namespace TvUndergroundDownloaderLib
                     actualDownloadFileList.Add(downloadedFile);
 
             actualDownloadFileList.ForEach(
-                delegate(DownloadFile file) { logger.Info("Found: \"{0}\"", file.FileName); });
+                delegate (DownloadFile file) { logger.Info("Found: \"{0}\"", file.FileName); });
 
             logger.Info("ActualDownloadFileList.Count = " + actualDownloadFileList.Count);
             logger.Info("Config.MaxSimultaneousFeedDownloads = " + Config.MaxSimultaneousFeedDownloadsDefault);
@@ -210,7 +223,7 @@ namespace TvUndergroundDownloaderLib
             var maxSimultaneousDownloadsDictionary = new Dictionary<RssSubscription, int>();
             // set starting point for each feed
             foreach (var rssFeed in Config.RssFeedList)
-                maxSimultaneousDownloadsDictionary.Add(rssFeed, (int) rssFeed.MaxSimultaneousDownload);
+                maxSimultaneousDownloadsDictionary.Add(rssFeed, (int)rssFeed.MaxSimultaneousDownload);
 
             //
             //  remove all file already in download
@@ -284,6 +297,7 @@ namespace TvUndergroundDownloaderLib
                 logger.Error(ex);
             }
         }
+
 
         private void SendMailDownload(string fileName, string ed2kLink)
         {

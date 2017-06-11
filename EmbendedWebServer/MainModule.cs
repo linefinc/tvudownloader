@@ -122,7 +122,7 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
             Get["/RssSubscription/Delete/{id}"] = args =>
             {
                 int sessionID = (int)args["id"];
-                var channel = GlobalVar.Config.RssFeedList.Find((obj) => obj.seasonID == sessionID);
+                var channel = GlobalVar.Config.RssFeedList.Find((obj) => obj.SeasonId == sessionID);
                 GlobalVar.Config.RssFeedList.Remove(channel);
                 GlobalVar.Config.Save();
                 return Response.AsRedirect("/channels");
