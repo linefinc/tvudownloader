@@ -186,17 +186,6 @@ namespace TvUndergroundDownloader
                         dw.DownloadDate = dt;
                     }
                 }
-
-                //subscription.
-                //var file = new FileHistory(newLink, newFeedLink, newFeedSource, newDate);
-
-                //bool exist = localFileHistory.Exists(delegate (FileHistory f) { return f.HashMD4 == file.HashMD4; });
-                //if (exist == true)
-                //    continue;
-
-                //History.Add(newLink, newFeedLink, newFeedSource, newDate);
-
-                //history.Save();
             }
         }
     }

@@ -58,8 +58,6 @@ namespace TvUndergroundDownloaderLib
 
         private static string GetFromWeb(string sURL)
         {
-            //const string sURL = "http://tvudownloader.sourceforge.net/statistics/data.csv";
-
             WebRequest wrGETURL;
             wrGETURL = WebRequest.Create(sURL);
 

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-
-namespace TvUndergroundDownloaderLib
+﻿namespace TvUndergroundDownloaderLib
 {
+    using System;
+
     [Serializable]
-    class LoginException : Exception
+    public class LoginException : Exception
     {
         public LoginException()
         {

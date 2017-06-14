@@ -29,7 +29,7 @@ namespace TvUndergroundDownloaderLib
         public DateTime LastSerieStatusUpgradeDate = DateTime.MinValue;
         public string LastUpgradeDate = string.Empty;
         public uint MaxSimultaneousDownload = 3;
-        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private static Regex _regexEdk2Link = new Regex(@"ed2k://\|file\|(.*)\|\d+\|\w+\|/");
 
         private static Regex _regexFeedLink =
@@ -41,12 +41,12 @@ namespace TvUndergroundDownloaderLib
         /// <summary>
         ///     Build a Rss Subscription
         /// </summary>
-        /// <param name="Title"></param>
-        /// <param name="Url"></param>
-        public RssSubscription(string Title, string Url)
+        /// <param name="title"></param>
+        /// <param name="url"></param>
+        public RssSubscription(string title, string url)
         {
-            this.Title = Title;
-            this.Url = Url;
+            this.Title = title;
+            this.Url = url;
 
             // Static Regex "http(s)?://(www\.)?tvunderground.org.ru/rss.php\?se_id=(\d{1,10})"
             var matchCollection = regexFeedSource.Matches(this.Url);
@@ -370,36 +370,49 @@ namespace TvUndergroundDownloaderLib
                 var guidNode = itemNode.SelectSingleNode("guid");
                 string guid = HttpUtility.UrlDecode(guidNode.InnerText);
 
+
+                // here check if the file is already downloaded
                 var newFile = _downloadFiles.Find(o => o.Guid == guid);
 
                 if (newFile == null)
+                {
                     try
                     {
                         //
                         //  try to load data from remote server
                         //
-                        var newEd2kFile = ProcessGUID(guid, cookieContainer);
-                        newFile = new DownloadFile(this, newEd2kFile);
+                        var newEd2kFile = ProcessGuid(guid, cookieContainer);
+
+                        _logger.Info("Found new file {0}", newEd2kFile.FileName);
+                        newFile = new DownloadFile(this, newEd2kFile, guid);
 
                         _downloadFiles.Add(newFile);
                     }
                     catch (Exception ex)
                     {
-                        logger.Error(ex, "Error while try to parse or fatch GUID");
+                        _logger.Error(ex, "Error while try to parse or fatch GUID");
                         continue;
                     }
 
-                //
-                //  try to update pudDate
-                //
-                if (!newFile.PublicationDate.HasValue)
-                {
-                    var pubDateNode = itemNode.SelectSingleNode("pubDate");
-
-                    string pubDateStr = HttpUtility.UrlDecode(pubDateNode.InnerText);
-                    DateTime pubDateDateTime;
-                    if (DateTime.TryParse(pubDateStr, out pubDateDateTime))
-                        newFile.PublicationDate = pubDateDateTime;
+                    //
+                    //  try to update pudDate
+                    //
+                    if (!newFile.PublicationDate.HasValue)
+                    {
+                        var pubDateNode = itemNode.SelectSingleNode("pubDate");
+                        if (pubDateNode != null)
+                        {
+                            string pubDateStr = HttpUtility.UrlDecode(pubDateNode.InnerText);
+                            if (!string.IsNullOrEmpty(pubDateStr))
+                            {
+                                DateTime pubDateDateTime;
+                                if (DateTime.TryParse(pubDateStr, out pubDateDateTime))
+                                {
+                                    newFile.PublicationDate = pubDateDateTime;
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
@@ -415,7 +428,7 @@ namespace TvUndergroundDownloaderLib
 
         public void UpdateTVUStatus(CookieContainer cookieContainer)
         {
-            logger.Info("Checking serie status");
+            _logger.Info("Checking serie status");
             string url = string.Format(@"http://tvunderground.org.ru/index.php?show=episodes&sid={0}", SeasonId);
 
             string WebPage = WebFetch.Fetch(url, true, cookieContainer);
@@ -425,34 +438,34 @@ namespace TvUndergroundDownloaderLib
                 if (WebPage.IndexOf("Still Running") > 0)
                 {
                     CurrentTVUStatus = TvuStatus.StillRunning;
-                    logger.Info("Serie status: Still Running");
+                    _logger.Info("Serie status: Still Running");
                     return;
                 }
 
                 if (WebPage.IndexOf("Complete") > 0)
                 {
                     CurrentTVUStatus = TvuStatus.Complete;
-                    logger.Info("Serie status: Complete");
+                    _logger.Info("Serie status: Complete");
                     return;
                 }
 
                 if (WebPage.IndexOf("Still Incomplete") > 0)
                 {
                     CurrentTVUStatus = TvuStatus.StillIncomplete;
-                    logger.Info("Serie status: Still Incomplete");
+                    _logger.Info("Serie status: Still Incomplete");
                     return;
                 }
 
                 if (WebPage.IndexOf("On Hiatus") > 0)
                 {
-                    logger.Info("Serie status: On Hiatus");
+                    _logger.Info("Serie status: On Hiatus");
                     CurrentTVUStatus = TvuStatus.OnHiatus;
                     return;
                 }
             }
 
             CurrentTVUStatus = TvuStatus.Unknown;
-            logger.Info("Serie status: Unknown");
+            _logger.Info("Serie status: Unknown");
         }
 
         public void Write(XmlTextWriter writer)
@@ -518,13 +531,14 @@ namespace TvUndergroundDownloaderLib
             writer.WriteEndElement(); // end channel
         }
 
-        private static Ed2kfile ProcessGUID(string url, CookieContainer cookieContainer)
+        private Ed2kfile ProcessGuid(string url, CookieContainer cookieContainer)
         {
+            _logger.Info("Get page {0}", url);
             string webPage = WebFetch.Fetch(url, false, cookieContainer);
             //
-            int i = webPage.IndexOf("ed2k://|file|");
+            int i = webPage.IndexOf("ed2k://|file|", StringComparison.InvariantCulture);
             webPage = webPage.Substring(i);
-            i = webPage.IndexOf("|/");
+            i = webPage.IndexOf("|/", StringComparison.InvariantCulture);
             webPage = webPage.Substring(0, i + "|/".Length);
             return new Ed2kfile(webPage);
         }

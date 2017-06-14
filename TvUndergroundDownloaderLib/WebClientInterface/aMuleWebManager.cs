@@ -96,7 +96,7 @@ namespace TvUndergroundDownloaderLib
         /// <summary>
         ///     Force start download
         /// </summary>
-        /// <param name="Ed2kLink"></param>
+        /// <param name="link"></param>
         public void StartDownload(Ed2kfile link)
         {
             var outgoingQueryString = HttpUtility.ParseQueryString(string.Empty);
@@ -113,7 +113,7 @@ namespace TvUndergroundDownloaderLib
         /// <summary>
         ///     force stop download
         /// </summary>
-        /// <param name="Ed2kLink"></param>
+        /// <param name="link"></param>
         public void StopDownload(Ed2kfile link)
         {
             var outgoingQueryString = HttpUtility.ParseQueryString(string.Empty);

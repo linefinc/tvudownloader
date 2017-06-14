@@ -45,7 +45,8 @@ namespace TvUndergroundDownloader
             SetupNotify();
             worker = new Worker();
             worker.Config = MainConfig;
-            
+            worker.WorkerCompleted += Task_RunWorkerCompleted;
+
         }
 
         public static string GetUserAppDataPath()
@@ -402,30 +403,30 @@ namespace TvUndergroundDownloader
         /// <summary>
         /// This is on the main thread, so we can update a TextBox or anything.
         /// </summary>
-        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void Task_RunWorkerCompleted(object sender, EventArgs e)
         {
-            if (e.Cancelled)
+            this.Invoke((MethodInvoker)delegate 
             {
-                logger.Info("Background Worker Cancelled");
-            }
+                UpdateRecentActivity();
+                UpdatePendingFiles();
+                UpdateRssFeedGUI();
 
-            UpdateRecentActivity();
-            UpdatePendingFiles();
-            UpdateRssFeedGUI();
+                menuItemCheckNow.Enabled = true;
+                deleteToolStripMenuItem.Enabled = true;
+                addToolStripMenuItem.Enabled = true;
+                checkNowToolStripMenuItem.Enabled = true;
+                deleteToolStripMenuItem.Enabled = true;
+                addToolStripMenuItem.Enabled = true;
+                toolStripMenuItemAdd.Enabled = true;
+                toolStripMenuItemDelete.Enabled = true;
+                toolStripMenuItemEdit.Enabled = true;
+                toolStripButtonCheckNow.Enabled = true;
+                toolStripButtonAddFeed.Enabled = true;
+                toolStripButtonStop.Enabled = false;
+                cancelCheckToolStripMenuItem.Enabled = false;
 
-            menuItemCheckNow.Enabled = true;
-            deleteToolStripMenuItem.Enabled = true;
-            addToolStripMenuItem.Enabled = true;
-            checkNowToolStripMenuItem.Enabled = true;
-            deleteToolStripMenuItem.Enabled = true;
-            addToolStripMenuItem.Enabled = true;
-            toolStripMenuItemAdd.Enabled = true;
-            toolStripMenuItemDelete.Enabled = true;
-            toolStripMenuItemEdit.Enabled = true;
-            toolStripButtonCheckNow.Enabled = true;
-            toolStripButtonAddFeed.Enabled = true;
-            toolStripButtonStop.Enabled = false;
-            cancelCheckToolStripMenuItem.Enabled = false;
+            });
+
         }
 
         private void cancelCheckToolStripMenuItem_Click(object sender, EventArgs e)
@@ -867,10 +868,13 @@ namespace TvUndergroundDownloader
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 ExportImportHelper.Import(MainConfig, openFileDialog1.FileName);
+                MainConfig.Save();
                 UpdateRecentActivity();
                 UpdateRssFeedGUI();
                 UpdatePendingFiles();
             }
+
+
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
