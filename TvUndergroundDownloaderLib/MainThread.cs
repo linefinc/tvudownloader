@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
-using System.Runtime.Remoting.Channels;
 using System.Threading;
 using System.Threading.Tasks;
 using NLog;
@@ -19,7 +18,9 @@ namespace TvUndergroundDownloaderLib
         private CancellationToken _cancellationToken;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private Task _task;
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public Worker()
         {
 
@@ -49,26 +50,29 @@ namespace TvUndergroundDownloaderLib
             }
         }
 
-
+        /// <summary>
+        /// Abort the task
+        /// </summary>
         public void Abort()
         {
             _cancellationTokenSource.Cancel();
         }
 
+        /// <summary>
+        /// Run 
+        /// </summary>
         public void Run()
         {
             _cancellationTokenSource = new CancellationTokenSource();
             _cancellationToken = _cancellationTokenSource.Token;
-            _task = new Task(WorkerThreadFunc, _cancellationTokenSource.Token);
+            _task = new Task(WorkerFunc, _cancellationTokenSource.Token);
             _task.Start();
         }
 
-        public void Stop()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void WorkerThreadFunc()
+        /// <summary>
+        /// Main worker function
+        /// </summary>
+        private void WorkerFunc()
         {
             if (Config == null)
             {
@@ -341,11 +345,21 @@ namespace TvUndergroundDownloaderLib
             OnWorkerCompleted();
         }
 
+        /// <summary>
+        /// On Worker Completed
+        /// </summary>
         private void OnWorkerCompleted()
         {
             if (WorkerCompleted != null)
                 WorkerCompleted(this, new EventArgs());
         }
+
+        /// <summary>
+        /// Send Email
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="ed2kLink"></param>
+        /// todo: use class Ed2k instead of string
         private void SendMailDownload(string fileName, string ed2kLink)
         {
             if (Config.EmailNotification)
