@@ -255,7 +255,7 @@ namespace TvUndergroundDownloaderLib
         {
             var outArray = new List<Ed2kfile>();
             outArray.AddRange(_downloadFiles.FindAll(o => o.DownloadDate.HasValue));
-            outArray.Sort((A, B) => A.FileName.CompareTo(B.FileName));
+            outArray.Sort((a, b) => string.Compare(a.FileName, b.FileName, StringComparison.InvariantCulture));
             return outArray;
         }
 

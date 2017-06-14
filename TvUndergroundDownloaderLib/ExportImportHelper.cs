@@ -6,7 +6,7 @@ using System.Xml;
 
 namespace TvUndergroundDownloaderLib
 {
-    internal class ExportImportHelper
+    public class ExportImportHelper
     {
         public static void Export(Config config, Stream steam)
         {
