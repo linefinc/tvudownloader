@@ -2,6 +2,7 @@
 using NLog.Config;
 using NLog.Targets;
 using System;
+using System.Diagnostics;
 
 namespace TvUndergroundDownloaderConsole
 {
@@ -72,13 +73,22 @@ namespace TvUndergroundDownloaderConsole
             #endregion Stat Web Server
 
             bool exitProgram = true;
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            worker.Run();
+
             while (exitProgram)
             {
                 //
                 //  run worker
                 //
-                worker.Run();
-                
+                if (stopwatch.Elapsed.Minutes > mainConfig.IntervalTime)
+                {
+                    worker.Run();
+                    stopwatch.Reset();
+                    stopwatch.Start();
+                }
                 System.Threading.Thread.Sleep(TimeSpan.FromMinutes(10));
             }
 
