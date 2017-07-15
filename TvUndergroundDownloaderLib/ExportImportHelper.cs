@@ -122,7 +122,6 @@ namespace TvUndergroundDownloaderLib
                 newFeed.Category = config.DefaultCategory;
                 newFeed.MaxSimultaneousDownload = config.MaxSimultaneousFeedDownloadsDefault;
                 newFeed.PauseDownload = false;
-                newFeed.LastSerieStatusUpgradeDate = DateTime.Now;
                 newFeed.LastUpgradeDate = DateTime.Now.ToString("s");
                 config.RssFeedList.Add(newFeed);
             }

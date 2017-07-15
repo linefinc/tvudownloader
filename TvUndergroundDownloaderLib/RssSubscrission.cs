@@ -26,7 +26,7 @@ namespace TvUndergroundDownloaderLib
         public static Regex regexFeedSource =
             new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/rss.php\?se_id=(?<seid>\d{1,10})");
 
-        public DateTime LastSerieStatusUpgradeDate = DateTime.MinValue;
+        public DateTime LastSerieStatusUpgradeDate { get; private set; } = DateTime.MinValue;
         public string LastUpgradeDate = string.Empty;
         public uint MaxSimultaneousDownload = 3;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -94,12 +94,12 @@ namespace TvUndergroundDownloaderLib
         {
             get
             {
-                if (Title.IndexOf("english") > -1) return "gb";
-                if (Title.IndexOf("french") > -1) return "fr";
-                if (Title.IndexOf("german") > -1) return "de";
-                if (Title.IndexOf("italian") > -1) return "it";
-                if (Title.IndexOf("japanese") > -1) return "jp";
-                if (Title.IndexOf("spanish") > -1) return "es";
+                if (Title.IndexOf("english",0,StringComparison.InvariantCulture) > -1) return "gb";
+                if (Title.IndexOf("french", 0, StringComparison.InvariantCulture) > -1) return "fr";
+                if (Title.IndexOf("german", 0, StringComparison.InvariantCulture) > -1) return "de";
+                if (Title.IndexOf("italian", 0, StringComparison.InvariantCulture) > -1) return "it";
+                if (Title.IndexOf("japanese", 0, StringComparison.InvariantCulture) > -1) return "jp";
+                if (Title.IndexOf("spanish", 0, StringComparison.InvariantCulture) > -1) return "es";
                 return string.Empty;
             }
         }
@@ -428,35 +428,36 @@ namespace TvUndergroundDownloaderLib
 
         public void UpdateTVUStatus(CookieContainer cookieContainer)
         {
-            _logger.Info("Checking serie status");
+            _logger.Info("Checking serie status: \"{0}\"", this.TitleCompact);
             string url = string.Format(@"http://tvunderground.org.ru/index.php?show=episodes&sid={0}", SeasonId);
 
-            string WebPage = WebFetch.Fetch(url, true, cookieContainer);
-            LastSerieStatusUpgradeDate = DateTime.Now;
-            if (WebPage != null)
+            string webPage = WebFetch.Fetch(url, true, cookieContainer);
+
+            if (webPage != null)
             {
-                if (WebPage.IndexOf("Still Running") > 0)
+                LastSerieStatusUpgradeDate = DateTime.Now;
+                if (webPage.IndexOf("Still Running", 0, StringComparison.InvariantCulture) > 0)
                 {
                     CurrentTVUStatus = TvuStatus.StillRunning;
                     _logger.Info("Serie status: Still Running");
                     return;
                 }
 
-                if (WebPage.IndexOf("Complete") > 0)
+                if (webPage.IndexOf("Complete", 0, StringComparison.InvariantCulture) > 0)
                 {
                     CurrentTVUStatus = TvuStatus.Complete;
                     _logger.Info("Serie status: Complete");
                     return;
                 }
 
-                if (WebPage.IndexOf("Still Incomplete") > 0)
+                if (webPage.IndexOf("Still Incomplete", 0, StringComparison.InvariantCulture) > 0)
                 {
                     CurrentTVUStatus = TvuStatus.StillIncomplete;
                     _logger.Info("Serie status: Still Incomplete");
                     return;
                 }
 
-                if (WebPage.IndexOf("On Hiatus") > 0)
+                if (webPage.IndexOf("On Hiatus", 0, StringComparison.InvariantCulture) > 0)
                 {
                     _logger.Info("Serie status: On Hiatus");
                     CurrentTVUStatus = TvuStatus.OnHiatus;

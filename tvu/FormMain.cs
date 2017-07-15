@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Windows.Forms;
 using TvUndergroundDownloaderLib;
 using TvUndergroundDownloaderLib.EmbendedWebServer;
@@ -20,12 +21,12 @@ namespace TvUndergroundDownloader
     {
         public ConfigWindows MainConfig;
         private static Logger logger = LogManager.GetCurrentClassLogger();
+        private bool allowClose = false;
         private DateTime autoCloseDataTime;
         private System.Windows.Forms.ContextMenu contextMenu1;
         private DateTime downloadDataTime;
         private Icon iconDown;
         private Icon iconUp;
-        private bool allowClose = false;
         private System.Windows.Forms.MenuItem menuItemAutoCloseEmule;
         private System.Windows.Forms.MenuItem menuItemAutoStartEmule;
         private System.Windows.Forms.MenuItem menuItemCheckNow;
@@ -34,7 +35,6 @@ namespace TvUndergroundDownloader
         private bool mVisible = true;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private Worker worker;
-
 
         public FormMain()
         {
@@ -48,7 +48,6 @@ namespace TvUndergroundDownloader
             worker.Config = MainConfig;
             worker.WorkerCompleted += Task_RunWorkerCompleted;
 
-
             if (MainConfig.WebServerEnable)
             {
                 var embendedWebServer = new EmbendedWebServer();
@@ -56,6 +55,14 @@ namespace TvUndergroundDownloader
                 embendedWebServer.Worker = worker;
                 embendedWebServer.Start();
             }
+
+#if DEBUG
+            string versionFull = ((AssemblyInformationalVersionAttribute)Assembly
+            .GetAssembly(typeof(FormMain))
+            .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false)[0]).InformationalVersion;
+
+            this.Text += " " + versionFull;
+#endif
         }
 
         public static string GetUserAppDataPath()
@@ -86,7 +93,7 @@ namespace TvUndergroundDownloader
         //  to insert inside a timer3
         //  here for debug
         //
-        public void autoclose()
+        public void Autoclose()
         {
             if (MainConfig.CloseEmuleIfAllIsDone == false)
             {
@@ -192,10 +199,6 @@ namespace TvUndergroundDownloader
             timerAutoClose.Enabled = false;
         }
 
-        public void DisableAutoStarteMule()
-        {
-        }
-
         public void EnableAutoCloseEmule()
         {
             this.menuItemAutoCloseEmule.Checked = true;   // Enable trybar context menu
@@ -203,10 +206,6 @@ namespace TvUndergroundDownloader
             this.MainConfig.CloseEmuleIfAllIsDone = true; // Enable function
             autoCloseDataTime = DateTime.Now.AddMinutes(30);
             timerAutoClose.Enabled = true;
-        }
-
-        public void EnableAutoStarteMule()
-        {
         }
 
         public void SendMailDownload(string fileName, string ed2kLink)
@@ -228,16 +227,6 @@ namespace TvUndergroundDownloader
             if (!mVisible)
                 value = false;         // Prevent form getting visible
             base.SetVisibleCore(value);
-        }
-
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void aboutToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            AboutBox1 dialog = new AboutBox1();
-            dialog.ShowDialog();
         }
 
         /// <summary>
@@ -409,42 +398,9 @@ namespace TvUndergroundDownloader
             progressBar1.Value = e.ProgressPercentage;
         }
 
-        /// <summary>
-        /// This is on the main thread, so we can update a TextBox or anything.
-        /// </summary>
-        private void Task_RunWorkerCompleted(object sender, EventArgs e)
-        {
-            this.Invoke((MethodInvoker)delegate 
-            {
-                UpdateRecentActivity();
-                UpdatePendingFiles();
-                UpdateRssFeedGUI();
-
-                menuItemCheckNow.Enabled = true;
-                deleteToolStripMenuItem.Enabled = true;
-                addToolStripMenuItem.Enabled = true;
-                checkNowToolStripMenuItem.Enabled = true;
-                deleteToolStripMenuItem.Enabled = true;
-                addToolStripMenuItem.Enabled = true;
-                toolStripMenuItemAdd.Enabled = true;
-                toolStripMenuItemDelete.Enabled = true;
-                toolStripMenuItemEdit.Enabled = true;
-                toolStripButtonCheckNow.Enabled = true;
-                toolStripButtonAddFeed.Enabled = true;
-                toolStripButtonStop.Enabled = false;
-                cancelCheckToolStripMenuItem.Enabled = false;
-
-            });
-
-        }
-
         private void cancelCheckToolStripMenuItem_Click(object sender, EventArgs e)
         {
             worker.Abort();
-        }
-
-        private void checkBoxAutoClear_CheckedChanged(object sender, EventArgs e)
-        {
         }
 
         /// <summary>
@@ -884,8 +840,6 @@ namespace TvUndergroundDownloader
                 UpdateRssFeedGUI();
                 UpdatePendingFiles();
             }
-
-
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -1236,12 +1190,39 @@ namespace TvUndergroundDownloader
             worker.Run();
         }
 
+        /// <summary>
+        /// This is on the main thread, so we can update a TextBox or anything.
+        /// </summary>
+        private void Task_RunWorkerCompleted(object sender, EventArgs e)
+        {
+            this.Invoke((MethodInvoker)delegate
+            {
+                UpdateRecentActivity();
+                UpdatePendingFiles();
+                UpdateRssFeedGUI();
+
+                menuItemCheckNow.Enabled = true;
+                deleteToolStripMenuItem.Enabled = true;
+                addToolStripMenuItem.Enabled = true;
+                checkNowToolStripMenuItem.Enabled = true;
+                deleteToolStripMenuItem.Enabled = true;
+                addToolStripMenuItem.Enabled = true;
+                toolStripMenuItemAdd.Enabled = true;
+                toolStripMenuItemDelete.Enabled = true;
+                toolStripMenuItemEdit.Enabled = true;
+                toolStripButtonCheckNow.Enabled = true;
+                toolStripButtonAddFeed.Enabled = true;
+                toolStripButtonStop.Enabled = false;
+                cancelCheckToolStripMenuItem.Enabled = false;
+            });
+        }
+
         private void testAutoCloseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // remove 1h from AutoClose Data Time to force function to work
             TimeSpan delta = new TimeSpan(1, 0, 0);
             autoCloseDataTime = DateTime.Now.Subtract(delta);
-            autoclose();
+            Autoclose();
         }
 
         private void testAutoStartToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1299,7 +1280,7 @@ namespace TvUndergroundDownloader
 
         private void timerAutoClose_Tick(object sender, EventArgs e)
         {
-            autoclose();
+            Autoclose();
         }
 
         private void toolStripButtonAddFeed_Click(object sender, EventArgs e)
@@ -1317,6 +1298,12 @@ namespace TvUndergroundDownloader
             worker.Abort();
         }
 
+        private void toolStripMenuItemAbout_Click(object sender, EventArgs e)
+        {
+            AboutBox1 dialog = new AboutBox1();
+            dialog.ShowDialog();
+        }
+
         private void toolStripMenuItemAdd_Click(object sender, EventArgs e)
         {
             AddRssChannel();
@@ -1325,6 +1312,51 @@ namespace TvUndergroundDownloader
         private void toolStripMenuItemDelete_Click(object sender, EventArgs e)
         {
             DeleteRssChannel();
+        }
+
+        private void toolStripMenuItemUpdateStatus_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewMain.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
+            //
+            //  Load Cookies from configure
+            //
+            var cookieContainer = new CookieContainer();
+            var uriTvunderground = new Uri("http://tvunderground.org.ru/");
+            if (string.IsNullOrEmpty(MainConfig.TVUCookieH))
+            {
+                throw new LoginException("H");
+            }
+            cookieContainer.Add(uriTvunderground, new Cookie("h", MainConfig.TVUCookieH));
+
+            if (string.IsNullOrEmpty(MainConfig.TVUCookieI))
+            {
+                throw new LoginException("I");
+            }
+            cookieContainer.Add(uriTvunderground, new Cookie("i", MainConfig.TVUCookieI));
+
+            if (string.IsNullOrEmpty(MainConfig.TVUCookieT))
+            {
+                throw new LoginException("T");
+            }
+            cookieContainer.Add(uriTvunderground, new Cookie("t", MainConfig.TVUCookieT));
+
+            foreach (DataGridViewRow selectedItem in dataGridViewMain.SelectedRows)
+            {
+                DataGridViewColumn col = DataGridViewTextBoxColumnTitle;
+                string titleCompact = selectedItem.Cells[col.Name].Value.ToString();
+                RssSubscription feed = MainConfig.RssFeedList.Find(x => (x.TitleCompact == titleCompact));
+
+                if (feed != null)
+                {
+                    feed.UpdateTVUStatus(cookieContainer);
+                }
+            }
+            MainConfig.Save();
+            UpdateRssFeedGUI(); ///upgrade GUI
         }
 
         private void UpdatePendingFiles()
