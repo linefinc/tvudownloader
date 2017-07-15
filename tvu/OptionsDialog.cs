@@ -6,37 +6,52 @@ namespace TvUndergroundDownloader
 {
     public partial class OptionsDialog : Form
     {
+        public bool AutoClearLog;
+
+        public bool CloseEmuleIfAllIsDone;
+
+        public bool debug;
+
+        public string DefaultCategory;
+
+        public bool EmailNotification;
+
+        public string eMuleExe;
+
+        public bool Enebled;
+
+        public int intervalBetweenUpgradeCheck;
+
+        public int IntervalTime;
+
+        public string LastUpgradeCheck;
+
+        public string MailReceiver;
+
+        public string MailSender;
+
+        public uint MaxSimultaneousFeedDownloads;
+
+        public int MinToStartEmule;
+
+        public string Password;
+
+        public bool saveLog;
+
+        public string ServerSMTP;
+
         //public Config LocalConfig;
         public Config.eServiceType ServiceType;
 
-        public string ServiceUrl { private set; get; }
-        public string Password;
-        public string tvuUsername;
-        public string tvuPassword;
+        public bool StartEmuleIfClose;
+        public bool StartMinimized;
+        public bool StartWithWindows;
         public string tvuCookieH;
         public string tvuCookieI;
         public string tvuCookieT;
-        public int IntervalTime;
-        public bool StartMinimized;
-        public bool CloseEmuleIfAllIsDone;
-        public bool StartEmuleIfClose;
-        public bool AutoClearLog;
-        public string eMuleExe;
-        public bool debug;
-        public string DefaultCategory;
-        public bool Enebled;
-        public uint MaxSimultaneousFeedDownloads;
-        public int MinToStartEmule;
+        public string tvuPassword;
+        public string tvuUsername;
         public bool Verbose;
-        public bool EmailNotification;
-        public string ServerSMTP;
-        public string MailReceiver;
-        public string MailSender;
-        public int intervalBetweenUpgradeCheck;
-        public string LastUpgradeCheck;
-
-        public bool saveLog;
-        public bool StartWithWindows;
 
         public OptionsDialog(ConfigWindows inConfig)
         {
@@ -80,6 +95,49 @@ namespace TvUndergroundDownloader
             tvuCookieH = textBoxCookieH.Text = inConfig.TVUCookieH;
             tvuCookieI = textBoxCookieI.Text = inConfig.TVUCookieI;
             tvuCookieT = textBoxCookieT.Text = inConfig.TVUCookieT;
+        }
+
+        public string ServiceUrl { private set; get; }
+        public bool WebServerEnable { get; set; }
+
+        public int WebServerPort { get; set; }
+
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
+
+        private void buttonCheckNow_Click(object sender, EventArgs e)
+        {
+            IMuleWebManager service = null;
+            switch (ServiceType)
+            {
+                case Config.eServiceType.aMule:
+                    service = new aMuleWebManager(textBoxServiceUrl.Text, textBoxPassword.Text);
+                    break;
+
+                case Config.eServiceType.eMule:
+                default:
+                    service = new eMuleWebManager(textBoxServiceUrl.Text, textBoxPassword.Text);
+                    break;
+            }
+
+            LoginStatus rc = service.Connect();
+
+            if (rc == LoginStatus.ServiceNotAvailable)
+            {
+                MessageBox.Show("Unable conncet with target URL");
+                return;
+            }
+
+            if (rc == LoginStatus.PasswordError)
+            {
+                MessageBox.Show("Password error");
+                return;
+            }
+
+            MessageBox.Show("OK service is correctly configured");
         }
 
         private void buttonSave_Click(object sender, EventArgs e)
@@ -186,6 +244,11 @@ namespace TvUndergroundDownloader
             tvuCookieH = textBoxCookieH.Text;
             tvuCookieI = textBoxCookieI.Text;
             tvuCookieT = textBoxCookieT.Text;
+            //
+            //  web server
+            //
+            WebServerEnable = checkBoxWebServerEnabled.Visible;
+            WebServerPort = Convert.ToInt32(textBoxWebServerPortNumber.Text);
 
             //
             //  Save log to file
@@ -197,44 +260,6 @@ namespace TvUndergroundDownloader
             }
 
             this.DialogResult = DialogResult.OK;
-            this.Close();
-        }
-
-        private void buttonCheckNow_Click(object sender, EventArgs e)
-        {
-            IMuleWebManager service = null;
-            switch (ServiceType)
-            {
-                case Config.eServiceType.aMule:
-                    service = new aMuleWebManager(textBoxServiceUrl.Text, textBoxPassword.Text);
-                    break;
-
-                case Config.eServiceType.eMule:
-                default:
-                    service = new eMuleWebManager(textBoxServiceUrl.Text, textBoxPassword.Text);
-                    break;
-            }
-
-            LoginStatus rc = service.Connect();
-
-            if (rc == LoginStatus.ServiceNotAvailable)
-            {
-                MessageBox.Show("Unable conncet with target URL");
-                return;
-            }
-
-            if (rc == LoginStatus.PasswordError)
-            {
-                MessageBox.Show("Password error");
-                return;
-            }
-
-            MessageBox.Show("OK service is correctly configured");
-        }
-
-        private void buttonCancel_Click(object sender, EventArgs e)
-        {
-            this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
 

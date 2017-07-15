@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml;
+using NLog;
 
 namespace TvUndergroundDownloaderLib
 {
@@ -9,6 +10,9 @@ namespace TvUndergroundDownloaderLib
     {
         public static bool CheckNewVersion(Config config, bool force = false)
         {
+            Logger logger = LogManager.GetCurrentClassLogger();
+            logger.Info("Check New Version");
+
             if (config.intervalBetweenUpgradeCheck == 0)
                 return false;
 

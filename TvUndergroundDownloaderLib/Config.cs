@@ -9,71 +9,6 @@ namespace TvUndergroundDownloaderLib
 {
     public class Config
     {
-        [Flags]
-        public enum eServiceType
-        {
-            eMule = 0,
-            aMule
-        }
-
-        public bool AutoClearLog;
-
-        public bool CloseEmuleIfAllIsDone;
-
-        public string DefaultCategory;
-
-        public bool EmailNotification;
-
-        public string eMuleExe;
-
-        public bool Enebled;
-
-        public int intervalBetweenUpgradeCheck;
-
-        public int IntervalTime;
-
-        public string LastUpgradeCheck;
-
-        public string MailReceiver;
-
-        public string MailSender;
-
-        public uint MaxSimultaneousFeedDownloadsDefault;
-
-        public int MinToStartEmule;
-
-        public string Password;
-
-        public bool PauseDownloadDefault;
-
-        public RssSubscriptionList RssFeedList;
-
-        public bool saveLog;
-
-        public string ServerSMTP;
-
-        public eServiceType ServiceType;
-
-        public string ServiceUrl;
-
-        public bool StartEmuleIfClose;
-
-        public bool StartMinimized;
-
-        public int TotalDownloads;
-
-        public string TVUCookieH;
-
-        public string TVUCookieI;
-
-        public string TVUCookieT;
-
-        public string tvudwid; //Unique id
-
-        public bool UseHttpInsteadOfHttps; // to implement
-
-        public bool Verbose;
-
         public Config()
         {
             //
@@ -92,15 +27,12 @@ namespace TvUndergroundDownloaderLib
             Load();
         }
 
-        public static string ConfigFolder => "./";
-
-        public static string FileNameConfig => Path.Combine(ConfigFolder, "config.xml");
-
-        public static string FileNameDB => Path.Combine(ConfigFolder, "storage.sqlitedb");
-
-        public static string FileNameHistory => Path.Combine(ConfigFolder, "History.xml");
-
-        public static string FileNameLog => Path.Combine(ConfigFolder, "log.txt");
+        [Flags]
+        public enum eServiceType
+        {
+            eMule = 0,
+            aMule
+        }
 
         /// <summary>
         ///     Get current assembly version
@@ -114,13 +46,50 @@ namespace TvUndergroundDownloaderLib
             }
         }
 
+        public bool AutoClearLog { get; set; }
+        public bool CloseEmuleIfAllIsDone { get; set; }
+        public static string ConfigFolder => "./";
+        public string DefaultCategory { get; set; }
+        public bool EmailNotification { get; set; }
+        public string eMuleExe { get; set; }
+        public bool Enebled { get; set; }
+        public static string FileNameConfig => Path.Combine(ConfigFolder, "config.xml");
+        public static string FileNameDB => Path.Combine(ConfigFolder, "storage.sqlitedb");
+        public static string FileNameHistory => Path.Combine(ConfigFolder, "History.xml");
+        public static string FileNameLog => Path.Combine(ConfigFolder, "log.txt");
+        public int intervalBetweenUpgradeCheck { get; set; }
+        public int IntervalTime { get; set; }
+        public string LastUpgradeCheck { get; set; }
+        public string MailReceiver { get; set; }
+        public string MailSender { get; set; }
+        public uint MaxSimultaneousFeedDownloadsDefault { get; set; }
+        public int MinToStartEmule { get; set; }
+        public string Password { get; set; }
+        public bool PauseDownloadDefault { get; set; }
+        public RssSubscriptionList RssFeedList { get; set; }
+        public bool saveLog { get; set; }
+        public string ServerSMTP { get; set; }
+        public eServiceType ServiceType { get; set; }
+        public string ServiceUrl { get; set; }
+        public bool StartEmuleIfClose { get; set; }
+        public bool StartMinimized { get; set; }
+        public int TotalDownloads { get; set; }
+        public string TVUCookieH { get; set; }
+        public string TVUCookieI { get; set; }
+        public string TVUCookieT { get; set; }
+        public string tvudwid { get; set; }
+        public bool UseHttpInsteadOfHttps { get; set; } // to implement
+        public bool Verbose { get; set; }
+        //Unique id
         /// <summary>
         ///     Get full assembly version
         /// </summary>
-        public static string VersionFull => ((AssemblyInformationalVersionAttribute) Assembly
+        public static string VersionFull => ((AssemblyInformationalVersionAttribute)Assembly
             .GetAssembly(typeof(Config))
             .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false)[0]).InformationalVersion;
 
+        public bool WebServerEnable { get; set; }
+        public int WebServerPort { get; set; }
         public void Load()
         {
             RssFeedList.Clear();
@@ -204,6 +173,10 @@ namespace TvUndergroundDownloaderLib
 
             UseHttpInsteadOfHttps = Convert.ToBoolean(ReadString(xDoc, "useHttpInsteadOfHttps", "false"));
 
+            WebServerEnable = Convert.ToBoolean(ReadString(xDoc, "WebServerEnable", "false"));
+
+            WebServerPort = ReadInt(xDoc, "WebServerPort", 9696);
+
             //
             //  Load Channel
             //
@@ -226,9 +199,7 @@ namespace TvUndergroundDownloaderLib
             writer.WriteStartDocument();
             writer.WriteStartElement("Config");
 
-            writer.WriteStartElement("version");
-            writer.WriteString(Version);
-            writer.WriteEndElement();
+            writer.WriteElementString("version", Version);
 
             writer.WriteStartElement("ServiceType");
             if (ServiceType == eServiceType.eMule)
@@ -245,79 +216,46 @@ namespace TvUndergroundDownloaderLib
             writer.WriteElementString("IntervalTime", IntervalTime.ToString());
             writer.WriteElementString("StartMinimized", StartMinimized.ToString());
 
-            writer.WriteStartElement("AutoStartEmule");
-            writer.WriteString(StartEmuleIfClose.ToString());
-            writer.WriteEndElement();
+            writer.WriteElementString("AutoStartEmule", StartEmuleIfClose.ToString());
 
-            writer.WriteStartElement("CloseWhenAllDone");
-            writer.WriteString(CloseEmuleIfAllIsDone.ToString());
-            writer.WriteEndElement();
+            writer.WriteElementString("CloseWhenAllDone", CloseEmuleIfAllIsDone.ToString());
 
-            writer.WriteStartElement("AutoClearLog");
-            writer.WriteString(AutoClearLog.ToString());
-            writer.WriteEndElement();
+            writer.WriteElementString("AutoClearLog", AutoClearLog.ToString());
 
-            writer.WriteStartElement("eMuleExe");
-            writer.WriteString(eMuleExe);
-            writer.WriteEndElement();
+            writer.WriteElementString("eMuleExe", eMuleExe);
 
-            writer.WriteStartElement("DefaultCategory");
-            writer.WriteString(DefaultCategory);
-            writer.WriteEndElement();
+            writer.WriteElementString("DefaultCategory", DefaultCategory);
 
-            writer.WriteStartElement("MinToStartEmule");
-            writer.WriteString(MinToStartEmule.ToString());
-            writer.WriteEndElement();
+            writer.WriteElementString("MinToStartEmule", MinToStartEmule.ToString());
 
-            writer.WriteStartElement("MaxSimultaneousFeedDownloads");
-            writer.WriteString(MaxSimultaneousFeedDownloadsDefault.ToString());
-            writer.WriteEndElement();
+            writer.WriteElementString("MaxSimultaneousFeedDownloads", MaxSimultaneousFeedDownloadsDefault.ToString());
 
             writer.WriteElementString("PauseDownloadDefault", PauseDownloadDefault.ToString());
 
-            writer.WriteStartElement("Verbose");
-            writer.WriteString(Verbose.ToString());
-            writer.WriteEndElement();
+            writer.WriteElementString("Verbose", Verbose.ToString());
 
-            writer.WriteStartElement("EmailNotification");
-            writer.WriteString(EmailNotification.ToString());
-            writer.WriteEndElement();
+            writer.WriteElementString("EmailNotification", EmailNotification.ToString());
 
-            writer.WriteStartElement("ServerSMTP");
-            writer.WriteString(ServerSMTP);
-            writer.WriteEndElement();
+            writer.WriteElementString("ServerSMTP", ServerSMTP);
 
-            writer.WriteStartElement("MailReceiver");
-            writer.WriteString(MailReceiver);
-            writer.WriteEndElement();
+            writer.WriteElementString("MailReceiver", MailReceiver);
 
-            writer.WriteStartElement("MailSender");
-            writer.WriteString(MailSender);
-            writer.WriteEndElement();
+            writer.WriteElementString("MailSender", MailSender);
 
-            writer.WriteStartElement("SaveLog");
-            writer.WriteString(saveLog.ToString());
-            writer.WriteEndElement();
+            writer.WriteElementString("SaveLog", saveLog.ToString());
 
-            writer.WriteStartElement("tvudwid");
-            writer.WriteString(tvudwid);
-            writer.WriteEndElement();
+            writer.WriteElementString("tvudwid", tvudwid);
 
-            writer.WriteStartElement("intervalBetweenUpgradeCheck");
-            writer.WriteString(intervalBetweenUpgradeCheck.ToString());
-            writer.WriteEndElement();
+            writer.WriteElementString("intervalBetweenUpgradeCheck", intervalBetweenUpgradeCheck.ToString());
 
-            writer.WriteStartElement("LastUpgradeCheck");
-            writer.WriteString(LastUpgradeCheck);
-            writer.WriteEndElement();
+            writer.WriteElementString("LastUpgradeCheck", LastUpgradeCheck);
 
-            writer.WriteStartElement("TotalDownloads");
-            writer.WriteString(TotalDownloads.ToString());
-            writer.WriteEndElement();
+            writer.WriteElementString("TotalDownloads", TotalDownloads.ToString());
 
-            writer.WriteStartElement("useHttpInsteadOfHttps");
-            writer.WriteString(UseHttpInsteadOfHttps.ToString());
-            writer.WriteEndElement();
+            writer.WriteElementString("useHttpInsteadOfHttps", UseHttpInsteadOfHttps.ToString());
+
+            writer.WriteElementString("WebServerEnable", WebServerEnable.ToString());
+            writer.WriteElementString("WebServerPort", WebServerPort.ToString());
 
             writer.WriteStartElement("RSSChannel");
 

@@ -817,6 +817,8 @@ namespace TvUndergroundDownloader
                 MainConfig.intervalBetweenUpgradeCheck = optDialog.intervalBetweenUpgradeCheck;
                 MainConfig.MaxSimultaneousFeedDownloadsDefault = optDialog.MaxSimultaneousFeedDownloads;
                 MainConfig.saveLog = optDialog.saveLog;
+                MainConfig.WebServerEnable = optDialog.WebServerEnable;
+                MainConfig.WebServerPort = optDialog.WebServerPort;
 
                 // tvu save cookie
                 MainConfig.TVUCookieH = optDialog.tvuCookieH;
