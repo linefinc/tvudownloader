@@ -260,6 +260,10 @@
     <None Include="Resources\flag\jp.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EmbendedWebServer\EmbendedWebServerLib.csproj">
+      <Project>{5B06F03D-7CE9-44EF-A5EC-0E33DA321649}</Project>
+      <Name>EmbendedWebServerLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TvUndergroundDownloaderLib\TvUndergroundDownloaderLib.csproj">
       <Project>{21CFFC29-3DCA-43A4-AA90-0A5332E2E1FF}</Project>
       <Name>TvUndergroundDownloaderLib</Name>

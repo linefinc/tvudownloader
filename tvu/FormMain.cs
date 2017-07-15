@@ -12,6 +12,7 @@ using System.IO;
 using System.Net;
 using System.Windows.Forms;
 using TvUndergroundDownloaderLib;
+using TvUndergroundDownloaderLib.EmbendedWebServer;
 
 namespace TvUndergroundDownloader
 {
@@ -47,6 +48,14 @@ namespace TvUndergroundDownloader
             worker.Config = MainConfig;
             worker.WorkerCompleted += Task_RunWorkerCompleted;
 
+
+            if (MainConfig.WebServerEnable)
+            {
+                var embendedWebServer = new EmbendedWebServer();
+                embendedWebServer.Config = MainConfig;
+                embendedWebServer.Worker = worker;
+                embendedWebServer.Start();
+            }
         }
 
         public static string GetUserAppDataPath()

@@ -10,8 +10,6 @@ namespace TvUndergroundDownloader
 {
     internal static class Program
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
-
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
         /// </summary>
@@ -44,6 +42,9 @@ namespace TvUndergroundDownloader
             LoggingRule m_loggingRule = new LoggingRule("*", LogLevel.Info, fileTarget);
             config.LoggingRules.Insert(0, m_loggingRule);
             LogManager.Configuration = config;
+
+            
+
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
