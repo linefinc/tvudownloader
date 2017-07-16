@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Xml;
+using NLog;
 
 namespace TvUndergroundDownloaderLib
 {
@@ -24,7 +26,6 @@ namespace TvUndergroundDownloaderLib
                 textWritter.WriteEndElement();
                 textWritter.Close();
             }
-            Load();
         }
 
         [Flags]
@@ -46,40 +47,38 @@ namespace TvUndergroundDownloaderLib
             }
         }
 
-        public bool AutoClearLog { get; set; }
-        public bool CloseEmuleIfAllIsDone { get; set; }
-        public static string ConfigFolder => "./";
-        public string DefaultCategory { get; set; }
-        public bool EmailNotification { get; set; }
-        public string eMuleExe { get; set; }
-        public bool Enebled { get; set; }
-        public static string FileNameConfig => Path.Combine(ConfigFolder, "config.xml");
-        public static string FileNameDB => Path.Combine(ConfigFolder, "storage.sqlitedb");
-        public static string FileNameHistory => Path.Combine(ConfigFolder, "History.xml");
-        public static string FileNameLog => Path.Combine(ConfigFolder, "log.txt");
-        public int intervalBetweenUpgradeCheck { get; set; }
-        public int IntervalTime { get; set; }
-        public string LastUpgradeCheck { get; set; }
-        public string MailReceiver { get; set; }
-        public string MailSender { get; set; }
-        public uint MaxSimultaneousFeedDownloadsDefault { get; set; }
-        public int MinToStartEmule { get; set; }
-        public string Password { get; set; }
-        public bool PauseDownloadDefault { get; set; }
+        public bool AutoClearLog { get; set; } = false;
+        public bool CloseEmuleIfAllIsDone { get; set; } = false;
+
+        public string DefaultCategory { get; set; } = string.Empty;
+        public bool EmailNotification { get; set; } = false;
+        public string eMuleExe { get; set; } = String.Empty;
+        public bool Enebled { get; set; } = true;
+        public virtual string FileNameConfig => "config.xml";
+        public virtual string FileNameLog => "log.txt";
+        public int IntervalBetweenUpgradeCheck { get; set; } = 5;
+        public int IntervalTime { get; set; } = 30;     // todo: replace with timespan
+        public string LastUpgradeCheck { get; set; }    // todo: make nullable
+        public string MailReceiver { get; set; } = string.Empty;
+        public string MailSender { get; set; } = string.Empty;
+        public uint MaxSimultaneousFeedDownloadsDefault { get; set; } = 3;
+        public int MinToStartEmule { get; set; } = 0;
+        public string Password { get; set; } = "password";
+        public bool PauseDownloadDefault { get; set; } = false;
         public RssSubscriptionList RssFeedList { get; set; }
-        public bool saveLog { get; set; }
-        public string ServerSMTP { get; set; }
-        public eServiceType ServiceType { get; set; }
-        public string ServiceUrl { get; set; }
-        public bool StartEmuleIfClose { get; set; }
-        public bool StartMinimized { get; set; }
-        public int TotalDownloads { get; set; }
-        public string TVUCookieH { get; set; }
-        public string TVUCookieI { get; set; }
-        public string TVUCookieT { get; set; }
-        public string tvudwid { get; set; }
-        public bool UseHttpInsteadOfHttps { get; set; } // to implement
-        public bool Verbose { get; set; }
+        public bool SaveLog { get; set; } = false;
+        public string ServerSMTP { get; set; } = string.Empty;
+        public eServiceType ServiceType { get; set; } = eServiceType.eMule;
+        public string ServiceUrl { get; set; } = "http://localhost:4000";
+        public bool StartEmuleIfClose { get; set; } = false;
+        public bool StartMinimized { get; set; } = false;
+        public int TotalDownloads { get; set; } = 0;
+        public string TVUCookieH { get; set; } = string.Empty;
+        public string TVUCookieI { get; set; } = string.Empty;
+        public string TVUCookieT { get; set; } = string.Empty;
+        public string tvudwid { get; set; } = null;
+        public bool UseHttpInsteadOfHttps { get; set; } = false;    // todo: implement
+        public bool Verbose { get; set; } = false;
         //Unique id
         /// <summary>
         ///     Get full assembly version
@@ -88,11 +87,17 @@ namespace TvUndergroundDownloaderLib
             .GetAssembly(typeof(Config))
             .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false)[0]).InformationalVersion;
 
-        public bool WebServerEnable { get; set; }
-        public int WebServerPort { get; set; }
-        public void Load()
+        public bool WebServerEnable { get; set; } = false;
+        public int WebServerPort { get; set; } = 9696;
+        public void Load(string fileName)
         {
+            if (fileName == null)
+                throw new ArgumentNullException(nameof(fileName));
+
             RssFeedList.Clear();
+
+            Logger logger = LogManager.GetCurrentClassLogger();
+            logger.Info("FileNameConfig {0}", fileName);
 
             var xDoc = new XmlDocument();
             xDoc.Load(FileNameConfig);
@@ -119,76 +124,116 @@ namespace TvUndergroundDownloaderLib
                     break;
             }
 
-            ServiceUrl = ReadString(xDoc, "ServiceUrl", "http://localhost:4000");
 
-            Password = ReadString(xDoc, "Password", "password");
+            if (NodeExist(xDoc, "ServiceUrl"))
+                ServiceUrl = ReadString(xDoc, "ServiceUrl", "http://localhost:4000");
 
-            TVUCookieH = ReadString(xDoc, "tvuCookieH", string.Empty);
+            if (NodeExist(xDoc, "Password"))
+                Password = ReadString(xDoc, "Password", "password");
 
-            TVUCookieI = ReadString(xDoc, "tvuCookieI", string.Empty);
+            if (NodeExist(xDoc, "tvuCookieH"))
+            {
+                TVUCookieH = ReadString(xDoc, "tvuCookieH", string.Empty);
+                logger.Info("Raw config tvuCookieH {0}", ReadString(xDoc, "tvuCookieH", string.Empty));
+            }
 
-            TVUCookieT = ReadString(xDoc, "tvuCookieT", string.Empty);
+            if (NodeExist(xDoc, "tvuCookieI"))
+            {
+                TVUCookieI = ReadString(xDoc, "tvuCookieI", string.Empty);
+                logger.Info("Raw config tvuCookieI {0}", ReadString(xDoc, "tvuCookieI", string.Empty));
+            }
 
-            IntervalTime = ReadInt(xDoc, "IntervalTime", 30, 1, 24 * 60 * 60);
+            if (NodeExist(xDoc, "tvuCookieT"))
+            {
+                TVUCookieT = ReadString(xDoc, "tvuCookieT", string.Empty);
+                logger.Info("Raw config tvuCookieI {0}", ReadString(xDoc, "tvuCookieT", string.Empty));
+            }
 
-            StartMinimized = Convert.ToBoolean(ReadString(xDoc, "StartMinimized", "false"));
+            if (NodeExist(xDoc, "IntervalTime"))
+                IntervalTime = ReadInt(xDoc, "IntervalTime", 30, 1, 24 * 60 * 60);
 
-            CloseEmuleIfAllIsDone = Convert.ToBoolean(ReadString(xDoc, "CloseWhenAllDone", "false"));
+            if (NodeExist(xDoc, "StartMinimized"))
+                StartMinimized = ReadBoolean(xDoc, "StartMinimized", false);
+            //
+            if (NodeExist(xDoc, "CloseWhenAllDone"))
+                CloseEmuleIfAllIsDone = ReadBoolean(xDoc, "CloseWhenAllDone", false);
 
-            StartEmuleIfClose = Convert.ToBoolean(ReadString(xDoc, "AutoStartEmule", "false"));
+            if (NodeExist(xDoc, "AutoStartEmule"))
+                StartEmuleIfClose = ReadBoolean(xDoc, "AutoStartEmule", false);
 
-            AutoClearLog = Convert.ToBoolean(ReadString(xDoc, "AutoClearLog", "false"));
+            if (NodeExist(xDoc, "AutoClearLog"))
+                AutoClearLog = ReadBoolean(xDoc, "AutoClearLog", false);
 
-            MaxSimultaneousFeedDownloadsDefault = ReadUInt(xDoc, "MaxSimultaneousFeedDownloads", 3, 0, 50);
+            if (NodeExist(xDoc, "MaxSimultaneousFeedDownloads"))
+                MaxSimultaneousFeedDownloadsDefault = ReadUInt(xDoc, "MaxSimultaneousFeedDownloads", 3, 0, 50);
 
-            PauseDownloadDefault = Convert.ToBoolean(ReadString(xDoc, "PauseDownloadDefault", "false"));
+            if (NodeExist(xDoc, "PauseDownloadDefault"))
+                PauseDownloadDefault = ReadBoolean(xDoc, "PauseDownloadDefault", false);
 
-            MinToStartEmule = ReadInt(xDoc, "MinToStartEmule", 0, 0, 50);
+            if (NodeExist(xDoc, "MinToStartEmule"))
+                MinToStartEmule = ReadInt(xDoc, "MinToStartEmule", 0, 0, 50);
 
-            eMuleExe = ReadString(xDoc, "eMuleExe", "");
+            if (NodeExist(xDoc, "eMuleExe"))
+                eMuleExe = ReadString(xDoc, "eMuleExe", "");
 
-            DefaultCategory = ReadString(xDoc, "DefaultCategory", "");
+            if (NodeExist(xDoc, "DefaultCategory"))
+                DefaultCategory = ReadString(xDoc, "DefaultCategory", "");
 #if DEBUG
             Verbose = true;
 #else
-            Verbose = Convert.ToBoolean(ReadString(xDoc, "Verbose", "false"));
+            if (NodeExist(xDoc, "Verbose"))
+                Verbose = ReadBoolean(xDoc, "Verbose", "false"));
 #endif
-            saveLog = Convert.ToBoolean(ReadString(xDoc, "SaveLog", "false"));
+            if (NodeExist(xDoc, "SaveLog"))
+                SaveLog = ReadBoolean(xDoc, "SaveLog", false);
 
-            EmailNotification = Convert.ToBoolean(ReadString(xDoc, "EmailNotification", "false"));
+            if (NodeExist(xDoc, "EmailNotification"))
+                EmailNotification = ReadBoolean(xDoc, "EmailNotification", false);
 
-            ServerSMTP = ReadString(xDoc, "ServerSMTP", "");
+            if (NodeExist(xDoc, "ServerSMTP"))
+                ServerSMTP = ReadString(xDoc, "ServerSMTP", "");
 
-            MailReceiver = ReadString(xDoc, "MailReceiver", "");
+            if (NodeExist(xDoc, "MailReceiver"))
+                MailReceiver = ReadString(xDoc, "MailReceiver", "");
 
-            MailSender = ReadString(xDoc, "MailSender", "");
+            if (NodeExist(xDoc, "MailSender"))
+                MailSender = ReadString(xDoc, "MailSender", "");
 
-            tvudwid = ReadString(xDoc, "tvudwid", RandomIDGenerator());
+            if (NodeExist(xDoc, "tvudwid"))
+                tvudwid = ReadString(xDoc, "tvudwid", RandomIdGenerator());
+            else
+                tvudwid = RandomIdGenerator();
 
-            intervalBetweenUpgradeCheck = ReadInt(xDoc, "intervalBetweenUpgradeCheck", 5, 1, 15);
+            if (NodeExist(xDoc, "intervalBetweenUpgradeCheck"))
+                IntervalBetweenUpgradeCheck = ReadInt(xDoc, "intervalBetweenUpgradeCheck", 5, 1, 15);
 
-            LastUpgradeCheck = ReadString(xDoc, "LastUpgradeCheck", DateTime.Now.ToString("yyyy-MM-dd"));
+            if (NodeExist(xDoc, "LastUpgradeCheck"))
+                LastUpgradeCheck = ReadString(xDoc, "LastUpgradeCheck", DateTime.Now.ToString("yyyy-MM-dd"));
 
-            TotalDownloads = ReadInt(xDoc, "TotalDownloads", 0);
+            if (NodeExist(xDoc, "TotalDownloads"))
+                TotalDownloads = ReadInt(xDoc, "TotalDownloads", 0);
 
-            UseHttpInsteadOfHttps = Convert.ToBoolean(ReadString(xDoc, "useHttpInsteadOfHttps", "false"));
+            if (NodeExist(xDoc, "useHttpInsteadOfHttps"))
+                UseHttpInsteadOfHttps = ReadBoolean(xDoc, "useHttpInsteadOfHttps", false);
 
-            WebServerEnable = Convert.ToBoolean(ReadString(xDoc, "WebServerEnable", "false"));
+            if (NodeExist(xDoc, "WebServerEnable"))
+                WebServerEnable = ReadBoolean(xDoc, "WebServerEnable", false);
 
-            WebServerPort = ReadInt(xDoc, "WebServerPort", 9696);
+            if (NodeExist(xDoc, "WebServerPort"))
+                WebServerPort = ReadInt(xDoc, "WebServerPort", 9696);
 
             //
             //  Load Channel
             //
-            var Channels = xDoc.GetElementsByTagName("Channel");
+            XmlNodeList channelNodeList = xDoc.GetElementsByTagName("Channel");
 
-            for (int i = 0; i < Channels.Count; i++)
+            for (int i = 0; i < channelNodeList.Count; i++)
             {
-                var newfeed = RssSubscription.LoadFormXml(Channels[i]);
+                var newfeed = RssSubscription.LoadFormXml(channelNodeList[i]);
                 RssFeedList.Add(newfeed);
             }
 
-            RssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title));
+            RssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title, StringComparison.InvariantCulture));
         }
 
         public void Save()
@@ -242,11 +287,11 @@ namespace TvUndergroundDownloaderLib
 
             writer.WriteElementString("MailSender", MailSender);
 
-            writer.WriteElementString("SaveLog", saveLog.ToString());
+            writer.WriteElementString("SaveLog", SaveLog.ToString());
 
             writer.WriteElementString("tvudwid", tvudwid);
 
-            writer.WriteElementString("intervalBetweenUpgradeCheck", intervalBetweenUpgradeCheck.ToString());
+            writer.WriteElementString("intervalBetweenUpgradeCheck", IntervalBetweenUpgradeCheck.ToString());
 
             writer.WriteElementString("LastUpgradeCheck", LastUpgradeCheck);
 
@@ -275,7 +320,7 @@ namespace TvUndergroundDownloaderLib
             writer.Close();
         }
 
-        private static string RandomIDGenerator()
+        private static string RandomIdGenerator()
         {
             string temp = "";
 
@@ -285,44 +330,63 @@ namespace TvUndergroundDownloaderLib
             return temp;
         }
 
-        private static string ReadString(XmlDocument xDoc, string NodeName, string defaultValue)
+        private static string ReadString(XmlDocument xDoc, string nodeName, string defaultValue)
         {
-            var t = xDoc.GetElementsByTagName(NodeName);
+            var t = xDoc.GetElementsByTagName(nodeName);
             if (t.Count == 0)
                 return defaultValue;
             return t[0].InnerText;
         }
 
-        private int ReadInt(XmlDocument xDoc, string NodeName, int defaultValue)
+        private static int ReadInt(XmlDocument xDoc, string nodeName, int defaultValue)
         {
-            var t = xDoc.GetElementsByTagName(NodeName);
+            var t = xDoc.GetElementsByTagName(nodeName);
             if (t.Count == 0)
                 return defaultValue;
             return Convert.ToInt32(t[0].InnerText);
         }
 
-        private int ReadInt(XmlDocument xDoc, string NodeName, int defaultValue, int Min, int Max)
+        private static int ReadInt(XmlDocument xDoc, string nodeName, int defaultValue, int Min, int Max)
         {
-            int val = ReadInt(xDoc, NodeName, defaultValue);
+            int val = ReadInt(xDoc, nodeName, defaultValue);
             val = Math.Min(val, Max);
             val = Math.Max(val, Min);
             return val;
         }
 
-        private uint ReadUInt(XmlDocument xDoc, string NodeName, uint defaultValue)
+
+        private static uint ReadUInt(XmlDocument xDoc, string nodeName, uint defaultValue)
         {
-            var t = xDoc.GetElementsByTagName(NodeName);
+            var t = xDoc.GetElementsByTagName(nodeName);
             if (t.Count == 0)
                 return defaultValue;
             return Convert.ToUInt32(t[0].InnerText);
         }
 
-        private uint ReadUInt(XmlDocument xDoc, string NodeName, uint defaultValue, uint Min, uint Max)
+        private static uint ReadUInt(XmlDocument xDoc, string nodeName, uint defaultValue, uint Min, uint Max)
         {
-            uint val = ReadUInt(xDoc, NodeName, defaultValue);
+            uint val = ReadUInt(xDoc, nodeName, defaultValue);
             val = Math.Min(val, Max);
             val = Math.Max(val, Min);
             return val;
         }
+
+        private static bool ReadBoolean(XmlDocument xDoc, string nodeName, bool defaultValue)
+        {
+            var t = xDoc.GetElementsByTagName(nodeName);
+            if (t.Count == 0)
+                return defaultValue;
+            return t[0].InnerText.ToLower().Contains("true");
+        }
+
+        private static bool NodeExist(XmlDocument xDoc, string nodeName)
+        {
+            var t = xDoc.GetElementsByTagName(nodeName);
+            if (t.Count == 0)
+                return false;
+            return true;
+
+        }
+
     }
 }

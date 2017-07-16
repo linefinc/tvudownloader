@@ -35,15 +35,20 @@ namespace TvUndergroundDownloader
                 config = new LoggingConfiguration();
             }
 
-            FileTarget fileTarget = new FileTarget();
-            fileTarget.Name = "logfile";
-            fileTarget.FileName = Config.FileNameLog;
-            config.AddTarget(fileTarget.Name, fileTarget);
-            LoggingRule m_loggingRule = new LoggingRule("*", LogLevel.Info, fileTarget);
-            config.LoggingRules.Insert(0, m_loggingRule);
-            LogManager.Configuration = config;
-
-            
+            //
+            //  Load Config
+            //
+            ConfigWindows configWindows = new ConfigWindows();
+            if (configWindows.SaveLog == false)
+            {
+                FileTarget fileTarget = new FileTarget();
+                fileTarget.Name = "logfile";
+                fileTarget.FileName = configWindows.FileNameLog;
+                config.AddTarget(fileTarget.Name, fileTarget);
+                LoggingRule loggingRule = new LoggingRule("*", LogLevel.Info, fileTarget);
+                config.LoggingRules.Insert(0, loggingRule);
+                LogManager.Configuration = config;
+            }
 
 
             Application.EnableVisualStyles();

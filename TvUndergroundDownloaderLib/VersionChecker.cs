@@ -13,7 +13,7 @@ namespace TvUndergroundDownloaderLib
             Logger logger = LogManager.GetCurrentClassLogger();
             logger.Info("Check New Version");
 
-            if (config.intervalBetweenUpgradeCheck == 0)
+            if (config.IntervalBetweenUpgradeCheck == 0)
                 return false;
 
             try
@@ -21,7 +21,7 @@ namespace TvUndergroundDownloaderLib
                 var provider = CultureInfo.InvariantCulture;
 
                 var lastCheckDateTime = DateTime.ParseExact(config.LastUpgradeCheck, "yyyy-MM-dd", provider);
-                var nextCheck = lastCheckDateTime.AddDays(config.intervalBetweenUpgradeCheck);
+                var nextCheck = lastCheckDateTime.AddDays(config.IntervalBetweenUpgradeCheck);
 
                 lastCheckDateTime = DateTime.ParseExact(config.LastUpgradeCheck, "yyyy-MM-dd", provider);
 

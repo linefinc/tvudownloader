@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using TvUndergroundDownloaderLib;
@@ -17,6 +18,51 @@ namespace TvUndergroundDownloader
             //  Enable web browser emulation
             //
             EnableWebBrowserEmulation();
+        }
+
+
+        public void Load()
+        {
+            if (File.Exists(FileNameConfig))
+            {
+                base.Load(FileNameConfig);
+            }
+        }
+
+        public string ConfigFolder
+        {
+            get
+            {
+#if DEBUG
+                return AppDomain.CurrentDomain.BaseDirectory;
+#else
+
+                // base path = C:\Users\User\AppData\Local\TvUndergroundDownloader\TvUndergroundDownloader\version
+                // return  C:\Users\User\AppData\Local\TvUndergroundDownloader
+                string basePath = Application.LocalUserAppDataPath;
+                basePath = Directory.GetParent(basePath).FullName;
+                basePath = Directory.GetParent(basePath).FullName;
+                return basePath;
+#endif
+            }
+        }
+
+        public override string FileNameConfig
+        {
+            get
+            {
+                string fileName = "Config.xml";
+                return Path.Combine(ConfigFolder, fileName);
+            }
+        }
+
+        public override string FileNameLog
+        {
+            get
+            {
+                string fileName = "log.txt";
+                return Path.Combine(ConfigFolder, fileName);
+            }
         }
 
         /// <summary>

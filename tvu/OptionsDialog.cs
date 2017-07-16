@@ -81,7 +81,7 @@ namespace TvUndergroundDownloader
 
             numericUpDownIntervalTime.Value = IntervalTime = inConfig.IntervalTime;
             numericUpDownMinDownloadToStrarTEmule.Value = MinToStartEmule = inConfig.MinToStartEmule;
-            numericUpDownIntervalCheck.Value = intervalBetweenUpgradeCheck = inConfig.intervalBetweenUpgradeCheck;
+            numericUpDownIntervalCheck.Value = intervalBetweenUpgradeCheck = inConfig.IntervalBetweenUpgradeCheck;
 
             numericUpDownMaxSimultaneousDownloadForFeed.Value = MaxSimultaneousFeedDownloads = inConfig.MaxSimultaneousFeedDownloadsDefault;
             checkBoxStartMinimized.Checked = StartMinimized = inConfig.StartMinimized;
@@ -91,7 +91,7 @@ namespace TvUndergroundDownloader
             checkBoxAutoClear.Checked = AutoClearLog = inConfig.AutoClearLog;
             checkBoxVerbose.Checked = Verbose = inConfig.Verbose;
             checkBoxEmailNotification.Checked = EmailNotification = inConfig.EmailNotification;
-            checkBoxSaveLogToFile.Checked = saveLog = inConfig.saveLog;
+            checkBoxSaveLogToFile.Checked = saveLog = inConfig.SaveLog;
             tvuCookieH = textBoxCookieH.Text = inConfig.TVUCookieH;
             tvuCookieI = textBoxCookieI.Text = inConfig.TVUCookieI;
             tvuCookieT = textBoxCookieT.Text = inConfig.TVUCookieT;

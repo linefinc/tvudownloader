@@ -35,6 +35,8 @@ namespace TvUndergroundDownloader
         private bool mVisible = true;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private Worker worker;
+        private EmbendedWebServer embendedWebServer;
+
 
         public FormMain()
         {
@@ -48,20 +50,12 @@ namespace TvUndergroundDownloader
             worker.Config = MainConfig;
             worker.WorkerCompleted += Task_RunWorkerCompleted;
 
-            if (MainConfig.WebServerEnable)
-            {
-                var embendedWebServer = new EmbendedWebServer();
-                embendedWebServer.Config = MainConfig;
-                embendedWebServer.Worker = worker;
-                embendedWebServer.Start();
-            }
-
 #if DEBUG
             string versionFull = ((AssemblyInformationalVersionAttribute)Assembly
             .GetAssembly(typeof(FormMain))
             .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false)[0]).InformationalVersion;
 
-            this.Text += " " + versionFull;
+            this.Text += " - DEBUG - " + versionFull;
 #endif
         }
 
@@ -779,9 +773,9 @@ namespace TvUndergroundDownloader
                 MainConfig.MailSender = optDialog.MailSender;
                 MainConfig.MailReceiver = optDialog.MailReceiver;
                 MainConfig.AutoClearLog = optDialog.AutoClearLog;
-                MainConfig.intervalBetweenUpgradeCheck = optDialog.intervalBetweenUpgradeCheck;
+                MainConfig.IntervalBetweenUpgradeCheck = optDialog.intervalBetweenUpgradeCheck;
                 MainConfig.MaxSimultaneousFeedDownloadsDefault = optDialog.MaxSimultaneousFeedDownloads;
-                MainConfig.saveLog = optDialog.saveLog;
+                MainConfig.SaveLog = optDialog.saveLog;
                 MainConfig.WebServerEnable = optDialog.WebServerEnable;
                 MainConfig.WebServerPort = optDialog.WebServerPort;
 
@@ -981,9 +975,9 @@ namespace TvUndergroundDownloader
         {
             try
             {
-                if (System.IO.File.Exists(Config.FileNameLog) == true)
+                if (System.IO.File.Exists(MainConfig.FileNameLog) == true)
                 {
-                    Process.Start("notepad.exe", Config.FileNameLog);
+                    Process.Start("notepad.exe", MainConfig.FileNameLog);
                 }
             }
             catch (Exception exception)
@@ -1248,21 +1242,18 @@ namespace TvUndergroundDownloader
 
                 downloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
 
-                logger.Info("Now : {0}", DateTime.Now.ToString());
-                logger.Info("next tick : " + downloadDataTime.ToString());
+                logger.Info("Now : {0}", DateTime.Now);
+                logger.Info("next tick : " + downloadDataTime);
                 StartDownloadThread();
                 UpdateRssFeedGUI();
             }
 
-            if (VersionChecker.CheckNewVersion(this.MainConfig, true) == true)
-            {
-                MessageBox.Show("New Version is available at http://tvudownloader.sourceforge.net/");
-            }
-        }
+       }
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            logger.Info("Configuration loaded " + Config.FileNameConfig);
+            logger.Info("Configuration loaded {0} ", MainConfig.FileNameConfig);
+
             timer2.Enabled = false;
 
             if (MainConfig.StartMinimized == true)
@@ -1270,6 +1261,15 @@ namespace TvUndergroundDownloader
                 mVisible = false;
                 this.Visible = false;
             }
+
+            //if (MainConfig.WebServerEnable)
+            //{
+            //    embendedWebServer = new EmbendedWebServer();
+            //    embendedWebServer.Config = MainConfig;
+            //    embendedWebServer.Worker = worker;
+            //    embendedWebServer.Start();
+            //}
+
             StartDownloadThread();
 
             if (VersionChecker.CheckNewVersion(MainConfig, true) == true)

@@ -26,18 +26,10 @@ namespace TvUndergroundDownloaderConsole
                 nLogConfig = new LoggingConfiguration();
             }
 
-            FileTarget fileTarget = new FileTarget();
-            fileTarget.Name = "logfile";
-            fileTarget.FileName = TvUndergroundDownloaderLib.Config.FileNameLog;
-            nLogConfig.AddTarget(fileTarget.Name, fileTarget);
-            LoggingRule m_loggingRule = new LoggingRule("*", LogLevel.Info, fileTarget);
-            nLogConfig.LoggingRules.Insert(0, m_loggingRule);
-
             ConsoleTarget consoleTarget = new ConsoleTarget();
             consoleTarget.Name = "consoleTarget";
             nLogConfig.AddTarget(consoleTarget.Name, consoleTarget);
             nLogConfig.LoggingRules.Insert(0, new LoggingRule("*", LogLevel.Info, consoleTarget));
-
             LogManager.Configuration = nLogConfig;
 
             #endregion NLog setup
@@ -47,9 +39,19 @@ namespace TvUndergroundDownloaderConsole
             //
             logger.Info("TvUnderground Downloader starting");
             mainConfig = new TvUndergroundDownloaderLib.Config();
-            mainConfig.Load();
+            mainConfig.Load("./Config.xml");
             logger.Info("Loading config");
 
+            if (mainConfig.SaveLog)
+            {
+                FileTarget fileTarget = new FileTarget();
+                fileTarget.Name = "logfile";
+                fileTarget.FileName = mainConfig.FileNameLog;
+                nLogConfig.AddTarget(fileTarget.Name, fileTarget);
+                LoggingRule m_loggingRule = new LoggingRule("*", LogLevel.Info, fileTarget);
+                nLogConfig.LoggingRules.Insert(0, m_loggingRule);
+                LogManager.Configuration = nLogConfig;
+            }
             //
             //  Setup Worker
             //
