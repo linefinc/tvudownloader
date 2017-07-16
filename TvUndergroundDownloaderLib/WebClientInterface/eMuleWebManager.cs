@@ -228,7 +228,10 @@ namespace TvUndergroundDownloaderLib
             {
                 string tempBuffer = reader.ReadToEnd();
 #if DEBUG // save log file
+                string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
                 string fileName = string.Format("emule-{0:yyyy-MM-dd-HH-mm-ss-ff}.html", DateTime.Now);
+                fileName = Path.Combine(baseDirectory, fileName);
                 using (TextWriter writer = File.CreateText(fileName))
                 {
                     writer.WriteLine("<!-- {0} -->", uri);

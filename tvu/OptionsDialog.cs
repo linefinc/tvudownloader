@@ -95,6 +95,11 @@ namespace TvUndergroundDownloader
             tvuCookieH = textBoxCookieH.Text = inConfig.TVUCookieH;
             tvuCookieI = textBoxCookieI.Text = inConfig.TVUCookieI;
             tvuCookieT = textBoxCookieT.Text = inConfig.TVUCookieT;
+
+            textBoxWebServerPortNumber.Text = inConfig.WebServerPort.ToString();
+            WebServerEnable = checkBoxWebServerEnabled.Checked = inConfig.WebServerEnable;
+            WebServerPort = inConfig.WebServerPort;
+
         }
 
         public string ServiceUrl { private set; get; }
@@ -286,6 +291,11 @@ namespace TvUndergroundDownloader
                     ServiceType = Config.eServiceType.eMule;
                     break;
             }
+        }
+
+        private void OptionsDialog_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

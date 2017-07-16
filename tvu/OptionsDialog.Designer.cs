@@ -86,9 +86,9 @@
             this.label15 = new System.Windows.Forms.Label();
             this.textBoxCookieH = new System.Windows.Forms.TextBox();
             this.tabPageWebServer = new System.Windows.Forms.TabPage();
-            this.checkBoxWebServerEnabled = new System.Windows.Forms.CheckBox();
-            this.textBoxWebServerPortNumber = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
+            this.textBoxWebServerPortNumber = new System.Windows.Forms.TextBox();
+            this.checkBoxWebServerEnabled = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.tabPageLog.SuspendLayout();
             this.tabPageEmail.SuspendLayout();
@@ -725,6 +725,22 @@
             this.tabPageWebServer.Text = "Web Server";
             this.tabPageWebServer.UseVisualStyleBackColor = true;
             // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(6, 28);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(64, 13);
+            this.label20.TabIndex = 2;
+            this.label20.Text = "Port number";
+            // 
+            // textBoxWebServerPortNumber
+            // 
+            this.textBoxWebServerPortNumber.Location = new System.Drawing.Point(251, 25);
+            this.textBoxWebServerPortNumber.Name = "textBoxWebServerPortNumber";
+            this.textBoxWebServerPortNumber.Size = new System.Drawing.Size(100, 20);
+            this.textBoxWebServerPortNumber.TabIndex = 1;
+            // 
             // checkBoxWebServerEnabled
             // 
             this.checkBoxWebServerEnabled.AutoSize = true;
@@ -734,22 +750,6 @@
             this.checkBoxWebServerEnabled.TabIndex = 0;
             this.checkBoxWebServerEnabled.Text = "Enabled";
             this.checkBoxWebServerEnabled.UseVisualStyleBackColor = true;
-            // 
-            // textBoxWebServerPortNumber
-            // 
-            this.textBoxWebServerPortNumber.Location = new System.Drawing.Point(251, 25);
-            this.textBoxWebServerPortNumber.Name = "textBoxWebServerPortNumber";
-            this.textBoxWebServerPortNumber.Size = new System.Drawing.Size(100, 20);
-            this.textBoxWebServerPortNumber.TabIndex = 1;
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(6, 28);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(64, 13);
-            this.label20.TabIndex = 2;
-            this.label20.Text = "Port number";
             // 
             // OptionsDialog
             // 
@@ -766,6 +766,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Options";
+            this.Load += new System.EventHandler(this.OptionsDialog_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.tabPageLog.ResumeLayout(false);
             this.tabPageLog.PerformLayout();
