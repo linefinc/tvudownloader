@@ -36,7 +36,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.timerRssCheck = new System.Windows.Forms.Timer(this.components);
-            this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.timerDelayStartup = new System.Windows.Forms.Timer(this.components);
             this.tabLog = new System.Windows.Forms.TabPage();
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
             this.tabMain = new System.Windows.Forms.TabPage();
@@ -54,6 +54,8 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.enableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItemUpdateStatus = new System.Windows.Forms.ToolStripMenuItem();
             this.labelMaxSimultaneousDownloads = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.labelTotalFiles = new System.Windows.Forms.Label();
@@ -90,7 +92,6 @@
             this.cancelCheckToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.globalOptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.oPMLExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.testAutoStartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testAutoCloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -123,8 +124,6 @@
             this.toolStripButtonAddFeed = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonCheckNow = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripMenuItemUpdateStatus = new System.Windows.Forms.ToolStripMenuItem();
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).BeginInit();
@@ -143,13 +142,13 @@
             // 
             this.timerRssCheck.Enabled = true;
             this.timerRssCheck.Interval = 60000;
-            this.timerRssCheck.Tick += new System.EventHandler(this.timer1_Tick);
+            this.timerRssCheck.Tick += new System.EventHandler(this.timerRssCheck_Tick);
             // 
-            // timer2
+            // timerDelayStartup
             // 
-            this.timer2.Enabled = true;
-            this.timer2.Interval = 1000;
-            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            this.timerDelayStartup.Enabled = true;
+            this.timerDelayStartup.Interval = 1000;
+            this.timerDelayStartup.Tick += new System.EventHandler(this.timerDelayStartup_Tick);
             // 
             // tabLog
             // 
@@ -290,47 +289,59 @@
             this.toolStripSeparator7,
             this.toolStripMenuItemUpdateStatus});
             this.contextMenuStripFeed.Name = "contextMenuStrip1";
-            this.contextMenuStripFeed.Size = new System.Drawing.Size(153, 170);
+            this.contextMenuStripFeed.Size = new System.Drawing.Size(148, 148);
             // 
             // toolStripMenuItemAdd
             // 
             this.toolStripMenuItemAdd.Name = "toolStripMenuItemAdd";
-            this.toolStripMenuItemAdd.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemAdd.Size = new System.Drawing.Size(147, 22);
             this.toolStripMenuItemAdd.Text = "Add";
             this.toolStripMenuItemAdd.Click += new System.EventHandler(this.toolStripMenuItemAdd_Click);
             // 
             // toolStripMenuItemEdit
             // 
             this.toolStripMenuItemEdit.Name = "toolStripMenuItemEdit";
-            this.toolStripMenuItemEdit.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemEdit.Size = new System.Drawing.Size(147, 22);
             this.toolStripMenuItemEdit.Text = "Edit";
             this.toolStripMenuItemEdit.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
             // 
             // toolStripMenuItemDelete
             // 
             this.toolStripMenuItemDelete.Name = "toolStripMenuItemDelete";
-            this.toolStripMenuItemDelete.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemDelete.Size = new System.Drawing.Size(147, 22);
             this.toolStripMenuItemDelete.Text = "Delete";
             this.toolStripMenuItemDelete.Click += new System.EventHandler(this.toolStripMenuItemDelete_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(144, 6);
             // 
             // enableToolStripMenuItem
             // 
             this.enableToolStripMenuItem.Name = "enableToolStripMenuItem";
-            this.enableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.enableToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.enableToolStripMenuItem.Text = "Enable";
             this.enableToolStripMenuItem.Click += new System.EventHandler(this.enableToolStripMenuItem_Click);
             // 
             // disableToolStripMenuItem
             // 
             this.disableToolStripMenuItem.Name = "disableToolStripMenuItem";
-            this.disableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.disableToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.disableToolStripMenuItem.Text = "Disable";
             this.disableToolStripMenuItem.Click += new System.EventHandler(this.disableToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(144, 6);
+            // 
+            // toolStripMenuItemUpdateStatus
+            // 
+            this.toolStripMenuItemUpdateStatus.Name = "toolStripMenuItemUpdateStatus";
+            this.toolStripMenuItemUpdateStatus.Size = new System.Drawing.Size(147, 22);
+            this.toolStripMenuItemUpdateStatus.Text = "Update Status";
+            this.toolStripMenuItemUpdateStatus.Click += new System.EventHandler(this.toolStripMenuItemUpdateStatus_Click);
             // 
             // labelMaxSimultaneousDownloads
             // 
@@ -649,7 +660,6 @@
             // 
             this.optionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.globalOptionToolStripMenuItem,
-            this.oPMLExportToolStripMenuItem,
             this.toolStripSeparator3,
             this.testAutoStartToolStripMenuItem,
             this.testAutoCloseToolStripMenuItem,
@@ -668,13 +678,6 @@
             this.globalOptionToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.globalOptionToolStripMenuItem.Text = "Global Option";
             this.globalOptionToolStripMenuItem.Click += new System.EventHandler(this.globalOptionToolStripMenuItem_Click);
-            // 
-            // oPMLExportToolStripMenuItem
-            // 
-            this.oPMLExportToolStripMenuItem.Name = "oPMLExportToolStripMenuItem";
-            this.oPMLExportToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.oPMLExportToolStripMenuItem.Text = "OPML Export";
-            this.oPMLExportToolStripMenuItem.Click += new System.EventHandler(this.oPMLExportToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
@@ -917,18 +920,6 @@
             this.toolStripButtonStop.Text = "Stop";
             this.toolStripButtonStop.Click += new System.EventHandler(this.toolStripButtonStop_Click);
             // 
-            // toolStripSeparator7
-            // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(149, 6);
-            // 
-            // toolStripMenuItemUpdateStatus
-            // 
-            this.toolStripMenuItemUpdateStatus.Name = "toolStripMenuItemUpdateStatus";
-            this.toolStripMenuItemUpdateStatus.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItemUpdateStatus.Text = "Update Status";
-            this.toolStripMenuItemUpdateStatus.Click += new System.EventHandler(this.toolStripMenuItemUpdateStatus_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -944,7 +935,7 @@
             this.Name = "FormMain";
             this.Text = "TvUnderground Downloader";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.FormMain_Load);
             this.tabLog.ResumeLayout(false);
             this.tabMain.ResumeLayout(false);
             this.tabMain.PerformLayout();
@@ -970,7 +961,7 @@
         #endregion
 
         private System.Windows.Forms.Timer timerRssCheck;
-        private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.Timer timerDelayStartup;
         private System.Windows.Forms.TabPage tabLog;
         private System.Windows.Forms.TabPage tabMain;
         private System.Windows.Forms.Label labelTotalFiles;
@@ -1020,7 +1011,6 @@
         private System.Windows.Forms.ToolStripMenuItem reportABugToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAbout;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem oPMLExportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemEdit;
         private System.Windows.Forms.Label labelMaxSimultaneousDownloads;
         private System.Windows.Forms.Label label1;
