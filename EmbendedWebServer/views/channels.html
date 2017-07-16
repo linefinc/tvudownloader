@@ -14,8 +14,8 @@
         </tr>
         @Each.RssFeedList
         <tr>
-            <td><a href="/channels/@Current.seasonID">
-                <img src="/Content/Info.png" height="36" width="36" /><a>
+            <td><a href="/channels/@Current.SeasonId">
+                <img src="/Content/Info.png" height="36" width="36" /></a>
             </td>
             <td>@Current.TitleCompact</td>
             <td>@Current.DubLanguage</td>
@@ -23,7 +23,7 @@
             <td>@Current.LastChannelUpdate.Days </td>
             <td>@Current.CurrentTVUStatus</td>
             <td>@Current.Enabled</td>
-            <td><a href="/RssSubscription/Delete/@Current.seasonID">Delete</a></td>
+            <td><a href="/RssSubscription/Delete/@Current.SeasonId">Delete</a></td>
         </tr>
         @EndEach
     </table>
@@ -49,7 +49,7 @@
     </tr>
     @Each.DownloadFile
     <tr>
-        <td>@Current.File.FileName</td>
+        <td>@Current.FileName</td>
         <td>@Current.DownloadDate</td>
         <td><a href="/RssSubscription/DownloadFile/@Current.File.HashMD4">
             <img src="/Content/Download.png" height="36" width="36" alt="Mark As Not Downloaded" /></a></td>

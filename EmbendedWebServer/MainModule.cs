@@ -36,6 +36,17 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
                 return View["channels", Model];
             };
 
+            Get["/channels/{id}"] = args =>
+            {
+                int sessionID = (int)args["id"];
+                RssSubscription channel = GlobalVar.Config.RssFeedList.Find((obj) => obj.SeasonId == sessionID);
+                
+                Model.RssFeedList = GlobalVar.Config.RssFeedList;
+                Model.LastActivity = GlobalVar.Config.RssFeedList.GetLastActivity();
+                Model.DownloadFile = channel.GetDownloadFile();
+                return View["channels", Model];
+            };
+
             Get["/update"] = _ =>
             {
                 //GlobalVar.Worker.Run();
