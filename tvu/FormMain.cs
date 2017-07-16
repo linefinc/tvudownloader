@@ -11,6 +11,7 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using TvUndergroundDownloader.Properties;
 using TvUndergroundDownloaderLib;
@@ -346,20 +347,6 @@ namespace TvUndergroundDownloader
             Close();
         }
 
-        private void autoClearToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (autoClearToolStripMenuItem.Checked == false)
-            {
-                autoClearToolStripMenuItem.Checked = true;
-                MainConfig.AutoClearLog = true;
-            }
-            else
-            {
-                autoClearToolStripMenuItem.Checked = false;
-                MainConfig.AutoClearLog = false;
-            }
-        }
-
         private void autoCloseEMuleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (MainConfig.CloseEmuleIfAllIsDone == false)
@@ -681,16 +668,6 @@ namespace TvUndergroundDownloader
 
             LogManager.Configuration = config;
 
-            if (MainConfig.AutoClearLog)
-            {
-                autoClearToolStripMenuItem.Checked = true;
-            }
-
-            if (MainConfig.Verbose)
-            {
-                verboseToolStripMenuItem.Checked = true;
-            }
-
             // download date time
             downloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
 
@@ -950,21 +927,6 @@ namespace TvUndergroundDownloader
             }
         }
 
-        private void openLogFileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (File.Exists(MainConfig.FileNameLog))
-                {
-                    Process.Start("notepad.exe", MainConfig.FileNameLog);
-                }
-            }
-            catch (Exception exception)
-            {
-                logger.Error(exception, "Open Log File ");
-            }
-        }
-
         private void reportABugToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start("https://sourceforge.net/tracker/?group_id=357576&atid=1492909");
@@ -1059,10 +1021,6 @@ namespace TvUndergroundDownloader
             notifyIcon1.DoubleClick += notifyIcon1_DoubleClick;
         }
 
-        private void showHideNotifyIconMenuItem_Click(object sender, EventArgs e)
-        {
-            ApplicationShowHide();
-        }
 
         private void StartDownloadThread()
         {
@@ -1072,7 +1030,7 @@ namespace TvUndergroundDownloader
                 return;
             }
 
-            if (autoClearToolStripMenuItem.Checked)
+            if (MainConfig.AutoClearLog)
             {
                 richTextBoxLog.Clear();
             }
@@ -1163,12 +1121,15 @@ namespace TvUndergroundDownloader
 
             StartDownloadThread();
 
-            if ((MainConfig.WebServerEnable) && (embendedWebServer != null))
+            if ((MainConfig.WebServerEnable) && (embendedWebServer == null))
             {
-                embendedWebServer = new EmbendedWebServer();
-                embendedWebServer.Config = MainConfig;
-                embendedWebServer.Worker = worker;
-                embendedWebServer.Start();
+                Task task = Task.Factory.StartNew(() => {
+                    embendedWebServer = new EmbendedWebServer();
+                    embendedWebServer.Config = MainConfig;
+                    embendedWebServer.Worker = worker;
+                    embendedWebServer.Start();
+                });
+                
             }
 
             if (VersionChecker.CheckNewVersion(MainConfig, true))
@@ -1443,31 +1404,6 @@ namespace TvUndergroundDownloader
 
                 listViewFeedFilesList.Items.Add(item);
             }
-        }
-
-        private void verboseToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (MainConfig.Verbose)
-            {
-                verboseToolStripMenuItem.Checked = false;
-                MainConfig.Verbose = false;
-            }
-            else
-            {
-                verboseToolStripMenuItem.Checked = true;
-                MainConfig.Verbose = true;
-            }
-
-            foreach (var rule in LogManager.Configuration.LoggingRules)
-            {
-                if (MainConfig.Verbose)
-                    rule.EnableLoggingForLevel(LogLevel.Trace);
-                else
-                    rule.EnableLoggingForLevel(LogLevel.Info);
-            }
-
-            //Call to update existing Loggers created with GetLogger() or GetCurrentClassLogger()
-            LogManager.ReconfigExistingLoggers();
         }
 
         private void versionCheckToolStripMenuItem_Click(object sender, EventArgs e)
