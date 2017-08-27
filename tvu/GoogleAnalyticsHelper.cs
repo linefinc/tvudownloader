@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace TvUndergroundDownloader
 {
     static class GoogleAnalyticsHelper
     {
-        static public string cid = string.Empty;
-        static public string appVersion = string.Empty;
+        internal static string cid = string.Empty;
+        internal static string appVersion = string.Empty;
 
-
-        static public void TrackScreen(string screenName)
+        internal static void TrackScreen(string screenName)
         {
             StringBuilder hitPayload = new StringBuilder();
             hitPayload.Append("v=1");
@@ -24,13 +22,16 @@ namespace TvUndergroundDownloader
             hitPayload.AppendFormat("&cd={0}", screenName);
             hitPayload.AppendFormat("&av={0}", appVersion);
             hitPayload.Append("&an=TvUndergroundDownloader");
-            
-            Thread workerThread = new Thread(GoogleAnalyticsHelper.Track);
-            workerThread.Start(hitPayload.ToString());
+
+            Task task = new Task(() =>
+           {
+               Track(hitPayload.ToString());
+           });
+            task.Start();
         }
 
 
-        static public void TrackEvent(string evenAction)
+        internal static void TrackEvent(string evenAction)
         {
             StringBuilder hitPayload = new StringBuilder();
             hitPayload.Append("v=1");
@@ -43,15 +44,18 @@ namespace TvUndergroundDownloader
             hitPayload.Append("&an=TvUndergroundDownloader");
             Track(hitPayload.ToString());
 
-            Thread workerThread = new Thread(GoogleAnalyticsHelper.Track);
-            workerThread.Start(hitPayload.ToString());
+            Task task = new Task(() =>
+            {
+                Track(hitPayload.ToString());
+            });
+            task.Start();
 
         }
 
 
-        static public void Track(object hitPayload)
+        internal static void Track(object hitPayload)
         {
-            if(hitPayload.GetType() != typeof(string))
+            if (hitPayload.GetType() != typeof(string))
             {
                 throw new Exception("hitPayload must bu string");
             }
@@ -66,8 +70,7 @@ namespace TvUndergroundDownloader
                 request.Proxy = null;
                 request.Method = "POST";
                 request.ContentType = "application/x-www-form-urlencoded";
-                //   (request as HttpWebRequest).UserAgent = "my user agent";
-
+                
                 byte[] reqData = Encoding.UTF8.GetBytes(hitPayload.ToString());
                 request.ContentLength = reqData.Length;
 

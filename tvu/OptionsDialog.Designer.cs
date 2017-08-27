@@ -37,7 +37,6 @@
             this.textBoxEmuleExec = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPageLog = new System.Windows.Forms.TabPage();
-            this.checkBoxSaveLogToFile = new System.Windows.Forms.CheckBox();
             this.checkBoxVerbose = new System.Windows.Forms.CheckBox();
             this.checkBoxAutoClear = new System.Windows.Forms.CheckBox();
             this.tabPageEmail = new System.Windows.Forms.TabPage();
@@ -85,6 +84,10 @@
             this.textBoxCookieT = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.textBoxCookieH = new System.Windows.Forms.TextBox();
+            this.tabPageWebServer = new System.Windows.Forms.TabPage();
+            this.label20 = new System.Windows.Forms.Label();
+            this.textBoxWebServerPortNumber = new System.Windows.Forms.TextBox();
+            this.checkBoxWebServerEnabled = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.tabPageLog.SuspendLayout();
             this.tabPageEmail.SuspendLayout();
@@ -97,6 +100,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIntervalTime)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPageWebServer.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonSave
@@ -184,7 +188,6 @@
             // 
             // tabPageLog
             // 
-            this.tabPageLog.Controls.Add(this.checkBoxSaveLogToFile);
             this.tabPageLog.Controls.Add(this.checkBoxVerbose);
             this.tabPageLog.Controls.Add(this.checkBoxAutoClear);
             this.tabPageLog.Location = new System.Drawing.Point(4, 22);
@@ -195,20 +198,10 @@
             this.tabPageLog.Text = "Log";
             this.tabPageLog.UseVisualStyleBackColor = true;
             // 
-            // checkBoxSaveLogToFile
-            // 
-            this.checkBoxSaveLogToFile.AutoSize = true;
-            this.checkBoxSaveLogToFile.Location = new System.Drawing.Point(252, 29);
-            this.checkBoxSaveLogToFile.Name = "checkBoxSaveLogToFile";
-            this.checkBoxSaveLogToFile.Size = new System.Drawing.Size(99, 17);
-            this.checkBoxSaveLogToFile.TabIndex = 57;
-            this.checkBoxSaveLogToFile.Text = "Save log to File";
-            this.checkBoxSaveLogToFile.UseVisualStyleBackColor = true;
-            // 
             // checkBoxVerbose
             // 
             this.checkBoxVerbose.AutoSize = true;
-            this.checkBoxVerbose.Location = new System.Drawing.Point(127, 29);
+            this.checkBoxVerbose.Location = new System.Drawing.Point(6, 52);
             this.checkBoxVerbose.Name = "checkBoxVerbose";
             this.checkBoxVerbose.Size = new System.Drawing.Size(86, 17);
             this.checkBoxVerbose.TabIndex = 56;
@@ -636,6 +629,7 @@
             this.tabControl1.Controls.Add(this.tabPageEmail);
             this.tabControl1.Controls.Add(this.tabPageLog);
             this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPageWebServer);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -706,6 +700,45 @@
             this.textBoxCookieH.Size = new System.Drawing.Size(288, 20);
             this.textBoxCookieH.TabIndex = 0;
             // 
+            // tabPageWebServer
+            // 
+            this.tabPageWebServer.Controls.Add(this.label20);
+            this.tabPageWebServer.Controls.Add(this.textBoxWebServerPortNumber);
+            this.tabPageWebServer.Controls.Add(this.checkBoxWebServerEnabled);
+            this.tabPageWebServer.Location = new System.Drawing.Point(4, 22);
+            this.tabPageWebServer.Name = "tabPageWebServer";
+            this.tabPageWebServer.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageWebServer.Size = new System.Drawing.Size(357, 248);
+            this.tabPageWebServer.TabIndex = 6;
+            this.tabPageWebServer.Text = "Web Server";
+            this.tabPageWebServer.UseVisualStyleBackColor = true;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(6, 28);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(64, 13);
+            this.label20.TabIndex = 2;
+            this.label20.Text = "Port number";
+            // 
+            // textBoxWebServerPortNumber
+            // 
+            this.textBoxWebServerPortNumber.Location = new System.Drawing.Point(251, 25);
+            this.textBoxWebServerPortNumber.Name = "textBoxWebServerPortNumber";
+            this.textBoxWebServerPortNumber.Size = new System.Drawing.Size(100, 20);
+            this.textBoxWebServerPortNumber.TabIndex = 1;
+            // 
+            // checkBoxWebServerEnabled
+            // 
+            this.checkBoxWebServerEnabled.AutoSize = true;
+            this.checkBoxWebServerEnabled.Location = new System.Drawing.Point(6, 6);
+            this.checkBoxWebServerEnabled.Name = "checkBoxWebServerEnabled";
+            this.checkBoxWebServerEnabled.Size = new System.Drawing.Size(65, 17);
+            this.checkBoxWebServerEnabled.TabIndex = 0;
+            this.checkBoxWebServerEnabled.Text = "Enabled";
+            this.checkBoxWebServerEnabled.UseVisualStyleBackColor = true;
+            // 
             // OptionsDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -739,6 +772,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.tabPageWebServer.ResumeLayout(false);
+            this.tabPageWebServer.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -754,7 +789,6 @@
         private System.Windows.Forms.TextBox textBoxEmuleExec;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TabPage tabPageLog;
-        private System.Windows.Forms.CheckBox checkBoxSaveLogToFile;
         private System.Windows.Forms.CheckBox checkBoxVerbose;
         private System.Windows.Forms.CheckBox checkBoxAutoClear;
         private System.Windows.Forms.TabPage tabPageEmail;
@@ -802,5 +836,9 @@
         private System.Windows.Forms.TextBox textBoxCookieH;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.ComboBox comboBoxClientType;
+        private System.Windows.Forms.TabPage tabPageWebServer;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox textBoxWebServerPortNumber;
+        private System.Windows.Forms.CheckBox checkBoxWebServerEnabled;
     }
 }

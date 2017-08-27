@@ -48,7 +48,7 @@
             this.ButClose.TabIndex = 2;
             this.ButClose.Text = "Close";
             this.ButClose.UseVisualStyleBackColor = true;
-            this.ButClose.Click += new System.EventHandler(this.ButClose_Click);
+            this.ButClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
             // label5
             // 

@@ -70,6 +70,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.3.11\lib\net40\NLog.dll</HintPath>
       <Private>True</Private>
@@ -112,20 +113,13 @@
     <Compile Include="AddFeedDialogPage3.designer.cs">
       <DependentUpon>AddFeedDialogPage3.cs</DependentUpon>
     </Compile>
-    <Compile Include="Config.cs" />
-    <Compile Include="Ed2kfile.cs" />
+    <Compile Include="ConfigWindows.cs" />
     <Compile Include="EditFeedForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="EditFeedForm.Designer.cs">
       <DependentUpon>EditFeedForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ExportImportHelper.cs" />
-    <Compile Include="GeoIP.cs" />
-    <Compile Include="GoogleAnalyticsHelper.cs" />
-    <Compile Include="RssSubscriptionList.cs" />
-    <Compile Include="WebInterface\eMuleWebManager.cs" />
-    <Compile Include="WebInterface\aMuleWebManager.cs" />
     <Compile Include="FormLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -144,6 +138,7 @@
     <Compile Include="FormAlerteMuleClose.Designer.cs">
       <DependentUpon>FormAlerteMuleClose.cs</DependentUpon>
     </Compile>
+    <Compile Include="GoogleAnalyticsHelper.cs" />
     <Compile Include="OptionsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -202,10 +197,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="RssSubscrission.cs" />
-    <Compile Include="SmtpClient.cs" />
-    <Compile Include="WebFetch.cs" />
-    <Compile Include="WebInterface\IMuleWebManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -268,6 +259,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\flag\jp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EmbendedWebServer\EmbendedWebServerLib.csproj">
+      <Project>{5B06F03D-7CE9-44EF-A5EC-0E33DA321649}</Project>
+      <Name>EmbendedWebServerLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TvUndergroundDownloaderLib\TvUndergroundDownloaderLib.csproj">
+      <Project>{21CFFC29-3DCA-43A4-AA90-0A5332E2E1FF}</Project>
+      <Name>TvUndergroundDownloaderLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- import MS Build Tasks comunity -->

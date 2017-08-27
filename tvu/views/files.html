@@ -1,0 +1,18 @@
+﻿@Master['master.html']
+
+@Section['Content']
+
+<table id="location" border='1'>
+    <tr>
+        <th>File Name</th>
+        <th>Date</th>
+    </tr>
+    @Each.LastActivity
+        <tr>
+            <td>@Current.File.FileName</td>
+            <td>@Current.DownloadDate</td>
+        </tr>
+    @EndEach
+</table>
+
+@EndSection

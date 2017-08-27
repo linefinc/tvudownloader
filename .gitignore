@@ -3,3 +3,16 @@
 /packages
 /.vs
 /tvu/Properties/AssemblyInfo.cs
+/TvUndergroundDownloaderLib/obj
+/TvUndergroundDownloaderLib/bin
+/TvUndergroundDownloaderConsole/obj
+/TvUndergroundDownloaderConsole/bin
+/EmbendedWebServer/bin
+/EmbendedWebServer/obj
+/EmbendedWebServer/StyleCop.Cache
+/StyleCop.Cache
+/TvUndergroundDownloaderConsole/StyleCop.Cache
+/TvUndergroundDownloaderLib/StyleCop.Cache
+/tvu/StyleCop.Cache
+/TvUndergroundDownloaderLibTests/obj
+/TvUndergroundDownloaderLibTests/bin
