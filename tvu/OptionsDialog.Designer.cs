@@ -754,7 +754,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Options";
-         
+            this.Load += new System.EventHandler(this.OptionsDialog_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.tabPageLog.ResumeLayout(false);
             this.tabPageLog.PerformLayout();

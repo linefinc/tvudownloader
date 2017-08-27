@@ -31,6 +31,7 @@ namespace TvUndergroundDownloader
         private void FormLogin_Load(object sender, EventArgs e)
         {
             webBrowser1.Navigate("http://tvunderground.org.ru/");
+            GoogleAnalyticsHelper.TrackScreen("Login");
         }
 
         private void webBrowser1_Navigated(object sender, WebBrowserNavigatedEventArgs e)

@@ -48,7 +48,7 @@
             this.ButClose.TabIndex = 2;
             this.ButClose.Text = "Close";
             this.ButClose.UseVisualStyleBackColor = true;
-            this.ButClose.Click += new System.EventHandler(this.ButClose_Click);
+            this.ButClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
             // label5
             // 
@@ -161,6 +161,7 @@
             this.Name = "AddFeedDialogPage1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add Feed";
+            this.Load += new System.EventHandler(this.AddFeedDialogPage1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

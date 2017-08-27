@@ -29,6 +29,7 @@ namespace TvUndergroundDownloader
         private void AddFeedDialogPage3_Load(object sender, EventArgs e)
         {
             RefreshList();
+            GoogleAnalyticsHelper.TrackScreen("AddFeedPage3");
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)

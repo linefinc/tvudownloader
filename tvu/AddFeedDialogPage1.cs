@@ -9,16 +9,47 @@ namespace TvUndergroundDownloader
 {
     public partial class AddFeedDialogPage1 : Form
     {
-        public List<string> RssUrlList { private set; get; }
         private List<string> CurrentRssUrlList;
-        public bool FastAdd { private set; get; }
-
         public AddFeedDialogPage1(List<string> CurrentRssUrlList)
         {
             InitializeComponent();
             this.RssUrlList = new List<string>();
             this.CurrentRssUrlList = CurrentRssUrlList;
             this.FastAdd = false;
+        }
+
+        public bool FastAdd { private set; get; }
+        public List<string> RssUrlList { private set; get; }
+
+        private void AddFeedDialogPage1_Load(object sender, EventArgs e)
+        {
+            GoogleAnalyticsHelper.TrackScreen("AddFeedPage1");
+        }
+
+        private void buttonClose_Click(object sender, EventArgs e)
+        {
+            RssUrlList.Clear();
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
+
+        private void buttonBrowse_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+
+            List<string> Feed = new List<string>();
+
+            openFileDialog1.Filter = "All files (*.*)|*.*|OPML (*.opml)|*.opml";
+            openFileDialog1.FilterIndex = 2;
+            openFileDialog1.RestoreDirectory = true;
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                textBox1.Text = openFileDialog1.FileName;
+                return;
+            }
+            textBox1.Text = string.Empty;
+            return;
         }
 
         private void buttonFinish_Click(object sender, EventArgs e)
@@ -77,21 +108,6 @@ namespace TvUndergroundDownloader
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
-
-        private void ButClose_Click(object sender, EventArgs e)
-        {
-            RssUrlList.Clear();
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
-        }
-
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
-        {
-            buttonBrowse.Enabled = true;
-            textBox1.Enabled = true;
-            textUrl.Enabled = false;
-        }
-
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
             buttonBrowse.Enabled = false;
@@ -99,23 +115,11 @@ namespace TvUndergroundDownloader
             textUrl.Enabled = true;
         }
 
-        private void buttonBrowse_Click(object sender, EventArgs e)
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
-
-            List<string> Feed = new List<string>();
-
-            openFileDialog1.Filter = "All files (*.*)|*.*|OPML (*.opml)|*.opml";
-            openFileDialog1.FilterIndex = 2;
-            openFileDialog1.RestoreDirectory = true;
-
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                textBox1.Text = openFileDialog1.FileName;
-                return;
-            }
-            textBox1.Text = string.Empty;
-            return;
+            buttonBrowse.Enabled = true;
+            textBox1.Enabled = true;
+            textUrl.Enabled = false;
         }
     }
 }

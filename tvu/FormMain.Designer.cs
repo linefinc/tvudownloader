@@ -562,6 +562,7 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(656, 467);
             this.tabControl1.TabIndex = 21;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabPending
             // 
@@ -786,35 +787,35 @@
             // helpToolStripMenuItem1
             // 
             this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
-            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(148, 22);
             this.helpToolStripMenuItem1.Text = "Help";
             this.helpToolStripMenuItem1.Click += new System.EventHandler(this.helpToolStripMenuItem1_Click);
             // 
             // reportABugToolStripMenuItem
             // 
             this.reportABugToolStripMenuItem.Name = "reportABugToolStripMenuItem";
-            this.reportABugToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.reportABugToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.reportABugToolStripMenuItem.Text = "Report a Bug";
             this.reportABugToolStripMenuItem.Click += new System.EventHandler(this.reportABugToolStripMenuItem_Click);
             // 
             // forumToolStripMenuItem
             // 
             this.forumToolStripMenuItem.Name = "forumToolStripMenuItem";
-            this.forumToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.forumToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.forumToolStripMenuItem.Text = "Forum";
             this.forumToolStripMenuItem.Click += new System.EventHandler(this.forumToolStripMenuItem_Click);
             // 
             // versionCheckToolStripMenuItem
             // 
             this.versionCheckToolStripMenuItem.Name = "versionCheckToolStripMenuItem";
-            this.versionCheckToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.versionCheckToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.versionCheckToolStripMenuItem.Text = "Version Check";
             this.versionCheckToolStripMenuItem.Click += new System.EventHandler(this.versionCheckToolStripMenuItem_Click);
             // 
             // toolStripMenuItemAbout
             // 
             this.toolStripMenuItemAbout.Name = "toolStripMenuItemAbout";
-            this.toolStripMenuItemAbout.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemAbout.Size = new System.Drawing.Size(148, 22);
             this.toolStripMenuItemAbout.Text = "About";
             this.toolStripMenuItemAbout.Click += new System.EventHandler(this.toolStripMenuItemAbout_Click);
             // 

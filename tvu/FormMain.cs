@@ -57,6 +57,8 @@ namespace TvUndergroundDownloader
 
             Text += " - DEBUG - " + versionFull;
 #endif
+            GoogleAnalyticsHelper.cid = MainConfig.tvudwid;
+            GoogleAnalyticsHelper.appVersion = Config.Version;
         }
 
         public static string GetUserAppDataPath()
@@ -791,11 +793,6 @@ namespace TvUndergroundDownloader
             }
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("http://sourceforge.net/projects/tvudownloader/");
-        }
-
         private void loginToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FormLogin form = new FormLogin();
@@ -1020,7 +1017,6 @@ namespace TvUndergroundDownloader
             notifyIcon1.DoubleClick += notifyIcon1_DoubleClick;
         }
 
-
         private void StartDownloadThread()
         {
             if (worker.IsBusy)
@@ -1052,6 +1048,12 @@ namespace TvUndergroundDownloader
             listBoxPending.Items.Clear();
             listBoxPending.Refresh();
             worker.Run();
+            GoogleAnalyticsHelper.TrackEvent("BackgroundWorker_Start");
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GoogleAnalyticsHelper.TrackScreen("MainPage_" + tabControl1.SelectedTab.Text);
         }
 
         /// <summary>
@@ -1079,6 +1081,8 @@ namespace TvUndergroundDownloader
                 toolStripButtonStop.Enabled = false;
                 cancelCheckToolStripMenuItem.Enabled = false;
             });
+
+            GoogleAnalyticsHelper.TrackEvent("BackgroundWorker_Ended");
         }
 
         private void testAutoCloseToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1122,13 +1126,13 @@ namespace TvUndergroundDownloader
 
             if ((MainConfig.WebServerEnable) && (embendedWebServer == null))
             {
-                Task task = Task.Factory.StartNew(() => {
+                Task task = Task.Factory.StartNew(() =>
+                {
                     embendedWebServer = new EmbendedWebServer();
                     embendedWebServer.Config = MainConfig;
                     embendedWebServer.Worker = worker;
                     embendedWebServer.Start();
                 });
-                
             }
 
             if (VersionChecker.CheckNewVersion(MainConfig, true))
