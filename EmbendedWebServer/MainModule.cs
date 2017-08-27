@@ -97,7 +97,7 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
                     bool closeEmuleIfAllIsDone = (bool)Request.Form.CloseEmuleIfAllIsDone;
                     uint maxSimultaneousFeedDownloadsDefault = (uint)Request.Form.MaxSimultaneousFeedDownloadsDefault;
                     bool pauseDownloadDefault = (bool)Request.Form.PauseDownloadDefault;
-                    int minToStartEmule = (int)Request.Form.PauseDownloadDefault;
+                    int minToStartEmule = (int)Request.Form.MinToStartEmule;
                     string eMuleExe = (string)Request.Form.eMuleExe;
                     bool emailNotification = (bool)Request.Form.EmailNotification;
                     string serverSMTP = (string)Request.Form.ServerSMTP;

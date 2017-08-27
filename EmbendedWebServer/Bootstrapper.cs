@@ -7,7 +7,9 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
     {
         protected override DiagnosticsConfiguration DiagnosticsConfiguration
         {
+#if DEBUG
             get { return new DiagnosticsConfiguration { Password = @"123456" }; }
+#endif
         }
 
         //protected override void ConfigureApplicationContainer(TinyIoCContainer container)
