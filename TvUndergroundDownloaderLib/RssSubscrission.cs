@@ -15,7 +15,8 @@ namespace TvUndergroundDownloaderLib
         StillRunning,
         Unknown,
         StillIncomplete,
-        OnHiatus
+        OnHiatus,
+        Error
     }
 
     /// <summary>
@@ -94,7 +95,7 @@ namespace TvUndergroundDownloaderLib
         {
             get
             {
-                if (Title.IndexOf("english",0,StringComparison.InvariantCulture) > -1) return "gb";
+                if (Title.IndexOf("english", 0, StringComparison.InvariantCulture) > -1) return "gb";
                 if (Title.IndexOf("french", 0, StringComparison.InvariantCulture) > -1) return "fr";
                 if (Title.IndexOf("german", 0, StringComparison.InvariantCulture) > -1) return "de";
                 if (Title.IndexOf("italian", 0, StringComparison.InvariantCulture) > -1) return "it";
@@ -359,71 +360,82 @@ namespace TvUndergroundDownloaderLib
                 throw new LoginException();
             }
 
-            string webPage = WebFetch.Fetch(Url, false, cookieContainer);
-
-            var doc = new XmlDocument();
-            doc.LoadXml(webPage);
-
-            var nodeList = doc.SelectNodes(@"/rss/channel/item");
-            foreach (XmlNode itemNode in nodeList)
+            try
             {
-                var guidNode = itemNode.SelectSingleNode("guid");
-                string guid = HttpUtility.UrlDecode(guidNode.InnerText);
+                string webPage = WebFetch.Fetch(Url, false, cookieContainer);
 
+                var doc = new XmlDocument();
+                doc.LoadXml(webPage);
 
-                // here check if the file is already downloaded
-                var newFile = _downloadFiles.Find(o => o.Guid == guid);
-
-                if (newFile == null)
+                var nodeList = doc.SelectNodes(@"/rss/channel/item");
+                foreach (XmlNode itemNode in nodeList)
                 {
-                    try
-                    {
-                        //
-                        //  try to load data from remote server
-                        //
-                        var newEd2kFile = ProcessGuid(guid, cookieContainer);
+                    var guidNode = itemNode.SelectSingleNode("guid");
+                    string guid = HttpUtility.UrlDecode(guidNode.InnerText);
 
-                        _logger.Info("Found new file {0}", newEd2kFile.FileName);
-                        newFile = new DownloadFile(this, newEd2kFile, guid);
 
-                        _downloadFiles.Add(newFile);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.Error(ex, "Error while try to parse or fatch GUID");
-                        continue;
-                    }
+                    // here check if the file is already downloaded
+                    var newFile = _downloadFiles.Find(o => o.Guid == guid);
 
-                    //
-                    //  try to update pudDate
-                    //
-                    if (!newFile.PublicationDate.HasValue)
+                    if (newFile == null)
                     {
-                        var pubDateNode = itemNode.SelectSingleNode("pubDate");
-                        if (pubDateNode != null)
+                        try
                         {
-                            string pubDateStr = HttpUtility.UrlDecode(pubDateNode.InnerText);
-                            if (!string.IsNullOrEmpty(pubDateStr))
+                            //
+                            //  try to load data from remote server
+                            //
+                            var newEd2kFile = ProcessGuid(guid, cookieContainer);
+
+                            _logger.Info("Found new file {0}", newEd2kFile.FileName);
+                            newFile = new DownloadFile(this, newEd2kFile, guid);
+
+                            _downloadFiles.Add(newFile);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.Error(ex, "Error while try to parse or fatch GUID");
+
+                            continue;
+                        }
+
+                        //
+                        //  try to update pudDate
+                        //
+                        if (!newFile.PublicationDate.HasValue)
+                        {
+                            var pubDateNode = itemNode.SelectSingleNode("pubDate");
+                            if (pubDateNode != null)
                             {
-                                DateTime pubDateDateTime;
-                                if (DateTime.TryParse(pubDateStr, out pubDateDateTime))
+                                string pubDateStr = HttpUtility.UrlDecode(pubDateNode.InnerText);
+                                if (!string.IsNullOrEmpty(pubDateStr))
                                 {
-                                    newFile.PublicationDate = pubDateDateTime;
+                                    DateTime pubDateDateTime;
+                                    if (DateTime.TryParse(pubDateStr, out pubDateDateTime))
+                                    {
+                                        newFile.PublicationDate = pubDateDateTime;
+                                    }
                                 }
                             }
                         }
                     }
                 }
+
+                if (CurrentTVUStatus == TvuStatus.Complete)
+                    return;
+
+                var ts = DateTime.Now - LastSerieStatusUpgradeDate;
+
+                if (ts.TotalDays < 15)
+                    return;
+                UpdateTVUStatus(cookieContainer);
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e);
+                throw;
             }
 
-            if (CurrentTVUStatus == TvuStatus.Complete)
-                return;
 
-            var ts = DateTime.Now - LastSerieStatusUpgradeDate;
-
-            if (ts.TotalDays < 15)
-                return;
-            UpdateTVUStatus(cookieContainer);
         }
 
         public void UpdateTVUStatus(CookieContainer cookieContainer)

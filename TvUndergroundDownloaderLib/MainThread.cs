@@ -1,11 +1,11 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
 using System.Threading;
 using System.Threading.Tasks;
-using NLog;
 
 namespace TvUndergroundDownloaderLib
 {
@@ -18,19 +18,18 @@ namespace TvUndergroundDownloaderLib
         private CancellationToken _cancellationToken;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private Task _task;
+
         /// <summary>
         /// Constructor
         /// </summary>
         public Worker()
         {
-
         }
 
         /// <summary>
         ///     Event call when the thread is completed or aborted
         /// </summary>
         public event WorkerEventHandler WorkerCompleted;
-
 
         // public ThreadState ThreadState => thread.ThreadState;
 
@@ -59,7 +58,7 @@ namespace TvUndergroundDownloaderLib
         }
 
         /// <summary>
-        /// Run 
+        /// Run
         /// </summary>
         public void Run()
         {
@@ -85,9 +84,9 @@ namespace TvUndergroundDownloaderLib
                     _logger.Error(ex);
                     return true;
                 });
-
             }
         }
+
         /// <summary>
         /// Main worker function
         /// </summary>
@@ -142,6 +141,14 @@ namespace TvUndergroundDownloaderLib
                         downloadFileList.Add(sfile);
                         _logger.Info(@"Found new file ""{0}""", file.FileName);
                     }
+                }
+                catch (LoginException ex)
+                {
+                    _logger.Error(ex, "Error: missing login cookie");
+                }
+                catch (WebException ex)
+                {
+                    _logger.Error(ex, "Network error: Check internet connection");
                 }
                 catch (Exception ex)
                 {
