@@ -68,11 +68,6 @@ namespace TvUndergroundDownloader
             Exception ex = (Exception)args.ExceptionObject;
             logger.Error(ex);
         }
-
-        private static void AppDomain_CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs args)
-        {
-            Exception ex = (Exception)args.ExceptionObject;
-            logger.Error(ex);
-        }
+       
     }
 }

@@ -5,13 +5,14 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
 {
     public class Bootstrapper : DefaultNancyBootstrapper
     {
+#if DEBUG
         protected override DiagnosticsConfiguration DiagnosticsConfiguration
         {
-#if DEBUG
-            get { return new DiagnosticsConfiguration { Password = @"123456" }; }
-#endif
-        }
 
+            get { return new DiagnosticsConfiguration { Password = @"123456" }; }
+
+    }
+#endif
         //protected override void ConfigureApplicationContainer(TinyIoCContainer container)
         //{
         //    base.ConfigureApplicationContainer(container);

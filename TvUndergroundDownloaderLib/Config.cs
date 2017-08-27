@@ -181,7 +181,7 @@ namespace TvUndergroundDownloaderLib
             Verbose = true;
 #else
             if (NodeExist(xDoc, "Verbose"))
-                Verbose = ReadBoolean(xDoc, "Verbose", "false"));
+                Verbose = ReadBoolean(xDoc, "Verbose", false);
 #endif
             if (NodeExist(xDoc, "EmailNotification"))
                 EmailNotification = ReadBoolean(xDoc, "EmailNotification", false);
