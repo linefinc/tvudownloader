@@ -36,8 +36,6 @@ namespace TvUndergroundDownloader
 
         public string Password;
 
-        public bool saveLog;
-
         public string ServerSMTP;
 
         //public Config LocalConfig;
@@ -91,7 +89,6 @@ namespace TvUndergroundDownloader
             checkBoxAutoClear.Checked = AutoClearLog = inConfig.AutoClearLog;
             checkBoxVerbose.Checked = Verbose = inConfig.Verbose;
             checkBoxEmailNotification.Checked = EmailNotification = inConfig.EmailNotification;
-            checkBoxSaveLogToFile.Checked = saveLog = inConfig.SaveLog;
             tvuCookieH = textBoxCookieH.Text = inConfig.TVUCookieH;
             tvuCookieI = textBoxCookieI.Text = inConfig.TVUCookieI;
             tvuCookieT = textBoxCookieT.Text = inConfig.TVUCookieT;
@@ -252,17 +249,8 @@ namespace TvUndergroundDownloader
             //
             //  web server
             //
-            WebServerEnable = checkBoxWebServerEnabled.Visible;
+            WebServerEnable = checkBoxWebServerEnabled.Checked;
             WebServerPort = Convert.ToInt32(textBoxWebServerPortNumber.Text);
-
-            //
-            //  Save log to file
-            //
-            saveLog = false;
-            if (checkBoxSaveLogToFile.Checked == true)
-            {
-                saveLog = true;
-            }
 
             this.DialogResult = DialogResult.OK;
             this.Close();
@@ -293,9 +281,6 @@ namespace TvUndergroundDownloader
             }
         }
 
-        private void OptionsDialog_Load(object sender, EventArgs e)
-        {
-
-        }
+        
     }
 }

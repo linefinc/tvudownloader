@@ -732,7 +732,6 @@ namespace TvUndergroundDownloader
                 MainConfig.AutoClearLog = optDialog.AutoClearLog;
                 MainConfig.IntervalBetweenUpgradeCheck = optDialog.intervalBetweenUpgradeCheck;
                 MainConfig.MaxSimultaneousFeedDownloadsDefault = optDialog.MaxSimultaneousFeedDownloads;
-                MainConfig.SaveLog = optDialog.saveLog;
                 MainConfig.WebServerEnable = optDialog.WebServerEnable;
                 MainConfig.WebServerPort = optDialog.WebServerPort;
 

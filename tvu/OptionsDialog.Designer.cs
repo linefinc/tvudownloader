@@ -37,7 +37,6 @@
             this.textBoxEmuleExec = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPageLog = new System.Windows.Forms.TabPage();
-            this.checkBoxSaveLogToFile = new System.Windows.Forms.CheckBox();
             this.checkBoxVerbose = new System.Windows.Forms.CheckBox();
             this.checkBoxAutoClear = new System.Windows.Forms.CheckBox();
             this.tabPageEmail = new System.Windows.Forms.TabPage();
@@ -189,7 +188,6 @@
             // 
             // tabPageLog
             // 
-            this.tabPageLog.Controls.Add(this.checkBoxSaveLogToFile);
             this.tabPageLog.Controls.Add(this.checkBoxVerbose);
             this.tabPageLog.Controls.Add(this.checkBoxAutoClear);
             this.tabPageLog.Location = new System.Drawing.Point(4, 22);
@@ -200,20 +198,10 @@
             this.tabPageLog.Text = "Log";
             this.tabPageLog.UseVisualStyleBackColor = true;
             // 
-            // checkBoxSaveLogToFile
-            // 
-            this.checkBoxSaveLogToFile.AutoSize = true;
-            this.checkBoxSaveLogToFile.Location = new System.Drawing.Point(252, 29);
-            this.checkBoxSaveLogToFile.Name = "checkBoxSaveLogToFile";
-            this.checkBoxSaveLogToFile.Size = new System.Drawing.Size(99, 17);
-            this.checkBoxSaveLogToFile.TabIndex = 57;
-            this.checkBoxSaveLogToFile.Text = "Save log to File";
-            this.checkBoxSaveLogToFile.UseVisualStyleBackColor = true;
-            // 
             // checkBoxVerbose
             // 
             this.checkBoxVerbose.AutoSize = true;
-            this.checkBoxVerbose.Location = new System.Drawing.Point(127, 29);
+            this.checkBoxVerbose.Location = new System.Drawing.Point(6, 52);
             this.checkBoxVerbose.Name = "checkBoxVerbose";
             this.checkBoxVerbose.Size = new System.Drawing.Size(86, 17);
             this.checkBoxVerbose.TabIndex = 56;
@@ -766,7 +754,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Options";
-            this.Load += new System.EventHandler(this.OptionsDialog_Load);
+         
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.tabPageLog.ResumeLayout(false);
             this.tabPageLog.PerformLayout();
@@ -801,7 +789,6 @@
         private System.Windows.Forms.TextBox textBoxEmuleExec;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TabPage tabPageLog;
-        private System.Windows.Forms.CheckBox checkBoxSaveLogToFile;
         private System.Windows.Forms.CheckBox checkBoxVerbose;
         private System.Windows.Forms.CheckBox checkBoxAutoClear;
         private System.Windows.Forms.TabPage tabPageEmail;

@@ -42,16 +42,14 @@ namespace TvUndergroundDownloaderConsole
             mainConfig.Load("./Config.xml");
             logger.Info("Loading config");
 
-            if (mainConfig.SaveLog)
-            {
-                FileTarget fileTarget = new FileTarget();
-                fileTarget.Name = "logfile";
-                fileTarget.FileName = mainConfig.FileNameLog;
-                nLogConfig.AddTarget(fileTarget.Name, fileTarget);
-                LoggingRule m_loggingRule = new LoggingRule("*", LogLevel.Info, fileTarget);
-                nLogConfig.LoggingRules.Insert(0, m_loggingRule);
-                LogManager.Configuration = nLogConfig;
-            }
+            FileTarget fileTarget = new FileTarget();
+            fileTarget.Name = "logfile";
+            fileTarget.FileName = mainConfig.FileNameLog;
+            nLogConfig.AddTarget(fileTarget.Name, fileTarget);
+            LoggingRule m_loggingRule = new LoggingRule("*", LogLevel.Info, fileTarget);
+            nLogConfig.LoggingRules.Insert(0, m_loggingRule);
+            LogManager.Configuration = nLogConfig;
+            
             //
             //  Setup Worker
             //

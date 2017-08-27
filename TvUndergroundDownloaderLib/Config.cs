@@ -66,7 +66,6 @@ namespace TvUndergroundDownloaderLib
         public string Password { get; set; } = "password";
         public bool PauseDownloadDefault { get; set; } = false;
         public RssSubscriptionList RssFeedList { get; set; }
-        public bool SaveLog { get; set; } = false;
         public string ServerSMTP { get; set; } = string.Empty;
         public eServiceType ServiceType { get; set; } = eServiceType.eMule;
         public string ServiceUrl { get; set; } = "http://localhost:4000";
@@ -184,9 +183,6 @@ namespace TvUndergroundDownloaderLib
             if (NodeExist(xDoc, "Verbose"))
                 Verbose = ReadBoolean(xDoc, "Verbose", "false"));
 #endif
-            if (NodeExist(xDoc, "SaveLog"))
-                SaveLog = ReadBoolean(xDoc, "SaveLog", false);
-
             if (NodeExist(xDoc, "EmailNotification"))
                 EmailNotification = ReadBoolean(xDoc, "EmailNotification", false);
 
@@ -286,8 +282,6 @@ namespace TvUndergroundDownloaderLib
             writer.WriteElementString("MailReceiver", MailReceiver);
 
             writer.WriteElementString("MailSender", MailSender);
-
-            writer.WriteElementString("SaveLog", SaveLog.ToString());
 
             writer.WriteElementString("tvudwid", tvudwid);
 
