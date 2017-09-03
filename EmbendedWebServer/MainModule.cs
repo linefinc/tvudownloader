@@ -11,7 +11,7 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
     {
         public dynamic Model = new ExpandoObject();
 
-        public static Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public MainModule()
         {
@@ -52,7 +52,7 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
                 //GlobalVar.Worker.Run();
                 if (GlobalVar.Worker.IsBusy)
                 {
-                    logger.Info("Thread is busy");
+                    _logger.Info("Thread is busy");
                 }
                 else
                 {
@@ -125,7 +125,7 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
                 }
                 catch (Exception ex)
                 {
-                    logger.Error(ex);
+                    _logger.Error(ex);
                 }
                 return Response.AsRedirect("/setup");
             };

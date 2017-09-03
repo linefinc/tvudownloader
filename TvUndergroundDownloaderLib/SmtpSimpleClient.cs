@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net.Mail;
-using NLog;
+﻿using System.Net.Mail;
 
 namespace TvUndergroundDownloaderLib
 {
