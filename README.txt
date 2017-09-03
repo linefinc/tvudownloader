@@ -17,6 +17,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
+##### Version 0.9.0 (Alpha) 03/09/2017  #####
+* Added smtp ssl support
+* Added embedded web server (now experimental future)
+* Splitted the application core from UI 
+* Added support for web UI
+* A lots of small changes to improve code quality and stability
+
 ##### Version 0.8.1 (BUG FIX) 17/04/2017  #####
 * Bug fix: Avoid crash with wrong xml configuration file
 * Add logging for unmanaged errors
