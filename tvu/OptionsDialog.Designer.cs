@@ -96,6 +96,7 @@
             this.label20 = new System.Windows.Forms.Label();
             this.textBoxWebServerPortNumber = new System.Windows.Forms.TextBox();
             this.checkBoxWebServerEnabled = new System.Windows.Forms.CheckBox();
+            this.label24 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.tabPageLog.SuspendLayout();
             this.tabPageEmail.SuspendLayout();
@@ -788,6 +789,7 @@
             // 
             // tabPageWebServer
             // 
+            this.tabPageWebServer.Controls.Add(this.label24);
             this.tabPageWebServer.Controls.Add(this.label20);
             this.tabPageWebServer.Controls.Add(this.textBoxWebServerPortNumber);
             this.tabPageWebServer.Controls.Add(this.checkBoxWebServerEnabled);
@@ -825,6 +827,16 @@
             this.checkBoxWebServerEnabled.Text = "Enabled";
             this.checkBoxWebServerEnabled.UseVisualStyleBackColor = true;
             this.checkBoxWebServerEnabled.CheckedChanged += new System.EventHandler(this.checkBoxWebServerEnabled_CheckedChanged);
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(7, 61);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(237, 26);
+            this.label24.TabIndex = 3;
+            this.label24.Text = "This is a experimental feature ,\r\ndon’t turn on if the computer is public on inte" +
+    "rnet.";
             // 
             // OptionsDialog
             // 
@@ -935,5 +947,6 @@
         private System.Windows.Forms.TextBox textBoxSmtpServerUsername;
         private System.Windows.Forms.CheckBox checkBoxEnableAuthentication;
         private System.Windows.Forms.CheckBox checkBoxEnableSSL;
+        private System.Windows.Forms.Label label24;
     }
 }
