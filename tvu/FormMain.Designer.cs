@@ -118,6 +118,19 @@
             this.toolStripButtonAddFeed = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonCheckNow = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
+            this.rssSubscriptionListBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.lastSerieStatusUpgradeDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.categoryDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.currentTVUStatusDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dubLanguageDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.enabledDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.lastChannelUpdateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pauseDownloadDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.seasonIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.titleDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.titleCompactDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.totalFilesDownloadedDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.urlDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).BeginInit();
@@ -130,6 +143,7 @@
             this.contextMenuStripPending.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.rssSubscriptionListBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // timerRssCheck
@@ -193,6 +207,7 @@
             // 
             this.dataGridViewMain.AllowUserToAddRows = false;
             this.dataGridViewMain.AllowUserToDeleteRows = false;
+            this.dataGridViewMain.AutoGenerateColumns = false;
             this.dataGridViewMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewMain.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.DataGridViewTextBoxColumnTitle,
@@ -200,8 +215,21 @@
             this.DataGridViewTextBoxColumnTotalDownloads,
             this.DataGridViewTextBoxColumnLastUpdate,
             this.DataGridViewTextBoxColumnStatus,
-            this.DataGridViewTextBoxColumnEnabled});
+            this.DataGridViewTextBoxColumnEnabled,
+            this.lastSerieStatusUpgradeDateDataGridViewTextBoxColumn,
+            this.categoryDataGridViewTextBoxColumn,
+            this.currentTVUStatusDataGridViewTextBoxColumn,
+            this.dubLanguageDataGridViewTextBoxColumn,
+            this.enabledDataGridViewCheckBoxColumn,
+            this.lastChannelUpdateDataGridViewTextBoxColumn,
+            this.pauseDownloadDataGridViewCheckBoxColumn,
+            this.seasonIdDataGridViewTextBoxColumn,
+            this.titleDataGridViewTextBoxColumn,
+            this.titleCompactDataGridViewTextBoxColumn,
+            this.totalFilesDownloadedDataGridViewTextBoxColumn,
+            this.urlDataGridViewTextBoxColumn});
             this.dataGridViewMain.ContextMenuStrip = this.contextMenuStripFeed;
+            this.dataGridViewMain.DataSource = this.rssSubscriptionListBindingSource;
             this.dataGridViewMain.Location = new System.Drawing.Point(3, 3);
             this.dataGridViewMain.Name = "dataGridViewMain";
             this.dataGridViewMain.ReadOnly = true;
@@ -869,6 +897,94 @@
             this.toolStripButtonStop.Text = "Stop";
             this.toolStripButtonStop.Click += new System.EventHandler(this.toolStripButtonStop_Click);
             // 
+            // rssSubscriptionListBindingSource
+            // 
+            this.rssSubscriptionListBindingSource.DataSource = typeof(TvUndergroundDownloaderLib.RssSubscriptionList);
+            // 
+            // lastSerieStatusUpgradeDateDataGridViewTextBoxColumn
+            // 
+            this.lastSerieStatusUpgradeDateDataGridViewTextBoxColumn.DataPropertyName = "LastSerieStatusUpgradeDate";
+            this.lastSerieStatusUpgradeDateDataGridViewTextBoxColumn.HeaderText = "LastSerieStatusUpgradeDate";
+            this.lastSerieStatusUpgradeDateDataGridViewTextBoxColumn.Name = "lastSerieStatusUpgradeDateDataGridViewTextBoxColumn";
+            this.lastSerieStatusUpgradeDateDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // categoryDataGridViewTextBoxColumn
+            // 
+            this.categoryDataGridViewTextBoxColumn.DataPropertyName = "Category";
+            this.categoryDataGridViewTextBoxColumn.HeaderText = "Category";
+            this.categoryDataGridViewTextBoxColumn.Name = "categoryDataGridViewTextBoxColumn";
+            this.categoryDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // currentTVUStatusDataGridViewTextBoxColumn
+            // 
+            this.currentTVUStatusDataGridViewTextBoxColumn.DataPropertyName = "CurrentTVUStatus";
+            this.currentTVUStatusDataGridViewTextBoxColumn.HeaderText = "CurrentTVUStatus";
+            this.currentTVUStatusDataGridViewTextBoxColumn.Name = "currentTVUStatusDataGridViewTextBoxColumn";
+            this.currentTVUStatusDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // dubLanguageDataGridViewTextBoxColumn
+            // 
+            this.dubLanguageDataGridViewTextBoxColumn.DataPropertyName = "DubLanguage";
+            this.dubLanguageDataGridViewTextBoxColumn.HeaderText = "DubLanguage";
+            this.dubLanguageDataGridViewTextBoxColumn.Name = "dubLanguageDataGridViewTextBoxColumn";
+            this.dubLanguageDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // enabledDataGridViewCheckBoxColumn
+            // 
+            this.enabledDataGridViewCheckBoxColumn.DataPropertyName = "Enabled";
+            this.enabledDataGridViewCheckBoxColumn.HeaderText = "Enabled";
+            this.enabledDataGridViewCheckBoxColumn.Name = "enabledDataGridViewCheckBoxColumn";
+            this.enabledDataGridViewCheckBoxColumn.ReadOnly = true;
+            // 
+            // lastChannelUpdateDataGridViewTextBoxColumn
+            // 
+            this.lastChannelUpdateDataGridViewTextBoxColumn.DataPropertyName = "LastChannelUpdate";
+            this.lastChannelUpdateDataGridViewTextBoxColumn.HeaderText = "LastChannelUpdate";
+            this.lastChannelUpdateDataGridViewTextBoxColumn.Name = "lastChannelUpdateDataGridViewTextBoxColumn";
+            this.lastChannelUpdateDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // pauseDownloadDataGridViewCheckBoxColumn
+            // 
+            this.pauseDownloadDataGridViewCheckBoxColumn.DataPropertyName = "PauseDownload";
+            this.pauseDownloadDataGridViewCheckBoxColumn.HeaderText = "PauseDownload";
+            this.pauseDownloadDataGridViewCheckBoxColumn.Name = "pauseDownloadDataGridViewCheckBoxColumn";
+            this.pauseDownloadDataGridViewCheckBoxColumn.ReadOnly = true;
+            // 
+            // seasonIdDataGridViewTextBoxColumn
+            // 
+            this.seasonIdDataGridViewTextBoxColumn.DataPropertyName = "SeasonId";
+            this.seasonIdDataGridViewTextBoxColumn.HeaderText = "SeasonId";
+            this.seasonIdDataGridViewTextBoxColumn.Name = "seasonIdDataGridViewTextBoxColumn";
+            this.seasonIdDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // titleDataGridViewTextBoxColumn
+            // 
+            this.titleDataGridViewTextBoxColumn.DataPropertyName = "Title";
+            this.titleDataGridViewTextBoxColumn.HeaderText = "Title";
+            this.titleDataGridViewTextBoxColumn.Name = "titleDataGridViewTextBoxColumn";
+            this.titleDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // titleCompactDataGridViewTextBoxColumn
+            // 
+            this.titleCompactDataGridViewTextBoxColumn.DataPropertyName = "TitleCompact";
+            this.titleCompactDataGridViewTextBoxColumn.HeaderText = "TitleCompact";
+            this.titleCompactDataGridViewTextBoxColumn.Name = "titleCompactDataGridViewTextBoxColumn";
+            this.titleCompactDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // totalFilesDownloadedDataGridViewTextBoxColumn
+            // 
+            this.totalFilesDownloadedDataGridViewTextBoxColumn.DataPropertyName = "TotalFilesDownloaded";
+            this.totalFilesDownloadedDataGridViewTextBoxColumn.HeaderText = "TotalFilesDownloaded";
+            this.totalFilesDownloadedDataGridViewTextBoxColumn.Name = "totalFilesDownloadedDataGridViewTextBoxColumn";
+            this.totalFilesDownloadedDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // urlDataGridViewTextBoxColumn
+            // 
+            this.urlDataGridViewTextBoxColumn.DataPropertyName = "Url";
+            this.urlDataGridViewTextBoxColumn.HeaderText = "Url";
+            this.urlDataGridViewTextBoxColumn.Name = "urlDataGridViewTextBoxColumn";
+            this.urlDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -900,6 +1016,7 @@
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.rssSubscriptionListBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -992,6 +1109,19 @@
         private System.Windows.Forms.ToolStripMenuItem markAsDownloadedToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemUpdateStatus;
+        private System.Windows.Forms.DataGridViewTextBoxColumn lastSerieStatusUpgradeDateDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn categoryDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn currentTVUStatusDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dubLanguageDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn enabledDataGridViewCheckBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn lastChannelUpdateDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn pauseDownloadDataGridViewCheckBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn seasonIdDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn titleDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn titleCompactDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn totalFilesDownloadedDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn urlDataGridViewTextBoxColumn;
+        private System.Windows.Forms.BindingSource rssSubscriptionListBindingSource;
     }
 }
 

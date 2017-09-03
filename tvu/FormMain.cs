@@ -27,7 +27,7 @@ namespace TvUndergroundDownloader
         private DateTime autoCloseDataTime;
         private ContextMenu contextMenu1;
         private DateTime downloadDataTime;
-        private EmbendedWebServer embendedWebServer;
+        private EmbendedWebServer _embendedWebServer;
         private Icon iconUp;
         private MenuItem menuItemAutoCloseEmule;
         private MenuItem menuItemAutoStartEmule;
@@ -46,8 +46,11 @@ namespace TvUndergroundDownloader
 
             InitializeComponent();
             SetupNotify();
-            _worker = new Worker();
-            _worker.Config = MainConfig;
+            _worker = new Worker
+            {
+                Config = MainConfig
+            };
+
             _worker.WorkerCompleted += Task_RunWorkerCompleted;
 
 
@@ -589,21 +592,25 @@ namespace TvUndergroundDownloader
 
         private void exportDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Stream myStream;
-            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-
-            saveFileDialog1.Filter = "XML (*.xml)|*.xml|All files (*.*)|*.*";
-            saveFileDialog1.RestoreDirectory = true;
-
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog
             {
-                if ((myStream = saveFileDialog1.OpenFile()) != null)
+                Filter = @"XML (*.xml)|*.xml|All files (*.*)|*.*",
+                RestoreDirectory = true
+            };
+
+            if (saveFileDialog1.ShowDialog() != DialogResult.OK)
+                return;
+
+            using (Stream myStream = saveFileDialog1.OpenFile())
+            {
+                if (myStream == null)
                 {
-                    ExportImportHelper.Export(MainConfig, myStream);
-                    // Code to write the stream goes here.
-                    myStream.Close();
+                    return;
                 }
+                ExportImportHelper.Export(MainConfig, myStream);
+                myStream.Close();
             }
+            
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -637,28 +644,36 @@ namespace TvUndergroundDownloader
             //
             //  Setup Nlog
             //
-            LoggingConfiguration config = LogManager.Configuration;
-            if (config == null)
+
+            #region Nlog config
+
+            LoggingConfiguration nLogLoggingConfiguration = LogManager.Configuration;
+            if (nLogLoggingConfiguration == null)
             {
-                config = new LoggingConfiguration();
+                nLogLoggingConfiguration = new LoggingConfiguration();
             }
-            RichTextBoxTarget textBoxTarget = new RichTextBoxTarget();
-            textBoxTarget.AutoScroll = true;
-            textBoxTarget.ControlName = richTextBoxLog.Name;
-            textBoxTarget.FormName = Name;
-            textBoxTarget.MaxLines = 1024;
-            textBoxTarget.Name = "TextBox";
-            textBoxTarget.Layout = "${message} ${exception:format=tostring}";
+
+            RichTextBoxTarget textBoxTarget = new RichTextBoxTarget
+            {
+                AutoScroll = true,
+                ControlName = richTextBoxLog.Name,
+                FormName = Name,
+                MaxLines = 1024,
+                Name = "TextBox",
+                Layout = "${message} ${exception:format=tostring}"
+            };
             textBoxTarget.RowColoringRules.Add(new RichTextBoxRowColoringRule("level==LogLevel.Warn", "Empty", "Empty", FontStyle.Bold));
             textBoxTarget.RowColoringRules.Add(new RichTextBoxRowColoringRule("level==LogLevel.Error", "Red", "Empty", FontStyle.Bold));
             textBoxTarget.RowColoringRules.Add(new RichTextBoxRowColoringRule("level==LogLevel.Trace", "Gray", "Empty", FontStyle.Regular));
-            config.AddTarget(textBoxTarget.Name, textBoxTarget);
+            nLogLoggingConfiguration.AddTarget(textBoxTarget.Name, textBoxTarget);
 
-            LoggingRule m_loggingRule = new LoggingRule("*", LogLevel.Info, textBoxTarget);
+            LoggingRule nLogloggingRule = new LoggingRule("*", LogLevel.Info, textBoxTarget);
             //add before final rules from config
-            config.LoggingRules.Insert(0, m_loggingRule);
+            nLogLoggingConfiguration.LoggingRules.Insert(0, nLogloggingRule);
 
-            LogManager.Configuration = config;
+            LogManager.Configuration = nLogLoggingConfiguration;
+
+            #endregion
 
             // download date time
             downloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
@@ -748,14 +763,7 @@ namespace TvUndergroundDownloader
                     DisableAutoCloseEmule();
                 }
 
-                if (MainConfig.StartEmuleIfClose)
-                {
-                    autoStartEMuleToolStripMenuItem.Checked = true;
-                }
-                else
-                {
-                    autoStartEMuleToolStripMenuItem.Checked = false;
-                }
+                autoStartEMuleToolStripMenuItem.Checked = autoStartEMuleToolStripMenuItem.Checked;
 
                 MainConfig.Save();
             }
@@ -775,11 +783,12 @@ namespace TvUndergroundDownloader
 
         private void importDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
-
-            openFileDialog1.Filter = "XML (*.xml)|*.xml|All files (*.*)|*.*";
-            openFileDialog1.RestoreDirectory = true;
-
+            OpenFileDialog openFileDialog1 = new OpenFileDialog
+            {
+                Filter = @"XML (*.xml)|*.xml|All files (*.*)|*.*",
+                RestoreDirectory = true
+            };
+            
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 ExportImportHelper.Import(MainConfig, openFileDialog1.FileName);
@@ -1133,14 +1142,16 @@ namespace TvUndergroundDownloader
 
             StartDownloadThread();
 
-            if ((MainConfig.WebServerEnable) && (embendedWebServer == null))
+            if ((MainConfig.WebServerEnable) && (_embendedWebServer == null))
             {
-                Task task = Task.Factory.StartNew(() =>
+                Task.Factory.StartNew(() =>
                 {
-                    embendedWebServer = new EmbendedWebServer();
-                    embendedWebServer.Config = MainConfig;
-                    embendedWebServer.Worker = _worker;
-                    embendedWebServer.Start();
+                    _embendedWebServer = new EmbendedWebServer
+                    {
+                        Config = MainConfig,
+                        Worker = _worker
+                    };
+                    _embendedWebServer.Start();
                 });
             }
 
@@ -1250,7 +1261,7 @@ namespace TvUndergroundDownloader
 
             foreach (var subscrission in MainConfig.RssFeedList)
             {
-                foreach (Ed2kfile file in subscrission.GetPendingFiles())
+                foreach (DownloadFile file in subscrission.GetPendingFiles())
                 {
                     listBoxPending.Items.Add(file.FileName);
                 }
