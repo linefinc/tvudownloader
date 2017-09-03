@@ -798,9 +798,9 @@ namespace TvUndergroundDownloader
                 return;
             }
 
-            MainConfig.TVUCookieT = form.cookieT;
-            MainConfig.TVUCookieI = form.cookieI;
-            MainConfig.TVUCookieH = form.cookieH;
+            MainConfig.TVUCookieT = form.CookieT;
+            MainConfig.TVUCookieI = form.CookieI;
+            MainConfig.TVUCookieH = form.CookieH;
             MainConfig.Save();
         }
 

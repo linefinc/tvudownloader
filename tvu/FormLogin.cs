@@ -6,20 +6,16 @@ namespace TvUndergroundDownloader
 {
     public partial class FormLogin : Form
     {
-        static private Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private static char[] charsToTrim = { ' ', 't', 'h', 'i', '=' };
 
-        public string cookieT { private set; get; }
-        public string cookieI { private set; get; }
-        public string cookieH { private set; get; }
+        public string CookieT { private set; get; } = string.Empty;
+        public string CookieI { private set; get; } = string.Empty;
+        public string CookieH { private set; get; } = string.Empty;
 
         public FormLogin()
         {
-            cookieT = string.Empty;
-            cookieI = string.Empty;
-            cookieH = string.Empty;
-
             //
             //  this avoid strang behaviour
             //
@@ -98,13 +94,13 @@ namespace TvUndergroundDownloader
                 return;
             }
 
-            logger.Debug("cookie t=" + tempT);
-            logger.Debug("cookie i=" + tempI);
-            logger.Debug("cookie h=" + tempH);
+            _logger.Debug("cookie t=" + tempT);
+            _logger.Debug("cookie i=" + tempI);
+            _logger.Debug("cookie h=" + tempH);
 
-            this.cookieT = tempT;
-            this.cookieI = tempI;
-            this.cookieH = tempH;
+            this.CookieT = tempT;
+            this.CookieI = tempI;
+            this.CookieH = tempH;
 
             this.DialogResult = DialogResult.OK;
             this.Close();
