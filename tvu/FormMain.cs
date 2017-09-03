@@ -1123,7 +1123,7 @@ namespace TvUndergroundDownloader
             timerDelayStartup.Enabled = false;
 
             // show web guide
-        //    if (MainConfig.TotalDownloads == 0)
+            if (MainConfig.TotalDownloads == 0)
             {
                 var rc = MessageBox.Show(
                     "Do you want to see a small video that can help you to configure the app?","Info", MessageBoxButtons.YesNo);
