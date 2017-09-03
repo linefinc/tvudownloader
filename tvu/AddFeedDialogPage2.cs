@@ -17,7 +17,7 @@ namespace TvUndergroundDownloader
         private string ServiceUrl;
         private string Password;
 
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private CookieContainer cookieContainer;
 
@@ -58,7 +58,7 @@ namespace TvUndergroundDownloader
                 }
                 catch (Exception ex)
                 {
-                    logger.Error(ex, "Error while parse link {0}", url);
+                    _logger.Error(ex, "Error while parse link {0}", url);
                 }
 
                 backgroundWorker1.ReportProgress(100 * RssUrlList.IndexOf(url) / RssUrlList.Count);
@@ -83,7 +83,7 @@ namespace TvUndergroundDownloader
             }
             catch (Exception ex)
             {
-                logger.Error(ex, "Error while try to connect to server \"{0}\"", ServiceUrl);
+                _logger.Error(ex, "Error while try to connect to server \"{0}\"", ServiceUrl);
             }
         }
 

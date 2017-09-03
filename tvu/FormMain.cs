@@ -22,7 +22,7 @@ namespace TvUndergroundDownloader
     public partial class FormMain : Form
     {
         public ConfigWindows MainConfig;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private bool allowClose;
         private DateTime autoCloseDataTime;
         private ContextMenu contextMenu1;
@@ -36,7 +36,7 @@ namespace TvUndergroundDownloader
         private MenuItem menuItemExit;
         private bool mVisible = true;
         private NotifyIcon notifyIcon1;
-        private Worker worker;
+        private readonly Worker _worker;
 
         public FormMain()
         {
@@ -46,16 +46,18 @@ namespace TvUndergroundDownloader
 
             InitializeComponent();
             SetupNotify();
-            worker = new Worker();
-            worker.Config = MainConfig;
-            worker.WorkerCompleted += Task_RunWorkerCompleted;
+            _worker = new Worker();
+            _worker.Config = MainConfig;
+            _worker.WorkerCompleted += Task_RunWorkerCompleted;
 
-#if DEBUG
+
             string versionFull = ((AssemblyInformationalVersionAttribute)Assembly
             .GetAssembly(typeof(FormMain))
             .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false)[0]).InformationalVersion;
-
+#if DEBUG
             Text += " - DEBUG - " + versionFull;
+#else
+            Text += " - " + versionFull;
 #endif
             GoogleAnalyticsHelper.cid = MainConfig.tvudwid;
             GoogleAnalyticsHelper.appVersion = Config.Version;
@@ -93,14 +95,14 @@ namespace TvUndergroundDownloader
         {
             if (MainConfig.CloseEmuleIfAllIsDone == false)
             {
-                logger.Info("[AutoClose Mule] MainConfig.CloseEmuleIfAllIsDone == false");
+                _logger.Info("[AutoClose Mule] MainConfig.CloseEmuleIfAllIsDone == false");
                 return;
             }
 
             // check if Auto Close Data Time is not set
             if (autoCloseDataTime == DateTime.MinValue)
             {
-                logger.Info("[AutoClose Mule] AutoCloseDataTime = DateTime.Now.AddMinutes(30);");
+                _logger.Info("[AutoClose Mule] AutoCloseDataTime = DateTime.Now.AddMinutes(30);");
                 autoCloseDataTime = DateTime.Now.AddMinutes(30);
             }
 
@@ -118,7 +120,7 @@ namespace TvUndergroundDownloader
             // connect to mule
             try
             {
-                logger.Info("[AutoClose Mule] Check Login");
+                _logger.Info("[AutoClose Mule] Check Login");
                 eMuleWebManager service = new eMuleWebManager(MainConfig.ServiceUrl, MainConfig.Password);
                 LoginStatus returnCode = service.Connect();
 
@@ -126,35 +128,35 @@ namespace TvUndergroundDownloader
                 if (returnCode != LoginStatus.Logged)
                 {
                     autoCloseDataTime = DateTime.Now.AddMinutes(30); // do control every 30 minutes
-                    logger.Info("[AutoClose Mule] Login failed");
+                    _logger.Info("[AutoClose Mule] Login failed");
                     return;
                 }
-                logger.Info("[AutoClose Mule] Login ok");
+                _logger.Info("[AutoClose Mule] Login ok");
 
                 List<Ed2kfile> knownFiles = new List<Ed2kfile>();
                 MainConfig.RssFeedList.ForEach(file => knownFiles.AddRange(file.GetDownloadedFiles()));
 
-                logger.Info("[AutoClose Mule] Actual Downloads " + service.GetCurrentDownloads(knownFiles).Count);
+                _logger.Info("[AutoClose Mule] Actual Downloads " + service.GetCurrentDownloads(knownFiles).Count);
                 // if donwload > 0 ... there' s some download ... end
                 if (service.GetCurrentDownloads(knownFiles).Count > 0)
                 {
-                    logger.Info("[AutoClose Mule] GetActualDownloads return >0");
+                    _logger.Info("[AutoClose Mule] GetActualDownloads return >0");
                     autoCloseDataTime = DateTime.Now.AddMinutes(30);
-                    logger.Info("[AutoClose Mule] LogOut");
+                    _logger.Info("[AutoClose Mule] LogOut");
                     service.Close();
                     return;
                 }
 
-                logger.Info("[AutoClose Mule] Show dialog ");
+                _logger.Info("[AutoClose Mule] Show dialog ");
                 // pop up form to advise user
                 FormAlerteMuleClose dialog = new FormAlerteMuleClose();
                 dialog.ShowDialog();
 
-                logger.Info("[AutoClose Mule] Dialog return " + dialog.AlertChoice);
+                _logger.Info("[AutoClose Mule] Dialog return " + dialog.AlertChoice);
                 switch (dialog.AlertChoice)
                 {
                     case AlertChoiceEnum.Close:// Close
-                        logger.Info("[AutoClose Mule: CLOSE] Close Service");
+                        _logger.Info("[AutoClose Mule: CLOSE] Close Service");
                         dialog.Dispose();
                         service.CloseEmuleApp();
                         service.Close();
@@ -163,18 +165,18 @@ namespace TvUndergroundDownloader
                     // to fix here
                     case AlertChoiceEnum.Skip: // SKIP
                         autoCloseDataTime = DateTime.Now.AddMinutes(30); // do controll every 30 minuts
-                        logger.Info("[AutoClose Mule: SKIP] Skip");
-                        logger.Info("[AutoClose Mule: SKIP] Next Tock " + autoCloseDataTime);
+                        _logger.Info("[AutoClose Mule: SKIP] Skip");
+                        _logger.Info("[AutoClose Mule: SKIP] Next Tock " + autoCloseDataTime);
                         dialog.Dispose();
-                        logger.Info("[AutoClose Mule] LogOut");
+                        _logger.Info("[AutoClose Mule] LogOut");
                         service.Close();
                         timerAutoClose.Enabled = true;  // enable timer
                         break;
 
                     case AlertChoiceEnum.Disable:    // disable autoclose
-                        logger.Info("[AutoClose Mule: DISABLE] Disable");
+                        _logger.Info("[AutoClose Mule: DISABLE] Disable");
                         dialog.Dispose();
-                        logger.Info("[AutoClose Mule] LogOut");
+                        _logger.Info("[AutoClose Mule] LogOut");
                         service.Close();
                         DisableAutoCloseEmule();
                         timerAutoClose.Enabled = true;  // enable timer
@@ -183,7 +185,7 @@ namespace TvUndergroundDownloader
             }
             catch (Exception ex)
             {
-                logger.Error(ex, "Autoclose error");
+                _logger.Error(ex, "Autoclose error");
             }
         }
 
@@ -370,7 +372,7 @@ namespace TvUndergroundDownloader
 
         private void cancelCheckToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            worker.Abort();
+            _worker.Abort();
         }
 
         /// <summary>
@@ -491,7 +493,7 @@ namespace TvUndergroundDownloader
             foreach (ListViewItem selectedItem in listViewFeedFilesList.SelectedItems)
             {
                 string strSelectItemText = selectedItem.Text;   // this contain name file
-                logger.Info("Marked as not Downloaded \"{0}\"", strSelectItemText);
+                _logger.Info("Marked as not Downloaded \"{0}\"", strSelectItemText);
 
                 Ed2kfile file = feed.GetDownloadFile().Find(t => t.FileName == strSelectItemText);
 
@@ -571,7 +573,7 @@ namespace TvUndergroundDownloader
         {
             foreach (var item in listBoxPending.SelectedItems)
             {
-                logger.Info("selected item ", item);
+                _logger.Info("selected item ", item);
             }
         }
 
@@ -606,10 +608,10 @@ namespace TvUndergroundDownloader
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            logger.Info("FormClosing Event");
-            logger.Debug("{0} = {1}", "CloseReason", e.CloseReason);
-            logger.Debug("{0} = {1}", "Cancel", e.Cancel);
-            logger.Debug("{0} = {1}", "mAllowClose", allowClose);
+            _logger.Info("FormClosing Event");
+            _logger.Debug("{0} = {1}", "CloseReason", e.CloseReason);
+            _logger.Debug("{0} = {1}", "Cancel", e.Cancel);
+            _logger.Debug("{0} = {1}", "mAllowClose", allowClose);
 
             if (e.CloseReason == CloseReason.WindowsShutDown)
             {
@@ -626,7 +628,7 @@ namespace TvUndergroundDownloader
             else
             {
                 notifyIcon1.Visible = false;      // Avoid ghost
-                worker.Abort();
+                _worker.Abort();
             }
         }
 
@@ -828,7 +830,7 @@ namespace TvUndergroundDownloader
             foreach (ListViewItem selectedItem in listViewFeedFilesList.SelectedItems)
             {
                 string strSelectItemText = selectedItem.Text;   // this contain name file
-                logger.Info("Marked as Downloaded file:\"{0}\"", strSelectItemText);
+                _logger.Info("Marked as Downloaded file:\"{0}\"", strSelectItemText);
 
                 Ed2kfile file = feed.GetDownloadFile().Find(t => t.FileName == strSelectItemText);
 
@@ -855,7 +857,7 @@ namespace TvUndergroundDownloader
 
         private void menu_AutoStartEmule(object sender, EventArgs e)
         {
-            logger.Info("Auto Start Emule");
+            _logger.Info("Auto Start Emule");
             if (MainConfig.StartEmuleIfClose)
             {
                 menuItemAutoStartEmule.Checked = false;
@@ -1014,9 +1016,9 @@ namespace TvUndergroundDownloader
 
         private void StartDownloadThread()
         {
-            if (worker.IsBusy)
+            if (_worker.IsBusy)
             {
-                logger.Info("Thread is busy");
+                _logger.Info("Thread is busy");
                 return;
             }
 
@@ -1042,7 +1044,7 @@ namespace TvUndergroundDownloader
 
             listBoxPending.Items.Clear();
             listBoxPending.Refresh();
-            worker.Run();
+            _worker.Run();
             GoogleAnalyticsHelper.TrackEvent("BackgroundWorker_Start");
         }
 
@@ -1096,7 +1098,7 @@ namespace TvUndergroundDownloader
             }
             catch
             {
-                logger.Info("Unable start application");
+                _logger.Info("Unable start application");
             }
         }
 
@@ -1107,7 +1109,7 @@ namespace TvUndergroundDownloader
 
         private void timerDelayStartup_Tick(object sender, EventArgs e)
         {
-            logger.Info("Configuration loaded {0} ", MainConfig.FileNameConfig);
+            _logger.Info("Configuration loaded {0} ", MainConfig.FileNameConfig);
 
             timerDelayStartup.Enabled = false;
 
@@ -1137,7 +1139,7 @@ namespace TvUndergroundDownloader
                 {
                     embendedWebServer = new EmbendedWebServer();
                     embendedWebServer.Config = MainConfig;
-                    embendedWebServer.Worker = worker;
+                    embendedWebServer.Worker = _worker;
                     embendedWebServer.Start();
                 });
             }
@@ -1159,8 +1161,8 @@ namespace TvUndergroundDownloader
 
                 downloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
 
-                logger.Info("Now : {0}", DateTime.Now);
-                logger.Info("next tick : " + downloadDataTime);
+                _logger.Info("Now : {0}", DateTime.Now);
+                _logger.Info("next tick : " + downloadDataTime);
                 StartDownloadThread();
                 UpdateRssFeedGUI();
             }
@@ -1178,7 +1180,7 @@ namespace TvUndergroundDownloader
 
         private void toolStripButtonStop_Click(object sender, EventArgs e)
         {
-            worker.Abort();
+            _worker.Abort();
         }
 
         private void toolStripMenuItemAbout_Click(object sender, EventArgs e)
