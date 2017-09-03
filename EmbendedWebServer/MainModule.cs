@@ -78,7 +78,7 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
                 configModel.MinToStartEmule = GlobalVar.Config.MinToStartEmule;
                 configModel.eMuleExe = GlobalVar.Config.eMuleExe;
                 configModel.EmailNotification = GlobalVar.Config.EmailNotification;
-                configModel.ServerSMTP = GlobalVar.Config.ServerSMTP;
+                configModel.ServerSMTP = GlobalVar.Config.SmtpServerAddress;
                 configModel.MailSender = GlobalVar.Config.MailSender;
                 configModel.MailReceiver = GlobalVar.Config.MailReceiver;
                 return View["setup", configModel];
@@ -117,7 +117,7 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
                     config.MinToStartEmule = minToStartEmule;
                     config.eMuleExe = eMuleExe;
                     config.EmailNotification = emailNotification;
-                    config.ServerSMTP = serverSMTP;
+                    config.SmtpServerAddress = serverSMTP;
                     config.MailSender = mailSender;
                     config.MailReceiver = mailReceiver;
 

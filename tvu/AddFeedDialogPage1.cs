@@ -37,8 +37,6 @@ namespace TvUndergroundDownloader
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
 
-            List<string> Feed = new List<string>();
-
             openFileDialog1.Filter = "All files (*.*)|*.*|OPML (*.opml)|*.opml";
             openFileDialog1.FilterIndex = 2;
             openFileDialog1.RestoreDirectory = true;

@@ -3,6 +3,7 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using System;
+using Nancy;
 
 namespace TvUndergroundDownloaderLib.EmbendedWebServer
 {
@@ -92,6 +93,8 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
                 nancyHost.Start();
                 logger.Info("Server is listening on {0}", nancyUrl);
             }
+
+            StaticConfiguration.DisableErrorTraces = true;
 
         }
 

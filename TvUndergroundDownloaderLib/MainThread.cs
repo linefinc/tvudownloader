@@ -391,14 +391,11 @@ namespace TvUndergroundDownloaderLib
             if (Config.EmailNotification)
                 try
                 {
-                    var message = new MailMessage();
-                    message.To.Add(Config.MailReceiver);
-                    message.Subject = "TV Underground Downloader Notification";
-                    message.From = new MailAddress(Config.MailSender);
-                    message.Body = "New file add\r\n" + fileName + "\r\n";
-                    var smtp = new System.Net.Mail.SmtpClient(Config.ServerSMTP);
-
-                    smtp.Send(message);
+                    string subject = "TV Underground Downloader Notification";
+                    string body = "New file add\r\n" + fileName + "\r\n";
+                    
+                    SmtpSimpleClient simpleClient = new SmtpSimpleClient(this.Config);
+                    simpleClient.SendEmail(subject, body);
                 }
                 catch (Exception ex)
                 {

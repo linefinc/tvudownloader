@@ -51,7 +51,7 @@ namespace TvUndergroundDownloaderLib
         public bool CloseEmuleIfAllIsDone { get; set; } = false;
 
         public string DefaultCategory { get; set; } = string.Empty;
-        public bool EmailNotification { get; set; } = false;
+
         public string eMuleExe { get; set; } = String.Empty;
         public bool Enebled { get; set; } = true;
         public virtual string FileNameConfig => "config.xml";
@@ -59,22 +59,42 @@ namespace TvUndergroundDownloaderLib
         public int IntervalBetweenUpgradeCheck { get; set; } = 5;
         public int IntervalTime { get; set; } = 30;     // todo: replace with timespan
         public string LastUpgradeCheck { get; set; }    // todo: make nullable
-        public string MailReceiver { get; set; } = string.Empty;
-        public string MailSender { get; set; } = string.Empty;
+
         public uint MaxSimultaneousFeedDownloadsDefault { get; set; } = 3;
         public int MinToStartEmule { get; set; } = 0;
         public string Password { get; set; } = "password";
         public bool PauseDownloadDefault { get; set; } = false;
         public RssSubscriptionList RssFeedList { get; set; }
-        public string ServerSMTP { get; set; } = string.Empty;
+
+        #region Email 
+
+        public bool EmailNotification { get; set; } = false;
+        public string SmtpServerAddress { get; set; } = string.Empty;
+        public int SmtpServerPort { get; set; } = 25;
+        public bool SmtpServerEnableSsl { get; set; } = false;
+        public bool SmtpServerEnableAuthentication { get; set; } = false;
+        public string SmtpServerUserName { get; set; } = string.Empty;
+        public string SmtpServerPassword { get; set; } = string.Empty;
+        public string MailReceiver { get; set; } = string.Empty;
+        public string MailSender { get; set; } = string.Empty;
+
+        #endregion
+
         public eServiceType ServiceType { get; set; } = eServiceType.eMule;
         public string ServiceUrl { get; set; } = "http://localhost:4000";
         public bool StartEmuleIfClose { get; set; } = false;
         public bool StartMinimized { get; set; } = false;
         public int TotalDownloads { get; set; } = 0;
+
+        #region Tvu Cookie
+
         public string TVUCookieH { get; set; } = string.Empty;
         public string TVUCookieI { get; set; } = string.Empty;
         public string TVUCookieT { get; set; } = string.Empty;
+
+        #endregion
+
+
         public string tvudwid { get; set; } = null;
         public bool UseHttpInsteadOfHttps { get; set; } = false;    // todo: implement
         public bool Verbose { get; set; } = false;
@@ -183,17 +203,39 @@ namespace TvUndergroundDownloaderLib
             if (NodeExist(xDoc, "Verbose"))
                 Verbose = ReadBoolean(xDoc, "Verbose", false);
 #endif
+
+            #region Email notification
+
             if (NodeExist(xDoc, "EmailNotification"))
                 EmailNotification = ReadBoolean(xDoc, "EmailNotification", false);
 
-            if (NodeExist(xDoc, "ServerSMTP"))
-                ServerSMTP = ReadString(xDoc, "ServerSMTP", "");
+            if (NodeExist(xDoc, "SmtpServerAddress"))
+                SmtpServerAddress = ReadString(xDoc, "SmtpServerAddress", "");
+
+            if (NodeExist(xDoc, "SmtpServerPort"))
+                SmtpServerPort = ReadInt(xDoc, "SmtpServerPort", 25);
+
+            if (NodeExist(xDoc, "SmtpServerEnableSsl"))
+                SmtpServerEnableSsl= ReadBoolean(xDoc, "SmtpServerEnableSsl", false);
+
+            if (NodeExist(xDoc, "SmtpServerEnableAuthentication"))
+                SmtpServerEnableAuthentication = ReadBoolean(xDoc, "SmtpServerEnableAuthentication", false);
+
+            if (NodeExist(xDoc, nameof(SmtpServerUserName)))
+                SmtpServerUserName = ReadString(xDoc, nameof(SmtpServerUserName), "");
+
+            if (NodeExist(xDoc, "SmtpServerPassword"))
+                SmtpServerPassword = ReadString(xDoc, "SmtpServerPassword", "");
+
 
             if (NodeExist(xDoc, "MailReceiver"))
                 MailReceiver = ReadString(xDoc, "MailReceiver", "");
 
             if (NodeExist(xDoc, "MailSender"))
                 MailSender = ReadString(xDoc, "MailSender", "");
+
+            #endregion
+
 
             if (NodeExist(xDoc, "tvudwid"))
                 tvudwid = ReadString(xDoc, "tvudwid", RandomIdGenerator());
@@ -231,6 +273,8 @@ namespace TvUndergroundDownloaderLib
 
             RssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title, StringComparison.InvariantCulture));
         }
+
+        
 
         public void Save()
         {
@@ -277,7 +321,7 @@ namespace TvUndergroundDownloaderLib
 
             writer.WriteElementString("EmailNotification", EmailNotification.ToString());
 
-            writer.WriteElementString("ServerSMTP", ServerSMTP);
+            writer.WriteElementString("ServerSMTP", SmtpServerAddress);
 
             writer.WriteElementString("MailReceiver", MailReceiver);
 
@@ -357,11 +401,11 @@ namespace TvUndergroundDownloaderLib
             return Convert.ToUInt32(t[0].InnerText);
         }
 
-        private static uint ReadUInt(XmlDocument xDoc, string nodeName, uint defaultValue, uint Min, uint Max)
+        private static uint ReadUInt(XmlDocument xDoc, string nodeName, uint defaultValue, uint min, uint max)
         {
             uint val = ReadUInt(xDoc, nodeName, defaultValue);
-            val = Math.Min(val, Max);
-            val = Math.Max(val, Min);
+            val = Math.Min(val, max);
+            val = Math.Max(val, min);
             return val;
         }
 

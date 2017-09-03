@@ -6,51 +6,6 @@ namespace TvUndergroundDownloader
 {
     public partial class OptionsDialog : Form
     {
-        public bool AutoClearLog;
-
-        public bool CloseEmuleIfAllIsDone;
-
-        public bool debug;
-
-        public string DefaultCategory;
-
-        public bool EmailNotification;
-
-        public string eMuleExe;
-
-        public bool Enebled;
-
-        public int intervalBetweenUpgradeCheck;
-
-        public int IntervalTime;
-
-        public string LastUpgradeCheck;
-
-        public string MailReceiver;
-
-        public string MailSender;
-
-        public uint MaxSimultaneousFeedDownloads;
-
-        public int MinToStartEmule;
-
-        public string Password;
-
-        public string ServerSMTP;
-
-        //public Config LocalConfig;
-        public Config.eServiceType ServiceType;
-
-        public bool StartEmuleIfClose;
-        public bool StartMinimized;
-        public bool StartWithWindows;
-        public string tvuCookieH;
-        public string tvuCookieI;
-        public string tvuCookieT;
-        public string tvuPassword;
-        public string tvuUsername;
-        public bool Verbose;
-
         public OptionsDialog(ConfigWindows inConfig)
         {
             InitializeComponent();
@@ -68,42 +23,101 @@ namespace TvUndergroundDownloader
                     break;
             }
 
-            textBoxServiceUrl.Text = ServiceUrl = inConfig.ServiceUrl;
-            textBoxPassword.Text = Password = inConfig.Password;
+            textBoxServiceUrl.Text = inConfig.ServiceUrl;
+            textBoxPassword.Text = inConfig.Password;
 
-            textBoxEmuleExe.Text = eMuleExe = inConfig.eMuleExe;
-            textBoxDefaultCategory.Text = DefaultCategory = inConfig.DefaultCategory;
-            textBoxMailReceiver.Text = MailReceiver = inConfig.MailReceiver;
-            textBoxMailSender.Text = MailSender = inConfig.MailSender;
-            textBoxServerSmtp.Text = ServerSMTP = inConfig.ServerSMTP;
+            textBoxEmuleExe.Text = inConfig.eMuleExe;
+            textBoxDefaultCategory.Text = inConfig.DefaultCategory;
+        
+        
+        
 
-            numericUpDownIntervalTime.Value = IntervalTime = inConfig.IntervalTime;
-            numericUpDownMinDownloadToStrarTEmule.Value = MinToStartEmule = inConfig.MinToStartEmule;
-            numericUpDownIntervalCheck.Value = intervalBetweenUpgradeCheck = inConfig.IntervalBetweenUpgradeCheck;
+            numericUpDownIntervalTime.Value = inConfig.IntervalTime;
+            numericUpDownMinDownloadToStrarTEmule.Value = inConfig.MinToStartEmule;
+            numericUpDownIntervalCheck.Value = inConfig.IntervalBetweenUpgradeCheck;
 
-            numericUpDownMaxSimultaneousDownloadForFeed.Value = MaxSimultaneousFeedDownloads = inConfig.MaxSimultaneousFeedDownloadsDefault;
-            checkBoxStartMinimized.Checked = StartMinimized = inConfig.StartMinimized;
-            checkBoxStartEmuleIfClose.Checked = StartEmuleIfClose = inConfig.StartEmuleIfClose;
-            checkBoxCloseEmuleIfAllIsDone.Checked = CloseEmuleIfAllIsDone = inConfig.CloseEmuleIfAllIsDone;
-            checkBoxStartWithWindows.Checked = StartWithWindows = ConfigWindows.StartWithWindows;
-            checkBoxAutoClear.Checked = AutoClearLog = inConfig.AutoClearLog;
-            checkBoxVerbose.Checked = Verbose = inConfig.Verbose;
-            checkBoxEmailNotification.Checked = EmailNotification = inConfig.EmailNotification;
-            tvuCookieH = textBoxCookieH.Text = inConfig.TVUCookieH;
-            tvuCookieI = textBoxCookieI.Text = inConfig.TVUCookieI;
-            tvuCookieT = textBoxCookieT.Text = inConfig.TVUCookieT;
+            numericUpDownMaxSimultaneousDownloadForFeed.Value = inConfig.MaxSimultaneousFeedDownloadsDefault;
+            checkBoxStartMinimized.Checked = inConfig.StartMinimized;
+            checkBoxStartEmuleIfClose.Checked = inConfig.StartEmuleIfClose;
+            checkBoxCloseEmuleIfAllIsDone.Checked = inConfig.CloseEmuleIfAllIsDone;
+            checkBoxStartWithWindows.Checked = ConfigWindows.StartWithWindows;
+            checkBoxAutoClear.Checked = inConfig.AutoClearLog;
+            checkBoxVerbose.Checked = inConfig.Verbose;
+
+            // EMAIL
+            checkBoxEmailNotification.Checked = inConfig.EmailNotification;
+            buttonTestEmailNotification.Enabled = checkBoxEmailNotification.Checked;
+            textBoxSmtpServerAddress.Enabled = checkBoxEmailNotification.Checked;
+            textBoxSmtpServerPort.Enabled = checkBoxEmailNotification.Checked;
+            checkBoxEnableSSL.Enabled = checkBoxEmailNotification.Checked;
+            checkBoxEnableAuthentication.Enabled = checkBoxEmailNotification.Checked;
+            textBoxSmtpServerUsername.Enabled = checkBoxEmailNotification.Checked;
+            textBoxSmtpServerPassword.Enabled = checkBoxEmailNotification.Checked;
+
+            textBoxSmtpServerUsername.Enabled = checkBoxEnableAuthentication.Checked;
+            textBoxSmtpServerPassword.Enabled = checkBoxEnableAuthentication.Checked;
+
+            textBoxMailSender.Enabled = checkBoxEmailNotification.Checked;
+            textBoxMailReceiver.Enabled = checkBoxEmailNotification.Checked;
+
+            textBoxSmtpServerAddress.Text = inConfig.SmtpServerAddress;
+            textBoxSmtpServerPort.Text = inConfig.SmtpServerPort.ToString();
+            checkBoxEnableSSL.Checked = inConfig.SmtpServerEnableSsl;
+            checkBoxEnableAuthentication.Checked = inConfig.SmtpServerEnableAuthentication;
+            textBoxSmtpServerUsername.Text = inConfig.SmtpServerUserName;
+            textBoxSmtpServerPassword.Text = inConfig.SmtpServerPassword;
+            textBoxMailReceiver.Text = inConfig.MailReceiver;
+            textBoxMailSender.Text = inConfig.MailSender;
+
+
+            // Coockie
+
+            textBoxCookieH.Text = inConfig.TVUCookieH;
+            textBoxCookieI.Text = inConfig.TVUCookieI;
+            textBoxCookieT.Text = inConfig.TVUCookieT;
 
             textBoxWebServerPortNumber.Text = inConfig.WebServerPort.ToString();
-            WebServerEnable = checkBoxWebServerEnabled.Checked = inConfig.WebServerEnable;
-            WebServerPort = inConfig.WebServerPort;
+
+            checkBoxWebServerEnabled.Checked = inConfig.WebServerEnable;
+            textBoxWebServerPortNumber.Enabled = inConfig.WebServerEnable;
+            textBoxWebServerPortNumber.Text = inConfig.WebServerPort.ToString();
 
         }
 
-        public string ServiceUrl { private set; get; }
-        public bool WebServerEnable { get; set; }
+        public bool AutoClearLog => checkBoxAutoClear.Checked;
 
-        public int WebServerPort { get; set; }
+        public bool CloseEmuleIfAllIsDone => checkBoxCloseEmuleIfAllIsDone.Checked;
 
+        public string DefaultCategory => textBoxDefaultCategory.Text;
+
+        public bool EmailNotification => checkBoxEmailNotification.Checked;
+        public string eMuleExe => textBoxEmuleExe.Text;
+
+        public int IntervalBetweenUpgradeCheck => Convert.ToInt32(numericUpDownIntervalCheck.Value);
+
+        public int IntervalTime => Convert.ToInt32(numericUpDownIntervalTime.Value);
+        public string MailReceiver => textBoxMailReceiver.Text;
+        public string MailSender => textBoxMailSender.Text;
+        public uint MaxSimultaneousFeedDownloads => Convert.ToUInt32(numericUpDownMaxSimultaneousDownloadForFeed.Value);
+        public int MinToStartEmule => Convert.ToInt32(numericUpDownMinDownloadToStrarTEmule.Value);
+        public string Password => textBoxPassword.Text;
+        public Config.eServiceType ServiceType { get; set; }
+        public string ServiceUrl => textBoxServiceUrl.Text;
+        public string SmtpServerAddress => textBoxSmtpServerAddress.Text;
+        public bool SmtpServerEnableAuthentication => checkBoxEnableAuthentication.Checked;
+        public bool SmtpServerEnableSsl => checkBoxEnableSSL.Checked;
+        public string SmtpServerPassword => textBoxSmtpServerPassword.Text;
+        public int SmtpServerPort => int.Parse(textBoxSmtpServerPort.Text);
+        public string SmtpServerUserName => textBoxSmtpServerUsername.Text;
+        public bool StartEmuleIfClose => checkBoxStartEmuleIfClose.Checked;
+        public bool StartMinimized => checkBoxStartMinimized.Checked;
+        public bool StartWithWindows => checkBoxStartWithWindows.Checked;
+        public string tvuCookieH => textBoxCookieH.Text;
+        public string tvuCookieI => textBoxCookieI.Text;
+        public string tvuCookieT => textBoxCookieT.Text;
+        public bool Verbose => checkBoxVerbose.Checked;
+        public bool WebServerEnable => checkBoxWebServerEnabled.Checked;
+        public int WebServerPort => int.Parse(textBoxSmtpServerPort.Text);
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
@@ -144,113 +158,33 @@ namespace TvUndergroundDownloader
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            //
-            // StartMinimized
-            //
-            StartMinimized = false;
-            if (checkBoxStartMinimized.Checked == true)
-            {
-                StartMinimized = true;
-            }
-            //
-            // StartWithWindows
-            //
-            if (checkBoxStartWithWindows.Checked == true)
-            {
-                StartWithWindows = true;
-            }
-            else
-            {
-                StartWithWindows = false;
-            }
-            //
-            // StartEmuleIfClose
-            //
-            StartEmuleIfClose = false;
-            if (checkBoxStartEmuleIfClose.Checked == true)
-            {
-                StartEmuleIfClose = true;
-            }
-            //
-            // CloseWhenAllDone
-            //
-            CloseEmuleIfAllIsDone = false;
-            if (checkBoxCloseEmuleIfAllIsDone.Checked == true)
-            {
-                CloseEmuleIfAllIsDone = true;
-            }
-
-            AutoClearLog = false;
-            if (checkBoxAutoClear.Checked == true)
-            {
-                AutoClearLog = true;
-            }
-            //
-            //  Verbosen
-            Verbose = checkBoxVerbose.Checked;
-            //
 
             //
             //  Service Url
             //
-            ServiceUrl = textBoxServiceUrl.Text;
             if (ServiceUrl.IndexOf("http://") == -1)
             {
-                ServiceUrl = "http://" + ServiceUrl;
+                MessageBox.Show("Service url not valid");
+                return;
+                
             }
+            
             //
-            //  Password
+            //  Check numeric text
             //
-            Password = textBoxPassword.Text;
-            //
-            // Default Category
-            //
-            DefaultCategory = textBoxDefaultCategory.Text;
-            //
-            // Emule Exe
-            //
-            eMuleExe = textBoxEmuleExe.Text;
-            //
-            //  Interval time
-            //
-            IntervalTime = Convert.ToInt32(numericUpDownIntervalTime.Value);
-            //
-            //  Min download to start emule
-            //
-            MinToStartEmule = Convert.ToInt32(numericUpDownMinDownloadToStrarTEmule.Value);
-            //
-            //
-            //
-            EmailNotification = checkBoxEmailNotification.Checked;
-            //
-            // emeil server
-            //
-            ServerSMTP = textBoxServerSmtp.Text;
-            //
-            //  email Sender
-            //
-            MailSender = textBoxMailSender.Text;
-            //
-            //  email receiver
-            //
-            MailReceiver = textBoxMailReceiver.Text;
-            //
-            //  Interval Check
-            //
-            intervalBetweenUpgradeCheck = Convert.ToInt32(numericUpDownIntervalCheck.Value);
-            //
-            //
-            //
-            MaxSimultaneousFeedDownloads = Convert.ToUInt32(numericUpDownMaxSimultaneousDownloadForFeed.Value);
+            int tempInt;
+            if (!int.TryParse(textBoxSmtpServerPort.Text, out tempInt))
+            {
+                MessageBox.Show("Invalid Smtp port number");
+                return;
+            }
+            
+            if (!int.TryParse(textBoxWebServerPortNumber.Text, out tempInt))
+            {
+                MessageBox.Show("Invalid web server port number");
+                return;
+            }
 
-            tvuCookieH = textBoxCookieH.Text;
-            tvuCookieI = textBoxCookieI.Text;
-            tvuCookieT = textBoxCookieT.Text;
-            //
-            //  web server
-            //
-            WebServerEnable = checkBoxWebServerEnabled.Checked;
-            WebServerPort = Convert.ToInt32(textBoxWebServerPortNumber.Text);
 
             this.DialogResult = DialogResult.OK;
             this.Close();
@@ -258,12 +192,52 @@ namespace TvUndergroundDownloader
 
         private void buttonTestEmailNotification_Click(object sender, EventArgs e)
         {
-            string stmpServer = textBoxServerSmtp.Text;
-            string EmailReceiver = textBoxMailReceiver.Text;
-            string EmailSender = textBoxMailSender.Text;
-            string Subject = "Email Test";
-            string message = "Email Test";
-            SmtpClient.SendEmail(stmpServer, EmailReceiver, EmailSender, Subject, message);
+
+            try
+            {
+                string subject = "Email Test";
+                string message = "Email Test";
+                SmtpSimpleClient simpleClient = new SmtpSimpleClient();
+                simpleClient.SmtpClientHost = textBoxSmtpServerAddress.Text;
+                simpleClient.SmtpClientPort = int.Parse(textBoxSmtpServerPort.Text);
+                simpleClient.SmtpServerEnableSsl = checkBoxEnableSSL.Checked;
+                simpleClient.SmtpServerEnableCredential = checkBoxEnableAuthentication.Checked;
+                simpleClient.SmtpServerUserName = textBoxSmtpServerUsername.Text;
+                simpleClient.SmtpServerPassword = textBoxSmtpServerPassword.Text;
+                simpleClient.MailSender = textBoxMailSender.Text;
+                simpleClient.MailReceiver = textBoxMailReceiver.Text;
+                simpleClient.SendEmail(subject, message);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
+            }
+
+        }
+
+        private void checkBoxEmailNotification_CheckedChanged(object sender, EventArgs e)
+        {
+            buttonTestEmailNotification.Enabled = checkBoxEmailNotification.Checked;
+            textBoxSmtpServerAddress.Enabled = checkBoxEmailNotification.Checked;
+            textBoxSmtpServerPort.Enabled = checkBoxEmailNotification.Checked;
+            checkBoxEnableSSL.Enabled = checkBoxEmailNotification.Checked;
+            checkBoxEnableAuthentication.Enabled = checkBoxEmailNotification.Checked;
+            textBoxSmtpServerUsername.Enabled = checkBoxEnableAuthentication.Checked;
+            textBoxSmtpServerPassword.Enabled = checkBoxEnableAuthentication.Checked;
+            textBoxMailSender.Enabled = checkBoxEmailNotification.Checked;
+            textBoxMailReceiver.Enabled = checkBoxEmailNotification.Checked;
+        }
+
+        private void checkBoxEnableAutentication_CheckedChanged(object sender, EventArgs e)
+        {
+            textBoxSmtpServerUsername.Enabled = checkBoxEnableAuthentication.Checked;
+            textBoxSmtpServerPassword.Enabled = checkBoxEnableAuthentication.Checked;
+        }
+
+        private void checkBoxWebServerEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            textBoxWebServerPortNumber.Enabled = checkBoxWebServerEnabled.Checked;
         }
 
         private void comboBoxClientType_SelectedIndexChanged(object sender, EventArgs e)

@@ -40,10 +40,18 @@
             this.checkBoxVerbose = new System.Windows.Forms.CheckBox();
             this.checkBoxAutoClear = new System.Windows.Forms.CheckBox();
             this.tabPageEmail = new System.Windows.Forms.TabPage();
+            this.checkBoxEnableAuthentication = new System.Windows.Forms.CheckBox();
+            this.checkBoxEnableSSL = new System.Windows.Forms.CheckBox();
             this.buttonTestEmailNotification = new System.Windows.Forms.Button();
+            this.label23 = new System.Windows.Forms.Label();
+            this.textBoxSmtpServerPort = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.textBoxSmtpServerPassword = new System.Windows.Forms.TextBox();
+            this.textBoxSmtpServerUsername = new System.Windows.Forms.TextBox();
             this.textBoxMailSender = new System.Windows.Forms.TextBox();
             this.textBoxMailReceiver = new System.Windows.Forms.TextBox();
-            this.textBoxServerSmtp = new System.Windows.Forms.TextBox();
+            this.textBoxSmtpServerAddress = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -220,10 +228,18 @@
             // 
             // tabPageEmail
             // 
+            this.tabPageEmail.Controls.Add(this.checkBoxEnableAuthentication);
+            this.tabPageEmail.Controls.Add(this.checkBoxEnableSSL);
             this.tabPageEmail.Controls.Add(this.buttonTestEmailNotification);
+            this.tabPageEmail.Controls.Add(this.label23);
+            this.tabPageEmail.Controls.Add(this.textBoxSmtpServerPort);
+            this.tabPageEmail.Controls.Add(this.label22);
+            this.tabPageEmail.Controls.Add(this.label21);
+            this.tabPageEmail.Controls.Add(this.textBoxSmtpServerPassword);
+            this.tabPageEmail.Controls.Add(this.textBoxSmtpServerUsername);
             this.tabPageEmail.Controls.Add(this.textBoxMailSender);
             this.tabPageEmail.Controls.Add(this.textBoxMailReceiver);
-            this.tabPageEmail.Controls.Add(this.textBoxServerSmtp);
+            this.tabPageEmail.Controls.Add(this.textBoxSmtpServerAddress);
             this.tabPageEmail.Controls.Add(this.label11);
             this.tabPageEmail.Controls.Add(this.label10);
             this.tabPageEmail.Controls.Add(this.label9);
@@ -236,9 +252,30 @@
             this.tabPageEmail.Text = "Email Notification";
             this.tabPageEmail.UseVisualStyleBackColor = true;
             // 
+            // checkBoxEnableAuthentication
+            // 
+            this.checkBoxEnableAuthentication.AutoSize = true;
+            this.checkBoxEnableAuthentication.Location = new System.Drawing.Point(128, 106);
+            this.checkBoxEnableAuthentication.Name = "checkBoxEnableAuthentication";
+            this.checkBoxEnableAuthentication.Size = new System.Drawing.Size(130, 17);
+            this.checkBoxEnableAuthentication.TabIndex = 16;
+            this.checkBoxEnableAuthentication.Text = "Enable Authentication";
+            this.checkBoxEnableAuthentication.UseVisualStyleBackColor = true;
+            this.checkBoxEnableAuthentication.CheckedChanged += new System.EventHandler(this.checkBoxEnableAutentication_CheckedChanged);
+            // 
+            // checkBoxEnableSSL
+            // 
+            this.checkBoxEnableSSL.AutoSize = true;
+            this.checkBoxEnableSSL.Location = new System.Drawing.Point(128, 83);
+            this.checkBoxEnableSSL.Name = "checkBoxEnableSSL";
+            this.checkBoxEnableSSL.Size = new System.Drawing.Size(82, 17);
+            this.checkBoxEnableSSL.TabIndex = 15;
+            this.checkBoxEnableSSL.Text = "Enable SSL";
+            this.checkBoxEnableSSL.UseVisualStyleBackColor = true;
+            // 
             // buttonTestEmailNotification
             // 
-            this.buttonTestEmailNotification.Location = new System.Drawing.Point(267, 120);
+            this.buttonTestEmailNotification.Location = new System.Drawing.Point(267, 6);
             this.buttonTestEmailNotification.Name = "buttonTestEmailNotification";
             this.buttonTestEmailNotification.Size = new System.Drawing.Size(75, 23);
             this.buttonTestEmailNotification.TabIndex = 7;
@@ -246,31 +283,79 @@
             this.buttonTestEmailNotification.UseVisualStyleBackColor = true;
             this.buttonTestEmailNotification.Click += new System.EventHandler(this.buttonTestEmailNotification_Click);
             // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(12, 60);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(26, 13);
+            this.label23.TabIndex = 14;
+            this.label23.Text = "Port";
+            // 
+            // textBoxSmtpServerPort
+            // 
+            this.textBoxSmtpServerPort.Location = new System.Drawing.Point(128, 57);
+            this.textBoxSmtpServerPort.Name = "textBoxSmtpServerPort";
+            this.textBoxSmtpServerPort.Size = new System.Drawing.Size(214, 20);
+            this.textBoxSmtpServerPort.TabIndex = 13;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(13, 158);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(53, 13);
+            this.label22.TabIndex = 11;
+            this.label22.Text = "Password";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(13, 132);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(55, 13);
+            this.label21.TabIndex = 10;
+            this.label21.Text = "Username";
+            // 
+            // textBoxSmtpServerPassword
+            // 
+            this.textBoxSmtpServerPassword.Location = new System.Drawing.Point(128, 155);
+            this.textBoxSmtpServerPassword.Name = "textBoxSmtpServerPassword";
+            this.textBoxSmtpServerPassword.Size = new System.Drawing.Size(214, 20);
+            this.textBoxSmtpServerPassword.TabIndex = 9;
+            // 
+            // textBoxSmtpServerUsername
+            // 
+            this.textBoxSmtpServerUsername.Location = new System.Drawing.Point(128, 129);
+            this.textBoxSmtpServerUsername.Name = "textBoxSmtpServerUsername";
+            this.textBoxSmtpServerUsername.Size = new System.Drawing.Size(214, 20);
+            this.textBoxSmtpServerUsername.TabIndex = 8;
+            // 
             // textBoxMailSender
             // 
-            this.textBoxMailSender.Location = new System.Drawing.Point(128, 57);
+            this.textBoxMailSender.Location = new System.Drawing.Point(128, 181);
             this.textBoxMailSender.Name = "textBoxMailSender";
             this.textBoxMailSender.Size = new System.Drawing.Size(214, 20);
             this.textBoxMailSender.TabIndex = 6;
             // 
             // textBoxMailReceiver
             // 
-            this.textBoxMailReceiver.Location = new System.Drawing.Point(128, 83);
+            this.textBoxMailReceiver.Location = new System.Drawing.Point(128, 207);
             this.textBoxMailReceiver.Name = "textBoxMailReceiver";
             this.textBoxMailReceiver.Size = new System.Drawing.Size(214, 20);
             this.textBoxMailReceiver.TabIndex = 4;
             // 
-            // textBoxServerSmtp
+            // textBoxSmtpServerAddress
             // 
-            this.textBoxServerSmtp.Location = new System.Drawing.Point(128, 31);
-            this.textBoxServerSmtp.Name = "textBoxServerSmtp";
-            this.textBoxServerSmtp.Size = new System.Drawing.Size(214, 20);
-            this.textBoxServerSmtp.TabIndex = 1;
+            this.textBoxSmtpServerAddress.Location = new System.Drawing.Point(128, 31);
+            this.textBoxSmtpServerAddress.Name = "textBoxSmtpServerAddress";
+            this.textBoxSmtpServerAddress.Size = new System.Drawing.Size(214, 20);
+            this.textBoxSmtpServerAddress.TabIndex = 1;
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(13, 60);
+            this.label11.Location = new System.Drawing.Point(13, 184);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(63, 13);
             this.label11.TabIndex = 5;
@@ -279,7 +364,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(13, 86);
+            this.label10.Location = new System.Drawing.Point(12, 210);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(72, 13);
             this.label10.TabIndex = 3;
@@ -303,6 +388,7 @@
             this.checkBoxEmailNotification.TabIndex = 0;
             this.checkBoxEmailNotification.Text = "Email Notification";
             this.checkBoxEmailNotification.UseVisualStyleBackColor = true;
+            this.checkBoxEmailNotification.CheckedChanged += new System.EventHandler(this.checkBoxEmailNotification_CheckedChanged);
             // 
             // tabPageNetwork
             // 
@@ -738,6 +824,7 @@
             this.checkBoxWebServerEnabled.TabIndex = 0;
             this.checkBoxWebServerEnabled.Text = "Enabled";
             this.checkBoxWebServerEnabled.UseVisualStyleBackColor = true;
+            this.checkBoxWebServerEnabled.CheckedChanged += new System.EventHandler(this.checkBoxWebServerEnabled_CheckedChanged);
             // 
             // OptionsDialog
             // 
@@ -795,7 +882,7 @@
         private System.Windows.Forms.Button buttonTestEmailNotification;
         private System.Windows.Forms.TextBox textBoxMailSender;
         private System.Windows.Forms.TextBox textBoxMailReceiver;
-        private System.Windows.Forms.TextBox textBoxServerSmtp;
+        private System.Windows.Forms.TextBox textBoxSmtpServerAddress;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
@@ -840,5 +927,13 @@
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.TextBox textBoxWebServerPortNumber;
         private System.Windows.Forms.CheckBox checkBoxWebServerEnabled;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.TextBox textBoxSmtpServerPort;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.TextBox textBoxSmtpServerPassword;
+        private System.Windows.Forms.TextBox textBoxSmtpServerUsername;
+        private System.Windows.Forms.CheckBox checkBoxEnableAuthentication;
+        private System.Windows.Forms.CheckBox checkBoxEnableSSL;
     }
 }

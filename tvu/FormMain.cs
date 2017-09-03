@@ -204,19 +204,7 @@ namespace TvUndergroundDownloader
             timerAutoClose.Enabled = true;
         }
 
-        public void SendMailDownload(string fileName, string ed2kLink)
-        {
-            if (MainConfig.EmailNotification)
-            {
-                string stmpServer = MainConfig.ServerSMTP;
-                string emailReceiver = MainConfig.MailReceiver;
-                string emailSender = MainConfig.MailSender;
-                string subject = "TV Underground Downloader Notification";
-                string message = "New file add\r\n" + fileName + "\r\n";
-                SmtpClient.SendEmail(stmpServer, emailReceiver, emailSender, subject, message);
-            }
-        }
-
+       
         protected override void SetVisibleCore(bool value)
         {
             // MSDN http://social.msdn.microsoft.com/forums/en-US/csharpgeneral/thread/eab563c3-37d0-4ebd-a086-b9ea7bb03fed
@@ -728,14 +716,21 @@ namespace TvUndergroundDownloader
                 MainConfig.IntervalTime = optDialog.IntervalTime;
                 MainConfig.MinToStartEmule = optDialog.MinToStartEmule;
                 MainConfig.EmailNotification = optDialog.EmailNotification;
-                MainConfig.ServerSMTP = optDialog.ServerSMTP;
-                MainConfig.MailSender = optDialog.MailSender;
-                MainConfig.MailReceiver = optDialog.MailReceiver;
+                
                 MainConfig.AutoClearLog = optDialog.AutoClearLog;
-                MainConfig.IntervalBetweenUpgradeCheck = optDialog.intervalBetweenUpgradeCheck;
+                MainConfig.IntervalBetweenUpgradeCheck = optDialog.IntervalBetweenUpgradeCheck;
                 MainConfig.MaxSimultaneousFeedDownloadsDefault = optDialog.MaxSimultaneousFeedDownloads;
                 MainConfig.WebServerEnable = optDialog.WebServerEnable;
                 MainConfig.WebServerPort = optDialog.WebServerPort;
+
+                MainConfig.SmtpServerAddress = optDialog.SmtpServerAddress;
+                MainConfig.SmtpServerPort = optDialog.SmtpServerPort;
+                MainConfig.SmtpServerEnableSsl = optDialog.SmtpServerEnableSsl;
+                MainConfig.SmtpServerEnableAuthentication = optDialog.SmtpServerEnableAuthentication;
+                MainConfig.SmtpServerUserName = optDialog.SmtpServerUserName;
+                MainConfig.SmtpServerPassword = optDialog.SmtpServerPassword;
+                MainConfig.MailSender = optDialog.MailSender;
+                MainConfig.MailReceiver = optDialog.MailReceiver;
 
                 // tvu save cookie
                 MainConfig.TVUCookieH = optDialog.tvuCookieH;
