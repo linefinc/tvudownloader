@@ -13,7 +13,7 @@ Name "Tv Underground Downloader"
 
 ;--------------------------------
 ; The file to write
-OutFile ".\bin\Release\tvud_installer_0.8.1.exe"
+OutFile ".\bin\Release\tvud_installer_0.9.0.exe"
 SetCompress force			; force compressor
 SetCompressor /SOLID LZMA	; define lzma compressor
 
@@ -32,7 +32,7 @@ InstallDirRegKey HKLM "Software\TVUndergroundDownloader" "Install_Dir"
 VIProductVersion "0.8.1.0"
 VIAddVersionKey /LANG=0 "ProductName" "Tv Underground Downloader"
 VIAddVersionKey /LANG=0 "Comments" "Tv Underground Downloader"
-VIAddVersionKey /LANG=0 "FileVersion" "0.8.1.0"
+VIAddVersionKey /LANG=0 "FileVersion" "0.9.0.0"
 VIAddVersionKey /LANG=0 "FileDescription" "Tv Underground Downloader"
 VIAddVersionKey /LANG=0 "LegalCopyright" "Copyright(C) 2017 linefinc[at]users.sourceforge.net"
 
@@ -113,6 +113,9 @@ Section "Tvunderground Downloader (required)"
   File ".\bin\Release\TvUndergroundDownloader.exe.manifest"
   File /r ".\bin\Release\*.dll"
   File /r ".\bin\Release\*.pdb"
+  File /r ".\bin\Release\*.ico"
+  File /r ".\bin\Release\*.html"
+  File /r ".\bin\Release\*.png"
   File  ".\bin\Release\NLog.dll"
   File  ".\bin\Release\NLog.xml"
   File  ".\bin\Release\NLog.Windows.Forms.dll"
@@ -164,9 +167,6 @@ Section "Uninstall"
   Delete $INSTDIR\TvUndergroundDownloader.pdb
   Delete $INSTDIR\TvUndergroundDownloader.exe.manifest
   Delete $INSTDIR\TvUndergroundDownloader.exe.config
-  Delete $INSTDIR\System.Data.SQLite.dll
-  Delete $INSTDIR\System.Data.SQLite.xml
-  Delete $INSTDIR\System.Data.SQLite.Linq.dll
   Delete $INSTDIR\NLog.dll
   Delete $INSTDIR\NLog.xml
   Delete $INSTDIR\NLog.Windows.Forms.dll

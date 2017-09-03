@@ -52,10 +52,10 @@ namespace TvUndergroundDownloader
             //
             //  show debug log
             //
-            logger.Debug(string.Format("Form Login ({0}):{1}",webBrowser1.Url, page.Cookie));
+            _logger.Debug(string.Format("Form Login ({0}):{1}",webBrowser1.Url, page.Cookie));
             foreach (string cookie in cookies)
             {
-                logger.Debug(cookie);
+                _logger.Debug(cookie);
             }
 #endif
             foreach (string cookie in cookies)
