@@ -41,12 +41,6 @@
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
             this.tabMain = new System.Windows.Forms.TabPage();
             this.dataGridViewMain = new System.Windows.Forms.DataGridView();
-            this.DataGridViewTextBoxColumnTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataGridViewImageColumnDubLanguage = new System.Windows.Forms.DataGridViewImageColumn();
-            this.DataGridViewTextBoxColumnTotalDownloads = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataGridViewTextBoxColumnLastUpdate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataGridViewTextBoxColumnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataGridViewTextBoxColumnEnabled = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStripFeed = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemEdit = new System.Windows.Forms.ToolStripMenuItem();
@@ -119,18 +113,12 @@
             this.toolStripButtonCheckNow = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
             this.rssSubscriptionListBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.lastSerieStatusUpgradeDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.categoryDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.currentTVUStatusDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dubLanguageDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.enabledDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.lastChannelUpdateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pauseDownloadDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.seasonIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.titleDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.titleCompactDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.totalFilesDownloadedDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.urlDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewTextBoxColumnTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewImageColumnDubLanguage = new System.Windows.Forms.DataGridViewImageColumn();
+            this.DataGridViewTextBoxColumnTotalDownloads = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewTextBoxColumnLastUpdate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewTextBoxColumnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewTextBoxColumnEnabled = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).BeginInit();
@@ -215,19 +203,7 @@
             this.DataGridViewTextBoxColumnTotalDownloads,
             this.DataGridViewTextBoxColumnLastUpdate,
             this.DataGridViewTextBoxColumnStatus,
-            this.DataGridViewTextBoxColumnEnabled,
-            this.lastSerieStatusUpgradeDateDataGridViewTextBoxColumn,
-            this.categoryDataGridViewTextBoxColumn,
-            this.currentTVUStatusDataGridViewTextBoxColumn,
-            this.dubLanguageDataGridViewTextBoxColumn,
-            this.enabledDataGridViewCheckBoxColumn,
-            this.lastChannelUpdateDataGridViewTextBoxColumn,
-            this.pauseDownloadDataGridViewCheckBoxColumn,
-            this.seasonIdDataGridViewTextBoxColumn,
-            this.titleDataGridViewTextBoxColumn,
-            this.titleCompactDataGridViewTextBoxColumn,
-            this.totalFilesDownloadedDataGridViewTextBoxColumn,
-            this.urlDataGridViewTextBoxColumn});
+            this.DataGridViewTextBoxColumnEnabled});
             this.dataGridViewMain.ContextMenuStrip = this.contextMenuStripFeed;
             this.dataGridViewMain.DataSource = this.rssSubscriptionListBindingSource;
             this.dataGridViewMain.Location = new System.Drawing.Point(3, 3);
@@ -238,66 +214,6 @@
             this.dataGridViewMain.Size = new System.Drawing.Size(642, 242);
             this.dataGridViewMain.TabIndex = 38;
             this.dataGridViewMain.SelectionChanged += new System.EventHandler(this.dataGridViewMain_SelectionChanged);
-            // 
-            // DataGridViewTextBoxColumnTitle
-            // 
-            this.DataGridViewTextBoxColumnTitle.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.DataGridViewTextBoxColumnTitle.DataPropertyName = "Title";
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.DataGridViewTextBoxColumnTitle.DefaultCellStyle = dataGridViewCellStyle1;
-            this.DataGridViewTextBoxColumnTitle.HeaderText = "Title";
-            this.DataGridViewTextBoxColumnTitle.Name = "DataGridViewTextBoxColumnTitle";
-            this.DataGridViewTextBoxColumnTitle.ReadOnly = true;
-            // 
-            // DataGridViewImageColumnDubLanguage
-            // 
-            this.DataGridViewImageColumnDubLanguage.DataPropertyName = "DubLanguage";
-            this.DataGridViewImageColumnDubLanguage.HeaderText = "Dub";
-            this.DataGridViewImageColumnDubLanguage.Name = "DataGridViewImageColumnDubLanguage";
-            this.DataGridViewImageColumnDubLanguage.ReadOnly = true;
-            this.DataGridViewImageColumnDubLanguage.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.DataGridViewImageColumnDubLanguage.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.DataGridViewImageColumnDubLanguage.Width = 33;
-            // 
-            // DataGridViewTextBoxColumnTotalDownloads
-            // 
-            this.DataGridViewTextBoxColumnTotalDownloads.DataPropertyName = "TotalDownloads";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.DataGridViewTextBoxColumnTotalDownloads.DefaultCellStyle = dataGridViewCellStyle2;
-            this.DataGridViewTextBoxColumnTotalDownloads.HeaderText = "Total Downloads";
-            this.DataGridViewTextBoxColumnTotalDownloads.Name = "DataGridViewTextBoxColumnTotalDownloads";
-            this.DataGridViewTextBoxColumnTotalDownloads.ReadOnly = true;
-            this.DataGridViewTextBoxColumnTotalDownloads.Width = 40;
-            // 
-            // DataGridViewTextBoxColumnLastUpdate
-            // 
-            this.DataGridViewTextBoxColumnLastUpdate.DataPropertyName = "LastUpgrade";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.DataGridViewTextBoxColumnLastUpdate.DefaultCellStyle = dataGridViewCellStyle3;
-            this.DataGridViewTextBoxColumnLastUpdate.HeaderText = "Last Upgrade";
-            this.DataGridViewTextBoxColumnLastUpdate.Name = "DataGridViewTextBoxColumnLastUpdate";
-            this.DataGridViewTextBoxColumnLastUpdate.ReadOnly = true;
-            this.DataGridViewTextBoxColumnLastUpdate.Width = 40;
-            // 
-            // DataGridViewTextBoxColumnStatus
-            // 
-            this.DataGridViewTextBoxColumnStatus.DataPropertyName = "Status";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.DataGridViewTextBoxColumnStatus.DefaultCellStyle = dataGridViewCellStyle4;
-            this.DataGridViewTextBoxColumnStatus.HeaderText = "Status";
-            this.DataGridViewTextBoxColumnStatus.Name = "DataGridViewTextBoxColumnStatus";
-            this.DataGridViewTextBoxColumnStatus.ReadOnly = true;
-            this.DataGridViewTextBoxColumnStatus.Width = 62;
-            // 
-            // DataGridViewTextBoxColumnEnabled
-            // 
-            this.DataGridViewTextBoxColumnEnabled.DataPropertyName = "Enabled";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.DataGridViewTextBoxColumnEnabled.DefaultCellStyle = dataGridViewCellStyle5;
-            this.DataGridViewTextBoxColumnEnabled.HeaderText = "Enabled";
-            this.DataGridViewTextBoxColumnEnabled.Name = "DataGridViewTextBoxColumnEnabled";
-            this.DataGridViewTextBoxColumnEnabled.ReadOnly = true;
-            this.DataGridViewTextBoxColumnEnabled.Width = 60;
             // 
             // contextMenuStripFeed
             // 
@@ -901,89 +817,65 @@
             // 
             this.rssSubscriptionListBindingSource.DataSource = typeof(TvUndergroundDownloaderLib.RssSubscriptionList);
             // 
-            // lastSerieStatusUpgradeDateDataGridViewTextBoxColumn
+            // DataGridViewTextBoxColumnTitle
             // 
-            this.lastSerieStatusUpgradeDateDataGridViewTextBoxColumn.DataPropertyName = "LastSerieStatusUpgradeDate";
-            this.lastSerieStatusUpgradeDateDataGridViewTextBoxColumn.HeaderText = "LastSerieStatusUpgradeDate";
-            this.lastSerieStatusUpgradeDateDataGridViewTextBoxColumn.Name = "lastSerieStatusUpgradeDateDataGridViewTextBoxColumn";
-            this.lastSerieStatusUpgradeDateDataGridViewTextBoxColumn.ReadOnly = true;
+            this.DataGridViewTextBoxColumnTitle.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.DataGridViewTextBoxColumnTitle.DataPropertyName = "Title";
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.DataGridViewTextBoxColumnTitle.DefaultCellStyle = dataGridViewCellStyle1;
+            this.DataGridViewTextBoxColumnTitle.HeaderText = "Title";
+            this.DataGridViewTextBoxColumnTitle.Name = "DataGridViewTextBoxColumnTitle";
+            this.DataGridViewTextBoxColumnTitle.ReadOnly = true;
             // 
-            // categoryDataGridViewTextBoxColumn
+            // DataGridViewImageColumnDubLanguage
             // 
-            this.categoryDataGridViewTextBoxColumn.DataPropertyName = "Category";
-            this.categoryDataGridViewTextBoxColumn.HeaderText = "Category";
-            this.categoryDataGridViewTextBoxColumn.Name = "categoryDataGridViewTextBoxColumn";
-            this.categoryDataGridViewTextBoxColumn.ReadOnly = true;
+            this.DataGridViewImageColumnDubLanguage.DataPropertyName = "DubLanguage";
+            this.DataGridViewImageColumnDubLanguage.HeaderText = "Dub";
+            this.DataGridViewImageColumnDubLanguage.Name = "DataGridViewImageColumnDubLanguage";
+            this.DataGridViewImageColumnDubLanguage.ReadOnly = true;
+            this.DataGridViewImageColumnDubLanguage.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.DataGridViewImageColumnDubLanguage.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.DataGridViewImageColumnDubLanguage.Width = 33;
             // 
-            // currentTVUStatusDataGridViewTextBoxColumn
+            // DataGridViewTextBoxColumnTotalDownloads
             // 
-            this.currentTVUStatusDataGridViewTextBoxColumn.DataPropertyName = "CurrentTVUStatus";
-            this.currentTVUStatusDataGridViewTextBoxColumn.HeaderText = "CurrentTVUStatus";
-            this.currentTVUStatusDataGridViewTextBoxColumn.Name = "currentTVUStatusDataGridViewTextBoxColumn";
-            this.currentTVUStatusDataGridViewTextBoxColumn.ReadOnly = true;
+            this.DataGridViewTextBoxColumnTotalDownloads.DataPropertyName = "TotalDownloads";
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.DataGridViewTextBoxColumnTotalDownloads.DefaultCellStyle = dataGridViewCellStyle2;
+            this.DataGridViewTextBoxColumnTotalDownloads.HeaderText = "Total Downloads";
+            this.DataGridViewTextBoxColumnTotalDownloads.Name = "DataGridViewTextBoxColumnTotalDownloads";
+            this.DataGridViewTextBoxColumnTotalDownloads.ReadOnly = true;
+            this.DataGridViewTextBoxColumnTotalDownloads.Width = 40;
             // 
-            // dubLanguageDataGridViewTextBoxColumn
+            // DataGridViewTextBoxColumnLastUpdate
             // 
-            this.dubLanguageDataGridViewTextBoxColumn.DataPropertyName = "DubLanguage";
-            this.dubLanguageDataGridViewTextBoxColumn.HeaderText = "DubLanguage";
-            this.dubLanguageDataGridViewTextBoxColumn.Name = "dubLanguageDataGridViewTextBoxColumn";
-            this.dubLanguageDataGridViewTextBoxColumn.ReadOnly = true;
+            this.DataGridViewTextBoxColumnLastUpdate.DataPropertyName = "LastUpgrade";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.DataGridViewTextBoxColumnLastUpdate.DefaultCellStyle = dataGridViewCellStyle3;
+            this.DataGridViewTextBoxColumnLastUpdate.HeaderText = "Last Upgrade";
+            this.DataGridViewTextBoxColumnLastUpdate.Name = "DataGridViewTextBoxColumnLastUpdate";
+            this.DataGridViewTextBoxColumnLastUpdate.ReadOnly = true;
+            this.DataGridViewTextBoxColumnLastUpdate.Width = 40;
             // 
-            // enabledDataGridViewCheckBoxColumn
+            // DataGridViewTextBoxColumnStatus
             // 
-            this.enabledDataGridViewCheckBoxColumn.DataPropertyName = "Enabled";
-            this.enabledDataGridViewCheckBoxColumn.HeaderText = "Enabled";
-            this.enabledDataGridViewCheckBoxColumn.Name = "enabledDataGridViewCheckBoxColumn";
-            this.enabledDataGridViewCheckBoxColumn.ReadOnly = true;
+            this.DataGridViewTextBoxColumnStatus.DataPropertyName = "Status";
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.DataGridViewTextBoxColumnStatus.DefaultCellStyle = dataGridViewCellStyle4;
+            this.DataGridViewTextBoxColumnStatus.HeaderText = "Status";
+            this.DataGridViewTextBoxColumnStatus.Name = "DataGridViewTextBoxColumnStatus";
+            this.DataGridViewTextBoxColumnStatus.ReadOnly = true;
+            this.DataGridViewTextBoxColumnStatus.Width = 62;
             // 
-            // lastChannelUpdateDataGridViewTextBoxColumn
+            // DataGridViewTextBoxColumnEnabled
             // 
-            this.lastChannelUpdateDataGridViewTextBoxColumn.DataPropertyName = "LastChannelUpdate";
-            this.lastChannelUpdateDataGridViewTextBoxColumn.HeaderText = "LastChannelUpdate";
-            this.lastChannelUpdateDataGridViewTextBoxColumn.Name = "lastChannelUpdateDataGridViewTextBoxColumn";
-            this.lastChannelUpdateDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // pauseDownloadDataGridViewCheckBoxColumn
-            // 
-            this.pauseDownloadDataGridViewCheckBoxColumn.DataPropertyName = "PauseDownload";
-            this.pauseDownloadDataGridViewCheckBoxColumn.HeaderText = "PauseDownload";
-            this.pauseDownloadDataGridViewCheckBoxColumn.Name = "pauseDownloadDataGridViewCheckBoxColumn";
-            this.pauseDownloadDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // seasonIdDataGridViewTextBoxColumn
-            // 
-            this.seasonIdDataGridViewTextBoxColumn.DataPropertyName = "SeasonId";
-            this.seasonIdDataGridViewTextBoxColumn.HeaderText = "SeasonId";
-            this.seasonIdDataGridViewTextBoxColumn.Name = "seasonIdDataGridViewTextBoxColumn";
-            this.seasonIdDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // titleDataGridViewTextBoxColumn
-            // 
-            this.titleDataGridViewTextBoxColumn.DataPropertyName = "Title";
-            this.titleDataGridViewTextBoxColumn.HeaderText = "Title";
-            this.titleDataGridViewTextBoxColumn.Name = "titleDataGridViewTextBoxColumn";
-            this.titleDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // titleCompactDataGridViewTextBoxColumn
-            // 
-            this.titleCompactDataGridViewTextBoxColumn.DataPropertyName = "TitleCompact";
-            this.titleCompactDataGridViewTextBoxColumn.HeaderText = "TitleCompact";
-            this.titleCompactDataGridViewTextBoxColumn.Name = "titleCompactDataGridViewTextBoxColumn";
-            this.titleCompactDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // totalFilesDownloadedDataGridViewTextBoxColumn
-            // 
-            this.totalFilesDownloadedDataGridViewTextBoxColumn.DataPropertyName = "TotalFilesDownloaded";
-            this.totalFilesDownloadedDataGridViewTextBoxColumn.HeaderText = "TotalFilesDownloaded";
-            this.totalFilesDownloadedDataGridViewTextBoxColumn.Name = "totalFilesDownloadedDataGridViewTextBoxColumn";
-            this.totalFilesDownloadedDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // urlDataGridViewTextBoxColumn
-            // 
-            this.urlDataGridViewTextBoxColumn.DataPropertyName = "Url";
-            this.urlDataGridViewTextBoxColumn.HeaderText = "Url";
-            this.urlDataGridViewTextBoxColumn.Name = "urlDataGridViewTextBoxColumn";
-            this.urlDataGridViewTextBoxColumn.ReadOnly = true;
+            this.DataGridViewTextBoxColumnEnabled.DataPropertyName = "Enabled";
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.DataGridViewTextBoxColumnEnabled.DefaultCellStyle = dataGridViewCellStyle5;
+            this.DataGridViewTextBoxColumnEnabled.HeaderText = "Enabled";
+            this.DataGridViewTextBoxColumnEnabled.Name = "DataGridViewTextBoxColumnEnabled";
+            this.DataGridViewTextBoxColumnEnabled.ReadOnly = true;
+            this.DataGridViewTextBoxColumnEnabled.Width = 60;
             // 
             // FormMain
             // 
@@ -1099,29 +991,17 @@
         private System.Windows.Forms.RichTextBox richTextBoxLog;
         private System.Windows.Forms.DataGridView dataGridViewMain;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ToolStripMenuItem markAsDownloadedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemUpdateStatus;
+        private System.Windows.Forms.BindingSource rssSubscriptionListBindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn DataGridViewTextBoxColumnTitle;
         private System.Windows.Forms.DataGridViewImageColumn DataGridViewImageColumnDubLanguage;
         private System.Windows.Forms.DataGridViewTextBoxColumn DataGridViewTextBoxColumnTotalDownloads;
         private System.Windows.Forms.DataGridViewTextBoxColumn DataGridViewTextBoxColumnLastUpdate;
         private System.Windows.Forms.DataGridViewTextBoxColumn DataGridViewTextBoxColumnStatus;
         private System.Windows.Forms.DataGridViewTextBoxColumn DataGridViewTextBoxColumnEnabled;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ToolStripMenuItem markAsDownloadedToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemUpdateStatus;
-        private System.Windows.Forms.DataGridViewTextBoxColumn lastSerieStatusUpgradeDateDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn categoryDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn currentTVUStatusDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dubLanguageDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn enabledDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn lastChannelUpdateDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn pauseDownloadDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn seasonIdDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn titleDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn titleCompactDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn totalFilesDownloadedDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn urlDataGridViewTextBoxColumn;
-        private System.Windows.Forms.BindingSource rssSubscriptionListBindingSource;
     }
 }
 
