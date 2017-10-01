@@ -24,12 +24,12 @@ namespace TvUndergroundDownloaderLib
     /// </summary>
     public class RssSubscription
     {
-        public static Regex regexFeedSource =
-            new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/rss.php\?se_id=(?<seid>\d{1,10})");
+        private static readonly string _regexFeedSource = @"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/rss.php\?se_id=(?<seid>\d{1,10})";
 
+     
         public DateTime LastSerieStatusUpgradeDate { get; private set; } = DateTime.MinValue;
         public string LastUpgradeDate = string.Empty;
-        public uint MaxSimultaneousDownload = 3;
+        public uint MaxSimultaneousDownload { get; set; } = 3;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private static Regex _regexEdk2Link = new Regex(@"ed2k://\|file\|(.*)\|\d+\|\w+\|/");
 
@@ -39,6 +39,21 @@ namespace TvUndergroundDownloaderLib
             ;
 
         private readonly List<DownloadFile> _downloadFiles = new List<DownloadFile>();
+
+        public static IEnumerable<string> ParsePossibleUrl(string text)
+        {
+            List<string> list = new List<string>();
+
+            Regex regex = new Regex(_regexFeedSource);
+
+            foreach (Match match in regex.Matches(text))
+            {
+                if (!list.Contains(match.Value))
+                    list.Add(match.Value);
+            }
+
+            return list;
+        }
         /// <summary>
         ///     Build a Rss Subscription
         /// </summary>
@@ -49,8 +64,8 @@ namespace TvUndergroundDownloaderLib
             this.Title = title;
             this.Url = url;
 
-            // Static Regex "http(s)?://(www\.)?tvunderground.org.ru/rss.php\?se_id=(\d{1,10})"
-            var matchCollection = regexFeedSource.Matches(this.Url);
+            Regex regex = new Regex(_regexFeedSource);
+            var matchCollection = regex.Matches(this.Url);
             if (matchCollection.Count == 0)
                 throw new ApplicationException("Wrong URL");
 
@@ -61,16 +76,22 @@ namespace TvUndergroundDownloaderLib
             SeasonId = integerBuffer;
         }
 
-        public RssSubscription(string newUrl, CookieContainer cookieContainer)
+        public RssSubscription(string inUrl, CookieContainer cookieContainer)
         {
-            Url = newUrl;
-            var matchCollection = regexFeedSource.Matches(newUrl);
+            Url = inUrl;
+            
+            Regex regex = new Regex(_regexFeedSource);
+            MatchCollection matchCollection = regex.Matches(inUrl);
             if (matchCollection.Count == 0)
+            {
                 throw new ApplicationException("Wrong URL");
+            }
 
             int integerBuffer;
             if (int.TryParse(matchCollection[0].Groups["seid"].ToString(), out integerBuffer) == false)
+            {
                 throw new ApplicationException("Wrong URL");
+            }
             SeasonId = integerBuffer;
 
             string webPageUrl = Url;
@@ -109,7 +130,7 @@ namespace TvUndergroundDownloaderLib
         public TimeSpan LastChannelUpdate => DateTime.Now - GetLastDownloadDate();
         public bool PauseDownload { get; set; }
         public int SeasonId { get; }
-        public string Title { get; }
+        public string Title { get; private set; }
         public string TitleCompact => Title.Replace("[ed2k] tvunderground.org.ru:", "").Trim();
         public int TotalFilesDownloaded
         {
