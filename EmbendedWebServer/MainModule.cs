@@ -158,6 +158,11 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
                     cookieContainer.Add(uriTvunderground, new Cookie("t", GlobalVar.Config.TVUCookieT));
                     var newSubscription = new RssSubscription(newFeedUrl, cookieContainer);
 
+                    if (!string.IsNullOrEmpty(GlobalVar.Config.DefaultCategory))
+                    {
+                        newSubscription.Category = GlobalVar.Config.DefaultCategory;
+                    }
+                    
                     GlobalVar.Config.RssFeedList.Add(newSubscription);
                     GlobalVar.Config.Save();
 
