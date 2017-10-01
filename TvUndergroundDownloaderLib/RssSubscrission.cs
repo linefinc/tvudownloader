@@ -112,7 +112,7 @@ namespace TvUndergroundDownloaderLib
         public DateTime LastSerieStatusUpgradeDate { get; private set; } = DateTime.MinValue;
         public uint MaxSimultaneousDownload { get; set; } = 3;
         public bool PauseDownload { get; set; }
-
+        
         public int SeasonId { get; }
 
         public string Title { get; private set; }
@@ -456,6 +456,7 @@ namespace TvUndergroundDownloaderLib
             catch (Exception e)
             {
                 _logger.Error(e);
+                CurrentTVUStatus = TvuStatus.Error;
                 throw;
             }
 
