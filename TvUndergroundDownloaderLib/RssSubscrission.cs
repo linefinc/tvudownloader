@@ -392,9 +392,20 @@ namespace TvUndergroundDownloaderLib
                 doc.LoadXml(webPage);
 
                 var nodeList = doc.SelectNodes(@"/rss/channel/item");
+                if (nodeList == null)
+                {
+                    throw new WrongPageFormatException();
+                }
+
                 foreach (XmlNode itemNode in nodeList)
                 {
                     var guidNode = itemNode.SelectSingleNode("guid");
+
+                    if (guidNode == null)
+                    {
+                        throw new WrongPageFormatException();
+                    }
+
                     string guid = HttpUtility.UrlDecode(guidNode.InnerText);
 
 
@@ -409,7 +420,7 @@ namespace TvUndergroundDownloaderLib
                             //  try to load data from remote server
                             //
                             var newEd2kFile = ProcessGuid(guid, cookieContainer);
-
+                            
                             _logger.Info("Found new file {0}", newEd2kFile.FileName);
                             newFile = new DownloadFile(this, newEd2kFile, guid);
 
@@ -579,6 +590,26 @@ namespace TvUndergroundDownloaderLib
             i = webPage.IndexOf("|/", StringComparison.InvariantCulture);
             webPage = webPage.Substring(0, i + "|/".Length);
             return new Ed2kfile(webPage);
+        }
+    }
+
+    [Serializable]
+    public class WrongPageFormatException : Exception
+    {
+        public WrongPageFormatException()
+        {
+
+        }
+
+        public WrongPageFormatException(string message) : base(message)
+        {
+
+        }
+
+        public WrongPageFormatException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+
         }
     }
 }
