@@ -28,7 +28,6 @@ internal class WebFetch
         // we will read data via the response stream
         var resStream = response.GetResponseStream();
 
-        string tempString = null;
         int count = 0;
 
         do
@@ -40,7 +39,7 @@ internal class WebFetch
             if (count != 0)
             {
                 // translate from bytes to ASCII text
-                tempString = Encoding.UTF8.GetString(buf, 0, count);
+                string tempString = Encoding.UTF8.GetString(buf, 0, count);
 
                 // continue building the string
                 sb.Append(tempString);
