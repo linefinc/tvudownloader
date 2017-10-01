@@ -24,36 +24,18 @@ namespace TvUndergroundDownloaderLib
     /// </summary>
     public class RssSubscription
     {
+        
         private static readonly string _regexFeedSource = @"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/rss.php\?se_id=(?<seid>\d{1,10})";
 
-     
-        public DateTime LastSerieStatusUpgradeDate { get; private set; } = DateTime.MinValue;
-        public string LastUpgradeDate = string.Empty;
-        public uint MaxSimultaneousDownload { get; set; } = 3;
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        private static Regex _regexEdk2Link = new Regex(@"ed2k://\|file\|(.*)\|\d+\|\w+\|/");
 
+        private static Regex _regexEdk2Link = new Regex(@"ed2k://\|file\|(.*)\|\d+\|\w+\|/");
         private static Regex _regexFeedLink =
                 new Regex(
                     @"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=ed2k&season=(?<season>\d{1,10})&sid\[(?<sid>\d{1,10})\]=\d{1,10}")
             ;
 
         private readonly List<DownloadFile> _downloadFiles = new List<DownloadFile>();
-
-        public static IEnumerable<string> ParsePossibleUrl(string text)
-        {
-            List<string> list = new List<string>();
-
-            Regex regex = new Regex(_regexFeedSource);
-
-            foreach (Match match in regex.Matches(text))
-            {
-                if (!list.Contains(match.Value))
-                    list.Add(match.Value);
-            }
-
-            return list;
-        }
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         /// <summary>
         ///     Build a Rss Subscription
         /// </summary>
@@ -79,7 +61,7 @@ namespace TvUndergroundDownloaderLib
         public RssSubscription(string inUrl, CookieContainer cookieContainer)
         {
             Url = inUrl;
-            
+
             Regex regex = new Regex(_regexFeedSource);
             MatchCollection matchCollection = regex.Matches(inUrl);
             if (matchCollection.Count == 0)
@@ -111,7 +93,6 @@ namespace TvUndergroundDownloaderLib
 
         public string Category { get; set; } = string.Empty;
         public TvuStatus CurrentTVUStatus { get; private set; } = TvuStatus.Unknown;
-
         public string DubLanguage
         {
             get
@@ -128,10 +109,16 @@ namespace TvUndergroundDownloaderLib
 
         public bool Enabled { get; set; } = true;
         public TimeSpan LastChannelUpdate => DateTime.Now - GetLastDownloadDate();
+        public DateTime LastSerieStatusUpgradeDate { get; private set; } = DateTime.MinValue;
+        public uint MaxSimultaneousDownload { get; set; } = 3;
         public bool PauseDownload { get; set; }
+
         public int SeasonId { get; }
+
         public string Title { get; private set; }
+
         public string TitleCompact => Title.Replace("[ed2k] tvunderground.org.ru:", "").Trim();
+
         public int TotalFilesDownloaded
         {
             get { return _downloadFiles.FindAll(o => o.DownloadDate.HasValue).Count; }
@@ -182,7 +169,7 @@ namespace TvUndergroundDownloaderLib
             node = doc.SelectSingleNode("LastUpgradeDate");
             if (node != null)
             {
-                newRssSubscrission.LastUpgradeDate = node.InnerText;
+                newRssSubscrission.LastUpgradeDate = DateTime.Parse( node.InnerText);
             }
 
             node = doc.SelectSingleNode("Enabled");
@@ -261,6 +248,22 @@ namespace TvUndergroundDownloaderLib
             return newRssSubscrission;
         }
 
+        public DateTime LastUpgradeDate { get; set; } = DateTime.MinValue;
+
+        public static IEnumerable<string> ParsePossibleUrl(string text)
+        {
+            List<string> list = new List<string>();
+
+            Regex regex = new Regex(_regexFeedSource);
+
+            foreach (Match match in regex.Matches(text))
+            {
+                if (!list.Contains(match.Value))
+                    list.Add(match.Value);
+            }
+
+            return list;
+        }
         [Obsolete]
         public void AddFile(DownloadFile file)
         {
@@ -517,7 +520,7 @@ namespace TvUndergroundDownloaderLib
             writer.WriteElementString("Url", Url); //Url
             writer.WriteElementString("Pause", PauseDownload.ToString()); //Category
             writer.WriteElementString("Category", Category); //Category
-            writer.WriteElementString("LastUpgradeDate", LastUpgradeDate); //Last Upgrade Date
+            writer.WriteElementString("LastUpgradeDate", LastUpgradeDate.ToString("s")); //Last Upgrade Date
             writer.WriteElementString("Enabled", Enabled.ToString());
             writer.WriteElementString("maxSimultaneousDownload", MaxSimultaneousDownload.ToString());
 
