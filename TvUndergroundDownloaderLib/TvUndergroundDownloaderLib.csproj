@@ -72,6 +72,7 @@
     <Compile Include="WebClientInterface\aMuleWebManager.cs" />
     <Compile Include="WebClientInterface\eMuleWebManager.cs" />
     <Compile Include="WebClientInterface\IMuleWebManager.cs" />
+    <Compile Include="WrongPageFormatException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
