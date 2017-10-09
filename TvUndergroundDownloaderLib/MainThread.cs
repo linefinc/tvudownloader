@@ -89,7 +89,7 @@ namespace TvUndergroundDownloaderLib
         /// <summary>
         /// Main worker function
         /// </summary>
-        private void WorkerFunc()
+        public void WorkerFunc()
         {
             if (Config == null)
             {
@@ -103,19 +103,19 @@ namespace TvUndergroundDownloaderLib
             var uriTvunderground = new Uri("http://tvunderground.org.ru/");
             if (string.IsNullOrEmpty(Config.TVUCookieH))
             {
-                throw new LoginException("H");
+                throw new LoginException("Missing Cookie H");
             }
             cookieContainer.Add(uriTvunderground, new Cookie("h", Config.TVUCookieH));
 
             if (string.IsNullOrEmpty(Config.TVUCookieI))
             {
-                throw new LoginException("I");
+                throw new LoginException("Missing Cookie I");
             }
             cookieContainer.Add(uriTvunderground, new Cookie("i", Config.TVUCookieI));
 
             if (string.IsNullOrEmpty(Config.TVUCookieT))
             {
-                throw new LoginException("T");
+                throw new LoginException("Missing Cookie T");
             }
             cookieContainer.Add(uriTvunderground, new Cookie("t", Config.TVUCookieT));
             //
