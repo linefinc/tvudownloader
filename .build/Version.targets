@@ -37,7 +37,7 @@
     </PropertyGroup>
 
     <AssemblyInfo CodeLanguage="CS"
-              OutputFile="$(SolutionDirectory)\tvudownloader\tvu\Properties\AssemblyInfo.cs"
+              OutputFile="$(SolutionDirectory)\tvudownloader\TvUndergroundDownloader\Properties\AssemblyInfo.cs"
               AssemblyVersion="$(AssemblyVersion)"
               AssemblyFileVersion="$(AssemblyVersion)"
               AssemblyInformationalVersion="$(AssemblyVersion) $(AssemblyVersionCommitHash) [$(BuildTime)]"
