@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Forms;
 using TvUndergroundDownloaderLib;
 
@@ -7,18 +9,16 @@ namespace TvUndergroundDownloader
 {
     public partial class AddFeedDialogPage3 : Form
     {
-        private int subscriptionListIndex;
-        private RssSubscription currenctView = null;
-        public List<RssSubscription> rssSubscriptionList { get; private set; }
+        private int _subscriptionListIndex;
+        public List<RssSubscription> RssSubscriptionList { get; private set; }
 
         public AddFeedDialogPage3(List<RssSubscription> RssSubscriptionList, List<string> ListCategory)
         {
             InitializeComponent();
 
-            this.rssSubscriptionList = RssSubscriptionList;
-            labelSelectedElement.Text = string.Format("Selected elements {0}", this.rssSubscriptionList[0].GetAllFile().Count);
-            subscriptionListIndex = 0;
-            currenctView = this.rssSubscriptionList[0];
+            this.RssSubscriptionList = RssSubscriptionList;
+            labelSelectedElement.Text = string.Format("Selected elements {0}", this.RssSubscriptionList[0].Files.Count);
+            _subscriptionListIndex = 0;
 
             foreach (var str in ListCategory)
             {
@@ -46,9 +46,8 @@ namespace TvUndergroundDownloader
         /// </remarks>
         private void buttonSelectAll_Click(object sender, EventArgs e)
         {
-            RssSubscription rssSubscription = rssSubscriptionList[subscriptionListIndex];
-            List<Ed2kfile> listDownloadedFile = rssSubscription.GetDownloadedFiles();
-            List<Ed2kfile> listAllFiles = rssSubscription.GetAllFile();
+            RssSubscription rssSubscription = RssSubscriptionList[_subscriptionListIndex];
+            ReadOnlyCollection<DownloadFile> listAllFiles = rssSubscription.Files;
 
             for (int index = 0; index < checkedListBox1.Items.Count; index++)
             {
@@ -56,14 +55,13 @@ namespace TvUndergroundDownloader
 
                 // get item (fileHistory) form main list
                 string strFileName = checkedListBox1.Items[index].ToString();
-                bool isChecked = checkedListBox1.GetItemChecked(index);
 
-                Ed2kfile File = listAllFiles.Find((temp) => temp.FileName == strFileName);
-                if (File == null)
+                var file = listAllFiles.FirstOrDefault((o) => o.FileName == strFileName);
+                if (file == null)
                 {
                     continue;
                 }
-                rssSubscription.SetFileNotDownloaded(File);
+                rssSubscription.SetFileNotDownloaded(file);
             }
         }
 
@@ -72,9 +70,8 @@ namespace TvUndergroundDownloader
         /// </summary>
         private void buttonSelectNone_Click(object sender, EventArgs e)
         {
-            RssSubscription rssSubscription = rssSubscriptionList[subscriptionListIndex];
-            List<Ed2kfile> listDownloadedFile = rssSubscription.GetDownloadedFiles();
-            List<Ed2kfile> listAllFiles = rssSubscription.GetAllFile();
+            RssSubscription rssSubscription = RssSubscriptionList[_subscriptionListIndex];
+            ReadOnlyCollection<DownloadFile> listAllFiles = rssSubscription.Files;
 
             for (int index = 0; index < checkedListBox1.Items.Count; index++)
             {
@@ -84,7 +81,7 @@ namespace TvUndergroundDownloader
                 string strFileName = checkedListBox1.Items[index].ToString();
                 bool isChecked = checkedListBox1.GetItemChecked(index);
 
-                Ed2kfile File = listAllFiles.Find((temp) => temp.FileName == strFileName);
+                Ed2kfile File = listAllFiles.FirstOrDefault((o) => o.FileName == strFileName);
                 if (File == null)
                 {
                     continue;
@@ -95,13 +92,13 @@ namespace TvUndergroundDownloader
 
         private void buttonNext_Click(object sender, EventArgs e)
         {
-            subscriptionListIndex = Math.Min(subscriptionListIndex + 1, rssSubscriptionList.Count);
+            _subscriptionListIndex = Math.Min(_subscriptionListIndex + 1, RssSubscriptionList.Count);
             RefreshList();
         }
 
         private void buttonPrevious_Click(object sender, EventArgs e)
         {
-            subscriptionListIndex = Math.Max(subscriptionListIndex - 1, 0);
+            _subscriptionListIndex = Math.Max(_subscriptionListIndex - 1, 0);
             RefreshList();
         }
 
@@ -110,7 +107,7 @@ namespace TvUndergroundDownloader
         /// </summary>
         private void RefreshList()
         {
-            RssSubscription rssSubscription = rssSubscriptionList[subscriptionListIndex];
+            RssSubscription rssSubscription = RssSubscriptionList[_subscriptionListIndex];
             comboBoxCategory.Text = rssSubscription.Category;
             checkBoxPause.Checked = rssSubscription.PauseDownload;
             numericUpDownMaxSimulDown.Value = rssSubscription.MaxSimultaneousDownload;
@@ -123,15 +120,15 @@ namespace TvUndergroundDownloader
             //// add file
             checkedListBox1.Items.Clear();
             List<Ed2kfile> listDownloadedFile = rssSubscription.GetDownloadedFiles();
-            List<Ed2kfile> listAllFile = rssSubscription.GetAllFile();
-            foreach (Ed2kfile file in listAllFile)
+            ReadOnlyCollection<DownloadFile> listAllFile = rssSubscription.Files;
+            foreach (DownloadFile file in listAllFile)
             {
                 int index = checkedListBox1.Items.Add(file.FileName);
                 bool isDownloaded = listDownloadedFile.Contains(file);
                 checkedListBox1.SetItemChecked(index, isDownloaded == false);
             }
-            buttonNext.Enabled = (rssSubscriptionList.Count - 1) != subscriptionListIndex;
-            buttonPrevious.Enabled = subscriptionListIndex != 0;
+            buttonNext.Enabled = (RssSubscriptionList.Count - 1) != _subscriptionListIndex;
+            buttonPrevious.Enabled = _subscriptionListIndex != 0;
         }
 
         /// <summary>
@@ -160,9 +157,8 @@ namespace TvUndergroundDownloader
 
         private void checkedListBox1_SelectedValueChanged(object sender, EventArgs e)
         {
-            RssSubscription rssSubscription = rssSubscriptionList[subscriptionListIndex];
-            List<Ed2kfile> listDownloadedFile = rssSubscription.GetDownloadedFiles();
-            List<Ed2kfile> listAllFiles = rssSubscription.GetAllFile();
+            RssSubscription rssSubscription = RssSubscriptionList[_subscriptionListIndex];
+            ReadOnlyCollection<DownloadFile> listAllFiles = rssSubscription.Files;
 
             for (int index = 0; index < checkedListBox1.Items.Count; index++)
             {
@@ -170,8 +166,8 @@ namespace TvUndergroundDownloader
                 string strFileName = checkedListBox1.Items[index].ToString();
                 bool isChecked = checkedListBox1.GetItemChecked(index);
 
-                Ed2kfile File = listAllFiles.Find((temp) => temp.FileName == strFileName);
-                if (File == null)
+                Ed2kfile file = listAllFiles.FirstOrDefault((o) => o.FileName == strFileName);
+                if (file == null)
                 {
                     continue;
                 }
@@ -181,16 +177,16 @@ namespace TvUndergroundDownloader
                 //
                 if (isChecked == false)
                 {
-                    if (!rssSubscription.GetDownloadedFiles().Contains(File))
+                    if (!rssSubscription.GetDownloadedFiles().Contains(file))
                     {
-                        rssSubscription.SetFileDownloaded(File);
+                        rssSubscription.SetFileDownloaded(file);
                     }
                 }
                 else
                 {
-                    if (rssSubscription.GetDownloadedFiles().Contains(File))
+                    if (rssSubscription.GetDownloadedFiles().Contains(file))
                     {
-                        rssSubscription.SetFileNotDownloaded(File);
+                        rssSubscription.SetFileNotDownloaded(file);
                     }
                 }
             }
@@ -198,18 +194,18 @@ namespace TvUndergroundDownloader
 
         private void comboBoxCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
-            rssSubscriptionList[subscriptionListIndex].Category = comboBoxCategory.Text;
+            RssSubscriptionList[_subscriptionListIndex].Category = comboBoxCategory.Text;
         }
 
         private void checkBoxPause_CheckedChanged(object sender, EventArgs e)
         {
-            RssSubscription rssSubscription = rssSubscriptionList[subscriptionListIndex];
+            RssSubscription rssSubscription = RssSubscriptionList[_subscriptionListIndex];
             rssSubscription.PauseDownload = checkBoxPause.Checked;
         }
 
         private void numericUpDownMaxSimulDown_ValueChanged(object sender, EventArgs e)
         {
-            RssSubscription rssSubscription = rssSubscriptionList[subscriptionListIndex];
+            RssSubscription rssSubscription = RssSubscriptionList[_subscriptionListIndex];
             rssSubscription.MaxSimultaneousDownload = Convert.ToUInt32(numericUpDownMaxSimulDown.Value);
         }
     }

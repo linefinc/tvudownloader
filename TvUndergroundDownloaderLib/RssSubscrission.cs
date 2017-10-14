@@ -1,11 +1,12 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
-using NLog;
 
 namespace TvUndergroundDownloaderLib
 {
@@ -24,19 +25,19 @@ namespace TvUndergroundDownloaderLib
     /// </summary>
     public class RssSubscription
     {
-
         private static readonly Regex _regexPageSource = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=episodes&sid=(?<seid>\d{1,10})");
 
         private static readonly Regex _regexFeedSource = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/rss.php\?se_id=(?<seid>\d{1,10})");
 
         private static Regex _regexEdk2Link = new Regex(@"ed2k://\|file\|(.*)\|\d+\|\w+\|/");
+
         private static Regex _regexFeedLink =
                 new Regex(
                     @"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=ed2k&season=(?<season>\d{1,10})&sid\[(?<sid>\d{1,10})\]=\d{1,10}");
 
-
         private readonly List<DownloadFile> _downloadFiles = new List<DownloadFile>();
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         ///     Build a Rss Subscription
         /// </summary>
@@ -242,7 +243,6 @@ namespace TvUndergroundDownloaderLib
 
                 var newFile = new Ed2kfile(ed2kLinkNode.InnerText);
 
-
                 var guidLinkNode = fileNode.SelectSingleNode("Guid");
                 if (guidLinkNode == null)
                     continue;
@@ -288,18 +288,9 @@ namespace TvUndergroundDownloaderLib
 
             return list;
         }
-        [Obsolete]
-        public void AddFile(DownloadFile file)
-        {
-            if (!_downloadFiles.Contains(file))
-                _downloadFiles.Add(file);
-        }
 
-        public List<Ed2kfile> GetAllFile()
-        {
-            return new List<Ed2kfile>(GetDownloadFile());
-        }
-
+        public ReadOnlyCollection<DownloadFile> Files => _downloadFiles.AsReadOnly();
+        
         public List<Ed2kfile> GetDownloadedFiles()
         {
             var outArray = new List<Ed2kfile>();
@@ -379,7 +370,6 @@ namespace TvUndergroundDownloaderLib
             localFile.DownloadDate = null;
         }
 
-
         /// <summary>
         ///     Update feed from Web server
         /// </summary>
@@ -431,7 +421,6 @@ namespace TvUndergroundDownloaderLib
                     }
 
                     string guid = HttpUtility.UrlDecode(guidNode.InnerText);
-
 
                     // here check if the file is already downloaded
                     var newFile = _downloadFiles.Find(o => o.Guid == guid);
@@ -494,8 +483,6 @@ namespace TvUndergroundDownloaderLib
                 CurrentTVUStatus = TvuStatus.Error;
                 throw;
             }
-
-
         }
 
         public void UpdateTVUStatus(CookieContainer cookieContainer)
@@ -604,7 +591,7 @@ namespace TvUndergroundDownloaderLib
             writer.WriteEndElement(); // end channel
         }
 
-        private Ed2kfile ProcessGuid(string url, CookieContainer cookieContainer)
+        public Ed2kfile ProcessGuid(string url, CookieContainer cookieContainer)
         {
             _logger.Info("Get page {0}", url);
             string webPage = WebFetch.Fetch(url, false, cookieContainer);
