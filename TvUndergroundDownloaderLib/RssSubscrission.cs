@@ -24,15 +24,16 @@ namespace TvUndergroundDownloaderLib
     /// </summary>
     public class RssSubscription
     {
-        
-        private static readonly string _regexFeedSource = @"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/rss.php\?se_id=(?<seid>\d{1,10})";
 
+        private static readonly Regex _regexPageSource = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=episodes&sid=(?<seid>\d{1,10})");
+
+        private static readonly Regex _regexFeedSource = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/rss.php\?se_id=(?<seid>\d{1,10})");
 
         private static Regex _regexEdk2Link = new Regex(@"ed2k://\|file\|(.*)\|\d+\|\w+\|/");
         private static Regex _regexFeedLink =
                 new Regex(
-                    @"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=ed2k&season=(?<season>\d{1,10})&sid\[(?<sid>\d{1,10})\]=\d{1,10}")
-            ;
+                    @"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=ed2k&season=(?<season>\d{1,10})&sid\[(?<sid>\d{1,10})\]=\d{1,10}");
+
 
         private readonly List<DownloadFile> _downloadFiles = new List<DownloadFile>();
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -46,8 +47,7 @@ namespace TvUndergroundDownloaderLib
             this.Title = title;
             this.Url = url;
 
-            Regex regex = new Regex(_regexFeedSource);
-            var matchCollection = regex.Matches(this.Url);
+            var matchCollection = _regexFeedSource.Matches(this.Url);
             if (matchCollection.Count == 0)
                 throw new ApplicationException("Wrong URL");
 
@@ -58,25 +58,39 @@ namespace TvUndergroundDownloaderLib
             SeasonId = integerBuffer;
         }
 
+        /// <summary>
+        /// Initialize a new Feed By fatch online URL
+        /// </summary>
+        /// <param name="inUrl"></param>
+        /// <param name="cookieContainer"></param>
         public RssSubscription(string inUrl, CookieContainer cookieContainer)
         {
-            Url = inUrl;
+            Match match;
 
-            Regex regex = new Regex(_regexFeedSource);
-            MatchCollection matchCollection = regex.Matches(inUrl);
-            if (matchCollection.Count == 0)
+            if (_regexPageSource.IsMatch(inUrl))
+            {
+                match = _regexPageSource.Match(inUrl);
+                Url = string.Format(@"https://tvunderground.org.ru/rss.php?se_id={0}", match.Groups["seid"]);
+            }
+            else
+            {
+                Url = inUrl;
+            }
+
+            match = _regexFeedSource.Match(inUrl);
+            if (!match.Success)
             {
                 throw new ApplicationException("Wrong URL");
             }
 
             int integerBuffer;
-            if (int.TryParse(matchCollection[0].Groups["seid"].ToString(), out integerBuffer) == false)
+            if (int.TryParse(match.Groups["seid"].ToString(), out integerBuffer) == false)
             {
                 throw new ApplicationException("Wrong URL");
             }
+
             SeasonId = integerBuffer;
 
-            string webPageUrl = Url;
             string webPage = WebFetch.Fetch(Url, false, cookieContainer);
 
             var doc = new XmlDocument();
@@ -85,14 +99,20 @@ namespace TvUndergroundDownloaderLib
             var node = doc.SelectSingleNode(@"/rss/channel/title");
 
             if (node == null)
-                throw new ApplicationException("Wrong RSS file format");
+            {
+                throw new WrongPageFormatException("Wrong RSS file format");
+            }
+
             if (string.IsNullOrEmpty(node.InnerText))
-                throw new ApplicationException("Wrong RSS file format");
+            {
+                throw new WrongPageFormatException("Wrong RSS file format");
+            }
             Title = node.InnerText;
         }
 
         public string Category { get; set; } = string.Empty;
         public TvuStatus CurrentTVUStatus { get; private set; } = TvuStatus.Unknown;
+
         public string DubLanguage
         {
             get
@@ -112,7 +132,7 @@ namespace TvUndergroundDownloaderLib
         public DateTime LastSerieStatusUpgradeDate { get; private set; } = DateTime.MinValue;
         public uint MaxSimultaneousDownload { get; set; } = 3;
         public bool PauseDownload { get; set; }
-        
+
         public int SeasonId { get; }
 
         public string Title { get; private set; }
@@ -169,7 +189,7 @@ namespace TvUndergroundDownloaderLib
             node = doc.SelectSingleNode("LastUpgradeDate");
             if (node != null)
             {
-                newRssSubscrission.LastUpgradeDate = DateTime.Parse( node.InnerText);
+                newRssSubscrission.LastUpgradeDate = DateTime.Parse(node.InnerText);
             }
 
             node = doc.SelectSingleNode("Enabled");
@@ -254,9 +274,13 @@ namespace TvUndergroundDownloaderLib
         {
             List<string> list = new List<string>();
 
-            Regex regex = new Regex(_regexFeedSource);
+            foreach (Match match in _regexFeedSource.Matches(text))
+            {
+                if (!list.Contains(match.Value))
+                    list.Add(match.Value);
+            }
 
-            foreach (Match match in regex.Matches(text))
+            foreach (Match match in _regexPageSource.Matches(text))
             {
                 if (!list.Contains(match.Value))
                     list.Add(match.Value);
@@ -420,7 +444,7 @@ namespace TvUndergroundDownloaderLib
                             //  try to load data from remote server
                             //
                             var newEd2kFile = ProcessGuid(guid, cookieContainer);
-                            
+
                             _logger.Info("Found new file {0}", newEd2kFile.FileName);
                             newFile = new DownloadFile(this, newEd2kFile, guid);
 

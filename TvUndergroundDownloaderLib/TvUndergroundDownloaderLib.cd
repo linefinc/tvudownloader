@@ -1,17 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="TvUndergroundDownloaderLib.RssSubscription">
-    <Position X="3.25" Y="0.5" Width="1.5" />
+    <Position X="2.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AASBIESAICACAMYBBAAAEsKgIAAgAAAACAAAAJkACQA=</HashCode>
       <FileName>RssSubscrission.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TvUndergroundDownloaderLib.RssSubscriptionList">
-    <Position X="1.25" Y="0.5" Width="1.5" />
+    <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
       <FileName>RssSubscriptionList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TvUndergroundDownloaderLib.DownloadFile">
+    <Position X="4.75" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAIAAAAAAAAAAAAAAACAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DownloadFile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TvUndergroundDownloaderLib.Ed2kfile">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAASAAAAAAAAABAgAAAIAAAQAAAAIACBQQAAABAAAA=</HashCode>
+      <FileName>Ed2kfile.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
