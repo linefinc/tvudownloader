@@ -430,7 +430,7 @@ namespace TvUndergroundDownloader
             {
                 labelLastDownloadDate.Text = lastDownloadDate.Date.ToString("yyyy-MM-dd");
             }
-            labelTotalFiles.Text = feed.GetDownloadFileCount().ToString();
+            labelTotalFiles.Text = feed.DownloadedFiles.Count.ToString();
             labelMaxSimultaneousDownloads.Text = feed.MaxSimultaneousDownload.ToString();
 
             UpdateSubscriptionFilesList();

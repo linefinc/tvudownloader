@@ -79,7 +79,7 @@ namespace TvUndergroundDownloaderLib
                 Url = inUrl;
             }
 
-            match = _regexFeedSource.Match(inUrl);
+            match = _regexFeedSource.Match(Url);
             if (!match.Success)
             {
                 throw new ApplicationException("Wrong URL");
@@ -298,14 +298,18 @@ namespace TvUndergroundDownloaderLib
         /// <summary>
         /// List of all downloaded files
         /// </summary>
-        public ReadOnlyCollection<DownloadFile> DownloadedFiles => _downloadFiles.FindAll(o => o.DownloadDate.HasValue)
-            .OrderBy(o => o.FileName).ToList().AsReadOnly();
-
-      public int GetDownloadFileCount()
+        public ReadOnlyCollection<DownloadFile> DownloadedFiles
         {
-            return _downloadFiles.Count;
+            get
+            {
+                return _downloadFiles.FindAll(o => o.DownloadDate.HasValue)
+                    .OrderBy(o => o.FileName).ToList().AsReadOnly();
+            }
         }
 
+        /// <summary>
+        /// Last download date
+        /// </summary>
         public DateTime GetLastDownloadDate()
         {
             var dt = DateTime.MinValue;
