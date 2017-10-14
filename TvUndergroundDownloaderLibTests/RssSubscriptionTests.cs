@@ -106,12 +106,12 @@ namespace TvUndergroundDownloaderLib.Tests
             var list = newRssSubscription.GetDownloadFile();
 
             Assert.IsFalse(list.Count != 14);
-            Assert.IsFalse(newRssSubscription.GetDownloadedFiles().Count != 0);
+            Assert.IsFalse(newRssSubscription.DownloadedFiles.Count != 0);
 
             var file1 = list[0];
 
             newRssSubscription.SetFileDownloaded(file1);
-            Assert.IsFalse(newRssSubscription.GetDownloadedFiles().Count != 1);
+            Assert.IsFalse(newRssSubscription.DownloadedFiles.Count != 1);
 
             Assert.IsFalse(file1.DownloadDate.HasValue != true);
 

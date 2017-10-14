@@ -137,7 +137,7 @@ namespace TvUndergroundDownloader
                 _logger.Info("[AutoClose Mule] Login ok");
 
                 List<Ed2kfile> knownFiles = new List<Ed2kfile>();
-                MainConfig.RssFeedList.ForEach(file => knownFiles.AddRange(file.GetDownloadedFiles()));
+                MainConfig.RssFeedList.ForEach(file => knownFiles.AddRange(file.DownloadedFiles));
 
                 _logger.Info("[AutoClose Mule] Actual Downloads " + service.GetCurrentDownloads(knownFiles).Count);
                 // if donwload > 0 ... there' s some download ... end

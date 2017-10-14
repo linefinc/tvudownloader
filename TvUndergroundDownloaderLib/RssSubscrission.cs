@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -290,14 +291,9 @@ namespace TvUndergroundDownloaderLib
         }
 
         public ReadOnlyCollection<DownloadFile> Files => _downloadFiles.AsReadOnly();
-        
-        public List<Ed2kfile> GetDownloadedFiles()
-        {
-            var outArray = new List<Ed2kfile>();
-            outArray.AddRange(_downloadFiles.FindAll(o => o.DownloadDate.HasValue));
-            outArray.Sort((a, b) => string.Compare(a.FileName, b.FileName, StringComparison.InvariantCulture));
-            return outArray;
-        }
+
+        public ReadOnlyCollection<DownloadFile> DownloadedFiles => _downloadFiles.FindAll(o => o.DownloadDate.HasValue)
+            .OrderBy(o => o.FileName).ToList().AsReadOnly();
 
         /// <summary>
         ///     Return all files available in the subscrission download or not

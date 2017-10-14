@@ -119,7 +119,7 @@ namespace TvUndergroundDownloader
 
             //// add file
             checkedListBox1.Items.Clear();
-            List<Ed2kfile> listDownloadedFile = rssSubscription.GetDownloadedFiles();
+            ReadOnlyCollection<DownloadFile> listDownloadedFile = rssSubscription.DownloadedFiles;
             ReadOnlyCollection<DownloadFile> listAllFile = rssSubscription.Files;
             foreach (DownloadFile file in listAllFile)
             {
@@ -177,14 +177,14 @@ namespace TvUndergroundDownloader
                 //
                 if (isChecked == false)
                 {
-                    if (!rssSubscription.GetDownloadedFiles().Contains(file))
+                    if (!rssSubscription.DownloadedFiles.Contains(file))
                     {
                         rssSubscription.SetFileDownloaded(file);
                     }
                 }
                 else
                 {
-                    if (rssSubscription.GetDownloadedFiles().Contains(file))
+                    if (rssSubscription.DownloadedFiles.Contains(file))
                     {
                         rssSubscription.SetFileNotDownloaded(file);
                     }
