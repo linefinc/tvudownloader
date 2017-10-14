@@ -43,7 +43,7 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
                 
                 Model.RssFeedList = GlobalVar.Config.RssFeedList;
                 Model.LastActivity = GlobalVar.Config.RssFeedList.GetLastActivity();
-                Model.DownloadFile = channel.GetDownloadFile();
+                Model.DownloadFile = channel.DownloadedFiles;
                 return View["channels", Model];
             };
 

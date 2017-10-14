@@ -290,24 +290,18 @@ namespace TvUndergroundDownloaderLib
             return list;
         }
 
+        /// <summary>
+        /// List of all files
+        /// </summary>
         public ReadOnlyCollection<DownloadFile> Files => _downloadFiles.AsReadOnly();
 
+        /// <summary>
+        /// List of all downloaded files
+        /// </summary>
         public ReadOnlyCollection<DownloadFile> DownloadedFiles => _downloadFiles.FindAll(o => o.DownloadDate.HasValue)
             .OrderBy(o => o.FileName).ToList().AsReadOnly();
 
-        /// <summary>
-        ///     Return all files available in the subscrission download or not
-        /// </summary>
-        /// <returns></returns>
-        /// TODO: Convert to property
-        public List<DownloadFile> GetDownloadFile()
-        {
-            var outArray = new List<DownloadFile>();
-            outArray.AddRange(_downloadFiles);
-            return outArray;
-        }
-
-        public int GetDownloadFileCount()
+      public int GetDownloadFileCount()
         {
             return _downloadFiles.Count;
         }

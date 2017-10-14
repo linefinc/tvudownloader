@@ -3,12 +3,14 @@ using NLog.Config;
 using NLog.Windows.Forms;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -498,7 +500,7 @@ namespace TvUndergroundDownloader
                 string strSelectItemText = selectedItem.Text;   // this contain name file
                 _logger.Info("Marked as not Downloaded \"{0}\"", strSelectItemText);
 
-                Ed2kfile file = feed.GetDownloadFile().Find(t => t.FileName == strSelectItemText);
+                Ed2kfile file = feed.DownloadedFiles.First(t => t.FileName == strSelectItemText);
 
                 feed.SetFileNotDownloaded(file);
             }
@@ -841,7 +843,7 @@ namespace TvUndergroundDownloader
                 string strSelectItemText = selectedItem.Text;   // this contain name file
                 _logger.Info("Marked as Downloaded file:\"{0}\"", strSelectItemText);
 
-                Ed2kfile file = feed.GetDownloadFile().Find(t => t.FileName == strSelectItemText);
+                Ed2kfile file = feed.DownloadedFiles.First(t => t.FileName == strSelectItemText);
 
                 feed.SetFileDownloaded(file);
             }
@@ -1392,9 +1394,8 @@ namespace TvUndergroundDownloader
             listViewFeedFilesList.Items.Clear();
 
             // extract file by feedLink
-            List<DownloadFile> ldf = feed.GetDownloadFile();
-            var listFile = feed.GetDownloadFile();
-            listFile.Sort((a, b) => b.FileName.CompareTo(a.FileName));
+            
+            ReadOnlyCollection<DownloadFile> listFile = feed.DownloadedFiles;
             foreach (DownloadFile file in listFile)
             {
                 ListViewItem item = new ListViewItem(file.GetFileName());

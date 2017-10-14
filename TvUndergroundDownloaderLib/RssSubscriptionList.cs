@@ -9,7 +9,7 @@ namespace TvUndergroundDownloaderLib
             var fileList = new List<DownloadFile>();
 
             foreach (var subscription in this)
-                fileList.AddRange(subscription.GetDownloadFile());
+                fileList.AddRange(subscription.DownloadedFiles);
 
             fileList.RemoveAll(temp => temp.DownloadDate.HasValue == false);
             fileList.Sort((A, B) => B.DownloadDate.Value.CompareTo(A.DownloadDate.Value));
@@ -23,7 +23,7 @@ namespace TvUndergroundDownloaderLib
             var fileList = new List<DownloadFile>();
 
             foreach (var subscription in this)
-                fileList.AddRange(subscription.GetDownloadFile());
+                fileList.AddRange(subscription.DownloadedFiles);
             return fileList;
         }
     }

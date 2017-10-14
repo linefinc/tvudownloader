@@ -50,7 +50,7 @@ namespace TvUndergroundDownloaderLib
 
                     writter.WriteStartElement("DownloadedFiles");
 
-                    foreach (var file in feed.GetDownloadFile())
+                    foreach (DownloadFile file in feed.Files)
                     {
                         writter.WriteStartElement("File");
 

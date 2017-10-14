@@ -103,7 +103,7 @@ namespace TvUndergroundDownloaderLib.Tests
             string url = @"https://tvunderground.org.ru/rss.php?se_id=13158";
             RssSubscription newRssSubscription = new RssSubscription(url, cookieContainer);
             newRssSubscription.Update(cookieContainer);
-            var list = newRssSubscription.GetDownloadFile();
+            var list = newRssSubscription.DownloadedFiles;
 
             Assert.IsFalse(list.Count != 14);
             Assert.IsFalse(newRssSubscription.DownloadedFiles.Count != 0);
