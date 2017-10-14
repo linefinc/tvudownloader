@@ -75,6 +75,7 @@
     <Compile Include="WrongPageFormatException.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="TvUndergroundDownloaderLib.cd" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
