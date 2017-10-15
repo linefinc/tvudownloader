@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <Target Name="GenerateAssemblyInfo">
+    <Message Text="Update Assembly Info With Git"/>
     <GitVersion LocalPath="$(MSBuildProjectDirectory)">
       <Output TaskParameter="CommitHash" PropertyName="AssemblyVersionCommitHash" />
     </GitVersion>

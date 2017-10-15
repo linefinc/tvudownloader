@@ -3,7 +3,7 @@ using System;
 namespace TvUndergroundDownloaderLib
 {
     [Serializable]
-    public class WrongPageFormatException : Exception
+    public class WrongPageFormatException : System.Exception
     {
         public WrongPageFormatException()
         {
@@ -13,7 +13,7 @@ namespace TvUndergroundDownloaderLib
         {
         }
 
-        public WrongPageFormatException(string message, Exception innerException)
+        public WrongPageFormatException(string message, System.Exception innerException)
             : base(message, innerException)
         {
         }
