@@ -114,6 +114,7 @@ namespace TvUndergroundDownloaderLib
 
         public string Category { get; set; } = string.Empty;
         public TvuStatus CurrentTVUStatus { get; private set; } = TvuStatus.Unknown;
+        public DateTime LastUpdate { get; set; } = DateTime.MinValue;
 
         public string DubLanguage
         {
@@ -188,10 +189,14 @@ namespace TvUndergroundDownloaderLib
                 newRssSubscrission.Category = node.InnerText;
             }
 
-            node = doc.SelectSingleNode("LastUpgradeDate");
+            node = doc.SelectSingleNode(nameof(LastUpdate));
             if (node != null)
             {
-                newRssSubscrission.LastUpgradeDate = DateTime.Parse(node.InnerText);
+                DateTime dt;
+                if (DateTime.TryParse(node.InnerText, out dt))
+                {
+                    newRssSubscrission.LastUpdate = dt;
+                }
             }
 
             node = doc.SelectSingleNode("Enabled");
@@ -269,8 +274,6 @@ namespace TvUndergroundDownloaderLib
             return newRssSubscrission;
         }
 
-        public DateTime LastUpgradeDate { get; set; } = DateTime.MinValue;
-
         public static IEnumerable<string> ParsePossibleUrl(string text)
         {
             List<string> list = new List<string>();
@@ -328,7 +331,7 @@ namespace TvUndergroundDownloaderLib
             var outArray = new List<Ed2kfile>();
 
             outArray.AddRange(_downloadFiles.FindAll(o => o.DownloadDate.HasValue == false));
-            outArray.Sort((A, B) => A.FileName.CompareTo(B.FileName));
+            outArray.Sort((a, b) => a.FileName.CompareTo(b.FileName));
             if (outArray.Count > MaxSimultaneousDownload)
                 outArray.RemoveRange(maxSimultaneousDownload, outArray.Count - maxSimultaneousDownload);
 
@@ -462,14 +465,17 @@ namespace TvUndergroundDownloaderLib
                     }
                 }
 
-                if (CurrentTVUStatus == TvuStatus.Complete)
-                    return;
+                LastUpdate = DateTime.Now;
 
-                var ts = DateTime.Now - LastSerieStatusUpgradeDate;
+                if (CurrentTVUStatus != TvuStatus.Complete)
+                {
+                    var ts = DateTime.Now - LastSerieStatusUpgradeDate;
 
-                if (ts.TotalDays < 15)
-                    return;
-                UpdateTVUStatus(cookieContainer);
+                    if (ts.TotalDays > 15)
+                    {
+                        UpdateTVUStatus(cookieContainer);
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -537,7 +543,7 @@ namespace TvUndergroundDownloaderLib
             writer.WriteElementString("Url", Url); //Url
             writer.WriteElementString("Pause", PauseDownload.ToString()); //Category
             writer.WriteElementString("Category", Category); //Category
-            writer.WriteElementString("LastUpgradeDate", LastUpgradeDate.ToString("s")); //Last Upgrade Date
+            writer.WriteElementString(nameof(LastUpdate), LastUpdate.ToString("s")); //Last Upgrade Date
             writer.WriteElementString("Enabled", Enabled.ToString());
             writer.WriteElementString("maxSimultaneousDownload", MaxSimultaneousDownload.ToString());
 
@@ -559,7 +565,6 @@ namespace TvUndergroundDownloaderLib
                     writer.WriteElementString("tvuStatus", "OnHiatus");
                     break;
 
-                case TvuStatus.Unknown:
                 default:
                     writer.WriteElementString("tvuStatus", "Unknown");
                     break;

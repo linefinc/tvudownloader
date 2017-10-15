@@ -1,10 +1,10 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Xml;
-using NLog;
 
 namespace TvUndergroundDownloaderLib
 {
@@ -65,7 +65,7 @@ namespace TvUndergroundDownloaderLib
         public bool PauseDownloadDefault { get; set; } = false;
         public RssSubscriptionList RssFeedList { get; set; }
 
-        #region Email 
+        #region Email
 
         public bool EmailNotification { get; set; } = false;
         public string SmtpServerAddress { get; set; } = string.Empty;
@@ -77,7 +77,7 @@ namespace TvUndergroundDownloaderLib
         public string MailReceiver { get; set; } = string.Empty;
         public string MailSender { get; set; } = string.Empty;
 
-        #endregion
+        #endregion Email
 
         public eServiceType ServiceType { get; set; } = eServiceType.eMule;
         public string ServiceUrl { get; set; } = "http://localhost:4000";
@@ -91,12 +91,12 @@ namespace TvUndergroundDownloaderLib
         public string TVUCookieI { get; set; } = string.Empty;
         public string TVUCookieT { get; set; } = string.Empty;
 
-        #endregion
-
+        #endregion Tvu Cookie
 
         public string tvudwid { get; set; } = null;
         public bool UseHttpInsteadOfHttps { get; set; } = false;    // todo: implement
         public bool Verbose { get; set; } = false;
+
         //Unique id
         /// <summary>
         ///     Get full assembly version
@@ -107,6 +107,7 @@ namespace TvUndergroundDownloaderLib
 
         public bool WebServerEnable { get; set; } = false;
         public int WebServerPort { get; set; } = 9696;
+
         public void Load(string fileName)
         {
             if (fileName == null)
@@ -121,14 +122,14 @@ namespace TvUndergroundDownloaderLib
             xDoc.Load(FileNameConfig);
 
             // Check configuration version to avoid bad behaviors
-            string configVersionStr = ReadString(xDoc, "version", string.Empty);
-            if (!string.IsNullOrEmpty(configVersionStr))
-            {
-                var configVersion = new Version(configVersionStr);
-                var appVersion = new Version(Version);
-                if (configVersion > appVersion)
-                    throw new Exception("Critical Error: the configuration file was created from a future version");
-            }
+            //string configVersionStr = ReadString(xDoc, "version", string.Empty);
+            //if (!string.IsNullOrEmpty(configVersionStr))
+            //{
+            //    var configVersion = new Version(configVersionStr);
+            //    var appVersion = new Version(Version);
+            //    if (configVersion > appVersion)
+            //        throw new Exception("Critical Error: the configuration file was created from a future version");
+            //}
 
             switch (ReadString(xDoc, "ServiceType", "eMule"))
             {
@@ -141,7 +142,6 @@ namespace TvUndergroundDownloaderLib
                     ServiceType = eServiceType.eMule;
                     break;
             }
-
 
             if (NodeExist(xDoc, "ServiceUrl"))
                 ServiceUrl = ReadString(xDoc, "ServiceUrl", "http://localhost:4000");
@@ -215,7 +215,7 @@ namespace TvUndergroundDownloaderLib
                 SmtpServerPort = ReadInt(xDoc, "SmtpServerPort", 25);
 
             if (NodeExist(xDoc, "SmtpServerEnableSsl"))
-                SmtpServerEnableSsl= ReadBoolean(xDoc, "SmtpServerEnableSsl", false);
+                SmtpServerEnableSsl = ReadBoolean(xDoc, "SmtpServerEnableSsl", false);
 
             if (NodeExist(xDoc, "SmtpServerEnableAuthentication"))
                 SmtpServerEnableAuthentication = ReadBoolean(xDoc, "SmtpServerEnableAuthentication", false);
@@ -226,15 +226,13 @@ namespace TvUndergroundDownloaderLib
             if (NodeExist(xDoc, "SmtpServerPassword"))
                 SmtpServerPassword = ReadString(xDoc, "SmtpServerPassword", "");
 
-
             if (NodeExist(xDoc, "MailReceiver"))
                 MailReceiver = ReadString(xDoc, "MailReceiver", "");
 
             if (NodeExist(xDoc, "MailSender"))
                 MailSender = ReadString(xDoc, "MailSender", "");
 
-            #endregion
-
+            #endregion Email notification
 
             if (NodeExist(xDoc, "tvudwid"))
                 tvudwid = ReadString(xDoc, "tvudwid", RandomIdGenerator());
@@ -272,8 +270,6 @@ namespace TvUndergroundDownloaderLib
 
             RssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title, StringComparison.InvariantCulture));
         }
-
-        
 
         public void Save()
         {
@@ -391,7 +387,6 @@ namespace TvUndergroundDownloaderLib
             return val;
         }
 
-
         private static uint ReadUInt(XmlDocument xDoc, string nodeName, uint defaultValue)
         {
             var t = xDoc.GetElementsByTagName(nodeName);
@@ -422,8 +417,6 @@ namespace TvUndergroundDownloaderLib
             if (t.Count == 0)
                 return false;
             return true;
-
         }
-
     }
 }
