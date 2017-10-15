@@ -115,6 +115,7 @@ namespace TvUndergroundDownloaderLib
         public string Category { get; set; } = string.Empty;
         public TvuStatus CurrentTVUStatus { get; private set; } = TvuStatus.Unknown;
         public DateTime LastUpdate { get; set; } = DateTime.MinValue;
+        public bool DeleteWhenCompleted { get; set; } = false;
 
         public string DubLanguage
         {
@@ -203,6 +204,12 @@ namespace TvUndergroundDownloaderLib
             if (node != null)
             {
                 newRssSubscrission.Enabled = Convert.ToBoolean(node.InnerText);
+            }
+
+            node = doc.SelectSingleNode(nameof(DeleteWhenCompleted));
+            if (node != null)
+            {
+                newRssSubscrission.DeleteWhenCompleted = Convert.ToBoolean(node.InnerText);
             }
 
             if (node != null)
@@ -530,6 +537,16 @@ namespace TvUndergroundDownloaderLib
 
         public void Write(XmlTextWriter writer)
         {
+            if (DeleteWhenCompleted)
+            {
+                int count = _downloadFiles.Count(o => o.DownloadDate.HasValue == false);
+
+                if ((CurrentTVUStatus == TvuStatus.Complete) && (count == 0))
+                {
+                    return;
+                }
+            }
+
             //<Channel>
             //  <Title>[ed2k] tvunderground.org.ru: Lie To Me - Season 2 (HDTV) italian </Title>
             //  <Url>http://tvunderground.org.ru/rss.php?se_id=32672</Url>
@@ -545,6 +562,7 @@ namespace TvUndergroundDownloaderLib
             writer.WriteElementString("Category", Category); //Category
             writer.WriteElementString(nameof(LastUpdate), LastUpdate.ToString("s")); //Last Upgrade Date
             writer.WriteElementString("Enabled", Enabled.ToString());
+            writer.WriteElementString(nameof(DeleteWhenCompleted), DeleteWhenCompleted.ToString());
             writer.WriteElementString("maxSimultaneousDownload", MaxSimultaneousDownload.ToString());
 
             switch (CurrentTVUStatus)
