@@ -8,11 +8,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+[assembly: System.Reflection.AssemblyTitle("TvUndergroundDownloader")]
+[assembly: System.Reflection.AssemblyDescription("Tv Underground Downloader")]
+[assembly: System.Reflection.AssemblyProduct("Tv Underground Downloader")]
+[assembly: System.Reflection.AssemblyCopyright("Copyright(C) 2017 linefinc[at]users.sourceforge.net")]
+[assembly: System.Reflection.AssemblyInformationalVersion("0.9.0 50862a1 [2017-10-15]")]
+[assembly: System.Runtime.InteropServices.ComVisible(false)]
+[assembly: System.CLSCompliant(true)]
 [assembly: System.Reflection.AssemblyVersion("0.9.0")]
 [assembly: System.Reflection.AssemblyFileVersion("0.9.0")]
-[assembly: System.Reflection.AssemblyInformationalVersion("0.9.0 46615d2 [2017-10-14]")]
-[assembly: System.Reflection.AssemblyTitle("TvUndergroundDownloader")]
-[assembly: System.Reflection.AssemblyProduct("TvUndergroundDownloader")]
-[assembly: System.Reflection.AssemblyCopyright("Copyright(C) 2017 linefinc[at]users.sourceforge.net")]
 
 
