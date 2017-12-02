@@ -63,8 +63,8 @@ namespace TvUndergroundDownloaderLib
         {
             _cancellationTokenSource = new CancellationTokenSource();
             _cancellationToken = _cancellationTokenSource.Token;
-            _task = new Task(WorkerFunc, _cancellationTokenSource.Token);
-            _task.ContinueWith(PostRunExceptionHandle, TaskContinuationOptions.OnlyOnFaulted);
+            _task = new Task(WorkerFunc, _cancellationToken);
+            _task.ContinueWith(PostRun);
             _task.Start();
         }
 
@@ -72,7 +72,7 @@ namespace TvUndergroundDownloaderLib
         /// Post Run Exception Handle
         /// </summary>
         /// <param name="task"></param>
-        private void PostRunExceptionHandle(Task task)
+        private void PostRun(Task task)
         {
             if (task.Exception != null)
             {
@@ -84,6 +84,7 @@ namespace TvUndergroundDownloaderLib
                     return true;
                 });
             }
+           OnWorkerCompleted();
         }
 
         /// <summary>
