@@ -383,6 +383,11 @@ namespace TvUndergroundDownloader
             MainConfig.Save();
         }
 
+        private void checkBoxFeedPause_CheckedChanged(object sender, EventArgs e)
+        {
+            MainConfig.Save();
+        }
+
         /// <summary>
         /// Check Now menu
         /// </summary>
@@ -620,7 +625,7 @@ namespace TvUndergroundDownloader
             #endregion
 
             // setup data binding
-            _rssSubscriptionBindingList = new BindingList<RssSubscription>(this.MainConfig.RssFeedList);
+            _rssSubscriptionBindingList = new BindingList<RssSubscription>(MainConfig.RssFeedList);
             rssSubscriptionListBindingSource.DataSource = _rssSubscriptionBindingList;
 
             // download date time
@@ -744,6 +749,16 @@ namespace TvUndergroundDownloader
             }
         }
 
+        private void linkLabelFeedUrl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(linkLabelFeedUrl.Text))
+            {
+                return;
+            }
+
+            Process.Start(linkLabelFeedUrl.Text);
+        }
+
         private void loginToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FormLogin form = new FormLogin();
@@ -838,6 +853,11 @@ namespace TvUndergroundDownloader
                     Visible = true;
                 }
             }
+        }
+
+        private void numericUpDownMaxSimultaneousDownload_ValueChanged(object sender, EventArgs e)
+        {
+            MainConfig.Save();
         }
 
         private void reportABugToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1258,26 +1278,6 @@ namespace TvUndergroundDownloader
             {
                 MessageBox.Show("Software is already update");
             }
-        }
-
-        private void checkBoxFeedPause_CheckedChanged(object sender, EventArgs e)
-        {
-            MainConfig.Save();
-        }
-
-        private void numericUpDownMaxSimultaneousDownload_ValueChanged(object sender, EventArgs e)
-        {
-            MainConfig.Save();
-        }
-
-        private void linkLabelFeedUrl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(linkLabelFeedUrl.Text))
-            {
-                return;
-            }
-
-            Process.Start(linkLabelFeedUrl.Text);
         }
     }
 }
