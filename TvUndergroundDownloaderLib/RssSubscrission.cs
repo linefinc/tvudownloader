@@ -149,6 +149,30 @@ namespace TvUndergroundDownloaderLib
         }
 
         public string Url { get; }
+        /// <summary>
+        /// Last download
+        /// </summary>
+        /// <remarks>Can be null</remarks>
+        public DateTime? LastDownload
+        {
+            get
+            {
+                if (_downloadFiles == null)
+                {
+                    return null;
+                }
+
+                if (_downloadFiles.Count == 0)
+                {
+                    return null;
+                }
+
+                return _downloadFiles.Where(o => o.DownloadDate.HasValue).Max(o => o.DownloadDate.Value);
+            }
+        }
+
+
+
 
         /// <summary>
         ///     Load data from xml
