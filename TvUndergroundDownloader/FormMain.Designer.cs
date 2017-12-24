@@ -33,12 +33,26 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.timerRssCheck = new System.Windows.Forms.Timer(this.components);
             this.timerDelayStartup = new System.Windows.Forms.Timer(this.components);
             this.tabLog = new System.Windows.Forms.TabPage();
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
             this.tabMain = new System.Windows.Forms.TabPage();
+            this.numericUpDownMaxSimultaneousDownload = new System.Windows.Forms.NumericUpDown();
+            this.rssSubscriptionListBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.comboBoxFeedCategory = new System.Windows.Forms.ComboBox();
+            this.checkBoxFeedPause = new System.Windows.Forms.CheckBox();
+            this.checkBoxFeedEnabled = new System.Windows.Forms.CheckBox();
+            this.dataGridViewFeedFiles = new System.Windows.Forms.DataGridView();
+            this.fileNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.publicationDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.downloadDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.contextMenuStripFileFeed = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.markAsDownloadedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.filesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dataGridViewMain = new System.Windows.Forms.DataGridView();
             this.ColumnTitleCompact = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnDubLanguage = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -47,29 +61,19 @@
             this.CheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.contextMenuStripFeed = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemAdd = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.enableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItemUpdateStatus = new System.Windows.Forms.ToolStripMenuItem();
-            this.rssSubscriptionListBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.labelMaxSimultaneousDownloads = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.labelTotalFiles = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.labelLastDownloadDate = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.labelFeedUrl = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.labelFeedPauseDownload = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.labelFeedCategory = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.contextMenuStripFileFeed = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.markAsDownloadedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabRecentActivity = new System.Windows.Forms.TabPage();
             this.dataGridViewRecentActivity = new System.Windows.Forms.DataGridView();
             this.FileNameDataGridColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -114,17 +118,18 @@
             this.toolStripButtonCheckNow = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewFeedFiles = new System.Windows.Forms.DataGridView();
-            this.downloadedFilesBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.fileNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.publicationDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.downloadDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.checkBoxDeleteWhenCompleted = new System.Windows.Forms.CheckBox();
+            this.linkLabelFeedUrl = new System.Windows.Forms.LinkLabel();
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxSimultaneousDownload)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rssSubscriptionListBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFeedFiles)).BeginInit();
+            this.contextMenuStripFileFeed.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.filesBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).BeginInit();
             this.contextMenuStripFeed.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.rssSubscriptionListBindingSource)).BeginInit();
-            this.contextMenuStripFileFeed.SuspendLayout();
             this.tabRecentActivity.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRecentActivity)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -132,8 +137,6 @@
             this.contextMenuStripPending.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFeedFiles)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.downloadedFilesBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // timerRssCheck
@@ -171,19 +174,20 @@
             // 
             // tabMain
             // 
+            this.tabMain.Controls.Add(this.linkLabelFeedUrl);
+            this.tabMain.Controls.Add(this.checkBoxDeleteWhenCompleted);
+            this.tabMain.Controls.Add(this.numericUpDownMaxSimultaneousDownload);
+            this.tabMain.Controls.Add(this.comboBoxFeedCategory);
+            this.tabMain.Controls.Add(this.checkBoxFeedPause);
+            this.tabMain.Controls.Add(this.checkBoxFeedEnabled);
             this.tabMain.Controls.Add(this.dataGridViewFeedFiles);
             this.tabMain.Controls.Add(this.dataGridViewMain);
-            this.tabMain.Controls.Add(this.labelMaxSimultaneousDownloads);
             this.tabMain.Controls.Add(this.label1);
             this.tabMain.Controls.Add(this.labelTotalFiles);
             this.tabMain.Controls.Add(this.label15);
             this.tabMain.Controls.Add(this.labelLastDownloadDate);
             this.tabMain.Controls.Add(this.label13);
-            this.tabMain.Controls.Add(this.labelFeedUrl);
             this.tabMain.Controls.Add(this.label11);
-            this.tabMain.Controls.Add(this.labelFeedPauseDownload);
-            this.tabMain.Controls.Add(this.label9);
-            this.tabMain.Controls.Add(this.labelFeedCategory);
             this.tabMain.Controls.Add(this.label7);
             this.tabMain.Location = new System.Drawing.Point(4, 22);
             this.tabMain.Name = "tabMain";
@@ -192,6 +196,115 @@
             this.tabMain.TabIndex = 0;
             this.tabMain.Text = "Feeds";
             this.tabMain.UseVisualStyleBackColor = true;
+            // 
+            // numericUpDownMaxSimultaneousDownload
+            // 
+            this.numericUpDownMaxSimultaneousDownload.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.rssSubscriptionListBindingSource, "MaxSimultaneousDownload", true));
+            this.numericUpDownMaxSimultaneousDownload.Location = new System.Drawing.Point(522, 278);
+            this.numericUpDownMaxSimultaneousDownload.Name = "numericUpDownMaxSimultaneousDownload";
+            this.numericUpDownMaxSimultaneousDownload.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDownMaxSimultaneousDownload.TabIndex = 43;
+            this.numericUpDownMaxSimultaneousDownload.ValueChanged += new System.EventHandler(this.numericUpDownMaxSimultaneousDownload_ValueChanged);
+            // 
+            // rssSubscriptionListBindingSource
+            // 
+            this.rssSubscriptionListBindingSource.DataSource = typeof(TvUndergroundDownloaderLib.RssSubscriptionList);
+            // 
+            // comboBoxFeedCategory
+            // 
+            this.comboBoxFeedCategory.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.rssSubscriptionListBindingSource, "Category", true));
+            this.comboBoxFeedCategory.FormattingEnabled = true;
+            this.comboBoxFeedCategory.Location = new System.Drawing.Point(521, 251);
+            this.comboBoxFeedCategory.Name = "comboBoxFeedCategory";
+            this.comboBoxFeedCategory.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxFeedCategory.TabIndex = 42;
+            // 
+            // checkBoxFeedPause
+            // 
+            this.checkBoxFeedPause.AutoSize = true;
+            this.checkBoxFeedPause.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.rssSubscriptionListBindingSource, "Enabled", true));
+            this.checkBoxFeedPause.Location = new System.Drawing.Point(513, 304);
+            this.checkBoxFeedPause.Name = "checkBoxFeedPause";
+            this.checkBoxFeedPause.Size = new System.Drawing.Size(56, 17);
+            this.checkBoxFeedPause.TabIndex = 41;
+            this.checkBoxFeedPause.Text = "Pause";
+            this.checkBoxFeedPause.UseVisualStyleBackColor = true;
+            this.checkBoxFeedPause.CheckedChanged += new System.EventHandler(this.checkBoxFeedPause_CheckedChanged);
+            // 
+            // checkBoxFeedEnabled
+            // 
+            this.checkBoxFeedEnabled.AutoSize = true;
+            this.checkBoxFeedEnabled.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.rssSubscriptionListBindingSource, "Enabled", true));
+            this.checkBoxFeedEnabled.Location = new System.Drawing.Point(575, 304);
+            this.checkBoxFeedEnabled.Name = "checkBoxFeedEnabled";
+            this.checkBoxFeedEnabled.Size = new System.Drawing.Size(65, 17);
+            this.checkBoxFeedEnabled.TabIndex = 40;
+            this.checkBoxFeedEnabled.Text = "Enabled";
+            this.checkBoxFeedEnabled.UseVisualStyleBackColor = true;
+            this.checkBoxFeedEnabled.CheckedChanged += new System.EventHandler(this.checkBoxFeedEnabled_CheckedChanged);
+            // 
+            // dataGridViewFeedFiles
+            // 
+            this.dataGridViewFeedFiles.AutoGenerateColumns = false;
+            this.dataGridViewFeedFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewFeedFiles.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.fileNameDataGridViewTextBoxColumn,
+            this.publicationDateDataGridViewTextBoxColumn,
+            this.downloadDateDataGridViewTextBoxColumn});
+            this.dataGridViewFeedFiles.ContextMenuStrip = this.contextMenuStripFileFeed;
+            this.dataGridViewFeedFiles.DataSource = this.filesBindingSource;
+            this.dataGridViewFeedFiles.Location = new System.Drawing.Point(9, 327);
+            this.dataGridViewFeedFiles.Name = "dataGridViewFeedFiles";
+            this.dataGridViewFeedFiles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewFeedFiles.Size = new System.Drawing.Size(631, 106);
+            this.dataGridViewFeedFiles.TabIndex = 39;
+            // 
+            // fileNameDataGridViewTextBoxColumn
+            // 
+            this.fileNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.fileNameDataGridViewTextBoxColumn.DataPropertyName = "FileName";
+            this.fileNameDataGridViewTextBoxColumn.HeaderText = "FileName";
+            this.fileNameDataGridViewTextBoxColumn.Name = "fileNameDataGridViewTextBoxColumn";
+            this.fileNameDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // publicationDateDataGridViewTextBoxColumn
+            // 
+            this.publicationDateDataGridViewTextBoxColumn.DataPropertyName = "PublicationDate";
+            this.publicationDateDataGridViewTextBoxColumn.HeaderText = "PublicationDate";
+            this.publicationDateDataGridViewTextBoxColumn.Name = "publicationDateDataGridViewTextBoxColumn";
+            // 
+            // downloadDateDataGridViewTextBoxColumn
+            // 
+            this.downloadDateDataGridViewTextBoxColumn.DataPropertyName = "DownloadDate";
+            this.downloadDateDataGridViewTextBoxColumn.HeaderText = "DownloadDate";
+            this.downloadDateDataGridViewTextBoxColumn.Name = "downloadDateDataGridViewTextBoxColumn";
+            // 
+            // contextMenuStripFileFeed
+            // 
+            this.contextMenuStripFileFeed.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.deleteToolStripMenuItem1,
+            this.markAsDownloadedToolStripMenuItem});
+            this.contextMenuStripFileFeed.Name = "contextMenuStrip2";
+            this.contextMenuStripFileFeed.Size = new System.Drawing.Size(186, 48);
+            // 
+            // deleteToolStripMenuItem1
+            // 
+            this.deleteToolStripMenuItem1.Name = "deleteToolStripMenuItem1";
+            this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(185, 22);
+            this.deleteToolStripMenuItem1.Text = "Redownload";
+            this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItemRedownload_Click);
+            // 
+            // markAsDownloadedToolStripMenuItem
+            // 
+            this.markAsDownloadedToolStripMenuItem.Name = "markAsDownloadedToolStripMenuItem";
+            this.markAsDownloadedToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.markAsDownloadedToolStripMenuItem.Text = "Mark as Downloaded";
+            this.markAsDownloadedToolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuItemMarkAsDownload_Click);
+            // 
+            // filesBindingSource
+            // 
+            this.filesBindingSource.DataMember = "Files";
+            this.filesBindingSource.DataSource = this.rssSubscriptionListBindingSource;
             // 
             // dataGridViewMain
             // 
@@ -266,7 +379,6 @@
             // 
             this.contextMenuStripFeed.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemAdd,
-            this.toolStripMenuItemEdit,
             this.toolStripMenuItemDelete,
             this.toolStripSeparator5,
             this.enableToolStripMenuItem,
@@ -274,7 +386,7 @@
             this.toolStripSeparator7,
             this.toolStripMenuItemUpdateStatus});
             this.contextMenuStripFeed.Name = "contextMenuStrip1";
-            this.contextMenuStripFeed.Size = new System.Drawing.Size(148, 148);
+            this.contextMenuStripFeed.Size = new System.Drawing.Size(148, 126);
             // 
             // toolStripMenuItemAdd
             // 
@@ -282,13 +394,6 @@
             this.toolStripMenuItemAdd.Size = new System.Drawing.Size(147, 22);
             this.toolStripMenuItemAdd.Text = "Add";
             this.toolStripMenuItemAdd.Click += new System.EventHandler(this.toolStripMenuItemAdd_Click);
-            // 
-            // toolStripMenuItemEdit
-            // 
-            this.toolStripMenuItemEdit.Name = "toolStripMenuItemEdit";
-            this.toolStripMenuItemEdit.Size = new System.Drawing.Size(147, 22);
-            this.toolStripMenuItemEdit.Text = "Edit";
-            this.toolStripMenuItemEdit.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
             // 
             // toolStripMenuItemDelete
             // 
@@ -328,24 +433,10 @@
             this.toolStripMenuItemUpdateStatus.Text = "Update Status";
             this.toolStripMenuItemUpdateStatus.Click += new System.EventHandler(this.toolStripMenuItemUpdateStatus_Click);
             // 
-            // rssSubscriptionListBindingSource
-            // 
-            this.rssSubscriptionListBindingSource.DataSource = typeof(TvUndergroundDownloaderLib.RssSubscriptionList);
-            // 
-            // labelMaxSimultaneousDownloads
-            // 
-            this.labelMaxSimultaneousDownloads.AutoSize = true;
-            this.labelMaxSimultaneousDownloads.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.rssSubscriptionListBindingSource, "MaxSimultaneousDownload", true));
-            this.labelMaxSimultaneousDownloads.Location = new System.Drawing.Point(498, 248);
-            this.labelMaxSimultaneousDownloads.Name = "labelMaxSimultaneousDownloads";
-            this.labelMaxSimultaneousDownloads.Size = new System.Drawing.Size(53, 13);
-            this.labelMaxSimultaneousDownloads.TabIndex = 37;
-            this.labelMaxSimultaneousDownloads.Text = "labelMSD";
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(289, 248);
+            this.label1.Location = new System.Drawing.Point(370, 280);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(145, 13);
             this.label1.TabIndex = 36;
@@ -355,7 +446,7 @@
             // 
             this.labelTotalFiles.AutoSize = true;
             this.labelTotalFiles.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.rssSubscriptionListBindingSource, "TotalFilesDownloaded", true));
-            this.labelTotalFiles.Location = new System.Drawing.Point(106, 300);
+            this.labelTotalFiles.Location = new System.Drawing.Point(97, 305);
             this.labelTotalFiles.Name = "labelTotalFiles";
             this.labelTotalFiles.Size = new System.Drawing.Size(74, 13);
             this.labelTotalFiles.TabIndex = 35;
@@ -364,7 +455,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(6, 300);
+            this.label15.Location = new System.Drawing.Point(8, 305);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(51, 13);
             this.label15.TabIndex = 34;
@@ -374,7 +465,7 @@
             // 
             this.labelLastDownloadDate.AutoSize = true;
             this.labelLastDownloadDate.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.rssSubscriptionListBindingSource, "LastDownload", true));
-            this.labelLastDownloadDate.Location = new System.Drawing.Point(106, 287);
+            this.labelLastDownloadDate.Location = new System.Drawing.Point(97, 280);
             this.labelLastDownloadDate.Name = "labelLastDownloadDate";
             this.labelLastDownloadDate.Size = new System.Drawing.Size(120, 13);
             this.labelLastDownloadDate.TabIndex = 33;
@@ -383,90 +474,29 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(6, 287);
+            this.label13.Location = new System.Drawing.Point(6, 280);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(78, 13);
             this.label13.TabIndex = 32;
             this.label13.Text = "Last Download";
             // 
-            // labelFeedUrl
-            // 
-            this.labelFeedUrl.AutoSize = true;
-            this.labelFeedUrl.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.rssSubscriptionListBindingSource, "Url", true));
-            this.labelFeedUrl.Location = new System.Drawing.Point(106, 274);
-            this.labelFeedUrl.Name = "labelFeedUrl";
-            this.labelFeedUrl.Size = new System.Drawing.Size(66, 13);
-            this.labelFeedUrl.TabIndex = 31;
-            this.labelFeedUrl.Text = "labelFeedUrl";
-            // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 274);
+            this.label11.Location = new System.Drawing.Point(6, 254);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(48, 13);
             this.label11.TabIndex = 30;
             this.label11.Text = "RSS link";
             // 
-            // labelFeedPauseDownload
-            // 
-            this.labelFeedPauseDownload.AutoSize = true;
-            this.labelFeedPauseDownload.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.rssSubscriptionListBindingSource, "PauseDownload", true));
-            this.labelFeedPauseDownload.Location = new System.Drawing.Point(106, 261);
-            this.labelFeedPauseDownload.Name = "labelFeedPauseDownload";
-            this.labelFeedPauseDownload.Size = new System.Drawing.Size(131, 13);
-            this.labelFeedPauseDownload.TabIndex = 29;
-            this.labelFeedPauseDownload.Text = "labelFeedPauseDownload";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 261);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(37, 13);
-            this.label9.TabIndex = 28;
-            this.label9.Text = "Pause";
-            // 
-            // labelFeedCategory
-            // 
-            this.labelFeedCategory.AutoSize = true;
-            this.labelFeedCategory.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.rssSubscriptionListBindingSource, "Category", true));
-            this.labelFeedCategory.Location = new System.Drawing.Point(106, 248);
-            this.labelFeedCategory.Name = "labelFeedCategory";
-            this.labelFeedCategory.Size = new System.Drawing.Size(95, 13);
-            this.labelFeedCategory.TabIndex = 27;
-            this.labelFeedCategory.Text = "labelFeedCategory";
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 248);
+            this.label7.Location = new System.Drawing.Point(466, 254);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(49, 13);
             this.label7.TabIndex = 26;
             this.label7.Text = "Category";
-            // 
-            // contextMenuStripFileFeed
-            // 
-            this.contextMenuStripFileFeed.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.deleteToolStripMenuItem1,
-            this.markAsDownloadedToolStripMenuItem});
-            this.contextMenuStripFileFeed.Name = "contextMenuStrip2";
-            this.contextMenuStripFileFeed.Size = new System.Drawing.Size(186, 48);
-            // 
-            // deleteToolStripMenuItem1
-            // 
-            this.deleteToolStripMenuItem1.Name = "deleteToolStripMenuItem1";
-            this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(185, 22);
-            this.deleteToolStripMenuItem1.Text = "Redownload";
-            this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItemRedownload_Click);
-            // 
-            // markAsDownloadedToolStripMenuItem
-            // 
-            this.markAsDownloadedToolStripMenuItem.Name = "markAsDownloadedToolStripMenuItem";
-            this.markAsDownloadedToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-            this.markAsDownloadedToolStripMenuItem.Text = "Mark as Downloaded";
-            this.markAsDownloadedToolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuItemMarkAsDownload_Click);
             // 
             // tabRecentActivity
             // 
@@ -758,35 +788,35 @@
             // helpToolStripMenuItem1
             // 
             this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
-            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(148, 22);
+            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.helpToolStripMenuItem1.Text = "Help";
             this.helpToolStripMenuItem1.Click += new System.EventHandler(this.helpToolStripMenuItem1_Click);
             // 
             // reportABugToolStripMenuItem
             // 
             this.reportABugToolStripMenuItem.Name = "reportABugToolStripMenuItem";
-            this.reportABugToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.reportABugToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.reportABugToolStripMenuItem.Text = "Report a Bug";
             this.reportABugToolStripMenuItem.Click += new System.EventHandler(this.reportABugToolStripMenuItem_Click);
             // 
             // forumToolStripMenuItem
             // 
             this.forumToolStripMenuItem.Name = "forumToolStripMenuItem";
-            this.forumToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.forumToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.forumToolStripMenuItem.Text = "Forum";
             this.forumToolStripMenuItem.Click += new System.EventHandler(this.forumToolStripMenuItem_Click);
             // 
             // versionCheckToolStripMenuItem
             // 
             this.versionCheckToolStripMenuItem.Name = "versionCheckToolStripMenuItem";
-            this.versionCheckToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.versionCheckToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.versionCheckToolStripMenuItem.Text = "Version Check";
             this.versionCheckToolStripMenuItem.Click += new System.EventHandler(this.versionCheckToolStripMenuItem_Click);
             // 
             // toolStripMenuItemAbout
             // 
             this.toolStripMenuItemAbout.Name = "toolStripMenuItemAbout";
-            this.toolStripMenuItemAbout.Size = new System.Drawing.Size(148, 22);
+            this.toolStripMenuItemAbout.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItemAbout.Text = "About";
             this.toolStripMenuItemAbout.Click += new System.EventHandler(this.toolStripMenuItemAbout_Click);
             // 
@@ -850,46 +880,37 @@
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
             this.dataGridViewTextBoxColumn1.Width = 62;
             // 
-            // dataGridView1
+            // dataGridViewTextBoxColumn2
             // 
-            this.dataGridViewFeedFiles.AutoGenerateColumns = false;
-            this.dataGridViewFeedFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewFeedFiles.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.fileNameDataGridViewTextBoxColumn,
-            this.publicationDateDataGridViewTextBoxColumn,
-            this.downloadDateDataGridViewTextBoxColumn});
-            this.dataGridViewFeedFiles.ContextMenuStrip = this.contextMenuStripFileFeed;
-            this.dataGridViewFeedFiles.DataSource = this.downloadedFilesBindingSource;
-            this.dataGridViewFeedFiles.Location = new System.Drawing.Point(9, 327);
-            this.dataGridViewFeedFiles.Name = "dataGridViewFeedFiles";
-            this.dataGridViewFeedFiles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewFeedFiles.Size = new System.Drawing.Size(631, 106);
-            this.dataGridViewFeedFiles.TabIndex = 39;
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "CurrentTVUStatus";
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewTextBoxColumn2.DefaultCellStyle = dataGridViewCellStyle5;
+            this.dataGridViewTextBoxColumn2.HeaderText = "Status";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.Width = 62;
             // 
-            // downloadedFilesBindingSource
+            // checkBoxDeleteWhenCompleted
             // 
-            this.downloadedFilesBindingSource.DataMember = "DownloadedFiles";
-            this.downloadedFilesBindingSource.DataSource = this.rssSubscriptionListBindingSource;
+            this.checkBoxDeleteWhenCompleted.AutoSize = true;
+            this.checkBoxDeleteWhenCompleted.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.rssSubscriptionListBindingSource, "DeleteWhenCompleted", true));
+            this.checkBoxDeleteWhenCompleted.Location = new System.Drawing.Point(366, 304);
+            this.checkBoxDeleteWhenCompleted.Name = "checkBoxDeleteWhenCompleted";
+            this.checkBoxDeleteWhenCompleted.Size = new System.Drawing.Size(141, 17);
+            this.checkBoxDeleteWhenCompleted.TabIndex = 44;
+            this.checkBoxDeleteWhenCompleted.Text = " Delete when completed";
+            this.checkBoxDeleteWhenCompleted.UseVisualStyleBackColor = true;
             // 
-            // fileNameDataGridViewTextBoxColumn
+            // linkLabelFeedUrl
             // 
-            this.fileNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.fileNameDataGridViewTextBoxColumn.DataPropertyName = "FileName";
-            this.fileNameDataGridViewTextBoxColumn.HeaderText = "FileName";
-            this.fileNameDataGridViewTextBoxColumn.Name = "fileNameDataGridViewTextBoxColumn";
-            this.fileNameDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // publicationDateDataGridViewTextBoxColumn
-            // 
-            this.publicationDateDataGridViewTextBoxColumn.DataPropertyName = "PublicationDate";
-            this.publicationDateDataGridViewTextBoxColumn.HeaderText = "PublicationDate";
-            this.publicationDateDataGridViewTextBoxColumn.Name = "publicationDateDataGridViewTextBoxColumn";
-            // 
-            // downloadDateDataGridViewTextBoxColumn
-            // 
-            this.downloadDateDataGridViewTextBoxColumn.DataPropertyName = "DownloadDate";
-            this.downloadDateDataGridViewTextBoxColumn.HeaderText = "DownloadDate";
-            this.downloadDateDataGridViewTextBoxColumn.Name = "downloadDateDataGridViewTextBoxColumn";
+            this.linkLabelFeedUrl.AutoSize = true;
+            this.linkLabelFeedUrl.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.rssSubscriptionListBindingSource, "Url", true));
+            this.linkLabelFeedUrl.Location = new System.Drawing.Point(97, 254);
+            this.linkLabelFeedUrl.Name = "linkLabelFeedUrl";
+            this.linkLabelFeedUrl.Size = new System.Drawing.Size(86, 13);
+            this.linkLabelFeedUrl.TabIndex = 45;
+            this.linkLabelFeedUrl.TabStop = true;
+            this.linkLabelFeedUrl.Text = "linkLabelFeedUrl";
+            this.linkLabelFeedUrl.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelFeedUrl_LinkClicked);
             // 
             // FormMain
             // 
@@ -910,10 +931,13 @@
             this.tabLog.ResumeLayout(false);
             this.tabMain.ResumeLayout(false);
             this.tabMain.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxSimultaneousDownload)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rssSubscriptionListBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFeedFiles)).EndInit();
+            this.contextMenuStripFileFeed.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.filesBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).EndInit();
             this.contextMenuStripFeed.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.rssSubscriptionListBindingSource)).EndInit();
-            this.contextMenuStripFileFeed.ResumeLayout(false);
             this.tabRecentActivity.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRecentActivity)).EndInit();
             this.tabControl1.ResumeLayout(false);
@@ -923,8 +947,6 @@
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFeedFiles)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.downloadedFilesBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -942,11 +964,7 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label labelLastDownloadDate;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label labelFeedUrl;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label labelFeedPauseDownload;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label labelFeedCategory;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TabPage tabRecentActivity;
         private System.Windows.Forms.TabControl tabControl1;
@@ -979,8 +997,6 @@
         private System.Windows.Forms.ToolStripMenuItem reportABugToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAbout;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemEdit;
-        private System.Windows.Forms.Label labelMaxSimultaneousDownloads;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TabPage tabPending;
         private System.Windows.Forms.ListBox listBoxPending;
@@ -1015,10 +1031,17 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn CheckBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridView dataGridViewFeedFiles;
-        private System.Windows.Forms.BindingSource downloadedFilesBindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn fileNameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn publicationDateDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn downloadDateDataGridViewTextBoxColumn;
+        private System.Windows.Forms.BindingSource filesBindingSource;
+        private System.Windows.Forms.CheckBox checkBoxFeedEnabled;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.CheckBox checkBoxFeedPause;
+        private System.Windows.Forms.ComboBox comboBoxFeedCategory;
+        private System.Windows.Forms.NumericUpDown numericUpDownMaxSimultaneousDownload;
+        private System.Windows.Forms.CheckBox checkBoxDeleteWhenCompleted;
+        private System.Windows.Forms.LinkLabel linkLabelFeedUrl;
     }
 }
 
