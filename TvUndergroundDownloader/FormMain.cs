@@ -15,6 +15,7 @@ using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using NLog.LayoutRenderers;
 using TvUndergroundDownloader.Properties;
 using TvUndergroundDownloaderLib;
 using TvUndergroundDownloaderLib.EmbendedWebServer;
@@ -211,7 +212,7 @@ namespace TvUndergroundDownloader
             timerAutoClose.Enabled = true;
         }
 
-       
+
         protected override void SetVisibleCore(bool value)
         {
             // MSDN http://social.msdn.microsoft.com/forums/en-US/csharpgeneral/thread/eab563c3-37d0-4ebd-a086-b9ea7bb03fed
@@ -370,11 +371,6 @@ namespace TvUndergroundDownloader
             }
         }
 
-        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            progressBar1.Value = e.ProgressPercentage;
-        }
-
         private void cancelCheckToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _worker.Abort();
@@ -389,12 +385,7 @@ namespace TvUndergroundDownloader
         {
             StartDownloadThread();
         }
-
-        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            richTextBoxLog.Clear();
-        }
-
+        
         private void dataGridViewMain_SelectionChanged(object sender, EventArgs e)
         {
             if ((dataGridViewMain.Rows.Count == 0) | (dataGridViewMain.SelectedRows.Count == 0))
@@ -410,30 +401,30 @@ namespace TvUndergroundDownloader
                 return;
             }
 
-            string titleCompact = dataGridViewMain.SelectedRows[0].Cells[DataGridViewTextBoxColumnTitle.Name].Value.ToString();
-            RssSubscription feed = MainConfig.RssFeedList.Find(x => (x.TitleCompact == titleCompact));
-            if (feed == null)
-            {
-                return;
-            }
+            //string titleCompact = dataGridViewMain.SelectedRows[0].Cells[DataGridViewTextBoxColumnTitle.Name].Value.ToString();
+            //RssSubscription feed = MainConfig.RssFeedList.Find(x => (x.TitleCompact == titleCompact));
+            //if (feed == null)
+            //{
+            //    return;
+            //}
 
-            labelFeedCategory.Text = feed.Category;
-            labelFeedPauseDownload.Text = feed.PauseDownload.ToString();
-            labelFeedUrl.Text = feed.Url;
+            //labelFeedCategory.Text = feed.Category;
+            //labelFeedPauseDownload.Text = feed.PauseDownload.ToString();
+            //labelFeedUrl.Text = feed.Url;
 
-            DateTime lastDownloadDate = feed.GetLastDownloadDate();
-            if (lastDownloadDate == DateTime.MinValue)
-            {
-                labelLastDownloadDate.Text = "-";
-            }
-            else
-            {
-                labelLastDownloadDate.Text = lastDownloadDate.Date.ToString("yyyy-MM-dd");
-            }
-            labelTotalFiles.Text = feed.DownloadedFiles.Count.ToString();
-            labelMaxSimultaneousDownloads.Text = feed.MaxSimultaneousDownload.ToString();
+            //DateTime lastDownloadDate = feed.GetLastDownloadDate();
+            //if (lastDownloadDate == DateTime.MinValue)
+            //{
+            //    labelLastDownloadDate.Text = "-";
+            //}
+            //else
+            //{
+            //    labelLastDownloadDate.Text = lastDownloadDate.Date.ToString("yyyy-MM-dd");
+            //}
+            //labelTotalFiles.Text = feed.DownloadedFiles.Count.ToString();
+            //labelMaxSimultaneousDownloads.Text = feed.MaxSimultaneousDownload.ToString();
 
-            UpdateSubscriptionFilesList();
+            //UpdateSubscriptionFilesList();
         }
 
         private void DeleteRssChannel()
@@ -453,19 +444,14 @@ namespace TvUndergroundDownloader
 
             foreach (DataGridViewRow selectedItem in dataGridViewMain.SelectedRows)
             {
-                DataGridViewColumn col = DataGridViewTextBoxColumnTitle;
-                string titleCompact = selectedItem.Cells[col.Name].Value.ToString();
-                RssSubscription feed = MainConfig.RssFeedList.Find(x => (x.TitleCompact == titleCompact));
-
-                if (feed == null)
-                {
+                var rssSubscription = selectedItem.DataBoundItem as RssSubscription;
+                if (rssSubscription == null)
                     continue;
-                }
-                MainConfig.RssFeedList.Remove(feed);
+                MainConfig.RssFeedList.Remove(rssSubscription);
             }
+
             MainConfig.Save();
 
-            listViewFeedFilesList.Items.Clear();
             UpdateRssFeedGUI(); ///upgrade GUI
         }
 
@@ -486,69 +472,68 @@ namespace TvUndergroundDownloader
                 return;
 
             // get the feed
-            DataGridViewColumn col = DataGridViewTextBoxColumnTitle;
-            string titleCompact = dataGridViewMain.SelectedRows[0].Cells[col.Name].Value.ToString();
-            RssSubscription feed = MainConfig.RssFeedList.Find(x => (x.TitleCompact == titleCompact));
+            //DataGridViewColumn col = DataGridViewTextBoxColumnTitle;
+            //string titleCompact = dataGridViewMain.SelectedRows[0].Cells[col.Name].Value.ToString();
+            //RssSubscription feed = MainConfig.RssFeedList.Find(x => (x.TitleCompact == titleCompact));
 
-            if (feed == null)
-            {
-                return;
-            }
+            //if (feed == null)
+            //{
+            //    return;
+            //}
 
-            foreach (ListViewItem selectedItem in listViewFeedFilesList.SelectedItems)
-            {
-                string strSelectItemText = selectedItem.Text;   // this contain name file
-                _logger.Info("Marked as not Downloaded \"{0}\"", strSelectItemText);
+            //foreach (ListViewItem selectedItem in listViewFeedFilesList.SelectedItems)
+            //{
+            //    string strSelectItemText = selectedItem.Text;   // this contain name file
+            //    _logger.Info("Marked as not Downloaded \"{0}\"", strSelectItemText);
 
-                Ed2kfile file = feed.DownloadedFiles.First(t => t.FileName == strSelectItemText);
+            //    Ed2kfile file = feed.DownloadedFiles.First(t => t.FileName == strSelectItemText);
 
-                feed.SetFileNotDownloaded(file);
-            }
-            // finally update GUI
-            UpdateSubscriptionFilesList();
+            //    feed.SetFileNotDownloaded(file);
+            //}
+            //// finally update GUI
+            //UpdateSubscriptionFilesList();
         }
 
         private void disableToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //foreach (ListViewItem selectedItem in listViewFeed.SelectedItems)
-            //{
-            //    string feedTitle = selectedItem.Text;
-
-            //    RssSubscription Feed = null;
-
-            //    Feed = MainConfig.RssFeedList.Find(delegate (RssSubscription t)
-            //    {
-            //        return t.TitleCompact.IndexOf(feedTitle) > -1;
-            //    });
-
-            //    if (Feed != null)
-            //    {
-            //        Feed.Enabled = false;
-
-            //    }
-            //}
-            //MainConfig.Save();
-
-            listViewFeedFilesList.Items.Clear();
-            UpdateRssFeedGUI(); ///upgrade GUI
-        }
-
-        private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (dataGridViewMain.SelectedRows.Count == 0)
             {
                 return;
             }
 
-            string titleCompact = dataGridViewMain.SelectedRows[0].Cells[0].Value.ToString();
-            RssSubscription feed = MainConfig.RssFeedList.Find(x => (x.TitleCompact == titleCompact));
+            foreach (DataGridViewRow selectedItem in dataGridViewMain.SelectedRows)
+            {
+                var rssSubscription = selectedItem.DataBoundItem as RssSubscription;
+                if (rssSubscription == null)
+                    continue;
+                rssSubscription.Enabled = false;
+            }
 
-            if (feed == null)
+            MainConfig.Save();
+            UpdateRssFeedGUI(); ///upgrade GUI
+
+        }
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewMain.SelectedRows.Count != 1)
             {
                 return;
             }
 
-            EditFeedForm dialog = new EditFeedForm(MainConfig, feed.Category, feed.PauseDownload, feed.Enabled, feed.MaxSimultaneousDownload);
+            DataGridViewRow selectedItem = dataGridViewMain.SelectedRows[0];
+            if (selectedItem == null)
+            {
+                return;
+            }
+
+            var rssSubscription = selectedItem.DataBoundItem as RssSubscription;
+            if (rssSubscription == null)
+            {
+                return;
+            }
+            
+            EditFeedForm dialog = new EditFeedForm(MainConfig, rssSubscription.Category, rssSubscription.PauseDownload, rssSubscription.Enabled, rssSubscription.MaxSimultaneousDownload);
             dialog.ShowDialog();
 
             if (dialog.DialogResult != DialogResult.OK)
@@ -557,10 +542,10 @@ namespace TvUndergroundDownloader
                 return;
             }
 
-            feed.Enabled = dialog.feedEnable;
-            feed.Category = dialog.Category;
-            feed.PauseDownload = dialog.PauseDownload;
-            feed.MaxSimultaneousDownload = dialog.maxSimultaneousDownload;
+            rssSubscription.Enabled = dialog.feedEnable;
+            rssSubscription.Category = dialog.Category;
+            rssSubscription.PauseDownload = dialog.PauseDownload;
+            rssSubscription.MaxSimultaneousDownload = dialog.maxSimultaneousDownload;
 
             MainConfig.Save();
 
@@ -570,7 +555,21 @@ namespace TvUndergroundDownloader
 
         private void enableToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            listViewFeedFilesList.Items.Clear();
+            if (dataGridViewMain.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
+           foreach (DataGridViewRow selectedItem in dataGridViewMain.SelectedRows)
+            {
+                var rssSubscription = selectedItem.DataBoundItem as RssSubscription;
+                if (rssSubscription == null)
+                    continue;
+                rssSubscription.Enabled = true;
+            }
+
+            MainConfig.Save();
+
             UpdateRssFeedGUI(); ///upgrade GUI
         }
 
@@ -612,7 +611,7 @@ namespace TvUndergroundDownloader
                 ExportImportHelper.Export(MainConfig, myStream);
                 myStream.Close();
             }
-            
+
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -677,6 +676,9 @@ namespace TvUndergroundDownloader
 
             #endregion
 
+            // setup data binding
+            rssSubscriptionListBindingSource.DataSource = this.MainConfig.RssFeedList;
+
             // download date time
             downloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
 
@@ -735,7 +737,7 @@ namespace TvUndergroundDownloader
                 MainConfig.IntervalTime = optDialog.IntervalTime;
                 MainConfig.MinToStartEmule = optDialog.MinToStartEmule;
                 MainConfig.EmailNotification = optDialog.EmailNotification;
-                
+
                 MainConfig.AutoClearLog = optDialog.AutoClearLog;
                 MainConfig.IntervalBetweenUpgradeCheck = optDialog.IntervalBetweenUpgradeCheck;
                 MainConfig.MaxSimultaneousFeedDownloadsDefault = optDialog.MaxSimultaneousFeedDownloads;
@@ -790,7 +792,7 @@ namespace TvUndergroundDownloader
                 Filter = @"XML (*.xml)|*.xml|All files (*.*)|*.*",
                 RestoreDirectory = true
             };
-            
+
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 ExportImportHelper.Import(MainConfig, openFileDialog1.FileName);
@@ -829,26 +831,26 @@ namespace TvUndergroundDownloader
                 return;
 
             // get the feed
-            DataGridViewColumn col = DataGridViewTextBoxColumnTitle;
-            string titleCompact = dataGridViewMain.SelectedRows[0].Cells[col.Name].Value.ToString();
-            RssSubscription feed = MainConfig.RssFeedList.Find(x => (x.TitleCompact == titleCompact));
+            //DataGridViewColumn col = DataGridViewTextBoxColumnTitle;
+            //string titleCompact = dataGridViewMain.SelectedRows[0].Cells[col.Name].Value.ToString();
+            //RssSubscription feed = MainConfig.RssFeedList.Find(x => (x.TitleCompact == titleCompact));
 
-            if (feed == null)
-            {
-                return;
-            }
+            //if (feed == null)
+            //{
+            //    return;
+            //}
 
-            foreach (ListViewItem selectedItem in listViewFeedFilesList.SelectedItems)
-            {
-                string strSelectItemText = selectedItem.Text;   // this contain name file
-                _logger.Info("Marked as Downloaded file:\"{0}\"", strSelectItemText);
+            //foreach (ListViewItem selectedItem in listViewFeedFilesList.SelectedItems)
+            //{
+            //    string strSelectItemText = selectedItem.Text;   // this contain name file
+            //    _logger.Info("Marked as Downloaded file:\"{0}\"", strSelectItemText);
 
-                Ed2kfile file = feed.DownloadedFiles.First(t => t.FileName == strSelectItemText);
+            //    Ed2kfile file = feed.DownloadedFiles.First(t => t.FileName == strSelectItemText);
 
-                feed.SetFileDownloaded(file);
-            }
-            // finally update GUI
-            UpdateSubscriptionFilesList();
+            //    feed.SetFileDownloaded(file);
+            //}
+            //// finally update GUI
+            //UpdateSubscriptionFilesList();
         }
 
         private void menu_AutoCloseEmule(object sender, EventArgs e)
@@ -1128,7 +1130,7 @@ namespace TvUndergroundDownloader
             if (MainConfig.TotalDownloads == 0)
             {
                 var rc = MessageBox.Show(
-                    "Do you want to see a small video that can help you to configure the app?","Info", MessageBoxButtons.YesNo);
+                    "Do you want to see a small video that can help you to configure the app?", "Info", MessageBoxButtons.YesNo);
                 if (rc == DialogResult.Yes)
                 {
                     Process.Start("https://youtu.be/i_CiFij4qHg");
@@ -1244,14 +1246,14 @@ namespace TvUndergroundDownloader
 
             foreach (DataGridViewRow selectedItem in dataGridViewMain.SelectedRows)
             {
-                DataGridViewColumn col = DataGridViewTextBoxColumnTitle;
-                string titleCompact = selectedItem.Cells[col.Name].Value.ToString();
-                RssSubscription feed = MainConfig.RssFeedList.Find(x => (x.TitleCompact == titleCompact));
+                //DataGridViewColumn col = DataGridViewTextBoxColumnTitle;
+                //string titleCompact = selectedItem.Cells[col.Name].Value.ToString();
+                //RssSubscription feed = MainConfig.RssFeedList.Find(x => (x.TitleCompact == titleCompact));
 
-                if (feed != null)
-                {
-                    feed.UpdateTVUStatus(cookieContainer);
-                }
+                //if (feed != null)
+                //{
+                //    feed.UpdateTVUStatus(cookieContainer);
+                //}
             }
             MainConfig.Save();
             UpdateRssFeedGUI(); ///upgrade GUI
@@ -1295,77 +1297,7 @@ namespace TvUndergroundDownloader
 
         private void UpdateRssFeedGUI()
         {
-            DataTable dataTable = new DataTable();
-            dataTable.Columns.Add("Title", typeof(String));
-            dataTable.Columns.Add("TotalDownloads", typeof(Int32));
-            dataTable.Columns.Add("LastUpgrade", typeof(Int32));
-            dataTable.Columns.Add("Status", typeof(String));
-            dataTable.Columns.Add("Enabled", typeof(Boolean));
-            dataTable.Columns.Add("DubLanguage", typeof(Image));
-
-            foreach (RssSubscription subscrission in MainConfig.RssFeedList)
-            {
-                var newRow = dataTable.NewRow();
-                newRow["Title"] = subscrission.TitleCompact;
-                newRow["TotalDownloads"] = subscrission.TotalFilesDownloaded;
-
-                newRow["LastUpgrade"] = subscrission.LastChannelUpdate.Days;
-
-                switch (subscrission.CurrentTVUStatus)
-                {
-                    case TvuStatus.Complete:
-                        newRow["Status"] = "Complete";
-                        break;
-
-                    case TvuStatus.StillIncomplete:
-                        newRow["Status"] = "Incomplete";
-                        break;
-
-                    case TvuStatus.StillRunning:
-                        newRow["Status"] = "Running";
-                        break;
-
-                    case TvuStatus.OnHiatus:
-                        newRow["Status"] = "On Hiatus";
-                        break;
-
-                    case TvuStatus.Unknown:
-                    default:
-                        newRow["Status"] = "Unknown";
-                        break;
-                }
-
-                newRow["Enabled"] = subscrission.Enabled ? "True" : "False";
-
-                switch (subscrission.DubLanguage)
-                {
-                    case "gb":
-                        newRow["DubLanguage"] = new Bitmap(Resources.gb);
-                        break;
-
-                    case "it":
-                        newRow["DubLanguage"] = new Bitmap(Resources.it);
-                        break;
-
-                    case "fr":
-                        newRow["DubLanguage"] = new Bitmap(Resources.fr);
-                        break;
-
-                    case "jp":
-                        newRow["DubLanguage"] = new Bitmap(Resources.jp);
-                        break;
-
-                    case "es":
-                        newRow["DubLanguage"] = new Bitmap(Resources.es);
-                        break;
-
-                    default:
-                        break;
-                }
-
-                dataTable.Rows.Add(newRow);
-            }
-            dataGridViewMain.DataSource = dataTable;
+            dataGridViewMain.Refresh();
         }
 
         private void UpdateSubscriptionFilesList()
@@ -1381,53 +1313,53 @@ namespace TvUndergroundDownloader
                 return;
             }
 
-            DataGridViewColumn col = DataGridViewTextBoxColumnTitle;
-            string titleCompact = selectedItem.Cells[col.Name].Value.ToString();
-            RssSubscription feed = MainConfig.RssFeedList.Find(x => (x.TitleCompact == titleCompact));
+            //DataGridViewColumn col = DataGridViewTextBoxColumnTitle;
+            //string titleCompact = selectedItem.Cells[col.Name].Value.ToString();
+            //RssSubscription feed = MainConfig.RssFeedList.Find(x => (x.TitleCompact == titleCompact));
 
-            if (feed == null)
-            {
-                return;
-            }
+            //if (feed == null)
+            //{
+            //    return;
+            //}
 
-            // update list history
-            listViewFeedFilesList.Items.Clear();
+            //// update list history
+            //listViewFeedFilesList.Items.Clear();
 
-            // extract file by feedLink
-            
-            ReadOnlyCollection<DownloadFile> listFile = feed.DownloadedFiles;
-            foreach (DownloadFile file in listFile)
-            {
-                ListViewItem item = new ListViewItem(file.GetFileName());
+            //// extract file by feedLink
 
-                if (file.PublicationDate.HasValue)
-                {
-                    item.SubItems.Add(file.PublicationDate.Value.ToString("d", CultureInfo.InvariantCulture));
-                }
-                else
-                {
-                    item.SubItems.Add(string.Empty);
-                }
+            //ReadOnlyCollection<DownloadFile> listFile = feed.DownloadedFiles;
+            //foreach (DownloadFile file in listFile)
+            //{
+            //    ListViewItem item = new ListViewItem(file.GetFileName());
 
-                if (file.DownloadDate.HasValue)
-                {
-                    if (file.DownloadDate.Value == DateTime.MinValue)
-                    {
-                        item.SubItems.Add("Skipped");
-                    }
-                    else
-                    {
-                        string date = file.DownloadDate.Value.ToString("o", CultureInfo.InvariantCulture);
-                        item.SubItems.Add(date);
-                    }
-                }
-                else
-                {
-                    item.SubItems.Add(string.Empty);
-                }
+            //    if (file.PublicationDate.HasValue)
+            //    {
+            //        item.SubItems.Add(file.PublicationDate.Value.ToString("d", CultureInfo.InvariantCulture));
+            //    }
+            //    else
+            //    {
+            //        item.SubItems.Add(string.Empty);
+            //    }
 
-                listViewFeedFilesList.Items.Add(item);
-            }
+            //    if (file.DownloadDate.HasValue)
+            //    {
+            //        if (file.DownloadDate.Value == DateTime.MinValue)
+            //        {
+            //            item.SubItems.Add("Skipped");
+            //        }
+            //        else
+            //        {
+            //            string date = file.DownloadDate.Value.ToString("o", CultureInfo.InvariantCulture);
+            //            item.SubItems.Add(date);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        item.SubItems.Add(string.Empty);
+            //    }
+
+            //    listViewFeedFilesList.Items.Add(item);
+            //}
         }
 
         private void versionCheckToolStripMenuItem_Click(object sender, EventArgs e)
