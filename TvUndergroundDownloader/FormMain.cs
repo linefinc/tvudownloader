@@ -397,7 +397,6 @@ namespace TvUndergroundDownloader
                 labelLastDownloadDate.Text = string.Empty;
                 labelTotalFiles.Text = string.Empty;
                 labelMaxSimultaneousDownloads.Text = string.Empty;
-                listViewFeedFilesList.Items.Clear();
                 return;
             }
 
@@ -460,38 +459,31 @@ namespace TvUndergroundDownloader
             DeleteRssChannel();
         }
 
-        private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void toolStripMenuItemRedownload_Click(object sender, EventArgs e)
         {
-            if (dataGridViewMain.SelectedRows.Count == 0)
+            if (dataGridViewFeedFiles.SelectedRows.Count == 0)
+            {
                 return;
+            }
 
-            if (listViewFeedFilesList.Items.Count == 0)
-                return;
+            foreach (DataGridViewRow selectedItem in dataGridViewFeedFiles.SelectedRows)
+            {
+                var downloadFile = selectedItem.DataBoundItem as DownloadFile;
+                if (downloadFile == null)
+                {
+                    continue;
+                }
 
-            if (listViewFeedFilesList.SelectedItems.Count == 0)
-                return;
+                var subscription = downloadFile.Subscription;
+                if (subscription == null)
+                {
+                    continue;
+                }
+                subscription.SetFileNotDownloaded(downloadFile);
+            }
 
-            // get the feed
-            //DataGridViewColumn col = DataGridViewTextBoxColumnTitle;
-            //string titleCompact = dataGridViewMain.SelectedRows[0].Cells[col.Name].Value.ToString();
-            //RssSubscription feed = MainConfig.RssFeedList.Find(x => (x.TitleCompact == titleCompact));
-
-            //if (feed == null)
-            //{
-            //    return;
-            //}
-
-            //foreach (ListViewItem selectedItem in listViewFeedFilesList.SelectedItems)
-            //{
-            //    string strSelectItemText = selectedItem.Text;   // this contain name file
-            //    _logger.Info("Marked as not Downloaded \"{0}\"", strSelectItemText);
-
-            //    Ed2kfile file = feed.DownloadedFiles.First(t => t.FileName == strSelectItemText);
-
-            //    feed.SetFileNotDownloaded(file);
-            //}
-            //// finally update GUI
-            //UpdateSubscriptionFilesList();
+            MainConfig.Save();
+            dataGridViewFeedFiles.Refresh();
         }
 
         private void disableToolStripMenuItem_Click(object sender, EventArgs e)
@@ -549,7 +541,6 @@ namespace TvUndergroundDownloader
 
             MainConfig.Save();
 
-            listViewFeedFilesList.Items.Clear();
             UpdateRssFeedGUI(); ///upgrade GUI
         }
 
@@ -819,38 +810,31 @@ namespace TvUndergroundDownloader
             MainConfig.Save();
         }
 
-        private void markAsDownloadedToolStripMenuItem_Click(object sender, EventArgs e)
+        private void toolStripMenuItemMarkAsDownload_Click(object sender, EventArgs e)
         {
-            if (dataGridViewMain.SelectedRows.Count == 0)
+            if (dataGridViewFeedFiles.SelectedRows.Count == 0)
+            {
                 return;
+            }
 
-            if (listViewFeedFilesList.Items.Count == 0)
-                return;
+            foreach (DataGridViewRow selectedItem in dataGridViewFeedFiles.SelectedRows)
+            {
+                var downloadFile = selectedItem.DataBoundItem as DownloadFile;
+                if (downloadFile == null)
+                {
+                    continue;
+                }
 
-            if (listViewFeedFilesList.SelectedItems.Count == 0)
-                return;
+                var subscription = downloadFile.Subscription;
+                if (subscription == null)
+                {
+                    continue;
+                }
+                subscription.SetFileNotDownloaded(downloadFile);
+            }
 
-            // get the feed
-            //DataGridViewColumn col = DataGridViewTextBoxColumnTitle;
-            //string titleCompact = dataGridViewMain.SelectedRows[0].Cells[col.Name].Value.ToString();
-            //RssSubscription feed = MainConfig.RssFeedList.Find(x => (x.TitleCompact == titleCompact));
-
-            //if (feed == null)
-            //{
-            //    return;
-            //}
-
-            //foreach (ListViewItem selectedItem in listViewFeedFilesList.SelectedItems)
-            //{
-            //    string strSelectItemText = selectedItem.Text;   // this contain name file
-            //    _logger.Info("Marked as Downloaded file:\"{0}\"", strSelectItemText);
-
-            //    Ed2kfile file = feed.DownloadedFiles.First(t => t.FileName == strSelectItemText);
-
-            //    feed.SetFileDownloaded(file);
-            //}
-            //// finally update GUI
-            //UpdateSubscriptionFilesList();
+            MainConfig.Save();
+            dataGridViewFeedFiles.Refresh();
         }
 
         private void menu_AutoCloseEmule(object sender, EventArgs e)
