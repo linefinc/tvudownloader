@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace TvUndergroundDownloaderLib
 {
@@ -66,7 +67,6 @@ namespace TvUndergroundDownloaderLib
         /// <returns></returns>
         public LoginStatus Connect()
         {
-            int j, i;
             //
             // generate login uri
             //ex: http://localhost:4000/?w=password&p=PASSWORD
@@ -86,13 +86,13 @@ namespace TvUndergroundDownloaderLib
 
             // check login
             // if we not found logout, there's a password error
-            j = page.IndexOf("logout");
+            var j = page.IndexOf("logout");
             if (j < 0)
                 return LoginStatus.PasswordError;
 
             // find sesion id
             string temp = page;
-            i = temp.IndexOf("&amp;w=logout");
+            var i = temp.IndexOf("&amp;w=logout");
             if (i == -1)
                 return LoginStatus.PasswordError;
 
@@ -175,12 +175,17 @@ namespace TvUndergroundDownloaderLib
             var listDownloads = new List<Ed2kfile>();
 
             // get download page
+            // cat -2 = Incomplete
             string page =
-                WebSocketGET(string.Format("{0}/?ses={1}&w=transfer&showuploadqueue=false&cat=0", host, sesID));
+                WebSocketGET(string.Format("{0}/?ses={1}&w=transfer&showuploadqueue=false&cat=-2", host, sesID));
 
             if (page == null)
                 return null;
 
+            // extract only 
+            //Regex regex = new Regex("downmenu.*Status.*onmouseout");
+            //var matches = regex.Matches(page);
+            
             foreach (var file in knownFiles)
                 if (page.IndexOf(file.HashMD4) > -1)
                     listDownloads.Add(new Ed2kfile(file));
@@ -214,7 +219,7 @@ namespace TvUndergroundDownloaderLib
         private string WebSocketGET(string uri)
         {
             // create a request
-            var request = (HttpWebRequest) WebRequest.Create(uri);
+            var request = (HttpWebRequest)WebRequest.Create(uri);
             request.KeepAlive = false;
             request.ProtocolVersion = HttpVersion.Version10;
             request.Method = "GET";
@@ -222,7 +227,7 @@ namespace TvUndergroundDownloaderLib
             request.AutomaticDecompression = DecompressionMethods.GZip;
 
             // grab te response and print it out to the console along with the status code
-            var response = (HttpWebResponse) request.GetResponse();
+            var response = (HttpWebResponse)request.GetResponse();
 
             using (var reader = new StreamReader(response.GetResponseStream(), new UTF8Encoding()))
             {
