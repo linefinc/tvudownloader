@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -13,6 +14,8 @@ namespace TvUndergroundDownloader
 
         internal static void TrackScreen(string screenName)
         {
+            CultureInfo cultureInfo = CultureInfo.CurrentCulture;
+
             StringBuilder hitPayload = new StringBuilder();
             hitPayload.Append("v=1");
             hitPayload.Append("&tid=UA-37156697-2");
@@ -20,6 +23,7 @@ namespace TvUndergroundDownloader
             hitPayload.Append("&t=screenview");
             hitPayload.AppendFormat("&cd={0}", screenName);
             hitPayload.AppendFormat("&av={0}", appVersion);
+            hitPayload.AppendFormat("&ul={0}", cultureInfo.Name);
             hitPayload.Append("&an=TvUndergroundDownloader");
 
             Task task = new Task(() =>
@@ -32,6 +36,8 @@ namespace TvUndergroundDownloader
 
         internal static void TrackEvent(string evenAction)
         {
+            CultureInfo cultureInfo = CultureInfo.CurrentCulture;
+
             StringBuilder hitPayload = new StringBuilder();
             hitPayload.Append("v=1");
             hitPayload.Append("&tid=UA-37156697-2");
@@ -40,6 +46,7 @@ namespace TvUndergroundDownloader
             hitPayload.AppendFormat("&ea={0}", evenAction);
             hitPayload.Append("&ec=Main");
             hitPayload.AppendFormat("&av={0}", appVersion);
+            hitPayload.AppendFormat("&ul={0}", cultureInfo.Name);
             hitPayload.Append("&an=TvUndergroundDownloader");
             Track(hitPayload.ToString());
 
@@ -62,7 +69,10 @@ namespace TvUndergroundDownloader
             try
             {
                 //
-                //  GoAnal
+                //  GoAnal 
+                //
+                //  Parameter reference: https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters
+                //  Protocol reference: https://developers.google.com/analytics/devguides/collection/protocol/v1/reference 
                 //
                 WebRequest request = WebRequest.Create("https://www.google-analytics.com/collect");
 
