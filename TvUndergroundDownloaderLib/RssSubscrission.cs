@@ -357,15 +357,17 @@ namespace TvUndergroundDownloaderLib
             return dt;
         }
 
+        [Obsolete]
         public List<Ed2kfile> GetNewDownload(int maxSimultaneousDownload)
         {
             var outArray = new List<Ed2kfile>();
 
             outArray.AddRange(_downloadFiles.FindAll(o => o.DownloadDate.HasValue == false));
-            outArray.Sort((a, b) => a.FileName.CompareTo(b.FileName));
-            if (outArray.Count > MaxSimultaneousDownload)
-                outArray.RemoveRange(maxSimultaneousDownload, outArray.Count - maxSimultaneousDownload);
-
+            outArray.Sort((a, b) => String.Compare(a.FileName, b.FileName, StringComparison.Ordinal));
+            while (outArray.Count > MaxSimultaneousDownload)
+            {
+                outArray.Remove(outArray.Last());
+            }
             return outArray;
         }
 
