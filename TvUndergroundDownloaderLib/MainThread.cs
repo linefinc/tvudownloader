@@ -214,6 +214,13 @@ namespace TvUndergroundDownloaderLib
                     return;
                 }
 
+                if (string.IsNullOrEmpty(Config.eMuleExe))
+                {
+                    _logger.Warn("Mule.exe is not configured");
+                    return;
+                }
+
+
                 _logger.Info("Start eMule Now (try {0}/5)", cont);
                 _logger.Info("Wait 60 sec");
                 try
