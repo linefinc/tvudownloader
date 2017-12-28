@@ -114,12 +114,6 @@
       <DependentUpon>AddFeedDialogPage3.cs</DependentUpon>
     </Compile>
     <Compile Include="ConfigWindows.cs" />
-    <Compile Include="EditFeedForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EditFeedForm.Designer.cs">
-      <DependentUpon>EditFeedForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -158,9 +152,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddFeedDialogPage3.resx">
       <DependentUpon>AddFeedDialogPage3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditFeedForm.resx">
-      <DependentUpon>EditFeedForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>
