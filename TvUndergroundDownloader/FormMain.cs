@@ -65,8 +65,8 @@ namespace TvUndergroundDownloader
 #else
             Text += " - " + versionFull;
 #endif
-            GoogleAnalyticsHelper.cid = MainConfig.tvudwid;
-            GoogleAnalyticsHelper.appVersion = Config.Version;
+            GoogleAnalyticsHelper.Cid = MainConfig.tvudwid;
+            GoogleAnalyticsHelper.AppVersion = Config.Version;
         }
 
         public static string GetUserAppDataPath()

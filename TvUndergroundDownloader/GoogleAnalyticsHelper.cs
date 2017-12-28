@@ -4,60 +4,58 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace TvUndergroundDownloader
 {
-    static class GoogleAnalyticsHelper
+    internal static class GoogleAnalyticsHelper
     {
-        internal static string cid = string.Empty;
-        internal static string appVersion = string.Empty;
+        internal static string Cid = string.Empty;
+        internal static string AppVersion = string.Empty;
 
-        internal static void TrackScreen(string screenName)
+        internal static string Base()
         {
             CultureInfo cultureInfo = CultureInfo.CurrentCulture;
 
             StringBuilder hitPayload = new StringBuilder();
             hitPayload.Append("v=1");
             hitPayload.Append("&tid=UA-37156697-2");
-            hitPayload.AppendFormat("&cid={0}", cid);
+            hitPayload.AppendFormat("&cid={0}", Cid);
             hitPayload.Append("&t=screenview");
-            hitPayload.AppendFormat("&cd={0}", screenName);
-            hitPayload.AppendFormat("&av={0}", appVersion);
+            // App Version
+            hitPayload.AppendFormat("&av={0}", AppVersion);
+            // User Language
             hitPayload.AppendFormat("&ul={0}", cultureInfo.Name);
+            // Screen Resolution
+            hitPayload.AppendFormat("&sr={0}x{1}",
+                Screen.PrimaryScreen.Bounds.Width,
+                Screen.PrimaryScreen.Bounds.Height);
             hitPayload.Append("&an=TvUndergroundDownloader");
+            return hitPayload.ToString();
+        }
+
+        internal static void TrackScreen(string screenName)
+        {
+            // Screen Name
+            string hitPayload = string.Format("{0}&cd={1}", Base(), screenName);
 
             Task task = new Task(() =>
            {
-               Track(hitPayload.ToString());
+               Track(hitPayload);
            });
             task.Start();
         }
 
-
         internal static void TrackEvent(string evenAction)
         {
-            CultureInfo cultureInfo = CultureInfo.CurrentCulture;
-
-            StringBuilder hitPayload = new StringBuilder();
-            hitPayload.Append("v=1");
-            hitPayload.Append("&tid=UA-37156697-2");
-            hitPayload.AppendFormat("&cid={0}", cid);
-            hitPayload.Append("&t=event");
-            hitPayload.AppendFormat("&ea={0}", evenAction);
-            hitPayload.Append("&ec=Main");
-            hitPayload.AppendFormat("&av={0}", appVersion);
-            hitPayload.AppendFormat("&ul={0}", cultureInfo.Name);
-            hitPayload.Append("&an=TvUndergroundDownloader");
-            Track(hitPayload.ToString());
+            string hitPayload = string.Format("{0}&ea={1}", Base(), evenAction);
 
             Task task = new Task(() =>
             {
-                Track(hitPayload.ToString());
+                Track(hitPayload);
             });
             task.Start();
-
         }
-
 
         internal static void Track(object hitPayload)
         {
@@ -69,20 +67,19 @@ namespace TvUndergroundDownloader
             try
             {
                 //
-                //  GoAnal 
+                //  GoAnal
                 //
                 //  Parameter reference: https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters
-                //  Protocol reference: https://developers.google.com/analytics/devguides/collection/protocol/v1/reference 
+                //  Protocol reference: https://developers.google.com/analytics/devguides/collection/protocol/v1/reference
                 //
                 WebRequest request = WebRequest.Create("https://www.google-analytics.com/collect");
 
                 request.Proxy = null;
                 request.Method = "POST";
                 request.ContentType = "application/x-www-form-urlencoded";
-                
+
                 byte[] reqData = Encoding.UTF8.GetBytes(hitPayload.ToString());
                 request.ContentLength = reqData.Length;
-
 
                 using (Stream reqStream = request.GetRequestStream())
                     reqStream.Write(reqData, 0, reqData.Length);
@@ -94,7 +91,6 @@ namespace TvUndergroundDownloader
             }
             catch
             {
-
             }
         }
     }
