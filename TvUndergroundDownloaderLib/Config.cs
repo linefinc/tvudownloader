@@ -144,7 +144,7 @@ namespace TvUndergroundDownloaderLib
             }
 
             if (NodeExist(xDoc, "ServiceUrl"))
-                ServiceUrl = ReadString(xDoc, "ServiceUrl", "http://localhost:4000");
+                ServiceUrl = ReadString(xDoc, "ServiceUrl", "http://localhost:4711");
 
             if (NodeExist(xDoc, "Password"))
                 Password = ReadString(xDoc, "Password", "password");
