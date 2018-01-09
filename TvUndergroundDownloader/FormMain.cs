@@ -40,6 +40,10 @@ namespace TvUndergroundDownloader
         private MenuItem menuItemExit;
         private bool mVisible = true;
         private NotifyIcon notifyIcon1;
+
+
+        private readonly Dictionary<string, Image> _flagDictionary;
+
         public FormMain()
         {
             // load configuration
@@ -66,6 +70,17 @@ namespace TvUndergroundDownloader
 #endif
             GoogleAnalyticsHelper.Cid = MainConfig.tvudwid;
             GoogleAnalyticsHelper.AppVersion = Config.Version;
+
+            _flagDictionary = new Dictionary<string, Image>
+            {
+                {"gb", Properties.Resources.gb},
+                {"it", Properties.Resources.it},
+                {"de", Properties.Resources.de},
+                {"fr", Properties.Resources.fr},
+                {"jp", Properties.Resources.jp},
+                {"es", Properties.Resources.es}
+            };
+
         }
 
         public static string GetUserAppDataPath()
@@ -394,6 +409,28 @@ namespace TvUndergroundDownloader
         private void comboBoxCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
             MainConfig.Save();
+        }
+
+        private void dataGridViewMain_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.ColumnIndex == ColumnImageDub.Index)
+            {
+                DataGridViewRow dataGridViewRowedItem = dataGridViewMain.Rows[e.RowIndex];
+                var rssSubscription = dataGridViewRowedItem.DataBoundItem as RssSubscription;
+
+                if (rssSubscription == null)
+                    return;
+
+                if (!_flagDictionary.ContainsKey(rssSubscription.DubLanguage))
+                    return;
+                
+                var image = _flagDictionary[rssSubscription.DubLanguage];
+                if (dataGridViewRowedItem.Cells[e.ColumnIndex].Value != image)
+                {
+                    dataGridViewRowedItem.Cells[e.ColumnIndex].Value = image;
+                }
+
+            }
         }
 
         private void DeleteRssChannel()
@@ -1244,5 +1281,5 @@ namespace TvUndergroundDownloader
                 MessageBox.Show("Software is already update");
             }
         }
-}
+    }
 }
