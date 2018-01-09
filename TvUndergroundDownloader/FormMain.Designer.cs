@@ -29,30 +29,39 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.timerRssCheck = new System.Windows.Forms.Timer(this.components);
             this.timerDelayStartup = new System.Windows.Forms.Timer(this.components);
             this.tabLog = new System.Windows.Forms.TabPage();
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
             this.tabMain = new System.Windows.Forms.TabPage();
+            this.checkBoxEnabled = new System.Windows.Forms.CheckBox();
+            this.rssSubscriptionListBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.numericUpDownMaxSimultaneousDownload = new System.Windows.Forms.NumericUpDown();
             this.comboBoxCategory = new System.Windows.Forms.ComboBox();
             this.checkBoxFeedPauseDownload = new System.Windows.Forms.CheckBox();
             this.dataGridViewFeedFiles = new System.Windows.Forms.DataGridView();
+            this.fileNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.publicationDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.downloadDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStripFileFeed = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.markAsDownloadedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.filesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dataGridViewMain = new System.Windows.Forms.DataGridView();
+            this.ColumnTitleCompact = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnDubLanguage = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnTotalDownloads = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.contextMenuStripFeed = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemDelete = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,7 +75,6 @@
             this.label15 = new System.Windows.Forms.Label();
             this.labelLastDownloadDate = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.labelFeedUrl = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.tabRecentActivity = new System.Windows.Forms.TabPage();
@@ -114,18 +122,13 @@
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.numericUpDownMaxSimultaneousDownload = new System.Windows.Forms.NumericUpDown();
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.rssSubscriptionListBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.fileNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.publicationDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.downloadDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnTitleCompact = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.checkBoxEnabled = new System.Windows.Forms.CheckBox();
+            this.checkBoxDeleteWhenCompleted = new System.Windows.Forms.CheckBox();
+            this.linkLabelFeedLink = new System.Windows.Forms.LinkLabel();
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.rssSubscriptionListBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxSimultaneousDownload)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFeedFiles)).BeginInit();
             this.contextMenuStripFileFeed.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.filesBindingSource)).BeginInit();
@@ -137,8 +140,6 @@
             this.tabPending.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxSimultaneousDownload)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rssSubscriptionListBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // timerRssCheck
@@ -176,6 +177,8 @@
             // 
             // tabMain
             // 
+            this.tabMain.Controls.Add(this.linkLabelFeedLink);
+            this.tabMain.Controls.Add(this.checkBoxDeleteWhenCompleted);
             this.tabMain.Controls.Add(this.checkBoxEnabled);
             this.tabMain.Controls.Add(this.numericUpDownMaxSimultaneousDownload);
             this.tabMain.Controls.Add(this.comboBoxCategory);
@@ -187,7 +190,6 @@
             this.tabMain.Controls.Add(this.label15);
             this.tabMain.Controls.Add(this.labelLastDownloadDate);
             this.tabMain.Controls.Add(this.label13);
-            this.tabMain.Controls.Add(this.labelFeedUrl);
             this.tabMain.Controls.Add(this.label11);
             this.tabMain.Controls.Add(this.label7);
             this.tabMain.Location = new System.Drawing.Point(4, 22);
@@ -197,6 +199,44 @@
             this.tabMain.TabIndex = 0;
             this.tabMain.Text = "Feeds";
             this.tabMain.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxEnabled
+            // 
+            this.checkBoxEnabled.AutoSize = true;
+            this.checkBoxEnabled.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this.rssSubscriptionListBindingSource, "Enabled", true));
+            this.checkBoxEnabled.Location = new System.Drawing.Point(295, 300);
+            this.checkBoxEnabled.Name = "checkBoxEnabled";
+            this.checkBoxEnabled.Size = new System.Drawing.Size(65, 17);
+            this.checkBoxEnabled.TabIndex = 44;
+            this.checkBoxEnabled.Text = "Enabled";
+            this.checkBoxEnabled.UseVisualStyleBackColor = true;
+            // 
+            // rssSubscriptionListBindingSource
+            // 
+            this.rssSubscriptionListBindingSource.DataSource = typeof(TvUndergroundDownloaderLib.RssSubscriptionList);
+            // 
+            // numericUpDownMaxSimultaneousDownload
+            // 
+            this.numericUpDownMaxSimultaneousDownload.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.rssSubscriptionListBindingSource, "MaxSimultaneousDownload", true));
+            this.numericUpDownMaxSimultaneousDownload.Location = new System.Drawing.Point(501, 251);
+            this.numericUpDownMaxSimultaneousDownload.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxSimultaneousDownload.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxSimultaneousDownload.Name = "numericUpDownMaxSimultaneousDownload";
+            this.numericUpDownMaxSimultaneousDownload.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDownMaxSimultaneousDownload.TabIndex = 43;
+            this.numericUpDownMaxSimultaneousDownload.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // comboBoxCategory
             // 
@@ -212,7 +252,7 @@
             // 
             this.checkBoxFeedPauseDownload.AutoSize = true;
             this.checkBoxFeedPauseDownload.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this.rssSubscriptionListBindingSource, "PauseDownload", true));
-            this.checkBoxFeedPauseDownload.Location = new System.Drawing.Point(514, 299);
+            this.checkBoxFeedPauseDownload.Location = new System.Drawing.Point(366, 299);
             this.checkBoxFeedPauseDownload.Name = "checkBoxFeedPauseDownload";
             this.checkBoxFeedPauseDownload.Size = new System.Drawing.Size(107, 17);
             this.checkBoxFeedPauseDownload.TabIndex = 41;
@@ -235,6 +275,26 @@
             this.dataGridViewFeedFiles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewFeedFiles.Size = new System.Drawing.Size(631, 106);
             this.dataGridViewFeedFiles.TabIndex = 39;
+            // 
+            // fileNameDataGridViewTextBoxColumn
+            // 
+            this.fileNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.fileNameDataGridViewTextBoxColumn.DataPropertyName = "FileName";
+            this.fileNameDataGridViewTextBoxColumn.HeaderText = "FileName";
+            this.fileNameDataGridViewTextBoxColumn.Name = "fileNameDataGridViewTextBoxColumn";
+            this.fileNameDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // publicationDateDataGridViewTextBoxColumn
+            // 
+            this.publicationDateDataGridViewTextBoxColumn.DataPropertyName = "PublicationDate";
+            this.publicationDateDataGridViewTextBoxColumn.HeaderText = "PublicationDate";
+            this.publicationDateDataGridViewTextBoxColumn.Name = "publicationDateDataGridViewTextBoxColumn";
+            // 
+            // downloadDateDataGridViewTextBoxColumn
+            // 
+            this.downloadDateDataGridViewTextBoxColumn.DataPropertyName = "DownloadDate";
+            this.downloadDateDataGridViewTextBoxColumn.HeaderText = "DownloadDate";
+            this.downloadDateDataGridViewTextBoxColumn.Name = "downloadDateDataGridViewTextBoxColumn";
             // 
             // contextMenuStripFileFeed
             // 
@@ -284,7 +344,16 @@
             this.dataGridViewMain.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewMain.Size = new System.Drawing.Size(642, 242);
             this.dataGridViewMain.TabIndex = 38;
-            
+            // 
+            // ColumnTitleCompact
+            // 
+            this.ColumnTitleCompact.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnTitleCompact.DataPropertyName = "TitleCompact";
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.ColumnTitleCompact.DefaultCellStyle = dataGridViewCellStyle1;
+            this.ColumnTitleCompact.HeaderText = "Title";
+            this.ColumnTitleCompact.Name = "ColumnTitleCompact";
+            this.ColumnTitleCompact.ReadOnly = true;
             // 
             // ColumnDubLanguage
             // 
@@ -304,6 +373,23 @@
             this.ColumnTotalDownloads.Name = "ColumnTotalDownloads";
             this.ColumnTotalDownloads.ReadOnly = true;
             this.ColumnTotalDownloads.Width = 40;
+            // 
+            // ColumnStatus
+            // 
+            this.ColumnStatus.DataPropertyName = "CurrentTVUStatus";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.ColumnStatus.DefaultCellStyle = dataGridViewCellStyle3;
+            this.ColumnStatus.HeaderText = "Status";
+            this.ColumnStatus.Name = "ColumnStatus";
+            this.ColumnStatus.ReadOnly = true;
+            this.ColumnStatus.Width = 62;
+            // 
+            // CheckBoxColumn
+            // 
+            this.CheckBoxColumn.DataPropertyName = "Enabled";
+            this.CheckBoxColumn.HeaderText = "Enabled";
+            this.CheckBoxColumn.Name = "CheckBoxColumn";
+            this.CheckBoxColumn.ReadOnly = true;
             // 
             // contextMenuStripFeed
             // 
@@ -376,7 +462,7 @@
             // 
             this.labelTotalFiles.AutoSize = true;
             this.labelTotalFiles.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.rssSubscriptionListBindingSource, "TotalFilesDownloaded", true));
-            this.labelTotalFiles.Location = new System.Drawing.Point(106, 300);
+            this.labelTotalFiles.Location = new System.Drawing.Point(106, 301);
             this.labelTotalFiles.Name = "labelTotalFiles";
             this.labelTotalFiles.Size = new System.Drawing.Size(74, 13);
             this.labelTotalFiles.TabIndex = 35;
@@ -385,7 +471,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(6, 300);
+            this.label15.Location = new System.Drawing.Point(6, 301);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(51, 13);
             this.label15.TabIndex = 34;
@@ -395,7 +481,7 @@
             // 
             this.labelLastDownloadDate.AutoSize = true;
             this.labelLastDownloadDate.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.rssSubscriptionListBindingSource, "LastDownload", true));
-            this.labelLastDownloadDate.Location = new System.Drawing.Point(106, 287);
+            this.labelLastDownloadDate.Location = new System.Drawing.Point(106, 253);
             this.labelLastDownloadDate.Name = "labelLastDownloadDate";
             this.labelLastDownloadDate.Size = new System.Drawing.Size(120, 13);
             this.labelLastDownloadDate.TabIndex = 33;
@@ -404,26 +490,16 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(6, 287);
+            this.label13.Location = new System.Drawing.Point(6, 253);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(78, 13);
             this.label13.TabIndex = 32;
             this.label13.Text = "Last Download";
             // 
-            // labelFeedUrl
-            // 
-            this.labelFeedUrl.AutoSize = true;
-            this.labelFeedUrl.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.rssSubscriptionListBindingSource, "Url", true));
-            this.labelFeedUrl.Location = new System.Drawing.Point(106, 274);
-            this.labelFeedUrl.Name = "labelFeedUrl";
-            this.labelFeedUrl.Size = new System.Drawing.Size(66, 13);
-            this.labelFeedUrl.TabIndex = 31;
-            this.labelFeedUrl.Text = "labelFeedUrl";
-            // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 274);
+            this.label11.Location = new System.Drawing.Point(6, 278);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(48, 13);
             this.label11.TabIndex = 30;
@@ -832,29 +908,6 @@
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.Width = 62;
             // 
-            // numericUpDownMaxSimultaneousDownload
-            // 
-            this.numericUpDownMaxSimultaneousDownload.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.rssSubscriptionListBindingSource, "MaxSimultaneousDownload", true));
-            this.numericUpDownMaxSimultaneousDownload.Location = new System.Drawing.Point(501, 251);
-            this.numericUpDownMaxSimultaneousDownload.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownMaxSimultaneousDownload.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDownMaxSimultaneousDownload.Name = "numericUpDownMaxSimultaneousDownload";
-            this.numericUpDownMaxSimultaneousDownload.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDownMaxSimultaneousDownload.TabIndex = 43;
-            this.numericUpDownMaxSimultaneousDownload.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
             // dataGridViewTextBoxColumn5
             // 
             this.dataGridViewTextBoxColumn5.DataPropertyName = "CurrentTVUStatus";
@@ -865,67 +918,28 @@
             this.dataGridViewTextBoxColumn5.ReadOnly = true;
             this.dataGridViewTextBoxColumn5.Width = 62;
             // 
-            // rssSubscriptionListBindingSource
+            // checkBoxDeleteWhenCompleted
             // 
-            this.rssSubscriptionListBindingSource.DataSource = typeof(TvUndergroundDownloaderLib.RssSubscriptionList);
+            this.checkBoxDeleteWhenCompleted.AutoSize = true;
+            this.checkBoxDeleteWhenCompleted.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this.rssSubscriptionListBindingSource, "DeleteWhenCompleted", true));
+            this.checkBoxDeleteWhenCompleted.Location = new System.Drawing.Point(479, 300);
+            this.checkBoxDeleteWhenCompleted.Name = "checkBoxDeleteWhenCompleted";
+            this.checkBoxDeleteWhenCompleted.Size = new System.Drawing.Size(142, 17);
+            this.checkBoxDeleteWhenCompleted.TabIndex = 45;
+            this.checkBoxDeleteWhenCompleted.Text = "Delete When Completed";
+            this.checkBoxDeleteWhenCompleted.UseVisualStyleBackColor = true;
             // 
-            // fileNameDataGridViewTextBoxColumn
+            // linkLabelFeedLink
             // 
-            this.fileNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.fileNameDataGridViewTextBoxColumn.DataPropertyName = "FileName";
-            this.fileNameDataGridViewTextBoxColumn.HeaderText = "FileName";
-            this.fileNameDataGridViewTextBoxColumn.Name = "fileNameDataGridViewTextBoxColumn";
-            this.fileNameDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // publicationDateDataGridViewTextBoxColumn
-            // 
-            this.publicationDateDataGridViewTextBoxColumn.DataPropertyName = "PublicationDate";
-            this.publicationDateDataGridViewTextBoxColumn.HeaderText = "PublicationDate";
-            this.publicationDateDataGridViewTextBoxColumn.Name = "publicationDateDataGridViewTextBoxColumn";
-            // 
-            // downloadDateDataGridViewTextBoxColumn
-            // 
-            this.downloadDateDataGridViewTextBoxColumn.DataPropertyName = "DownloadDate";
-            this.downloadDateDataGridViewTextBoxColumn.HeaderText = "DownloadDate";
-            this.downloadDateDataGridViewTextBoxColumn.Name = "downloadDateDataGridViewTextBoxColumn";
-            // 
-            // ColumnTitleCompact
-            // 
-            this.ColumnTitleCompact.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColumnTitleCompact.DataPropertyName = "TitleCompact";
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.ColumnTitleCompact.DefaultCellStyle = dataGridViewCellStyle1;
-            this.ColumnTitleCompact.HeaderText = "Title";
-            this.ColumnTitleCompact.Name = "ColumnTitleCompact";
-            this.ColumnTitleCompact.ReadOnly = true;
-            // 
-            // ColumnStatus
-            // 
-            this.ColumnStatus.DataPropertyName = "CurrentTVUStatus";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.ColumnStatus.DefaultCellStyle = dataGridViewCellStyle3;
-            this.ColumnStatus.HeaderText = "Status";
-            this.ColumnStatus.Name = "ColumnStatus";
-            this.ColumnStatus.ReadOnly = true;
-            this.ColumnStatus.Width = 62;
-            // 
-            // CheckBoxColumn
-            // 
-            this.CheckBoxColumn.DataPropertyName = "Enabled";
-            this.CheckBoxColumn.HeaderText = "Enabled";
-            this.CheckBoxColumn.Name = "CheckBoxColumn";
-            this.CheckBoxColumn.ReadOnly = true;
-            // 
-            // checkBoxEnabled
-            // 
-            this.checkBoxEnabled.AutoSize = true;
-            this.checkBoxEnabled.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this.rssSubscriptionListBindingSource, "Enabled", true));
-            this.checkBoxEnabled.Location = new System.Drawing.Point(443, 299);
-            this.checkBoxEnabled.Name = "checkBoxEnabled";
-            this.checkBoxEnabled.Size = new System.Drawing.Size(65, 17);
-            this.checkBoxEnabled.TabIndex = 44;
-            this.checkBoxEnabled.Text = "Enabled";
-            this.checkBoxEnabled.UseVisualStyleBackColor = true;
+            this.linkLabelFeedLink.AutoSize = true;
+            this.linkLabelFeedLink.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.rssSubscriptionListBindingSource, "Url", true));
+            this.linkLabelFeedLink.Location = new System.Drawing.Point(109, 277);
+            this.linkLabelFeedLink.Name = "linkLabelFeedLink";
+            this.linkLabelFeedLink.Size = new System.Drawing.Size(55, 13);
+            this.linkLabelFeedLink.TabIndex = 46;
+            this.linkLabelFeedLink.TabStop = true;
+            this.linkLabelFeedLink.Text = "linkLabel1";
+            this.linkLabelFeedLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelFeedLink_LinkClicked);
             // 
             // FormMain
             // 
@@ -946,6 +960,8 @@
             this.tabLog.ResumeLayout(false);
             this.tabMain.ResumeLayout(false);
             this.tabMain.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.rssSubscriptionListBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxSimultaneousDownload)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFeedFiles)).EndInit();
             this.contextMenuStripFileFeed.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.filesBindingSource)).EndInit();
@@ -959,8 +975,6 @@
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxSimultaneousDownload)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rssSubscriptionListBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -978,7 +992,6 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label labelLastDownloadDate;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label labelFeedUrl;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TabPage tabRecentActivity;
@@ -1056,6 +1069,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
         private System.Windows.Forms.CheckBox checkBoxEnabled;
+        private System.Windows.Forms.LinkLabel linkLabelFeedLink;
+        private System.Windows.Forms.CheckBox checkBoxDeleteWhenCompleted;
     }
 }
 

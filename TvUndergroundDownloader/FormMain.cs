@@ -26,11 +26,12 @@ namespace TvUndergroundDownloader
     {
         public ConfigWindows MainConfig;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly Worker _worker;
+        private EmbendedWebServer _embendedWebServer;
         private bool allowClose;
         private DateTime autoCloseDataTime;
         private ContextMenu contextMenu1;
         private DateTime downloadDataTime;
-        private EmbendedWebServer _embendedWebServer;
         private Icon iconUp;
         private MenuItem menuItemAutoCloseEmule;
         private MenuItem menuItemAutoStartEmule;
@@ -39,8 +40,6 @@ namespace TvUndergroundDownloader
         private MenuItem menuItemExit;
         private bool mVisible = true;
         private NotifyIcon notifyIcon1;
-        private readonly Worker _worker;
-
         public FormMain()
         {
             // load configuration
@@ -376,6 +375,11 @@ namespace TvUndergroundDownloader
             _worker.Abort();
         }
 
+        private void checkBoxFeedPauseDownload_CheckedChanged(object sender, EventArgs e)
+        {
+            MainConfig.Save();
+        }
+
         /// <summary>
         /// Check Now menu
         /// </summary>
@@ -386,7 +390,12 @@ namespace TvUndergroundDownloader
             StartDownloadThread();
         }
 
-     
+
+        private void comboBoxCategory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            MainConfig.Save();
+        }
+
         private void DeleteRssChannel()
         {
             if (dataGridViewMain.SelectedRows.Count == 0)
@@ -418,36 +427,6 @@ namespace TvUndergroundDownloader
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DeleteRssChannel();
-        }
-
-        private void toolStripMenuItemRedownload_Click(object sender, EventArgs e)
-        {
-            if (dataGridViewFeedFiles.SelectedRows.Count == 0)
-            {
-                return;
-            }
-
-            foreach (DataGridViewRow selectedItem in dataGridViewFeedFiles.SelectedRows)
-            {
-                var downloadFile = selectedItem.DataBoundItem as DownloadFile;
-                if (downloadFile == null)
-                {
-                    continue;
-                }
-
-                var subscription = downloadFile.Subscription;
-                if (subscription == null)
-                {
-                    continue;
-                }
-                subscription.SetFileNotDownloaded(downloadFile);
-            }
-
-            MainConfig.Save();
-            // force reset datagrid
-            filesBindingSource.DataSource = new List<DownloadFile>();
-            this.filesBindingSource.DataSource = this.rssSubscriptionListBindingSource;
-            this.filesBindingSource.DataMember = "Files";
         }
 
         private void disableToolStripMenuItem_Click(object sender, EventArgs e)
@@ -609,7 +588,7 @@ namespace TvUndergroundDownloader
                 DisableAutoCloseEmule();
             }
 
-           UpdateRecentActivity();
+            UpdateRecentActivity();
             UpdateRssFeedGUI();
             UpdatePendingFiles();
 #if !DEBUG
@@ -713,6 +692,20 @@ namespace TvUndergroundDownloader
             }
         }
 
+        private void linkLabelFeedLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (dataGridViewMain.SelectedRows.Count != 1)
+            {
+                return;
+            }
+
+
+            var rssSubscription = dataGridViewMain.SelectedRows[0].DataBoundItem as RssSubscription;
+            if (rssSubscription == null)
+                return;
+            Process.Start(rssSubscription.Url);
+        }
+
         private void loginToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FormLogin form = new FormLogin();
@@ -727,39 +720,6 @@ namespace TvUndergroundDownloader
             MainConfig.TVUCookieI = form.CookieI;
             MainConfig.TVUCookieH = form.CookieH;
             MainConfig.Save();
-        }
-
-        private void toolStripMenuItemMarkAsDownload_Click(object sender, EventArgs e)
-        {
-            if (dataGridViewFeedFiles.SelectedRows.Count == 0)
-            {
-                return;
-            }
-
-            foreach (DataGridViewRow selectedItem in dataGridViewFeedFiles.SelectedRows)
-            {
-                var downloadFile = selectedItem.DataBoundItem as DownloadFile;
-                if (downloadFile == null)
-                {
-                    continue;
-                }
-
-                var subscription = downloadFile.Subscription;
-                if (subscription == null)
-                {
-                    continue;
-                }
-                subscription.SetFileDownloaded(downloadFile);
-            }
-
-            MainConfig.Save();
-            dataGridViewFeedFiles.Refresh();
-
-            // force reset datagrid
-            filesBindingSource.DataSource = new List<DownloadFile>();
-            this.filesBindingSource.DataSource = this.rssSubscriptionListBindingSource;
-            this.filesBindingSource.DataMember = "Files";
-
         }
 
         private void menu_AutoCloseEmule(object sender, EventArgs e)
@@ -1121,6 +1081,68 @@ namespace TvUndergroundDownloader
             DeleteRssChannel();
         }
 
+        private void toolStripMenuItemMarkAsDownload_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewFeedFiles.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
+            foreach (DataGridViewRow selectedItem in dataGridViewFeedFiles.SelectedRows)
+            {
+                var downloadFile = selectedItem.DataBoundItem as DownloadFile;
+                if (downloadFile == null)
+                {
+                    continue;
+                }
+
+                var subscription = downloadFile.Subscription;
+                if (subscription == null)
+                {
+                    continue;
+                }
+                subscription.SetFileDownloaded(downloadFile);
+            }
+
+            MainConfig.Save();
+            dataGridViewFeedFiles.Refresh();
+
+            // force reset datagrid
+            filesBindingSource.DataSource = new List<DownloadFile>();
+            this.filesBindingSource.DataSource = this.rssSubscriptionListBindingSource;
+            this.filesBindingSource.DataMember = "Files";
+
+        }
+
+        private void toolStripMenuItemRedownload_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewFeedFiles.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
+            foreach (DataGridViewRow selectedItem in dataGridViewFeedFiles.SelectedRows)
+            {
+                var downloadFile = selectedItem.DataBoundItem as DownloadFile;
+                if (downloadFile == null)
+                {
+                    continue;
+                }
+
+                var subscription = downloadFile.Subscription;
+                if (subscription == null)
+                {
+                    continue;
+                }
+                subscription.SetFileNotDownloaded(downloadFile);
+            }
+
+            MainConfig.Save();
+            // force reset datagrid
+            filesBindingSource.DataSource = new List<DownloadFile>();
+            this.filesBindingSource.DataSource = this.rssSubscriptionListBindingSource;
+            this.filesBindingSource.DataMember = "Files";
+        }
         private void toolStripMenuItemUpdateStatus_Click(object sender, EventArgs e)
         {
             if (dataGridViewMain.SelectedRows.Count == 0)
@@ -1222,20 +1244,5 @@ namespace TvUndergroundDownloader
                 MessageBox.Show("Software is already update");
             }
         }
-
-        private void checkBoxFeedPauseDownload_CheckedChanged(object sender, EventArgs e)
-        {
-            MainConfig.Save();
-        }
-
-        private void comboBoxCategory_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            MainConfig.Save();
-        }
-
-        private void labelMaxSimultaneousDownloads_Click(object sender, EventArgs e)
-        {
-
-        }
-    }
+}
 }
