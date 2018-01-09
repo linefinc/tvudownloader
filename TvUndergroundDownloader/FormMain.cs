@@ -1144,12 +1144,7 @@ namespace TvUndergroundDownloader
 
             MainConfig.Save();
             dataGridViewFeedFiles.Refresh();
-
-            // force reset datagrid
-            filesBindingSource.DataSource = new List<DownloadFile>();
-            this.filesBindingSource.DataSource = this.rssSubscriptionListBindingSource;
-            this.filesBindingSource.DataMember = "Files";
-
+            dataGridViewFeedFiles.Update();
         }
 
         private void toolStripMenuItemRedownload_Click(object sender, EventArgs e)
@@ -1176,10 +1171,9 @@ namespace TvUndergroundDownloader
             }
 
             MainConfig.Save();
-            // force reset datagrid
-            filesBindingSource.DataSource = new List<DownloadFile>();
-            this.filesBindingSource.DataSource = this.rssSubscriptionListBindingSource;
-            this.filesBindingSource.DataMember = "Files";
+            dataGridViewFeedFiles.Refresh();
+            dataGridViewFeedFiles.Update();
+
         }
 
         private void toolStripMenuItemRunFirstTimeWizard_Click(object sender, EventArgs e)
