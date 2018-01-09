@@ -134,7 +134,7 @@ namespace TvUndergroundDownloaderLib
         public bool Enabled { get; set; } = true;
         public TimeSpan LastChannelUpdate => DateTime.Now - GetLastDownloadDate();
         public DateTime LastSerieStatusUpgradeDate { get; private set; } = DateTime.MinValue;
-        public uint MaxSimultaneousDownload { get; set; } = 3;
+        public int MaxSimultaneousDownload { get; set; } = 3;
         public bool PauseDownload { get; set; }
 
         public int SeasonId { get; }

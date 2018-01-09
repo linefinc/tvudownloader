@@ -72,8 +72,8 @@ namespace TvUndergroundDownloader
                 //  Parameter reference: https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters
                 //  Protocol reference: https://developers.google.com/analytics/devguides/collection/protocol/v1/reference
                 //
-                WebRequest request = WebRequest.Create("https://www.google-analytics.com/collect");
-
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://www.google-analytics.com/collect");
+                request.UserAgent = "";
                 request.Proxy = null;
                 request.Method = "POST";
                 request.ContentType = "application/x-www-form-urlencoded";

@@ -305,7 +305,7 @@ namespace TvUndergroundDownloader
                 rssSubscription.Category = MainConfig.DefaultCategory;
                 rssSubscription.PauseDownload = MainConfig.PauseDownloadDefault;
                 rssSubscription.Enabled = true;
-                rssSubscription.MaxSimultaneousDownload = MainConfig.MaxSimultaneousFeedDownloadsDefault;
+                rssSubscription.MaxSimultaneousDownload = (int)MainConfig.MaxSimultaneousFeedDownloadsDefault;
             }
 
             if (fastAdd == false)
@@ -386,46 +386,7 @@ namespace TvUndergroundDownloader
             StartDownloadThread();
         }
 
-        private void dataGridViewMain_SelectionChanged(object sender, EventArgs e)
-        {
-            if ((dataGridViewMain.Rows.Count == 0) | (dataGridViewMain.SelectedRows.Count == 0))
-            {
-                labelFeedCategory.Text = string.Empty;
-                labelFeedPauseDownload.Text = string.Empty;
-                labelFeedUrl.Text = string.Empty;
-
-                labelLastDownloadDate.Text = string.Empty;
-                labelTotalFiles.Text = string.Empty;
-                labelMaxSimultaneousDownloads.Text = string.Empty;
-                return;
-            }
-
-            //string titleCompact = dataGridViewMain.SelectedRows[0].Cells[DataGridViewTextBoxColumnTitle.Name].Value.ToString();
-            //RssSubscription feed = MainConfig.RssFeedList.Find(x => (x.TitleCompact == titleCompact));
-            //if (feed == null)
-            //{
-            //    return;
-            //}
-
-            //labelFeedCategory.Text = feed.Category;
-            //labelFeedPauseDownload.Text = feed.PauseDownload.ToString();
-            //labelFeedUrl.Text = feed.Url;
-
-            //DateTime lastDownloadDate = feed.GetLastDownloadDate();
-            //if (lastDownloadDate == DateTime.MinValue)
-            //{
-            //    labelLastDownloadDate.Text = "-";
-            //}
-            //else
-            //{
-            //    labelLastDownloadDate.Text = lastDownloadDate.Date.ToString("yyyy-MM-dd");
-            //}
-            //labelTotalFiles.Text = feed.DownloadedFiles.Count.ToString();
-            //labelMaxSimultaneousDownloads.Text = feed.MaxSimultaneousDownload.ToString();
-
-            //UpdateSubscriptionFilesList();
-        }
-
+     
         private void DeleteRssChannel()
         {
             if (dataGridViewMain.SelectedRows.Count == 0)
@@ -648,14 +609,7 @@ namespace TvUndergroundDownloader
                 DisableAutoCloseEmule();
             }
 
-            labelFeedCategory.Text = "";
-            labelFeedPauseDownload.Text = "";
-            labelFeedUrl.Text = "";
-            labelLastDownloadDate.Text = "";
-            labelTotalFiles.Text = "";
-            labelMaxSimultaneousDownloads.Text = "";
-
-            UpdateRecentActivity();
+           UpdateRecentActivity();
             UpdateRssFeedGUI();
             UpdatePendingFiles();
 #if !DEBUG
@@ -1277,6 +1231,11 @@ namespace TvUndergroundDownloader
         private void comboBoxCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
             MainConfig.Save();
+        }
+
+        private void labelMaxSimultaneousDownloads_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

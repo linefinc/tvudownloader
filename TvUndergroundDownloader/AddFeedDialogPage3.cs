@@ -206,7 +206,7 @@ namespace TvUndergroundDownloader
         private void numericUpDownMaxSimulDown_ValueChanged(object sender, EventArgs e)
         {
             RssSubscription rssSubscription = RssSubscriptionList[_subscriptionListIndex];
-            rssSubscription.MaxSimultaneousDownload = Convert.ToUInt32(numericUpDownMaxSimulDown.Value);
+            rssSubscription.MaxSimultaneousDownload = Convert.ToInt32(numericUpDownMaxSimulDown.Value);
         }
     }
 }
