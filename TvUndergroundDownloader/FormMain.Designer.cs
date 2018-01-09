@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.timerRssCheck = new System.Windows.Forms.Timer(this.components);
             this.timerDelayStartup = new System.Windows.Forms.Timer(this.components);
@@ -59,6 +59,12 @@
             this.markAsDownloadedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.filesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dataGridViewMain = new System.Windows.Forms.DataGridView();
+            this.ColumnTitleCompact = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnImageDub = new System.Windows.Forms.DataGridViewImageColumn();
+            this.ColumnDubLanguage = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnTotalDownloads = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.contextMenuStripFeed = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemDelete = new System.Windows.Forms.ToolStripMenuItem();
@@ -85,8 +91,10 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkNowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cancelCheckToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.loginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemRunFirstTimeWizard = new System.Windows.Forms.ToolStripMenuItem();
             this.optionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.globalOptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
@@ -120,12 +128,6 @@
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnTitleCompact = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnImageDub = new System.Windows.Forms.DataGridViewImageColumn();
-            this.ColumnDubLanguage = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnTotalDownloads = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.rssSubscriptionListBindingSource)).BeginInit();
@@ -372,6 +374,63 @@
             this.dataGridViewMain.TabIndex = 38;
             this.dataGridViewMain.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridViewMain_CellFormatting);
             // 
+            // ColumnTitleCompact
+            // 
+            this.ColumnTitleCompact.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnTitleCompact.DataPropertyName = "TitleCompact";
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.ColumnTitleCompact.DefaultCellStyle = dataGridViewCellStyle1;
+            this.ColumnTitleCompact.HeaderText = "Title";
+            this.ColumnTitleCompact.Name = "ColumnTitleCompact";
+            this.ColumnTitleCompact.ReadOnly = true;
+            // 
+            // ColumnImageDub
+            // 
+            this.ColumnImageDub.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.ColumnImageDub.HeaderText = "Dub";
+            this.ColumnImageDub.Name = "ColumnImageDub";
+            this.ColumnImageDub.ReadOnly = true;
+            this.ColumnImageDub.Width = 5;
+            // 
+            // ColumnDubLanguage
+            // 
+            this.ColumnDubLanguage.DataPropertyName = "DubLanguage";
+            this.ColumnDubLanguage.HeaderText = "Dub";
+            this.ColumnDubLanguage.Name = "ColumnDubLanguage";
+            this.ColumnDubLanguage.ReadOnly = true;
+            this.ColumnDubLanguage.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ColumnDubLanguage.Visible = false;
+            this.ColumnDubLanguage.Width = 33;
+            // 
+            // ColumnTotalDownloads
+            // 
+            this.ColumnTotalDownloads.DataPropertyName = "TotalFilesDownloaded";
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.ColumnTotalDownloads.DefaultCellStyle = dataGridViewCellStyle2;
+            this.ColumnTotalDownloads.HeaderText = "Total Downloads";
+            this.ColumnTotalDownloads.Name = "ColumnTotalDownloads";
+            this.ColumnTotalDownloads.ReadOnly = true;
+            this.ColumnTotalDownloads.Width = 40;
+            // 
+            // ColumnStatus
+            // 
+            this.ColumnStatus.DataPropertyName = "CurrentTVUStatus";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.ColumnStatus.DefaultCellStyle = dataGridViewCellStyle3;
+            this.ColumnStatus.HeaderText = "Status";
+            this.ColumnStatus.Name = "ColumnStatus";
+            this.ColumnStatus.ReadOnly = true;
+            this.ColumnStatus.Width = 62;
+            // 
+            // CheckBoxColumn
+            // 
+            this.CheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.CheckBoxColumn.DataPropertyName = "Enabled";
+            this.CheckBoxColumn.HeaderText = "Enabled";
+            this.CheckBoxColumn.Name = "CheckBoxColumn";
+            this.CheckBoxColumn.ReadOnly = true;
+            this.CheckBoxColumn.Width = 52;
+            // 
             // contextMenuStripFeed
             // 
             this.contextMenuStripFeed.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -599,8 +658,10 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.checkNowToolStripMenuItem,
-            this.loginToolStripMenuItem,
             this.cancelCheckToolStripMenuItem,
+            this.toolStripSeparator4,
+            this.loginToolStripMenuItem,
+            this.toolStripMenuItemRunFirstTimeWizard,
             this.optionToolStripMenuItem,
             this.toolStripSeparator2,
             this.hideToolStripMenuItem,
@@ -613,24 +674,36 @@
             // checkNowToolStripMenuItem
             // 
             this.checkNowToolStripMenuItem.Name = "checkNowToolStripMenuItem";
-            this.checkNowToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.checkNowToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.checkNowToolStripMenuItem.Text = "Check Now";
             this.checkNowToolStripMenuItem.Click += new System.EventHandler(this.checkNowToolStripMenuItem_Click);
-            // 
-            // loginToolStripMenuItem
-            // 
-            this.loginToolStripMenuItem.Name = "loginToolStripMenuItem";
-            this.loginToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
-            this.loginToolStripMenuItem.Text = "Login";
-            this.loginToolStripMenuItem.Click += new System.EventHandler(this.loginToolStripMenuItem_Click);
             // 
             // cancelCheckToolStripMenuItem
             // 
             this.cancelCheckToolStripMenuItem.Enabled = false;
             this.cancelCheckToolStripMenuItem.Name = "cancelCheckToolStripMenuItem";
-            this.cancelCheckToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.cancelCheckToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.cancelCheckToolStripMenuItem.Text = "Cancel Check";
             this.cancelCheckToolStripMenuItem.Click += new System.EventHandler(this.cancelCheckToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(186, 6);
+            // 
+            // loginToolStripMenuItem
+            // 
+            this.loginToolStripMenuItem.Name = "loginToolStripMenuItem";
+            this.loginToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.loginToolStripMenuItem.Text = "Login";
+            this.loginToolStripMenuItem.Click += new System.EventHandler(this.loginToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItemRunFirstTimeWizard
+            // 
+            this.toolStripMenuItemRunFirstTimeWizard.Name = "toolStripMenuItemRunFirstTimeWizard";
+            this.toolStripMenuItemRunFirstTimeWizard.Size = new System.Drawing.Size(189, 22);
+            this.toolStripMenuItemRunFirstTimeWizard.Text = "Run First Time Wizard";
+            this.toolStripMenuItemRunFirstTimeWizard.Click += new System.EventHandler(this.toolStripMenuItemRunFirstTimeWizard_Click);
             // 
             // optionToolStripMenuItem
             // 
@@ -645,7 +718,7 @@
             this.importDataToolStripMenuItem,
             this.exportDataToolStripMenuItem});
             this.optionToolStripMenuItem.Name = "optionToolStripMenuItem";
-            this.optionToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.optionToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.optionToolStripMenuItem.Text = "Options";
             // 
             // globalOptionToolStripMenuItem
@@ -710,24 +783,24 @@
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(143, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(186, 6);
             // 
             // hideToolStripMenuItem
             // 
             this.hideToolStripMenuItem.Name = "hideToolStripMenuItem";
-            this.hideToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.hideToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.hideToolStripMenuItem.Text = "Hide";
             this.hideToolStripMenuItem.Click += new System.EventHandler(this.hideToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(143, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(186, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -899,63 +972,6 @@
             this.dataGridViewTextBoxColumn5.ReadOnly = true;
             this.dataGridViewTextBoxColumn5.Width = 62;
             // 
-            // ColumnTitleCompact
-            // 
-            this.ColumnTitleCompact.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColumnTitleCompact.DataPropertyName = "TitleCompact";
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.ColumnTitleCompact.DefaultCellStyle = dataGridViewCellStyle1;
-            this.ColumnTitleCompact.HeaderText = "Title";
-            this.ColumnTitleCompact.Name = "ColumnTitleCompact";
-            this.ColumnTitleCompact.ReadOnly = true;
-            // 
-            // ColumnImageDub
-            // 
-            this.ColumnImageDub.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-            this.ColumnImageDub.HeaderText = "Dub";
-            this.ColumnImageDub.Name = "ColumnImageDub";
-            this.ColumnImageDub.ReadOnly = true;
-            this.ColumnImageDub.Width = 5;
-            // 
-            // ColumnDubLanguage
-            // 
-            this.ColumnDubLanguage.DataPropertyName = "DubLanguage";
-            this.ColumnDubLanguage.HeaderText = "Dub";
-            this.ColumnDubLanguage.Name = "ColumnDubLanguage";
-            this.ColumnDubLanguage.ReadOnly = true;
-            this.ColumnDubLanguage.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ColumnDubLanguage.Visible = false;
-            this.ColumnDubLanguage.Width = 33;
-            // 
-            // ColumnTotalDownloads
-            // 
-            this.ColumnTotalDownloads.DataPropertyName = "TotalFilesDownloaded";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.ColumnTotalDownloads.DefaultCellStyle = dataGridViewCellStyle2;
-            this.ColumnTotalDownloads.HeaderText = "Total Downloads";
-            this.ColumnTotalDownloads.Name = "ColumnTotalDownloads";
-            this.ColumnTotalDownloads.ReadOnly = true;
-            this.ColumnTotalDownloads.Width = 40;
-            // 
-            // ColumnStatus
-            // 
-            this.ColumnStatus.DataPropertyName = "CurrentTVUStatus";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.ColumnStatus.DefaultCellStyle = dataGridViewCellStyle3;
-            this.ColumnStatus.HeaderText = "Status";
-            this.ColumnStatus.Name = "ColumnStatus";
-            this.ColumnStatus.ReadOnly = true;
-            this.ColumnStatus.Width = 62;
-            // 
-            // CheckBoxColumn
-            // 
-            this.CheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.CheckBoxColumn.DataPropertyName = "Enabled";
-            this.CheckBoxColumn.HeaderText = "Enabled";
-            this.CheckBoxColumn.Name = "CheckBoxColumn";
-            this.CheckBoxColumn.ReadOnly = true;
-            this.CheckBoxColumn.Width = 52;
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1087,6 +1103,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnTotalDownloads;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnStatus;
         private System.Windows.Forms.DataGridViewCheckBoxColumn CheckBoxColumn;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemRunFirstTimeWizard;
     }
 }
 

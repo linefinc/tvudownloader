@@ -25,6 +25,7 @@ namespace TvUndergroundDownloader
     public partial class FormMain : Form
     {
         public ConfigWindows MainConfig;
+        private readonly Dictionary<string, Image> _flagDictionary;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly Worker _worker;
         private EmbendedWebServer _embendedWebServer;
@@ -40,10 +41,6 @@ namespace TvUndergroundDownloader
         private MenuItem menuItemExit;
         private bool mVisible = true;
         private NotifyIcon notifyIcon1;
-
-
-        private readonly Dictionary<string, Image> _flagDictionary;
-
         public FormMain()
         {
             // load configuration
@@ -423,7 +420,7 @@ namespace TvUndergroundDownloader
 
                 if (!_flagDictionary.ContainsKey(rssSubscription.DubLanguage))
                     return;
-                
+
                 var image = _flagDictionary[rssSubscription.DubLanguage];
                 if (dataGridViewRowedItem.Cells[e.ColumnIndex].Value != image)
                 {
@@ -1031,16 +1028,19 @@ namespace TvUndergroundDownloader
             timerDelayStartup.Enabled = false;
 
             // show web guide
-            if (MainConfig.TotalDownloads == 0)
+            if (MainConfig.IsFirstStart())
             {
-                var rc = MessageBox.Show(
-                    "Do you want to see a small video that can help you to configure the app?", "Info", MessageBoxButtons.YesNo);
-                if (rc == DialogResult.Yes)
+                FormFirstTimeWizad wizad = new FormFirstTimeWizad();
+                if (wizad.DialogResult == DialogResult.OK)
                 {
-                    Process.Start("https://youtu.be/i_CiFij4qHg");
+                    MainConfig.ServiceType = wizad.ServiceType;
+                    MainConfig.Password = wizad.Password;
+                    MainConfig.TVUCookieH = wizad.TVUCookieH;
+                    MainConfig.TVUCookieI = wizad.TVUCookieI;
+                    MainConfig.TVUCookieT = wizad.TVUCookieT;
+                    MainConfig.Save();
                 }
             }
-
 
             if (MainConfig.StartMinimized)
             {
@@ -1180,6 +1180,31 @@ namespace TvUndergroundDownloader
             this.filesBindingSource.DataSource = this.rssSubscriptionListBindingSource;
             this.filesBindingSource.DataMember = "Files";
         }
+
+        private void toolStripMenuItemRunFirstTimeWizard_Click(object sender, EventArgs e)
+        {
+            FormFirstTimeWizad wizad = new FormFirstTimeWizad();
+            wizad.Password = MainConfig.Password;
+            wizad.ServiceType = MainConfig.ServiceType;
+            wizad.TVUCookieH = MainConfig.TVUCookieH;
+            wizad.TVUCookieI = MainConfig.TVUCookieI;
+            wizad.TVUCookieT = MainConfig.TVUCookieT;
+
+            if (wizad.DialogResult != DialogResult.OK)
+            {
+                return;
+            }
+
+            MainConfig.ServiceType = wizad.ServiceType;
+            MainConfig.Password = wizad.Password;
+            MainConfig.TVUCookieH = wizad.TVUCookieH;
+            MainConfig.TVUCookieI = wizad.TVUCookieI;
+            MainConfig.TVUCookieT = wizad.TVUCookieT;
+            MainConfig.Save();
+
+
+        }
+
         private void toolStripMenuItemUpdateStatus_Click(object sender, EventArgs e)
         {
             if (dataGridViewMain.SelectedRows.Count == 0)

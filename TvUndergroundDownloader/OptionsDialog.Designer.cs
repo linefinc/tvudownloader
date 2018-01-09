@@ -93,10 +93,10 @@
             this.label15 = new System.Windows.Forms.Label();
             this.textBoxCookieH = new System.Windows.Forms.TextBox();
             this.tabPageWebServer = new System.Windows.Forms.TabPage();
+            this.label24 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.textBoxWebServerPortNumber = new System.Windows.Forms.TextBox();
             this.checkBoxWebServerEnabled = new System.Windows.Forms.CheckBox();
-            this.label24 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.tabPageLog.SuspendLayout();
             this.tabPageEmail.SuspendLayout();
@@ -449,7 +449,7 @@
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(190, 13);
             this.label14.TabIndex = 35;
-            this.label14.Text = "Insert URL like \"http://localhost:4000\"";
+            this.label14.Text = "Insert URL like \"http://localhost:4711\"";
             // 
             // buttonCheckNow
             // 
@@ -801,6 +801,16 @@
             this.tabPageWebServer.Text = "Web Server";
             this.tabPageWebServer.UseVisualStyleBackColor = true;
             // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(7, 61);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(237, 26);
+            this.label24.TabIndex = 3;
+            this.label24.Text = "This is a experimental feature ,\r\ndon’t turn on if the computer is public on inte" +
+    "rnet.";
+            // 
             // label20
             // 
             this.label20.AutoSize = true;
@@ -827,16 +837,6 @@
             this.checkBoxWebServerEnabled.Text = "Enabled";
             this.checkBoxWebServerEnabled.UseVisualStyleBackColor = true;
             this.checkBoxWebServerEnabled.CheckedChanged += new System.EventHandler(this.checkBoxWebServerEnabled_CheckedChanged);
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(7, 61);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(237, 26);
-            this.label24.TabIndex = 3;
-            this.label24.Text = "This is a experimental feature ,\r\ndon’t turn on if the computer is public on inte" +
-    "rnet.";
             // 
             // OptionsDialog
             // 

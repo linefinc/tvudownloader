@@ -143,7 +143,7 @@ namespace TvUndergroundDownloader
 
             if (rc == LoginStatus.ServiceNotAvailable)
             {
-                MessageBox.Show("Unable conncet with target URL");
+                MessageBox.Show("Unable to conncet to URL");
                 return;
             }
 

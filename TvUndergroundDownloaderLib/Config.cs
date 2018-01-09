@@ -68,15 +68,14 @@ namespace TvUndergroundDownloaderLib
         #region Email
 
         public bool EmailNotification { get; set; } = false;
-        public string SmtpServerAddress { get; set; } = string.Empty;
-        public int SmtpServerPort { get; set; } = 25;
-        public bool SmtpServerEnableSsl { get; set; } = false;
-        public bool SmtpServerEnableAuthentication { get; set; } = false;
-        public string SmtpServerUserName { get; set; } = string.Empty;
-        public string SmtpServerPassword { get; set; } = string.Empty;
         public string MailReceiver { get; set; } = string.Empty;
         public string MailSender { get; set; } = string.Empty;
-
+        public string SmtpServerAddress { get; set; } = string.Empty;
+        public bool SmtpServerEnableAuthentication { get; set; } = false;
+        public bool SmtpServerEnableSsl { get; set; } = false;
+        public string SmtpServerPassword { get; set; } = string.Empty;
+        public int SmtpServerPort { get; set; } = 25;
+        public string SmtpServerUserName { get; set; } = string.Empty;
         #endregion Email
 
         public eServiceType ServiceType { get; set; } = eServiceType.eMule;
@@ -107,6 +106,21 @@ namespace TvUndergroundDownloaderLib
 
         public bool WebServerEnable { get; set; } = false;
         public int WebServerPort { get; set; } = 9696;
+
+        public bool IsFirstStart()
+        {
+            if (TotalDownloads > 0)
+                return false;
+            if (string.IsNullOrEmpty(TVUCookieI))
+                return false;
+            if (string.IsNullOrEmpty(TVUCookieH))
+                return false;
+            if (string.IsNullOrEmpty(TVUCookieT))
+                return false;
+
+            return true;
+
+        }
 
         public void Load(string fileName)
         {
@@ -353,6 +367,14 @@ namespace TvUndergroundDownloaderLib
             writer.Close();
         }
 
+        private static bool NodeExist(XmlDocument xDoc, string nodeName)
+        {
+            var t = xDoc.GetElementsByTagName(nodeName);
+            if (t.Count == 0)
+                return false;
+            return true;
+        }
+
         private static string RandomIdGenerator()
         {
             string temp = "";
@@ -363,12 +385,12 @@ namespace TvUndergroundDownloaderLib
             return temp;
         }
 
-        private static string ReadString(XmlDocument xDoc, string nodeName, string defaultValue)
+        private static bool ReadBoolean(XmlDocument xDoc, string nodeName, bool defaultValue)
         {
             var t = xDoc.GetElementsByTagName(nodeName);
             if (t.Count == 0)
                 return defaultValue;
-            return t[0].InnerText;
+            return t[0].InnerText.ToLower().Contains("true");
         }
 
         private static int ReadInt(XmlDocument xDoc, string nodeName, int defaultValue)
@@ -387,6 +409,13 @@ namespace TvUndergroundDownloaderLib
             return val;
         }
 
+        private static string ReadString(XmlDocument xDoc, string nodeName, string defaultValue)
+        {
+            var t = xDoc.GetElementsByTagName(nodeName);
+            if (t.Count == 0)
+                return defaultValue;
+            return t[0].InnerText;
+        }
         private static uint ReadUInt(XmlDocument xDoc, string nodeName, uint defaultValue)
         {
             var t = xDoc.GetElementsByTagName(nodeName);
@@ -401,22 +430,6 @@ namespace TvUndergroundDownloaderLib
             val = Math.Min(val, max);
             val = Math.Max(val, min);
             return val;
-        }
-
-        private static bool ReadBoolean(XmlDocument xDoc, string nodeName, bool defaultValue)
-        {
-            var t = xDoc.GetElementsByTagName(nodeName);
-            if (t.Count == 0)
-                return defaultValue;
-            return t[0].InnerText.ToLower().Contains("true");
-        }
-
-        private static bool NodeExist(XmlDocument xDoc, string nodeName)
-        {
-            var t = xDoc.GetElementsByTagName(nodeName);
-            if (t.Count == 0)
-                return false;
-            return true;
         }
     }
 }

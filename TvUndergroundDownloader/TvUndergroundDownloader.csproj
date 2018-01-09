@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TvUndergroundDownloader</RootNamespace>
     <AssemblyName>TvUndergroundDownloader</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <ManifestCertificateThumbprint>9A83998307C9DCC2E43AD5287D15E279ACDA58E6</ManifestCertificateThumbprint>
@@ -117,6 +117,12 @@
       <DependentUpon>AddFeedDialogPage3.cs</DependentUpon>
     </Compile>
     <Compile Include="ConfigWindows.cs" />
+    <Compile Include="FormFirstTimeWizad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormFirstTimeWizad.Designer.cs">
+      <DependentUpon>FormFirstTimeWizad.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -155,6 +161,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddFeedDialogPage3.resx">
       <DependentUpon>AddFeedDialogPage3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormFirstTimeWizad.resx">
+      <DependentUpon>FormFirstTimeWizad.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>
@@ -265,6 +274,15 @@
       <Project>{21CFFC29-3DCA-43A4-AA90-0A5332E2E1FF}</Project>
       <Name>TvUndergroundDownloaderLib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Wizad\Page1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Wizad\Page2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Wizad\Page3.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets" Condition="Exists('..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" />
