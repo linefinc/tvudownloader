@@ -14,7 +14,9 @@ namespace TvUndergroundDownloader
         }
 
         public string Password { get; set; }
+
         public string ServerUrl { set; get; } = "http://localhost:4711";
+
         public string ServiceAddress { get; set; } = "localhost";
         public int ServicePortNumber { get; set; } = 4711;
         public Config.eServiceType ServiceType { get; set; }
@@ -315,6 +317,46 @@ namespace TvUndergroundDownloader
         private void linkLabelAddress_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start(linkLabelAddress.Text);
+        }
+
+        private void tabPage1_Enter(object sender, EventArgs e)
+        {
+            GoogleAnalyticsHelper.TrackScreen("WizardPage1");
+        }
+
+        private void tabPage2_Enter(object sender, EventArgs e)
+        {
+            GoogleAnalyticsHelper.TrackScreen("WizardPage2");
+        }
+
+        private void tabPage3_Enter(object sender, EventArgs e)
+        {
+            GoogleAnalyticsHelper.TrackScreen("WizardPage3");
+        }
+
+        private void tabPage4_Enter(object sender, EventArgs e)
+        {
+            GoogleAnalyticsHelper.TrackScreen("WizardPage4");
+        }
+
+        private void tabPage5_Enter(object sender, EventArgs e)
+        {
+            GoogleAnalyticsHelper.TrackScreen("WizardPage5");
+        }
+
+        private void tabPage6_Enter(object sender, EventArgs e)
+        {
+            GoogleAnalyticsHelper.TrackScreen("WizardPage6");
+        }
+
+        private void tabPage7_Enter(object sender, EventArgs e)
+        {
+            GoogleAnalyticsHelper.TrackScreen("WizardPage3");
+        }
+
+        private void tabPage8_Enter(object sender, EventArgs e)
+        {
+            GoogleAnalyticsHelper.TrackScreen("WizardPage8");
         }
 
         private void textBoxAddress_TextChanged(object sender, EventArgs e)

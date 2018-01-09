@@ -1031,6 +1031,7 @@ namespace TvUndergroundDownloader
             if (MainConfig.IsFirstStart())
             {
                 FormFirstTimeWizad wizad = new FormFirstTimeWizad();
+                wizad.ShowDialog();
                 if (wizad.DialogResult == DialogResult.OK)
                 {
                     MainConfig.ServiceType = wizad.ServiceType;
@@ -1190,6 +1191,7 @@ namespace TvUndergroundDownloader
             wizad.TVUCookieI = MainConfig.TVUCookieI;
             wizad.TVUCookieT = MainConfig.TVUCookieT;
 
+            wizad.ShowDialog();
             if (wizad.DialogResult != DialogResult.OK)
             {
                 return;
