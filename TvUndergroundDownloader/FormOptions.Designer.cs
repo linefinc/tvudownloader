@@ -1,6 +1,6 @@
 ﻿namespace TvUndergroundDownloader
 {
-    partial class OptionsDialog
+    partial class FormOptions
     {
         /// <summary>
         /// Required designer variable.

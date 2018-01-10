@@ -4,9 +4,9 @@ using TvUndergroundDownloaderLib;
 
 namespace TvUndergroundDownloader
 {
-    public partial class OptionsDialog : Form
+    public partial class FormOptions : Form
     {
-        public OptionsDialog(ConfigWindows inConfig)
+        public FormOptions(ConfigWindows inConfig)
         {
             InitializeComponent();
 

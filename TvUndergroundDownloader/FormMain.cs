@@ -639,7 +639,7 @@ namespace TvUndergroundDownloader
 
         private void globalOptionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OptionsDialog optDialog = new OptionsDialog(MainConfig);
+            FormOptions optDialog = new FormOptions(MainConfig);
             optDialog.ShowDialog();
 
             if (optDialog.DialogResult == DialogResult.OK)
