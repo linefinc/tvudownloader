@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+using TvUndergroundDownloader.Properties;
 using TvUndergroundDownloaderLib;
 
 namespace TvUndergroundDownloader
@@ -13,16 +14,17 @@ namespace TvUndergroundDownloader
             comboBoxClientType.Text = "eMule";
         }
 
-        public string Password { get; set; }
+        public string eMuleApp { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
 
         public string ServerUrl { set; get; } = "http://localhost:4711";
 
         public string ServiceAddress { get; set; } = "localhost";
         public int ServicePortNumber { get; set; } = 4711;
         public Config.eServiceType ServiceType { get; set; }
-        public string TVUCookieH { set; get; }
-        public string TVUCookieI { set; get; }
-        public string TVUCookieT { set; get; }
+        public string TVUCookieH { set; get; } = string.Empty;
+        public string TVUCookieI { set; get; } = string.Empty;
+        public string TVUCookieT { set; get; } = string.Empty;
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
@@ -30,10 +32,8 @@ namespace TvUndergroundDownloader
             this.Close();
         }
 
-
         private void buttonLoginToTVUnderground_Click(object sender, EventArgs e)
         {
-
             FormLogin form = new FormLogin();
             form.ShowDialog();
 
@@ -67,7 +67,6 @@ namespace TvUndergroundDownloader
                 buttonNext.Enabled = true;
                 return;
             }
-
 
             if (tabControl1.SelectedTab == tabPage2)
             {
@@ -133,7 +132,6 @@ namespace TvUndergroundDownloader
                     }
                 }
 
-
                 tabControl1.SelectedTab = tabPage6;
                 buttonPrev.Enabled = true;
                 buttonNext.Enabled = true;
@@ -142,6 +140,24 @@ namespace TvUndergroundDownloader
             }
 
             if (tabControl1.SelectedTab == tabPage6)
+            {
+                tabControl1.SelectedTab = tabPage7;
+                buttonPrev.Enabled = true;
+                buttonNext.Enabled = true;
+                buttonNext.Text = Resources.FormFirstTimeWizad_buttonPrev_Click_Next;
+                return;
+            }
+
+            if (tabControl1.SelectedTab == tabPage7)
+            {
+                tabControl1.SelectedTab = tabPage8;
+                buttonPrev.Enabled = true;
+                buttonNext.Enabled = true;
+
+                return;
+            }
+
+            if (tabControl1.SelectedTab == tabPage8)
             {
                 string msg = null;
                 if (string.IsNullOrEmpty(this.TVUCookieI))
@@ -166,16 +182,14 @@ namespace TvUndergroundDownloader
                     }
                 }
 
-
-                tabControl1.SelectedTab = tabPage7;
+                tabControl1.SelectedTab = tabPage9;
                 buttonPrev.Enabled = true;
                 buttonNext.Enabled = true;
-                buttonNext.Text = "Finish";
+                buttonNext.Text = "Complete";
                 return;
             }
 
-
-            if (tabControl1.SelectedTab == tabPage7)
+            if (tabControl1.SelectedTab == tabPage9)
             {
                 this.DialogResult = DialogResult.OK;
                 this.Close();
@@ -195,6 +209,7 @@ namespace TvUndergroundDownloader
                 tabControl1.SelectedTab = tabPage1;
                 buttonPrev.Enabled = false;
                 buttonNext.Enabled = true;
+                buttonNext.Text = Resources.FormFirstTimeWizad_buttonPrev_Click_Next;
                 return;
             }
 
@@ -203,6 +218,7 @@ namespace TvUndergroundDownloader
                 tabControl1.SelectedTab = tabPage2;
                 buttonPrev.Enabled = true;
                 buttonNext.Enabled = true;
+                buttonNext.Text = Resources.FormFirstTimeWizad_buttonPrev_Click_Next;
                 return;
             }
 
@@ -211,37 +227,54 @@ namespace TvUndergroundDownloader
                 tabControl1.SelectedTab = tabPage3;
                 buttonPrev.Enabled = true;
                 buttonNext.Enabled = true;
+                buttonNext.Text = Resources.FormFirstTimeWizad_buttonPrev_Click_Next;
                 return;
             }
 
             if (tabControl1.SelectedTab == tabPage5)
             {
-
                 tabControl1.SelectedTab = tabPage4;
                 buttonPrev.Enabled = true;
                 buttonNext.Enabled = true;
+                buttonNext.Text = Resources.FormFirstTimeWizad_buttonPrev_Click_Next;
                 return;
             }
-
 
             if (tabControl1.SelectedTab == tabPage6)
             {
                 tabControl1.SelectedTab = tabPage5;
                 buttonPrev.Enabled = true;
                 buttonNext.Enabled = true;
+                buttonNext.Text = Resources.FormFirstTimeWizad_buttonPrev_Click_Next;
                 return;
             }
-
 
             if (tabControl1.SelectedTab == tabPage7)
             {
                 tabControl1.SelectedTab = tabPage6;
                 buttonPrev.Enabled = true;
                 buttonNext.Enabled = true;
-                buttonNext.Text = "Next";
+                buttonNext.Text = Resources.FormFirstTimeWizad_buttonPrev_Click_Next;
                 return;
             }
 
+            if (tabControl1.SelectedTab == tabPage8)
+            {
+                tabControl1.SelectedTab = tabPage7;
+                buttonPrev.Enabled = true;
+                buttonNext.Enabled = true;
+                buttonNext.Text = Resources.FormFirstTimeWizad_buttonPrev_Click_Next;
+                return;
+            }
+
+            if (tabControl1.SelectedTab == tabPage9)
+            {
+                tabControl1.SelectedTab = tabPage8;
+                buttonPrev.Enabled = true;
+                buttonNext.Enabled = true;
+                buttonNext.Text = Resources.FormFirstTimeWizad_buttonPrev_Click_Next;
+                return;
+            }
         }
 
         private void buttonTestNow_Click(object sender, EventArgs e)
@@ -298,6 +331,7 @@ namespace TvUndergroundDownloader
                 case Config.eServiceType.aMule:
                     comboBoxClientType.Text = "aMule";
                     break;
+
                 default:
                 case Config.eServiceType.eMule:
                     comboBoxClientType.Text = "eMule";
@@ -307,7 +341,7 @@ namespace TvUndergroundDownloader
             textBoxCookieT.Text = this.TVUCookieT;
             textBoxCookieH.Text = this.TVUCookieH;
             textBoxCookieI.Text = this.TVUCookieI;
-
+            textBoxEmuleApp.Text = this.eMuleApp;
             textBoxAddress.Text = this.ServiceAddress;
             textBoxServicePort.Text = this.ServicePortNumber.ToString();
             textBoxPassword.Text = this.Password;
@@ -351,12 +385,17 @@ namespace TvUndergroundDownloader
 
         private void tabPage7_Enter(object sender, EventArgs e)
         {
-            GoogleAnalyticsHelper.TrackScreen("WizardPage3");
+            GoogleAnalyticsHelper.TrackScreen("WizardPage7");
         }
 
         private void tabPage8_Enter(object sender, EventArgs e)
         {
             GoogleAnalyticsHelper.TrackScreen("WizardPage8");
+        }
+
+        private void tabPage9_Enter(object sender, EventArgs e)
+        {
+            GoogleAnalyticsHelper.TrackScreen("WizardPage9");
         }
 
         private void textBoxAddress_TextChanged(object sender, EventArgs e)
@@ -381,6 +420,12 @@ namespace TvUndergroundDownloader
         {
             this.TVUCookieT = textBoxCookieT.Text;
         }
+
+        private void textBoxEmuleApp_TextChanged(object sender, EventArgs e)
+        {
+            this.eMuleApp = textBoxEmuleApp.Text;
+        }
+
         private void textBoxServicePort_TextChanged(object sender, EventArgs e)
         {
             int portNumber;
@@ -393,7 +438,6 @@ namespace TvUndergroundDownloader
             this.ServerUrl = string.Format("http://{0}:{1}", ServiceAddress, ServicePortNumber);
 
             linkLabelAddress.Text = string.Format("http://{0}:{1}", ServiceAddress, ServicePortNumber);
-
         }
     }
 }

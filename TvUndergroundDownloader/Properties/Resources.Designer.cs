@@ -101,6 +101,15 @@ namespace TvUndergroundDownloader.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string FormFirstTimeWizad_buttonPrev_Click_Next {
+            get {
+                return ResourceManager.GetString("FormFirstTimeWizad_buttonPrev_Click_Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         public static System.Drawing.Bitmap fr {
@@ -186,6 +195,36 @@ namespace TvUndergroundDownloader.Properties {
         public static System.Drawing.Bitmap Page1 {
             get {
                 object obj = ResourceManager.GetObject("Page1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Page10 {
+            get {
+                object obj = ResourceManager.GetObject("Page10", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Page12 {
+            get {
+                object obj = ResourceManager.GetObject("Page12", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Page13 {
+            get {
+                object obj = ResourceManager.GetObject("Page13", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

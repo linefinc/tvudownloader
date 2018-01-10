@@ -163,4 +163,16 @@
   <data name="Page3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Wizad\Page3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Page10" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Wizad\Page10.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Page12" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Wizad\Page12.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Page13" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Wizad\Page13.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FormFirstTimeWizad_buttonPrev_Click_Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
 </root>

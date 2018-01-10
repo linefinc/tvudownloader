@@ -76,6 +76,7 @@ namespace TvUndergroundDownloaderLib
         public string SmtpServerPassword { get; set; } = string.Empty;
         public int SmtpServerPort { get; set; } = 25;
         public string SmtpServerUserName { get; set; } = string.Empty;
+
         #endregion Email
 
         public eServiceType ServiceType { get; set; } = eServiceType.eMule;
@@ -119,7 +120,6 @@ namespace TvUndergroundDownloaderLib
                 return false;
 
             return true;
-
         }
 
         public void Load(string fileName)
@@ -416,6 +416,7 @@ namespace TvUndergroundDownloaderLib
                 return defaultValue;
             return t[0].InnerText;
         }
+
         private static uint ReadUInt(XmlDocument xDoc, string nodeName, uint defaultValue)
         {
             var t = xDoc.GetElementsByTagName(nodeName);
