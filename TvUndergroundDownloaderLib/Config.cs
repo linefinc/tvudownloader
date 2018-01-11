@@ -112,11 +112,11 @@ namespace TvUndergroundDownloaderLib
         {
             if (TotalDownloads > 0)
                 return false;
-            if (string.IsNullOrEmpty(TVUCookieI))
+            if (!string.IsNullOrEmpty(TVUCookieI))
                 return false;
-            if (string.IsNullOrEmpty(TVUCookieH))
+            if (!string.IsNullOrEmpty(TVUCookieH))
                 return false;
-            if (string.IsNullOrEmpty(TVUCookieT))
+            if (!string.IsNullOrEmpty(TVUCookieT))
                 return false;
 
             return true;
