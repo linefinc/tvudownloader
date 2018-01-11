@@ -78,6 +78,8 @@ namespace TvUndergroundDownloader
                 {"es", Properties.Resources.es}
             };
 
+            toolTip1.SetToolTip(checkBoxDeleteWhenCompleted, "Delete the feed when all downloads are completed\r\nand after 3 days");
+
         }
 
         public static string GetUserAppDataPath()
