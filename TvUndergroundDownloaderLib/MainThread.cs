@@ -84,7 +84,7 @@ namespace TvUndergroundDownloaderLib
                     return true;
                 });
             }
-           OnWorkerCompleted();
+            OnWorkerCompleted();
         }
 
         /// <summary>
@@ -220,7 +220,6 @@ namespace TvUndergroundDownloaderLib
                     return;
                 }
 
-
                 _logger.Info("Start eMule Now (try {0}/5)", cont);
                 _logger.Info("Wait 60 sec");
                 try
@@ -354,6 +353,17 @@ namespace TvUndergroundDownloaderLib
                 SendMailDownload(downloadFile.GetFileName(), downloadFile.Ed2kLink);
                 Config.TotalDownloads++; //increase Total Downloads for statistic
             }
+
+            //
+            //  remove all completed
+            //
+            foreach (var rssSubscription in Config.RssFeedList.FindAll(MatchDeleteWhenCompleted))
+            {
+                _logger.Info("Auto remove: \"{0}\"", rssSubscription.TitleCompact);
+            }
+
+            Config.RssFeedList.RemoveAll(MatchDeleteWhenCompleted);
+
             Config.Save();
 
             _logger.Info("Force Refresh Shared File List");
@@ -379,6 +389,44 @@ namespace TvUndergroundDownloaderLib
         }
 
         /// <summary>
+        /// filter to delete
+        /// </summary>
+        /// <param name="rssSubscription"></param>
+        /// <returns></returns>
+        private bool MatchDeleteWhenCompleted(RssSubscription rssSubscription)
+        {
+            if (rssSubscription.DeleteWhenCompleted == false)
+            {
+                return false;
+            }
+
+            if (rssSubscription.CurrentTVUStatus != TvuStatus.Complete)
+            {
+                return false;
+            }
+
+            DateTime lastDownload = DateTime.MinValue;
+            foreach (DownloadFile file in rssSubscription.DownloadedFiles)
+            {
+                if (!file.DownloadDate.HasValue)
+                {
+                    return false;
+                }
+                if (lastDownload < file.DownloadDate.Value)
+                {
+                    lastDownload = file.DownloadDate.Value;
+                }
+            }
+
+            if (lastDownload < DateTime.Now.AddDays(3))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// On Worker Completed
         /// </summary>
         private void OnWorkerCompleted()
@@ -400,7 +448,7 @@ namespace TvUndergroundDownloaderLib
                 {
                     string subject = "TV Underground Downloader Notification";
                     string body = "New file add\r\n" + fileName + "\r\n";
-                    
+
                     SmtpSimpleClient simpleClient = new SmtpSimpleClient(this.Config);
                     simpleClient.SendEmail(subject, body);
                 }
