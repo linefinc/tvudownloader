@@ -45,7 +45,14 @@ namespace TvUndergroundDownloader
         {
             // load configuration
             MainConfig = new ConfigWindows();
-            MainConfig.Load();
+            try
+            {
+                MainConfig.Load();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+            }
 
             InitializeComponent();
             SetupNotify();

@@ -39,7 +39,15 @@ namespace TvUndergroundDownloaderConsole
             //
             logger.Info("TvUnderground Downloader starting");
             mainConfig = new TvUndergroundDownloaderLib.Config();
-            mainConfig.Load("./Config.xml");
+            try
+            {
+                mainConfig.Load("./Config.xml");
+            }
+            catch (Exception e)
+            {
+                logger.Error(e);
+            }
+            
             logger.Info("Loading config");
 
             FileTarget fileTarget = new FileTarget();
