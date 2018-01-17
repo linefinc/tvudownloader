@@ -64,6 +64,8 @@ namespace TvUndergroundDownloaderLib
         public string Password { get; set; } = "password";
         public bool PauseDownloadDefault { get; set; } = false;
         public RssSubscriptionList RssFeedList { get; set; }
+        public long MinFreeSpace { get; set; } = 200 * 1024 * 1024;
+
 
         #region Email
 

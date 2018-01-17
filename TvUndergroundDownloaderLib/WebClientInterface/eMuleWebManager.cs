@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
-using NLog.Time;
+using NLog;
 
 namespace TvUndergroundDownloaderLib
 {
@@ -184,7 +185,7 @@ namespace TvUndergroundDownloaderLib
             if (page == null)
                 return null;
 
-            // extract only 
+            // extract only
             //Regex regex = new Regex("downmenu.*Status.*onmouseout");
             //var matches = regex.Matches(page);
 
@@ -195,65 +196,85 @@ namespace TvUndergroundDownloaderLib
             return listDownloads;
         }
 
-        public ulong GetFreeSpace()
+        public BigInteger  FreeSpace
         {
-            string page = WebSocketGET(string.Format("{0}/?ses={1}&w=stats", host, sesID));
-            const string startPatternStr = "Free Space on Tempdrive:";
-            const string stopPatternStr = "<br";
-
-            if (page == null)
+            get
             {
-                throw new NotImplementedException();
+                string page = WebSocketGET(string.Format("{0}/?ses={1}&w=stats", host, sesID));
+
+                if (page == null)
+                {
+                    throw new NotImplementedException();
+                }
+
+                BigInteger freeSpace = new BigInteger(0);
+                //
+                // Possible reply
+                //
+                // Free Space on Tempdrive: 1.76 KB<br />
+                // Free Space on Tempdrive: 1.76 MB<br />
+                // Free Space on Tempdrive: 1.76 GB<br />
+                // Free Space on Tempdrive: 1.76 TB<br />
+                // Free Space on Tempdrive: 1.29 GB (you need to free 16.15 GB!)<br />
+                // Free Space on Tempdrive: 1.29 GB (you need to free 16.15 GB!)<br />
+                // Free Space on Tempdrive: 0 Bytes
+
+                Regex extraSpaceRegex = new Regex(@"you need to free (?<ExtraSpace>\d{0,5}.\d{0,5} ((Bytes)|(KB)|(MB)|(GB)|(TB)))", RegexOptions.IgnoreCase);
+                Match extraSpaceMatch = extraSpaceRegex.Match(page);
+                if (extraSpaceMatch.Success)
+                {
+                    freeSpace -= SpaceStrToNumber(extraSpaceMatch.Groups["ExtraSpace"].Value);
+                }
+
+                Regex freeSpaceRegex = new Regex(@"Free Space on Tempdrive: (?<FreeSpace>\d{0,5}.\d{0,5} ((Bytes)|(KB)|(MB)|(GB)|(TB)))", RegexOptions.IgnoreCase);
+
+                Match matchFreeSpace = freeSpaceRegex.Match(page);
+                if (!matchFreeSpace.Success)
+                {
+                    throw new WrongPageFormatException();
+                }
+                freeSpace += SpaceStrToNumber(matchFreeSpace.Groups["FreeSpace"].Value);
+                return freeSpace;
+
             }
+        }
 
-            int start = page.IndexOf(startPatternStr, StringComparison.InvariantCulture);
-            if (start == -1)
-            {
-                throw new WrongPageFormatException();
-            }
+        private BigInteger SpaceStrToNumber(string value)
+        {
+            float fractionalPart;
+            var trimmedValue = value.Trim(' ', 'K', 'M', 'G', 'T', 'B', 'y', 't', 'e', 's');
 
-            start += startPatternStr.Length;
-            int stop = page.IndexOf(stopPatternStr, start, StringComparison.InvariantCulture);
-            if (stop == -1)
-            {
-                throw new WrongPageFormatException();
-            }
-
-            string freeSpaceStr = page.Substring(start, stop - start);
-
-            freeSpaceStr = freeSpaceStr.Trim();
-            long scaleFactor = 1;
-
-            if (freeSpaceStr.IndexOf("KB", StringComparison.InvariantCultureIgnoreCase) > -1)
-            {
-                scaleFactor = 1024;
-            }
-
-            if (freeSpaceStr.IndexOf("MB", StringComparison.InvariantCultureIgnoreCase) > -1)
-            {
-                scaleFactor = 1024 * 1024;
-            }
-
-            if (freeSpaceStr.IndexOf("GB", StringComparison.InvariantCultureIgnoreCase) > -1)
-            {
-                scaleFactor = 1024 * 1024 * 1024;
-            }
-
-            if (freeSpaceStr.IndexOf("TB", StringComparison.InvariantCultureIgnoreCase) > -1)
-            {
-                scaleFactor = long.MaxValue;
-                return Convert.ToUInt64(scaleFactor);
-            }
-
-            freeSpaceStr = freeSpaceStr.Trim(' ', 'K', 'M','G', 'T', 'B');
-
-            float value;
-            if (!float.TryParse(freeSpaceStr, out value))
+            if (!float.TryParse(trimmedValue,NumberStyles.Float,CultureInfo.InvariantCulture,out fractionalPart))
             {
                 throw new WrongPageFormatException();
             }
-            
-            return Convert.ToUInt64(value * scaleFactor);
+
+            if (value.IndexOf("Byte", StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                return Convert.ToUInt64(fractionalPart);
+            }
+
+            if (value.IndexOf("KB", StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                return Convert.ToUInt64(fractionalPart * 1000);
+            }
+
+            if (value.IndexOf("MB", StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                return Convert.ToUInt64(fractionalPart * 1000) * 1000;
+            }
+
+            if (value.IndexOf("GB", StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                return Convert.ToUInt64(fractionalPart * 1000) * 1000 * 1000;
+            }
+
+            if (value.IndexOf("TB", StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                return Convert.ToUInt64(fractionalPart * 1000) * 1000 * 1000 * 1000;
+            }
+
+            throw new WrongPageFormatException();
         }
 
         /// <summary>

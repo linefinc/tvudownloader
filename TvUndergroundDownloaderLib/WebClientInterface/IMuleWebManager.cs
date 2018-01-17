@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Numerics;
 
 namespace TvUndergroundDownloaderLib
 {
@@ -27,7 +28,7 @@ namespace TvUndergroundDownloaderLib
 
         List<Ed2kfile> GetCurrentDownloads(List<Ed2kfile> knownFiles);
 
-        ulong GetFreeSpace();
+        BigInteger FreeSpace { get; }
 
         void StartDownload(Ed2kfile link);
 

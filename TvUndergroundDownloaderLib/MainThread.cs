@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
+using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -317,9 +318,10 @@ namespace TvUndergroundDownloaderLib
 
             try
             {
-                long freeSpace = (long)service.GetFreeSpace();
+                BigInteger freeSpace = service.FreeSpace;
+                _logger.Warn("Free space on temp Tempdrive: {0}", freeSpace);
 
-                freeSpace = freeSpace - (long)200.0E+6;
+                freeSpace = freeSpace - Config.MinFreeSpace;
 
                 for (int i = 0; i < downloadFileList.Count; i++)
                 {
@@ -328,9 +330,9 @@ namespace TvUndergroundDownloaderLib
                     if (downloadFile == null)
                         continue;
 
-                    if ((long)downloadFile.FileSize <= freeSpace)
+                    if (downloadFile.FileSize <= freeSpace)
                     {
-                        freeSpace = freeSpace - (long)downloadFile.FileSize;
+                        freeSpace = freeSpace - downloadFile.FileSize;
                     }
                     else
                     {

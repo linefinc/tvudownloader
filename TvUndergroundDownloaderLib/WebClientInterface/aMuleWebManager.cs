@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
+using System.Numerics;
 using System.Text;
 using System.Threading;
 using System.Web;
@@ -169,9 +170,12 @@ namespace TvUndergroundDownloaderLib
             return listDownloads;
         }
 
-        public ulong GetFreeSpace()
+        public BigInteger FreeSpace
         {
-            throw new NotImplementedException();
+            get
+            {
+                throw new NotImplementedException();
+            }
         }
 
         /// <summary>
