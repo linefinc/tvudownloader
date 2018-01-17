@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
+using NLog.Time;
 
 namespace TvUndergroundDownloaderLib
 {
     public class eMuleWebManager : IMuleWebManager
     {
-        private List<string> categoryCache;
         private readonly string host;
         private readonly string password;
+        private List<string> categoryCache;
         private string sesID;
 
         /// <summary>
@@ -69,7 +71,7 @@ namespace TvUndergroundDownloaderLib
         {
             //
             // generate login uri
-            //ex: http://localhost:4000/?w=password&p=PASSWORD
+            //ex: http://localhost:4711/?w=password&p=PASSWORD
             //
             IsConnected = false; // reset connection status
 
@@ -185,12 +187,73 @@ namespace TvUndergroundDownloaderLib
             // extract only 
             //Regex regex = new Regex("downmenu.*Status.*onmouseout");
             //var matches = regex.Matches(page);
-            
+
             foreach (var file in knownFiles)
                 if (page.IndexOf(file.HashMD4) > -1)
                     listDownloads.Add(new Ed2kfile(file));
 
             return listDownloads;
+        }
+
+        public ulong GetFreeSpace()
+        {
+            string page = WebSocketGET(string.Format("{0}/?ses={1}&w=stats", host, sesID));
+            const string startPatternStr = "Free Space on Tempdrive:";
+            const string stopPatternStr = "<br";
+
+            if (page == null)
+            {
+                throw new NotImplementedException();
+            }
+
+            int start = page.IndexOf(startPatternStr, StringComparison.InvariantCulture);
+            if (start == -1)
+            {
+                throw new WrongPageFormatException();
+            }
+
+            start += startPatternStr.Length;
+            int stop = page.IndexOf(stopPatternStr, start, StringComparison.InvariantCulture);
+            if (stop == -1)
+            {
+                throw new WrongPageFormatException();
+            }
+
+            string freeSpaceStr = page.Substring(start, stop - start);
+
+            freeSpaceStr = freeSpaceStr.Trim();
+            long scaleFactor = 1;
+
+            if (freeSpaceStr.IndexOf("KB", StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                scaleFactor = 1024;
+            }
+
+            if (freeSpaceStr.IndexOf("MB", StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                scaleFactor = 1024 * 1024;
+            }
+
+            if (freeSpaceStr.IndexOf("GB", StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                scaleFactor = 1024 * 1024 * 1024;
+            }
+
+            if (freeSpaceStr.IndexOf("TB", StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                scaleFactor = long.MaxValue;
+                return Convert.ToUInt64(scaleFactor);
+            }
+
+            freeSpaceStr = freeSpaceStr.Trim(' ', 'K', 'M','G', 'T', 'B');
+
+            float value;
+            if (!float.TryParse(freeSpaceStr, out value))
+            {
+                throw new WrongPageFormatException();
+            }
+            
+            return Convert.ToUInt64(value * scaleFactor);
         }
 
         /// <summary>

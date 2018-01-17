@@ -309,10 +309,51 @@ namespace TvUndergroundDownloaderLib
                     maxSimultaneousDownloadsDictionary[file.Subscription] = counter;
                 }
 
-            _logger.Info("Download file");
+            //
+            //  Free space check
+            //
+
+            #region Free space check
+
+            try
+            {
+                long freeSpace = (long)service.GetFreeSpace();
+
+                freeSpace = freeSpace - (long)200.0E+6;
+
+                for (int i = 0; i < downloadFileList.Count; i++)
+                {
+                    var downloadFile = downloadFileList[i];
+
+                    if (downloadFile == null)
+                        continue;
+
+                    if ((long)downloadFile.FileSize <= freeSpace)
+                    {
+                        freeSpace = freeSpace - (long)downloadFile.FileSize;
+                    }
+                    else
+                    {
+                        downloadFileList.Remove(downloadFile);
+                        _logger.Warn("No space to download {0}", downloadFile.GetFileName());
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Info("This provider not support \"Get Free Space\"");
+                throw;
+            }
+
+            #endregion Free space check
+
             //
             //  Download file
             //
+
+            #region Download file
+
+            _logger.Info("Download file");
             foreach (var downloadFile in downloadFileList)
             {
                 //  this code allow to block anytime the loop
@@ -353,6 +394,8 @@ namespace TvUndergroundDownloaderLib
                 SendMailDownload(downloadFile.GetFileName(), downloadFile.Ed2kLink);
                 Config.TotalDownloads++; //increase Total Downloads for statistic
             }
+
+            #endregion Download file
 
             //
             //  remove all completed

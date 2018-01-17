@@ -11,12 +11,11 @@ namespace TvUndergroundDownloaderLib
 {
     public class aMuleWebManager : IMuleWebManager
     {
+        private readonly string host;
+        private readonly string password;
         private List<string> categoryCache;
         private Cookie cookieSessionID;
         private string defaultCategory;
-        private readonly string host;
-        private readonly string password;
-
         /// <summary>
         ///     constructor
         /// </summary>
@@ -31,48 +30,6 @@ namespace TvUndergroundDownloaderLib
         }
 
         public bool IsConnected { private set; get; }
-
-        /// <summary>
-        ///     Login
-        /// </summary>
-        /// <returns></returns>
-        public LoginStatus Connect()
-        {
-            cookieSessionID = null;
-            //
-            // generate login uri
-            //ex: http://localhost:4000/?w=password&p=PASSWORD
-            //
-            IsConnected = false; // reset connection status
-
-            string requestUri = string.Format("{0}/?pass={1}", host, password);
-            try
-            {
-                RequestGET(requestUri);
-                if (cookieSessionID != null)
-                {
-                    IsConnected = true;
-                    return LoginStatus.Logged;
-                }
-
-                return LoginStatus.PasswordError;
-            }
-            catch
-            {
-                return LoginStatus.ServiceNotAvailable;
-            }
-        }
-
-        /// <summary>
-        ///     Close connection with emule (Logout)
-        /// </summary>
-        /// <remarks>reset Session ID</remarks>
-        public void Close()
-        {
-            RequestGET(string.Format("{0}/logout.php", host));
-            IsConnected = false;
-            cookieSessionID = null;
-        }
 
         /// <summary>
         ///     Add a file to download
@@ -94,36 +51,54 @@ namespace TvUndergroundDownloaderLib
         }
 
         /// <summary>
-        ///     Force start download
+        ///     Close connection with emule (Logout)
         /// </summary>
-        /// <param name="link"></param>
-        public void StartDownload(Ed2kfile link)
+        /// <remarks>reset Session ID</remarks>
+        public void Close()
         {
-            var outgoingQueryString = HttpUtility.ParseQueryString(string.Empty);
-            outgoingQueryString.Add("command", "resume");
-            outgoingQueryString.Add("status", "all");
-            outgoingQueryString.Add("category", defaultCategory);
-            outgoingQueryString.Add(link.HashMD4, "on");
+            RequestGET(string.Format("{0}/logout.php", host));
+            IsConnected = false;
+            cookieSessionID = null;
+        }
 
-            string requestUri = string.Format("{0}/amuleweb-main-dload.php", host);
-
-            RequestPOST(requestUri, outgoingQueryString);
+        public void CloseEmuleApp()
+        {
+            // function not availale
         }
 
         /// <summary>
-        ///     force stop download
+        ///     Login
         /// </summary>
-        /// <param name="link"></param>
-        public void StopDownload(Ed2kfile link)
+        /// <returns></returns>
+        public LoginStatus Connect()
         {
-            var outgoingQueryString = HttpUtility.ParseQueryString(string.Empty);
-            outgoingQueryString.Add("command", "pause");
-            outgoingQueryString.Add("status", "all");
-            outgoingQueryString.Add("category", defaultCategory);
-            outgoingQueryString.Add(link.HashMD4, "on");
+            cookieSessionID = null;
+            //
+            // generate login uri
+            //ex: http://localhost:4711/?w=password&p=PASSWORD
+            //
+            IsConnected = false; // reset connection status
 
-            string requestUri = string.Format("{0}/amuleweb-main-dload.php", host);
-            RequestPOST(requestUri, outgoingQueryString);
+            string requestUri = string.Format("{0}/?pass={1}", host, password);
+            try
+            {
+                RequestGET(requestUri);
+                if (cookieSessionID != null)
+                {
+                    IsConnected = true;
+                    return LoginStatus.Logged;
+                }
+
+                return LoginStatus.PasswordError;
+            }
+            catch
+            {
+                return LoginStatus.ServiceNotAvailable;
+            }
+        }
+        public void ForceRefreshSharedFileList()
+        {
+            // function not availale
         }
 
         /// <summary>
@@ -194,16 +169,43 @@ namespace TvUndergroundDownloaderLib
             return listDownloads;
         }
 
-        public void CloseEmuleApp()
+        public ulong GetFreeSpace()
         {
-            // function not availale
+            throw new NotImplementedException();
         }
 
-        public void ForceRefreshSharedFileList()
+        /// <summary>
+        ///     Force start download
+        /// </summary>
+        /// <param name="link"></param>
+        public void StartDownload(Ed2kfile link)
         {
-            // function not availale
+            var outgoingQueryString = HttpUtility.ParseQueryString(string.Empty);
+            outgoingQueryString.Add("command", "resume");
+            outgoingQueryString.Add("status", "all");
+            outgoingQueryString.Add("category", defaultCategory);
+            outgoingQueryString.Add(link.HashMD4, "on");
+
+            string requestUri = string.Format("{0}/amuleweb-main-dload.php", host);
+
+            RequestPOST(requestUri, outgoingQueryString);
         }
 
+        /// <summary>
+        ///     force stop download
+        /// </summary>
+        /// <param name="link"></param>
+        public void StopDownload(Ed2kfile link)
+        {
+            var outgoingQueryString = HttpUtility.ParseQueryString(string.Empty);
+            outgoingQueryString.Add("command", "pause");
+            outgoingQueryString.Add("status", "all");
+            outgoingQueryString.Add("category", defaultCategory);
+            outgoingQueryString.Add(link.HashMD4, "on");
+
+            string requestUri = string.Format("{0}/amuleweb-main-dload.php", host);
+            RequestPOST(requestUri, outgoingQueryString);
+        }
         /// <summary>
         ///     Web socket
         /// </summary>

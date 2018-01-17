@@ -27,6 +27,8 @@ namespace TvUndergroundDownloaderLib
 
         List<Ed2kfile> GetCurrentDownloads(List<Ed2kfile> knownFiles);
 
+        ulong GetFreeSpace();
+
         void StartDownload(Ed2kfile link);
 
         void StopDownload(Ed2kfile link);

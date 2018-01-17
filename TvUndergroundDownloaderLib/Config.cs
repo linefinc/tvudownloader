@@ -80,7 +80,7 @@ namespace TvUndergroundDownloaderLib
         #endregion Email
 
         public eServiceType ServiceType { get; set; } = eServiceType.eMule;
-        public string ServiceUrl { get; set; } = "http://localhost:4000";
+        public string ServiceUrl { get; set; } = "http://localhost:4711";
         public bool StartEmuleIfClose { get; set; } = false;
         public bool StartMinimized { get; set; } = false;
         public int TotalDownloads { get; set; } = 0;
