@@ -17,6 +17,7 @@ namespace TvUndergroundDownloaderLib
         private List<string> categoryCache;
         private Cookie cookieSessionID;
         private string defaultCategory;
+
         /// <summary>
         ///     constructor
         /// </summary>
@@ -97,6 +98,7 @@ namespace TvUndergroundDownloaderLib
                 return LoginStatus.ServiceNotAvailable;
             }
         }
+
         public void ForceRefreshSharedFileList()
         {
             // function not availale
@@ -210,6 +212,7 @@ namespace TvUndergroundDownloaderLib
             string requestUri = string.Format("{0}/amuleweb-main-dload.php", host);
             RequestPOST(requestUri, outgoingQueryString);
         }
+
         /// <summary>
         ///     Web socket
         /// </summary>
@@ -218,7 +221,7 @@ namespace TvUndergroundDownloaderLib
         private string RequestGET(string uri)
         {
             // create a request
-            var request = (HttpWebRequest) WebRequest.Create(uri);
+            var request = (HttpWebRequest)WebRequest.Create(uri);
             // this is necessary becosue amule web send by default gzip page
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
             request.CookieContainer = new CookieContainer();
@@ -230,7 +233,7 @@ namespace TvUndergroundDownloaderLib
             }
 
             // grab te response and print it out to the console along with the status code
-            var response = (HttpWebResponse) request.GetResponse();
+            var response = (HttpWebResponse)request.GetResponse();
 
             // this code update the coockie
             foreach (Cookie coockie in response.Cookies)
@@ -258,7 +261,7 @@ namespace TvUndergroundDownloaderLib
         private string RequestPOST(string uri, NameValueCollection outgoingQueryString)
         {
             // create a request
-            var request = (HttpWebRequest) WebRequest.Create(uri);
+            var request = (HttpWebRequest)WebRequest.Create(uri);
             // this is necessary becosue amule web send by default gzip page
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
             request.Method = "POST";
@@ -282,7 +285,7 @@ namespace TvUndergroundDownloaderLib
             dataStream.Close();
 
             // grab te response and print it out to the console along with the status code
-            var response = (HttpWebResponse) request.GetResponse();
+            var response = (HttpWebResponse)request.GetResponse();
 
             using (var reader = new StreamReader(response.GetResponseStream(), new UTF8Encoding()))
             {

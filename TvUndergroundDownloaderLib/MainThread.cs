@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Numerics;
 using System.Threading;
@@ -316,29 +317,46 @@ namespace TvUndergroundDownloaderLib
 
             #region Free space check
 
+            _logger.Warn("");
+
+            foreach (var downloadFile in downloadFileList)
+            {
+                _logger.Warn("file {0} {1}", downloadFileList.IndexOf(downloadFile), downloadFile.FileName);
+            }
+
+            _logger.Warn("");
+
             try
             {
+                _logger.Warn("");
+
                 BigInteger freeSpace = service.FreeSpace;
                 _logger.Warn("Free space on temp Tempdrive: {0}", freeSpace);
 
                 freeSpace = freeSpace - Config.MinFreeSpace;
 
-                for (int i = 0; i < downloadFileList.Count; i++)
+                _logger.Warn("");
+
+                BigInteger sumFile = 0;
+
+                _logger.Warn("SumBigInteger: {0}", downloadFileList.SumBigInteger(o => o.FileSize));
+                _logger.Warn("Free space on temp Tempdrive: {0}", freeSpace);
+                while (downloadFileList.Count > 0 && downloadFileList.SumBigInteger(o => o.FileSize) > freeSpace)
                 {
-                    var downloadFile = downloadFileList[i];
+                    _logger.Warn("");
 
-                    if (downloadFile == null)
-                        continue;
+                    _logger.Warn("SumBigInteger: {0}", downloadFileList.SumBigInteger(o => o.FileSize));
+                    _logger.Warn("Free space on temp Tempdrive: {0}", freeSpace);
 
-                    if (downloadFile.FileSize <= freeSpace)
-                    {
-                        freeSpace = freeSpace - downloadFile.FileSize;
-                    }
-                    else
-                    {
-                        downloadFileList.Remove(downloadFile);
-                        _logger.Warn("No space to download {0}", downloadFile.GetFileName());
-                    }
+                    var biggestFile = downloadFileList.OrderByDescending(o => o.FileSize).FirstOrDefault();
+                    if (biggestFile == null)
+                        break;
+
+                    downloadFileList.Remove(biggestFile);
+                    _logger.Warn("File Name: {0}", biggestFile.FileName);
+                    _logger.Warn("File Size: {0}", biggestFile.FileSize);
+
+                    _logger.Warn("");
                 }
             }
             catch (Exception e)
@@ -346,6 +364,7 @@ namespace TvUndergroundDownloaderLib
                 _logger.Info("This provider not support \"Get Free Space\"");
                 throw;
             }
+            _logger.Warn("");
 
             #endregion Free space check
 

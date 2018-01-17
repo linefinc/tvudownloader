@@ -71,10 +71,10 @@ namespace TvUndergroundDownloaderLib
             {
                 return false;
             }
-            if (FileSize != ((Ed2kfile) obj).FileSize)
+            if (FileSize != ((Ed2kfile)obj).FileSize)
                 return false;
 
-            if (HashMD4 != ((Ed2kfile) obj).HashMD4)
+            if (HashMD4 != ((Ed2kfile)obj).HashMD4)
                 return false;
 
             return true;

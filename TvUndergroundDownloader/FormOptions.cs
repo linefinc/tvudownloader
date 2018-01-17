@@ -28,9 +28,6 @@ namespace TvUndergroundDownloader
 
             textBoxEmuleExe.Text = inConfig.eMuleExe;
             textBoxDefaultCategory.Text = inConfig.DefaultCategory;
-        
-        
-        
 
             numericUpDownIntervalTime.Value = inConfig.IntervalTime;
             numericUpDownMinDownloadToStrarTEmule.Value = inConfig.MinToStartEmule;
@@ -69,7 +66,6 @@ namespace TvUndergroundDownloader
             textBoxMailReceiver.Text = inConfig.MailReceiver;
             textBoxMailSender.Text = inConfig.MailSender;
 
-
             // Coockie
 
             textBoxCookieH.Text = inConfig.TVUCookieH;
@@ -81,7 +77,6 @@ namespace TvUndergroundDownloader
             checkBoxWebServerEnabled.Checked = inConfig.WebServerEnable;
             textBoxWebServerPortNumber.Enabled = inConfig.WebServerEnable;
             textBoxWebServerPortNumber.Text = inConfig.WebServerPort.ToString();
-
         }
 
         public bool AutoClearLog => checkBoxAutoClear.Checked;
@@ -118,6 +113,7 @@ namespace TvUndergroundDownloader
         public bool Verbose => checkBoxVerbose.Checked;
         public bool WebServerEnable => checkBoxWebServerEnabled.Checked;
         public int WebServerPort => int.Parse(textBoxSmtpServerPort.Text);
+
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
@@ -158,7 +154,6 @@ namespace TvUndergroundDownloader
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-
             //
             //  Service Url
             //
@@ -166,9 +161,8 @@ namespace TvUndergroundDownloader
             {
                 MessageBox.Show("Service url not valid");
                 return;
-                
             }
-            
+
             //
             //  Check numeric text
             //
@@ -178,13 +172,12 @@ namespace TvUndergroundDownloader
                 MessageBox.Show("Invalid Smtp port number");
                 return;
             }
-            
+
             if (!int.TryParse(textBoxWebServerPortNumber.Text, out tempInt))
             {
                 MessageBox.Show("Invalid web server port number");
                 return;
             }
-
 
             this.DialogResult = DialogResult.OK;
             this.Close();
@@ -192,7 +185,6 @@ namespace TvUndergroundDownloader
 
         private void buttonTestEmailNotification_Click(object sender, EventArgs e)
         {
-
             try
             {
                 string subject = "Email Test";
@@ -213,7 +205,6 @@ namespace TvUndergroundDownloader
                 Console.WriteLine(exception);
                 throw;
             }
-
         }
 
         private void checkBoxEmailNotification_CheckedChanged(object sender, EventArgs e)
@@ -258,6 +249,32 @@ namespace TvUndergroundDownloader
         private void OptionsDialog_Load(object sender, EventArgs e)
         {
             GoogleAnalyticsHelper.TrackScreen("Options");
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            IMuleWebManager service = null;
+            switch (ServiceType)
+            {
+                case Config.eServiceType.aMule:
+                    service = new aMuleWebManager(textBoxServiceUrl.Text, textBoxPassword.Text);
+                    break;
+
+                case Config.eServiceType.eMule:
+                default:
+                    service = new eMuleWebManager(textBoxServiceUrl.Text, textBoxPassword.Text);
+                    break;
+            }
+
+            LoginStatus rc = service.Connect();
+
+            if (rc == LoginStatus.ServiceNotAvailable)
+            {
+                MessageBox.Show("Unable to conncet to URL");
+                return;
+            }
+
+            var fre = service.FreeSpace;
         }
     }
 }

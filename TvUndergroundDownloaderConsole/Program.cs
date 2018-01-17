@@ -47,7 +47,7 @@ namespace TvUndergroundDownloaderConsole
             {
                 logger.Error(e);
             }
-            
+
             logger.Info("Loading config");
 
             FileTarget fileTarget = new FileTarget();
@@ -57,10 +57,11 @@ namespace TvUndergroundDownloaderConsole
             LoggingRule m_loggingRule = new LoggingRule("*", LogLevel.Info, fileTarget);
             nLogConfig.LoggingRules.Insert(0, m_loggingRule);
             LogManager.Configuration = nLogConfig;
-            
+
             //
             //  Setup Worker
             //
+
             #region SetupWorker
 
             worker = new TvUndergroundDownloaderLib.Worker();
@@ -71,6 +72,7 @@ namespace TvUndergroundDownloaderConsole
             //
             //  Start Web Server
             //
+
             #region Stat Web Server
 
             var embendedWebServer = new TvUndergroundDownloaderLib.EmbendedWebServer.EmbendedWebServer();

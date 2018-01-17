@@ -66,7 +66,6 @@ namespace TvUndergroundDownloaderLib
         public RssSubscriptionList RssFeedList { get; set; }
         public long MinFreeSpace { get; set; } = 200 * 1024 * 1024;
 
-
         #region Email
 
         public bool EmailNotification { get; set; } = false;

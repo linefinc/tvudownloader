@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -6,7 +7,6 @@ using System.Net;
 using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
-using NLog;
 
 namespace TvUndergroundDownloaderLib
 {
@@ -196,10 +196,12 @@ namespace TvUndergroundDownloaderLib
             return listDownloads;
         }
 
-        public BigInteger  FreeSpace
+        public BigInteger FreeSpace
         {
             get
             {
+                Logger logger = LogManager.GetCurrentClassLogger();
+
                 string page = WebSocketGET(string.Format("{0}/?ses={1}&w=stats", host, sesID));
 
                 if (page == null)
@@ -223,7 +225,9 @@ namespace TvUndergroundDownloaderLib
                 Match extraSpaceMatch = extraSpaceRegex.Match(page);
                 if (extraSpaceMatch.Success)
                 {
+                    logger.Warn("extraSpaceMatch => {0}", extraSpaceMatch.Groups["ExtraSpace"].Value);
                     freeSpace -= SpaceStrToNumber(extraSpaceMatch.Groups["ExtraSpace"].Value);
+                    logger.Warn("extraSpaceMatch VALUE=> {0}", -freeSpace);
                 }
 
                 Regex freeSpaceRegex = new Regex(@"Free Space on Tempdrive: (?<FreeSpace>\d{0,5}.\d{0,5} ((Bytes)|(KB)|(MB)|(GB)|(TB)))", RegexOptions.IgnoreCase);
@@ -233,25 +237,40 @@ namespace TvUndergroundDownloaderLib
                 {
                     throw new WrongPageFormatException();
                 }
-                freeSpace += SpaceStrToNumber(matchFreeSpace.Groups["FreeSpace"].Value);
-                return freeSpace;
 
+                logger.Warn("matchFreeSpace => {0}", matchFreeSpace.Groups["FreeSpace"].Value);
+                freeSpace += SpaceStrToNumber(matchFreeSpace.Groups["FreeSpace"].Value);
+
+                logger.Warn("matchFreeSpace VALUE => {0}", SpaceStrToNumber(matchFreeSpace.Groups["FreeSpace"].Value));
+
+                logger.Warn("Final val {0}", freeSpace);
+                return freeSpace;
             }
         }
 
         private BigInteger SpaceStrToNumber(string value)
         {
-            float fractionalPart;
-            var trimmedValue = value.Trim(' ', 'K', 'M', 'G', 'T', 'B', 'y', 't', 'e', 's');
+            Logger logger = LogManager.GetCurrentClassLogger();
+            string trimmedValue;
 
-            if (!float.TryParse(trimmedValue,NumberStyles.Float,CultureInfo.InvariantCulture,out fractionalPart))
+            if (value.IndexOf("Bytes", StringComparison.InvariantCultureIgnoreCase) > -1)
             {
-                throw new WrongPageFormatException();
+                trimmedValue = value.Trim(' ', 'B', 'y', 't', 'e', 's');
+                int intVal = 0;
+                if (!int.TryParse(trimmedValue, out intVal))
+                {
+                    throw new WrongPageFormatException();
+                }
+
+                return intVal;
             }
 
-            if (value.IndexOf("Byte", StringComparison.InvariantCultureIgnoreCase) > -1)
+            float fractionalPart;
+            trimmedValue = value.Trim(' ', 'B', 'K', 'M', 'G', 'T');
+
+            if (!float.TryParse(trimmedValue, NumberStyles.Float, CultureInfo.InvariantCulture, out fractionalPart))
             {
-                return Convert.ToUInt64(fractionalPart);
+                throw new WrongPageFormatException();
             }
 
             if (value.IndexOf("KB", StringComparison.InvariantCultureIgnoreCase) > -1)
