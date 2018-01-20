@@ -499,15 +499,10 @@ namespace TvUndergroundDownloaderLib
                 }
 
                 LastUpdate = DateTime.Now;
-
-                if (CurrentTVUStatus != TvuStatus.Complete)
+                var ts = DateTime.Now - LastSerieStatusUpgradeDate;
+                if (ts.TotalDays > 15 || (CurrentTVUStatus == TvuStatus.Error))
                 {
-                    var ts = DateTime.Now - LastSerieStatusUpgradeDate;
-
-                    if (ts.TotalDays > 15)
-                    {
-                        UpdateTVUStatus(cookieContainer);
-                    }
+                    UpdateTVUStatus(cookieContainer);
                 }
             }
             catch (Exception e)
@@ -516,6 +511,8 @@ namespace TvUndergroundDownloaderLib
                 CurrentTVUStatus = TvuStatus.Error;
                 throw;
             }
+
+
         }
 
         public void UpdateTVUStatus(CookieContainer cookieContainer)
