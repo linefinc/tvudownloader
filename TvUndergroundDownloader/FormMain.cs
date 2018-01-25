@@ -431,7 +431,7 @@ namespace TvUndergroundDownloader
                     switch (rssSubscription.CurrentTVUStatus)
                     {
                         case TvuStatus.Complete:
-                            text = "Error";
+                            text = "Complete";
                             break;
                         case TvuStatus.StillRunning:
                             text = "Still Running";
