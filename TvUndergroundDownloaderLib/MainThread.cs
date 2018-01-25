@@ -316,47 +316,25 @@ namespace TvUndergroundDownloaderLib
             //
 
             #region Free space check
-
-            _logger.Warn("");
-
-            foreach (var downloadFile in downloadFileList)
-            {
-                _logger.Warn("file {0} {1}", downloadFileList.IndexOf(downloadFile), downloadFile.FileName);
-            }
-
-            _logger.Warn("");
-
+            
             try
             {
-                _logger.Warn("");
-
                 BigInteger freeSpace = service.FreeSpace;
                 _logger.Warn("Free space on temp Tempdrive: {0}", freeSpace);
 
                 freeSpace = freeSpace - Config.MinFreeSpace;
 
-                _logger.Warn("");
-
                 BigInteger sumFile = 0;
 
-                _logger.Warn("SumBigInteger: {0}", downloadFileList.SumBigInteger(o => o.FileSize));
-                _logger.Warn("Free space on temp Tempdrive: {0}", freeSpace);
                 while (downloadFileList.Count > 0 && downloadFileList.SumBigInteger(o => o.FileSize) > freeSpace)
                 {
-                    _logger.Warn("");
-
-                    _logger.Warn("SumBigInteger: {0}", downloadFileList.SumBigInteger(o => o.FileSize));
-                    _logger.Warn("Free space on temp Tempdrive: {0}", freeSpace);
 
                     var biggestFile = downloadFileList.OrderByDescending(o => o.FileSize).FirstOrDefault();
                     if (biggestFile == null)
                         break;
 
                     downloadFileList.Remove(biggestFile);
-                    _logger.Warn("File Name: {0}", biggestFile.FileName);
-                    _logger.Warn("File Size: {0}", biggestFile.FileSize);
-
-                    _logger.Warn("");
+                    _logger.Warn("Out of space: {0} {1}", biggestFile.FileName, biggestFile.FileSize);
                 }
             }
             catch (Exception e)

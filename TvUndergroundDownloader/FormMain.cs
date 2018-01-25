@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NLog.LayoutRenderers;
+using TvUndergroundDownloader.Extensions;
 using TvUndergroundDownloader.Properties;
 using TvUndergroundDownloaderLib;
 using TvUndergroundDownloaderLib.EmbendedWebServer;
@@ -616,8 +617,8 @@ namespace TvUndergroundDownloader
             #endregion
 
             // setup data binding
-            rssSubscriptionListBindingSource.DataSource = this.MainConfig.RssFeedList;
-
+            rssSubscriptionListBindingSource.DataSource = new SortableBindingList<RssSubscription>(this.MainConfig.RssFeedList);
+            
             // download date time
             downloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
 
@@ -1293,8 +1294,8 @@ namespace TvUndergroundDownloader
 
         private void UpdateRssFeedGUI()
         {
-            rssSubscriptionListBindingSource.DataSource = new RssSubscriptionList();
-            rssSubscriptionListBindingSource.DataSource = this.MainConfig.RssFeedList;
+            rssSubscriptionListBindingSource.DataSource = new SortableBindingList<RssSubscription>();
+            rssSubscriptionListBindingSource.DataSource = new SortableBindingList<RssSubscription>(this.MainConfig.RssFeedList);
             dataGridViewMain.Refresh();
         }
 
