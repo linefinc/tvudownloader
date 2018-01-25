@@ -420,6 +420,39 @@ namespace TvUndergroundDownloader
 
         private void dataGridViewMain_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
+            if (e.ColumnIndex == ColumnStatus.Index)
+            {
+                DataGridViewRow dataGridViewRowedItem = dataGridViewMain.Rows[e.RowIndex];
+                var rssSubscription = dataGridViewRowedItem.DataBoundItem as RssSubscription;
+
+                string text = "Error";
+                if (rssSubscription != null)
+                {
+                    switch (rssSubscription.CurrentTVUStatus)
+                    {
+                        case TvuStatus.Complete:
+                            text = "Error";
+                            break;
+                        case TvuStatus.StillRunning:
+                            text = "Still Running";
+                            break;
+                        case TvuStatus.Unknown:
+                            text = "Unknown";
+                            break;
+                        case TvuStatus.StillIncomplete:
+                            text = "Still Incomplete";
+                            break;
+                        case TvuStatus.OnHiatus:
+                            text = "On Hiatus";
+                            break;
+                        default:
+                            text = "Error";
+                            break;
+                    }
+                }
+                dataGridViewRowedItem.Cells[e.ColumnIndex].Value = text;
+            }
+
             if (e.ColumnIndex == ColumnImageDub.Index)
             {
                 DataGridViewRow dataGridViewRowedItem = dataGridViewMain.Rows[e.RowIndex];
@@ -618,7 +651,7 @@ namespace TvUndergroundDownloader
 
             // setup data binding
             rssSubscriptionListBindingSource.DataSource = new SortableBindingList<RssSubscription>(this.MainConfig.RssFeedList);
-            
+
             // download date time
             downloadDataTime = DateTime.Now.AddMinutes(MainConfig.IntervalTime);
 
