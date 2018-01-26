@@ -7,6 +7,7 @@ using System.Net;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
+using TvUndergroundDownloaderLib.Extensions;
 
 namespace TvUndergroundDownloaderLib
 {
@@ -316,15 +317,13 @@ namespace TvUndergroundDownloaderLib
             //
 
             #region Free space check
-            
+
             try
             {
                 BigInteger freeSpace = service.FreeSpace;
-                _logger.Warn("Free space on temp Tempdrive: {0}", freeSpace);
+                _logger.Warn("Free space on temp Tempdrive: {0}", freeSpace.SmartFomater());
 
                 freeSpace = freeSpace - Config.MinFreeSpace;
-
-                BigInteger sumFile = 0;
 
                 while (downloadFileList.Count > 0 && downloadFileList.SumBigInteger(o => o.FileSize) > freeSpace)
                 {
@@ -334,7 +333,7 @@ namespace TvUndergroundDownloaderLib
                         break;
 
                     downloadFileList.Remove(biggestFile);
-                    _logger.Warn("Out of space: {0} {1}", biggestFile.FileName, biggestFile.FileSize);
+                    _logger.Warn("Out of space: {0} ({1})", biggestFile.FileName, new BigInteger(biggestFile.FileSize).SmartFomater());
                 }
             }
             catch (Exception e)

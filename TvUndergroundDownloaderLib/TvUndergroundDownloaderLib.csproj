@@ -62,6 +62,7 @@
     <Compile Include="DownloadFile.cs" />
     <Compile Include="Ed2kfile.cs" />
     <Compile Include="ExportImportHelper.cs" />
+    <Compile Include="Extensions\BigIntegerFormater.cs" />
     <Compile Include="GeoIP.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Exception\LoginException.cs" />
