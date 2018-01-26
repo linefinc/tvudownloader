@@ -394,7 +394,6 @@
             this.textBoxEmuleApp.Name = "textBoxEmuleApp";
             this.textBoxEmuleApp.Size = new System.Drawing.Size(517, 20);
             this.textBoxEmuleApp.TabIndex = 49;
-            this.textBoxEmuleApp.Text = "Auto start mule";
             this.textBoxEmuleApp.TextChanged += new System.EventHandler(this.textBoxEmuleApp_TextChanged);
             // 
             // linkLabelAddress
