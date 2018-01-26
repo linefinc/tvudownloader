@@ -17,6 +17,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
+##### Version 0.9.1 26/01/2018  #####
+* Improve stability
+* Add wizard
+* Minor UI update
+* Add free space check
+* Add support for page "https://tvunderground.org.ru/index.php?show=episodes&sid=XXXXXX"
+* Add delete when completed (experimental)
+
 ##### Version 0.9.0 (Alpha) 03/09/2017  #####
 * Added smtp ssl support
 * Added embedded web server (now experimental future)
