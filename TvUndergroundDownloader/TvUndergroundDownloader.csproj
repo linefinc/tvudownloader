@@ -287,6 +287,7 @@
     <None Include="Resources\Wizad\Page3.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\logo_orginal.png" />
     <Content Include="Resources\Wizad\Page10.png" />
     <Content Include="Resources\Wizad\Page12.png" />
     <Content Include="Resources\Wizad\Page13.png" />
