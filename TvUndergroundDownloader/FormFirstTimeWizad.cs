@@ -277,6 +277,21 @@ namespace TvUndergroundDownloader
             }
         }
 
+        private void buttonSelectEmuleApp_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "eMule|emule.exe|Application|*.exe|All files (*.*)|*.*";
+
+            DialogResult dialogResult = openFileDialog.ShowDialog();
+            if (dialogResult != DialogResult.OK)
+            {
+                return;
+            }
+
+            eMuleApp = openFileDialog.FileName;
+            textBoxEmuleApp.Text = openFileDialog.FileName;
+        }
+
         private void buttonTestNow_Click(object sender, EventArgs e)
         {
             IMuleWebManager service = null;
@@ -424,6 +439,11 @@ namespace TvUndergroundDownloader
         private void textBoxEmuleApp_TextChanged(object sender, EventArgs e)
         {
             this.eMuleApp = textBoxEmuleApp.Text;
+        }
+
+        private void textBoxPassword_TextChanged(object sender, EventArgs e)
+        {
+            this.Password = textBoxPassword.Text;
         }
 
         private void textBoxServicePort_TextChanged(object sender, EventArgs e)

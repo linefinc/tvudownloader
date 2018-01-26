@@ -386,6 +386,7 @@
             this.buttonSelectEmuleApp.TabIndex = 50;
             this.buttonSelectEmuleApp.Text = "Select eMule app";
             this.buttonSelectEmuleApp.UseVisualStyleBackColor = true;
+            this.buttonSelectEmuleApp.Click += new System.EventHandler(this.buttonSelectEmuleApp_Click);
             // 
             // textBoxEmuleApp
             // 
@@ -463,6 +464,7 @@
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.Size = new System.Drawing.Size(228, 20);
             this.textBoxPassword.TabIndex = 39;
+            this.textBoxPassword.TextChanged += new System.EventHandler(this.textBoxPassword_TextChanged);
             // 
             // label1
             // 
