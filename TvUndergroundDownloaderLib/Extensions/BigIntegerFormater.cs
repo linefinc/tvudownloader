@@ -7,37 +7,42 @@ namespace TvUndergroundDownloaderLib.Extensions
     {
         public static string SmartFomater(this BigInteger value)
         {
-            if (value <= 0)
+            if (value < 0)
                 throw new ArgumentOutOfRangeException(nameof(value));
 
-            var magnetude = BigInteger.Log10(value);
+            //
+            //  Use base 2 
+            //  https://en.wikipedia.org/wiki/File_size
+            //
 
-            if ((magnetude > 0) & (magnetude <= 3))
+            var magnetude = BigInteger.Log(value, 2);
+
+            if ((magnetude > 0) & (magnetude <= 10))
             {
                 return value.ToString() + " byte";
             }
 
-            if ((magnetude > 3) & (magnetude <= 6))
+            if ((magnetude > 10) & (magnetude <= 20))
             {
-                double outValue = Math.Pow(10.0, magnetude - 3);
+                double outValue = Math.Pow(2.0, magnetude - 10);
                 return outValue.ToString("F1") + "KB";
             }
 
-            if ((magnetude > 6) & (magnetude <= 9))
+            if ((magnetude > 20) & (magnetude <= 30))
             {
-                double outValue = Math.Pow(10.0, magnetude - 6);
+                double outValue = Math.Pow(2.0, magnetude - 20);
                 return outValue.ToString("F1") + "MB";
             }
 
-            if ((magnetude > 9) & (magnetude <= 12))
+            if ((magnetude > 30) & (magnetude <= 40))
             {
-                double outValue = Math.Pow(10.0, magnetude - 9);
+                double outValue = Math.Pow(2.0, magnetude - 30);
                 return outValue.ToString("F1") + "GB";
             }
 
-            if ((magnetude > 12) & (magnetude <= 15))
+            if ((magnetude > 40) & (magnetude <= 50))
             {
-                double outValue = Math.Pow(10.0, magnetude - 12);
+                double outValue = Math.Pow(2.0, magnetude - 40);
                 return outValue.ToString("F1") + "TB";
             }
 
