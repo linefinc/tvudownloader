@@ -17,6 +17,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
+##### Version 0.9.2 04/02/2018  #####
+* Disable SSL certificate check
+
 ##### Version 0.9.1 26/01/2018  #####
 * Improve stability
 * Add wizard
