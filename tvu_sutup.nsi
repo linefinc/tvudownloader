@@ -13,7 +13,7 @@ Name "Tv Underground Downloader"
 
 ;--------------------------------
 ; The file to write
-OutFile ".\bin\Release\tvud_installer_0.9.1.exe"
+OutFile ".\TvUndergroundDownloader\bin\Release\tvud_installer_0.9.2.exe"
 SetCompress force			; force compressor
 SetCompressor /SOLID LZMA	; define lzma compressor
 
@@ -29,10 +29,10 @@ InstallDirRegKey HKLM "Software\TVUndergroundDownloader" "Install_Dir"
 
 ;--------------------------------
 ;Version Information
-VIProductVersion "0.8.1.0"
+VIProductVersion "0.9.2.0"
 VIAddVersionKey /LANG=0 "ProductName" "Tv Underground Downloader"
 VIAddVersionKey /LANG=0 "Comments" "Tv Underground Downloader"
-VIAddVersionKey /LANG=0 "FileVersion" "0.9.1.0"
+VIAddVersionKey /LANG=0 "FileVersion" "0.9.2.0"
 VIAddVersionKey /LANG=0 "FileDescription" "Tv Underground Downloader"
 VIAddVersionKey /LANG=0 "LegalCopyright" "Copyright(C) 2017 linefinc[at]users.sourceforge.net"
 
@@ -48,15 +48,15 @@ RequestExecutionLevel admin
 
 ;--------------------------------
 ;Interface logo and icon
-!define MUI_ICON ".\Resources\appicon1.ico"
+!define MUI_ICON ".\TvUndergroundDownloader\Resources\appicon1.ico"
 !define MUI_HEADERIMAGE
-!define MUI_HEADERIMAGE_BITMAP ".\Resources\logo.png"
+!define MUI_HEADERIMAGE_BITMAP ".\TvUndergroundDownloader\Resources\logo.png"
 !define MUI_HEADERIMAGE_RIGHT
 
 ;--------------------------------
 ; Pages
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE "..\license.txt"
+!insertmacro MUI_PAGE_LICENSE ".\license.txt"
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
@@ -109,21 +109,21 @@ Section "Tvunderground Downloader (required)"
   SetOutPath $INSTDIR
   
   ; Put file there
-  File ".\bin\Release\TvUndergroundDownloader.exe"
-  File ".\bin\Release\TvUndergroundDownloader.exe.manifest"
-  File /r ".\bin\Release\*.dll"
-  File /r ".\bin\Release\*.pdb"
-  File /r ".\bin\Release\*.ico"
-  File /r ".\bin\Release\*.html"
-  File /r ".\bin\Release\*.png"
-  File  ".\bin\Release\NLog.dll"
-  File  ".\bin\Release\NLog.xml"
-  File  ".\bin\Release\NLog.Windows.Forms.dll"
-  File  ".\bin\Release\NLog.Windows.Forms.xml"
+  File ".\TvUndergroundDownloader\bin\Release\TvUndergroundDownloader.exe"
+  File ".\TvUndergroundDownloader\bin\Release\TvUndergroundDownloader.exe.manifest"
+  File /r ".\TvUndergroundDownloader\bin\Release\*.dll"
+  File /r ".\TvUndergroundDownloader\bin\Release\*.pdb"
+  File /r ".\TvUndergroundDownloader\bin\Release\*.ico"
+  File /r ".\TvUndergroundDownloader\bin\Release\*.html"
+  File /r ".\TvUndergroundDownloader\bin\Release\*.png"
+  File  ".\TvUndergroundDownloader\bin\Release\NLog.dll"
+  File  ".\TvUndergroundDownloader\bin\Release\NLog.xml"
+  File  ".\TvUndergroundDownloader\bin\Release\NLog.Windows.Forms.dll"
+  File  ".\TvUndergroundDownloader\bin\Release\NLog.Windows.Forms.xml"
   
   
-  File "..\README.txt"
-  File "..\license.txt"
+  File ".\README.txt"
+  File ".\license.txt"
       
   ; Write the installation path into the registry
   WriteRegStr HKLM SOFTWARE\TVUndergroundDownloader "Install_Dir" "$INSTDIR"
