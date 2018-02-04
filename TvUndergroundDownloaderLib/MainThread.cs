@@ -132,16 +132,17 @@ namespace TvUndergroundDownloaderLib
             // select only enabled RSS
             var rssFeedList = Config.RssFeedList.FindAll(delegate (RssSubscription rss) { return rss.Enabled; });
 
+            //
+            //  First update the chanels
+            //
             foreach (var feed in rssFeedList)
             {
                 try
                 {
                     _logger.Info(@"Read RSS ""{0}""", feed.TitleCompact);
                     feed.Update(cookieContainer);
-                    foreach (var file in feed.GetNewDownload((int)Config.MaxSimultaneousFeedDownloadsDefault))
+                    foreach (var file in feed.GetPendingFiles().Take(feed.MaxSimultaneousDownload))
                     {
-                        var sfile = new DownloadFile(feed, file);
-                        downloadFileList.Add(sfile);
                         _logger.Info(@"Found new file ""{0}""", file.FileName);
                     }
                 }
@@ -168,6 +169,25 @@ namespace TvUndergroundDownloaderLib
                 int progress = (Config.RssFeedList.IndexOf(feed) + 1) * 100;
                 progress = progress / Config.RssFeedList.Count;
             }
+
+            // 
+            //  Add feed to list to download
+            //
+            foreach (var feed in rssFeedList)
+            {
+                int counter = feed.MaxSimultaneousDownload;
+
+                foreach (var file in feed.GetPendingFiles())
+                {
+                    if (counter > 0)
+                    {
+                        downloadFileList.Add(file);
+                        counter--;
+                    }
+                }
+            }
+
+
 
             Config.Save();
 
