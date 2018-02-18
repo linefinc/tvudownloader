@@ -943,6 +943,7 @@
             this.ColumnImageDub.HeaderText = "Dub";
             this.ColumnImageDub.Name = "ColumnImageDub";
             this.ColumnImageDub.ReadOnly = true;
+            this.ColumnImageDub.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.ColumnImageDub.Width = 5;
             // 
             // ColumnDubLanguage
@@ -983,7 +984,8 @@
             this.CheckBoxColumn.HeaderText = "Enabled";
             this.CheckBoxColumn.Name = "CheckBoxColumn";
             this.CheckBoxColumn.ReadOnly = true;
-            this.CheckBoxColumn.Width = 52;
+            this.CheckBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.CheckBoxColumn.Width = 71;
             // 
             // FormMain
             // 
