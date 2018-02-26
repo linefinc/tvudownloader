@@ -114,6 +114,37 @@ namespace TvUndergroundDownloaderLib
 
         public string Category { get; set; } = string.Empty;
         public TvuStatus CurrentTVUStatus { get; private set; } = TvuStatus.Unknown;
+
+        /// <summary>
+        /// TV Underground status human readable
+        /// </summary>
+        public string TVUStatus
+        {
+            get
+            {
+                switch (CurrentTVUStatus)
+                {
+                    case TvuStatus.Complete:
+                        return "Complete";
+
+                    case TvuStatus.StillRunning:
+                        return "Still Running";
+
+                    case TvuStatus.Unknown:
+                        return "Unknown";
+
+                    case TvuStatus.StillIncomplete:
+                        return "Still Incomplete";
+
+                    case TvuStatus.OnHiatus:
+                        return "On Hiatus";
+
+                    default:
+                        return "Error";
+                }
+            }
+        }
+
         public DateTime LastUpdate { get; set; } = DateTime.MinValue;
         public bool DeleteWhenCompleted { get; set; } = false;
 
@@ -149,6 +180,7 @@ namespace TvUndergroundDownloaderLib
         }
 
         public string Url { get; }
+
         /// <summary>
         /// Last download
         /// </summary>
@@ -170,9 +202,6 @@ namespace TvUndergroundDownloaderLib
                 return _downloadFiles.Where(o => o.DownloadDate.HasValue).Max(o => o.DownloadDate.Value);
             }
         }
-
-
-
 
         /// <summary>
         ///     Load data from xml
@@ -511,8 +540,6 @@ namespace TvUndergroundDownloaderLib
                 CurrentTVUStatus = TvuStatus.Error;
                 throw;
             }
-
-
         }
 
         public void UpdateTVUStatus(CookieContainer cookieContainer)
