@@ -380,7 +380,7 @@ namespace TvUndergroundDownloaderLib
             var outArray = new List<DownloadFile>();
 
             outArray.AddRange(_downloadFiles.FindAll(o => o.DownloadDate.HasValue == false));
-
+            outArray.Sort((a, b) => String.Compare(a.FileName, b.FileName, StringComparison.Ordinal));
             return outArray;
         }
 
