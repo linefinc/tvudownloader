@@ -16,19 +16,25 @@ namespace TvUndergroundDownloaderLib
             if (config.IntervalBetweenUpgradeCheck == 0)
                 return false;
 
+            DateTime nextCheck = DateTime.MinValue;
+            
             try
             {
-                var provider = CultureInfo.InvariantCulture;
 
-                var lastCheckDateTime = DateTime.ParseExact(config.LastUpgradeCheck, "yyyy-MM-dd", provider);
-                var nextCheck = lastCheckDateTime.AddDays(config.IntervalBetweenUpgradeCheck);
+                if (config.LastUpgradeCheck.HasValue)
+                {
+                    nextCheck = config.LastUpgradeCheck.Value.AddDays(config.IntervalBetweenUpgradeCheck);
+                }
 
-                lastCheckDateTime = DateTime.ParseExact(config.LastUpgradeCheck, "yyyy-MM-dd", provider);
+
+
 
                 if ((DateTime.Now < nextCheck) & (force == false))
+                {
                     return false;
+                }
 
-                config.LastUpgradeCheck = DateTime.Now.ToString("yyyy-MM-dd");
+                config.LastUpgradeCheck = DateTime.Now;
 
                 var osv = Environment.OSVersion;
 

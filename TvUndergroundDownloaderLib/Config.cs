@@ -57,7 +57,7 @@ namespace TvUndergroundDownloaderLib
         public virtual string FileNameLog => "log.txt";
         public int IntervalBetweenUpgradeCheck { get; set; } = 5;
         public int IntervalTime { get; set; } = 30;     // todo: replace with timespan
-        public string LastUpgradeCheck { get; set; }    // todo: make nullable
+        public DateTime? LastUpgradeCheck { get; set; }
 
         public uint MaxSimultaneousFeedDownloadsDefault { get; set; } = 3;
         public int MinToStartEmule { get; set; } = 0;
@@ -260,8 +260,17 @@ namespace TvUndergroundDownloaderLib
             if (NodeExist(xDoc, "intervalBetweenUpgradeCheck"))
                 IntervalBetweenUpgradeCheck = ReadInt(xDoc, "intervalBetweenUpgradeCheck", 5, 1, 15);
 
-            if (NodeExist(xDoc, "LastUpgradeCheck"))
-                LastUpgradeCheck = ReadString(xDoc, "LastUpgradeCheck", DateTime.Now.ToString("yyyy-MM-dd"));
+            LastUpgradeCheck = null;
+            if (NodeExist(xDoc, nameof(LastUpgradeCheck)))
+            {
+                var tempStr = ReadString(xDoc, nameof(LastUpgradeCheck), string.Empty);
+                DateTime tempDateTime;
+                if (DateTime.TryParse(tempStr, out tempDateTime))
+                {
+                    LastUpgradeCheck = tempDateTime;
+                }
+            }
+               
 
             if (NodeExist(xDoc, "TotalDownloads"))
                 TotalDownloads = ReadInt(xDoc, "TotalDownloads", 0);
@@ -354,7 +363,10 @@ namespace TvUndergroundDownloaderLib
 
             writer.WriteElementString("intervalBetweenUpgradeCheck", IntervalBetweenUpgradeCheck.ToString());
 
-            writer.WriteElementString("LastUpgradeCheck", LastUpgradeCheck);
+            if (LastUpgradeCheck.HasValue)
+            {
+                writer.WriteElementString(nameof(LastUpgradeCheck), LastUpgradeCheck.Value.ToString("s"));
+            }
 
             writer.WriteElementString("TotalDownloads", TotalDownloads.ToString());
 
