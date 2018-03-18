@@ -422,7 +422,7 @@ namespace TvUndergroundDownloader
         {
             if (e.ColumnIndex == ColumnStatus.Index)
             {
-               
+
             }
 
             if (e.ColumnIndex == ColumnImageDub.Index)
@@ -1248,14 +1248,12 @@ namespace TvUndergroundDownloader
 
             foreach (DataGridViewRow selectedItem in dataGridViewMain.SelectedRows)
             {
-                //DataGridViewColumn col = DataGridViewTextBoxColumnTitle;
-                //string titleCompact = selectedItem.Cells[col.Name].Value.ToString();
-                //RssSubscription feed = MainConfig.RssFeedList.Find(x => (x.TitleCompact == titleCompact));
-
-                //if (feed != null)
-                //{
-                //    feed.UpdateTVUStatus(cookieContainer);
-                //}
+                var feed = selectedItem.DataBoundItem as RssSubscription;
+                
+                if (feed != null)
+                {
+                    feed.UpdateTVUStatus(cookieContainer);
+                }
             }
             MainConfig.Save();
             UpdateRssFeedGUI(); ///upgrade GUI
