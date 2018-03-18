@@ -217,6 +217,9 @@ namespace TvUndergroundDownloaderLib
             if (NodeExist(xDoc, "Verbose"))
                 Verbose = ReadBoolean(xDoc, "Verbose", false);
 #endif
+            //
+            // EmailNotification
+            //
 
             #region Email notification
 
@@ -329,13 +332,23 @@ namespace TvUndergroundDownloaderLib
 
             writer.WriteElementString("Verbose", Verbose.ToString());
 
+            //
+            // EmailNotification
+            //
+
+            #region Mail
+
             writer.WriteElementString("EmailNotification", EmailNotification.ToString());
-
-            writer.WriteElementString("ServerSMTP", SmtpServerAddress);
-
+            writer.WriteElementString("SmtpServerAddress", SmtpServerAddress);
+            writer.WriteElementString("SmtpServerPort", SmtpServerPort.ToString());
+            writer.WriteElementString("SmtpServerEnableSsl", SmtpServerEnableSsl.ToString());
+            writer.WriteElementString("SmtpServerEnableAuthentication", SmtpServerEnableAuthentication.ToString());
+            writer.WriteElementString("SmtpServerUserName", SmtpServerUserName);
+            writer.WriteElementString("SmtpServerPassword", SmtpServerPassword);
             writer.WriteElementString("MailReceiver", MailReceiver);
-
             writer.WriteElementString("MailSender", MailSender);
+
+            #endregion Mail
 
             writer.WriteElementString("tvudwid", tvudwid);
 

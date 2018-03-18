@@ -681,7 +681,9 @@ namespace TvUndergroundDownloader
                 MainConfig.MaxSimultaneousFeedDownloadsDefault = optDialog.MaxSimultaneousFeedDownloads;
                 MainConfig.WebServerEnable = optDialog.WebServerEnable;
                 MainConfig.WebServerPort = optDialog.WebServerPort;
-
+                //
+                //  Smtp config
+                //
                 MainConfig.SmtpServerAddress = optDialog.SmtpServerAddress;
                 MainConfig.SmtpServerPort = optDialog.SmtpServerPort;
                 MainConfig.SmtpServerEnableSsl = optDialog.SmtpServerEnableSsl;
@@ -690,8 +692,9 @@ namespace TvUndergroundDownloader
                 MainConfig.SmtpServerPassword = optDialog.SmtpServerPassword;
                 MainConfig.MailSender = optDialog.MailSender;
                 MainConfig.MailReceiver = optDialog.MailReceiver;
-
+                //
                 // tvu save cookie
+                //
                 MainConfig.TVUCookieH = optDialog.tvuCookieH;
                 MainConfig.TVUCookieI = optDialog.tvuCookieI;
                 MainConfig.TVUCookieT = optDialog.tvuCookieT;
