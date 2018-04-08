@@ -1,8 +1,7 @@
-﻿using System;
-using System.Globalization;
+﻿using NLog;
+using System;
 using System.Text.RegularExpressions;
 using System.Xml;
-using NLog;
 
 namespace TvUndergroundDownloaderLib
 {
@@ -17,17 +16,13 @@ namespace TvUndergroundDownloaderLib
                 return false;
 
             DateTime nextCheck = DateTime.MinValue;
-            
+
             try
             {
-
                 if (config.LastUpgradeCheck.HasValue)
                 {
                     nextCheck = config.LastUpgradeCheck.Value.AddDays(config.IntervalBetweenUpgradeCheck);
                 }
-
-
-
 
                 if ((DateTime.Now < nextCheck) & (force == false))
                 {

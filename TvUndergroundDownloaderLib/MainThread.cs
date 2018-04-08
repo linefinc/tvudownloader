@@ -359,7 +359,7 @@ namespace TvUndergroundDownloaderLib
             catch (Exception e)
             {
                 _logger.Info("This provider not support \"Get Free Space\"");
-                throw;
+                _logger.Debug(e);
             }
             _logger.Warn("");
 
