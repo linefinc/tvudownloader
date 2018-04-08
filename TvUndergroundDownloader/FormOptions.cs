@@ -251,30 +251,6 @@ namespace TvUndergroundDownloader
             GoogleAnalyticsHelper.TrackScreen("Options");
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            IMuleWebManager service = null;
-            switch (ServiceType)
-            {
-                case Config.eServiceType.aMule:
-                    service = new aMuleWebManager(textBoxServiceUrl.Text, textBoxPassword.Text);
-                    break;
-
-                case Config.eServiceType.eMule:
-                default:
-                    service = new eMuleWebManager(textBoxServiceUrl.Text, textBoxPassword.Text);
-                    break;
-            }
-
-            LoginStatus rc = service.Connect();
-
-            if (rc == LoginStatus.ServiceNotAvailable)
-            {
-                MessageBox.Show("Unable to conncet to URL");
-                return;
-            }
-
-            var fre = service.FreeSpace;
-        }
+     
     }
 }

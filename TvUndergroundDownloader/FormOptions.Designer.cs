@@ -97,7 +97,6 @@
             this.label20 = new System.Windows.Forms.Label();
             this.textBoxWebServerPortNumber = new System.Windows.Forms.TextBox();
             this.checkBoxWebServerEnabled = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.tabPageLog.SuspendLayout();
             this.tabPageEmail.SuspendLayout();
@@ -405,7 +404,6 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.label19);
             this.groupBox1.Controls.Add(this.comboBoxClientType);
             this.groupBox1.Controls.Add(this.label14);
@@ -840,16 +838,6 @@
             this.checkBoxWebServerEnabled.UseVisualStyleBackColor = true;
             this.checkBoxWebServerEnabled.CheckedChanged += new System.EventHandler(this.checkBoxWebServerEnabled_CheckedChanged);
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(135, 112);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 38;
-            this.button1.Text = "Check Now";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // FormOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -960,6 +948,5 @@
         private System.Windows.Forms.CheckBox checkBoxEnableAuthentication;
         private System.Windows.Forms.CheckBox checkBoxEnableSSL;
         private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.Button button1;
     }
 }
