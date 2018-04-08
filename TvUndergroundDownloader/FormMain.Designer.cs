@@ -29,15 +29,17 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.timerRssCheck = new System.Windows.Forms.Timer(this.components);
             this.timerDelayStartup = new System.Windows.Forms.Timer(this.components);
@@ -45,16 +47,12 @@
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
             this.tabMain = new System.Windows.Forms.TabPage();
             this.linkLabelFeedLink = new System.Windows.Forms.LinkLabel();
-            this.rssSubscriptionListBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.checkBoxDeleteWhenCompleted = new System.Windows.Forms.CheckBox();
             this.checkBoxEnabled = new System.Windows.Forms.CheckBox();
             this.numericUpDownMaxSimultaneousDownload = new System.Windows.Forms.NumericUpDown();
             this.comboBoxCategory = new System.Windows.Forms.ComboBox();
             this.checkBoxFeedPauseDownload = new System.Windows.Forms.CheckBox();
             this.dataGridViewFeedFiles = new System.Windows.Forms.DataGridView();
-            this.fileNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.publicationDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.downloadDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStripFileFeed = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.markAsDownloadedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -125,16 +123,20 @@
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rssSubscriptionListBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.fileNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.publicationDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.downloadDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnTitleCompact = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnImageDub = new System.Windows.Forms.DataGridViewImageColumn();
             this.ColumnDubLanguage = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnTotalDownloads = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ColumnLastChannelUpdate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabLog.SuspendLayout();
             this.tabMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.rssSubscriptionListBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxSimultaneousDownload)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFeedFiles)).BeginInit();
             this.contextMenuStripFileFeed.SuspendLayout();
@@ -147,6 +149,7 @@
             this.tabPending.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.rssSubscriptionListBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // timerRssCheck
@@ -218,10 +221,6 @@
             this.linkLabelFeedLink.TabStop = true;
             this.linkLabelFeedLink.Text = "linkLabel1";
             this.linkLabelFeedLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelFeedLink_LinkClicked);
-            // 
-            // rssSubscriptionListBindingSource
-            // 
-            this.rssSubscriptionListBindingSource.DataSource = typeof(TvUndergroundDownloaderLib.RssSubscriptionList);
             // 
             // checkBoxDeleteWhenCompleted
             // 
@@ -306,26 +305,6 @@
             this.dataGridViewFeedFiles.Size = new System.Drawing.Size(631, 106);
             this.dataGridViewFeedFiles.TabIndex = 39;
             // 
-            // fileNameDataGridViewTextBoxColumn
-            // 
-            this.fileNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.fileNameDataGridViewTextBoxColumn.DataPropertyName = "FileName";
-            this.fileNameDataGridViewTextBoxColumn.HeaderText = "FileName";
-            this.fileNameDataGridViewTextBoxColumn.Name = "fileNameDataGridViewTextBoxColumn";
-            this.fileNameDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // publicationDateDataGridViewTextBoxColumn
-            // 
-            this.publicationDateDataGridViewTextBoxColumn.DataPropertyName = "PublicationDate";
-            this.publicationDateDataGridViewTextBoxColumn.HeaderText = "PublicationDate";
-            this.publicationDateDataGridViewTextBoxColumn.Name = "publicationDateDataGridViewTextBoxColumn";
-            // 
-            // downloadDateDataGridViewTextBoxColumn
-            // 
-            this.downloadDateDataGridViewTextBoxColumn.DataPropertyName = "DownloadDate";
-            this.downloadDateDataGridViewTextBoxColumn.HeaderText = "DownloadDate";
-            this.downloadDateDataGridViewTextBoxColumn.Name = "downloadDateDataGridViewTextBoxColumn";
-            // 
             // contextMenuStripFileFeed
             // 
             this.contextMenuStripFileFeed.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -367,6 +346,7 @@
             this.ColumnTotalDownloads,
             this.ColumnStatus,
             this.CheckBoxColumn,
+            this.ColumnLastChannelUpdate,
             this.ColumnCategory});
             this.dataGridViewMain.ContextMenuStrip = this.contextMenuStripFeed;
             this.dataGridViewMain.DataSource = this.rssSubscriptionListBindingSource;
@@ -875,8 +855,8 @@
             // dataGridViewTextBoxColumn1
             // 
             this.dataGridViewTextBoxColumn1.DataPropertyName = "CurrentTVUStatus";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridViewTextBoxColumn1.HeaderText = "Status";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
@@ -885,8 +865,8 @@
             // dataGridViewTextBoxColumn2
             // 
             this.dataGridViewTextBoxColumn2.DataPropertyName = "CurrentTVUStatus";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridViewTextBoxColumn2.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewTextBoxColumn2.DefaultCellStyle = dataGridViewCellStyle7;
             this.dataGridViewTextBoxColumn2.HeaderText = "Status";
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.Width = 62;
@@ -894,8 +874,8 @@
             // dataGridViewTextBoxColumn3
             // 
             this.dataGridViewTextBoxColumn3.DataPropertyName = "CurrentTVUStatus";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridViewTextBoxColumn3.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewTextBoxColumn3.DefaultCellStyle = dataGridViewCellStyle8;
             this.dataGridViewTextBoxColumn3.HeaderText = "Status";
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.ReadOnly = true;
@@ -904,8 +884,8 @@
             // dataGridViewTextBoxColumn4
             // 
             this.dataGridViewTextBoxColumn4.DataPropertyName = "CurrentTVUStatus";
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridViewTextBoxColumn4.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewTextBoxColumn4.DefaultCellStyle = dataGridViewCellStyle9;
             this.dataGridViewTextBoxColumn4.HeaderText = "Status";
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.Width = 62;
@@ -913,8 +893,8 @@
             // dataGridViewTextBoxColumn5
             // 
             this.dataGridViewTextBoxColumn5.DataPropertyName = "CurrentTVUStatus";
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridViewTextBoxColumn5.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewTextBoxColumn5.DefaultCellStyle = dataGridViewCellStyle10;
             this.dataGridViewTextBoxColumn5.HeaderText = "Status";
             this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
             this.dataGridViewTextBoxColumn5.ReadOnly = true;
@@ -923,11 +903,35 @@
             // dataGridViewTextBoxColumn6
             // 
             this.dataGridViewTextBoxColumn6.DataPropertyName = "CurrentTVUStatus";
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridViewTextBoxColumn6.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewTextBoxColumn6.DefaultCellStyle = dataGridViewCellStyle11;
             this.dataGridViewTextBoxColumn6.HeaderText = "Status";
             this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
             this.dataGridViewTextBoxColumn6.Width = 62;
+            // 
+            // rssSubscriptionListBindingSource
+            // 
+            this.rssSubscriptionListBindingSource.DataSource = typeof(TvUndergroundDownloaderLib.RssSubscriptionList);
+            // 
+            // fileNameDataGridViewTextBoxColumn
+            // 
+            this.fileNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.fileNameDataGridViewTextBoxColumn.DataPropertyName = "FileName";
+            this.fileNameDataGridViewTextBoxColumn.HeaderText = "FileName";
+            this.fileNameDataGridViewTextBoxColumn.Name = "fileNameDataGridViewTextBoxColumn";
+            this.fileNameDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // publicationDateDataGridViewTextBoxColumn
+            // 
+            this.publicationDateDataGridViewTextBoxColumn.DataPropertyName = "PublicationDate";
+            this.publicationDateDataGridViewTextBoxColumn.HeaderText = "PublicationDate";
+            this.publicationDateDataGridViewTextBoxColumn.Name = "publicationDateDataGridViewTextBoxColumn";
+            // 
+            // downloadDateDataGridViewTextBoxColumn
+            // 
+            this.downloadDateDataGridViewTextBoxColumn.DataPropertyName = "DownloadDate";
+            this.downloadDateDataGridViewTextBoxColumn.HeaderText = "DownloadDate";
+            this.downloadDateDataGridViewTextBoxColumn.Name = "downloadDateDataGridViewTextBoxColumn";
             // 
             // ColumnTitleCompact
             // 
@@ -989,10 +993,22 @@
             this.CheckBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.CheckBoxColumn.Width = 71;
             // 
+            // ColumnLastChannelUpdate
+            // 
+            this.ColumnLastChannelUpdate.DataPropertyName = "LastChannelUpdate";
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.NullValue = null;
+            this.ColumnLastChannelUpdate.DefaultCellStyle = dataGridViewCellStyle4;
+            this.ColumnLastChannelUpdate.HeaderText = "Last Download";
+            this.ColumnLastChannelUpdate.Name = "ColumnLastChannelUpdate";
+            this.ColumnLastChannelUpdate.ReadOnly = true;
+            // 
             // ColumnCategory
             // 
             this.ColumnCategory.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.ColumnCategory.DataPropertyName = "Category";
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.ColumnCategory.DefaultCellStyle = dataGridViewCellStyle5;
             this.ColumnCategory.HeaderText = "Category";
             this.ColumnCategory.Name = "ColumnCategory";
             this.ColumnCategory.ReadOnly = true;
@@ -1017,7 +1033,6 @@
             this.tabLog.ResumeLayout(false);
             this.tabMain.ResumeLayout(false);
             this.tabMain.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.rssSubscriptionListBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxSimultaneousDownload)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFeedFiles)).EndInit();
             this.contextMenuStripFileFeed.ResumeLayout(false);
@@ -1032,6 +1047,7 @@
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.rssSubscriptionListBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1133,6 +1149,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnTotalDownloads;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnStatus;
         private System.Windows.Forms.DataGridViewCheckBoxColumn CheckBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnLastChannelUpdate;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnCategory;
     }
 }

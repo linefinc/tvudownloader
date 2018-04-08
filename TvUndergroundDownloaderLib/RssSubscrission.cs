@@ -163,7 +163,17 @@ namespace TvUndergroundDownloaderLib
         }
 
         public bool Enabled { get; set; } = true;
-        public TimeSpan LastChannelUpdate => DateTime.Now - GetLastDownloadDate();
+
+        public int LastChannelUpdate
+        {
+            get
+            {
+                var diff = DateTime.Now - GetLastDownloadDate();
+                return Convert.ToInt32(diff.TotalDays);
+            }
+        }
+
+
         public DateTime LastSerieStatusUpgradeDate { get; private set; } = DateTime.MinValue;
         public int MaxSimultaneousDownload { get; set; } = 3;
         public bool PauseDownload { get; set; }
@@ -375,6 +385,7 @@ namespace TvUndergroundDownloaderLib
         /// </summary>
         public DateTime GetLastDownloadDate()
         {
+
             var dt = DateTime.MinValue;
             foreach (var file in _downloadFiles)
                 if (file.DownloadDate.HasValue)
