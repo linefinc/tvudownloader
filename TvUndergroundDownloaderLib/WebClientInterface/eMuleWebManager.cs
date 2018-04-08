@@ -198,9 +198,13 @@ namespace TvUndergroundDownloaderLib
 
         public BigInteger FreeSpace
         {
+            //
+            //  Note: this function works only with emule in english
+            // 
+
             get
             {
-                //Logger logger = LogManager.GetCurrentClassLogger();
+                
 
                 string page = WebSocketGET(string.Format("{0}/?ses={1}&w=stats", host, sesID));
 
@@ -225,9 +229,7 @@ namespace TvUndergroundDownloaderLib
                 Match extraSpaceMatch = extraSpaceRegex.Match(page);
                 if (extraSpaceMatch.Success)
                 {
-                    //logger.Trace("extraSpaceMatch => {0}", extraSpaceMatch.Groups["ExtraSpace"].Value);
                     freeSpace -= SpaceStrToNumber(extraSpaceMatch.Groups["ExtraSpace"].Value);
-                    //logger.Trace("extraSpaceMatch VALUE=> {0}", -freeSpace);
                 }
 
                 Regex freeSpaceRegex = new Regex(@"Free Space on Tempdrive: (?<FreeSpace>\d{0,5}.\d{0,5} ((Bytes)|(KB)|(MB)|(GB)|(TB)))", RegexOptions.IgnoreCase);
@@ -238,12 +240,8 @@ namespace TvUndergroundDownloaderLib
                     throw new WrongPageFormatException();
                 }
 
-                //logger.Trace("matchFreeSpace => {0}", matchFreeSpace.Groups["FreeSpace"].Value);
                 freeSpace += SpaceStrToNumber(matchFreeSpace.Groups["FreeSpace"].Value);
-
-                //logger.Trace("matchFreeSpace VALUE => {0}", SpaceStrToNumber(matchFreeSpace.Groups["FreeSpace"].Value));
-
-                //logger.Warn("Final val {0}", freeSpace);
+                
                 return freeSpace;
             }
         }
