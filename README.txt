@@ -17,6 +17,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
+##### Version 0.9.3 08/04/2018  #####
+* Fix bug with Emule with interface in different languages
+* Fix SMTP setup 
+* Fix version check
+* Restore some UI columns
+* Remove dead code
+
 ##### Version 0.9.2 04/02/2018  #####
 * Disable SSL certificate check
 
