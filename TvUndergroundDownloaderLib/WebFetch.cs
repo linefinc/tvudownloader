@@ -14,6 +14,10 @@ namespace TvUndergroundDownloaderLib
             IgnoreBadCertificates();
 
             Thread.Sleep(myDelay);
+            //
+            //  Enable TLS12
+            //
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
             // used to build entire input
             var sb = new StringBuilder();
