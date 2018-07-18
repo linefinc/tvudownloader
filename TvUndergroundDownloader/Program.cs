@@ -55,6 +55,10 @@ namespace TvUndergroundDownloader
             FileTarget fileTarget = new FileTarget();
             fileTarget.Name = "logfile";
             fileTarget.FileName = new ConfigWindows().FileNameLog;
+            fileTarget.MaxArchiveFiles = 10;
+            fileTarget.ArchiveEvery = FileArchivePeriod.Day;
+            fileTarget.ArchiveAboveSize = 1000000;
+
             config.AddTarget(fileTarget.Name, fileTarget);
             LoggingRule loggingRule = new LoggingRule("*", LogLevel.Info, fileTarget);
             config.LoggingRules.Insert(0, loggingRule);
