@@ -54,6 +54,7 @@ namespace TvUndergroundDownloaderLib
         public string eMuleExe { get; set; } = String.Empty;
         public bool Enebled { get; set; } = true;
         public virtual string FileNameConfig => "config.xml";
+        public string FileNameConfigBackup => FileNameConfig + ".back";
         public virtual string FileNameLog => "log.txt";
         public int IntervalBetweenUpgradeCheck { get; set; } = 5;
         public int IntervalTime { get; set; } = 30;     // todo: replace with timespan
@@ -134,7 +135,18 @@ namespace TvUndergroundDownloaderLib
             logger.Info("FileNameConfig {0}", fileName);
 
             var xDoc = new XmlDocument();
-            xDoc.Load(FileNameConfig);
+            try
+            {
+                xDoc.Load(FileNameConfig);
+            }
+            catch
+            {
+                //
+                // try to load backup file
+                //
+                xDoc.Load(FileNameConfigBackup);
+            }
+
 
             // Check configuration version to avoid bad behaviors
             //string configVersionStr = ReadString(xDoc, "version", string.Empty);
@@ -270,7 +282,7 @@ namespace TvUndergroundDownloaderLib
                     LastUpgradeCheck = tempDateTime;
                 }
             }
-               
+
 
             if (NodeExist(xDoc, "TotalDownloads"))
                 TotalDownloads = ReadInt(xDoc, "TotalDownloads", 0);
@@ -297,6 +309,8 @@ namespace TvUndergroundDownloaderLib
 
             RssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title, StringComparison.InvariantCulture));
         }
+
+
 
         public void Save()
         {
@@ -391,6 +405,12 @@ namespace TvUndergroundDownloaderLib
                 feed.Write(writer);
             writer.WriteEndElement(); // end RSSChannel
             writer.Close();
+
+            //
+            //  Add copy for backup
+            //
+            File.Copy(FileNameConfig, FileNameConfigBackup);
+
         }
 
         private static bool NodeExist(XmlDocument xDoc, string nodeName)
