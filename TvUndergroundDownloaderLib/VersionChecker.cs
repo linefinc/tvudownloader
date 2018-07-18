@@ -31,21 +31,9 @@ namespace TvUndergroundDownloaderLib
 
                 config.LastUpgradeCheck = DateTime.Now;
 
-                var osv = Environment.OSVersion;
-
-                var geoIP = GeoIP.GetCountryFromWeb();
-
                 // require update status
                 var doc = new XmlDocument();
-                string url =
-                    string.Format(
-                        "http://tvudownloader.sourceforge.net/version.php?ver={0}&tvuid={1}&TotalDownloads={2}&osv={3}&countryCode={4}",
-                        Config.VersionFull.Replace(" ", "%20"),
-                        config.tvudwid,
-                        config.TotalDownloads,
-                        osv.VersionString.Replace(" ", "%20"),
-                        geoIP.CountryCode);
-                doc.Load(url);
+                doc.Load("http://tvudownloader.sourceforge.net/version.php");
 
                 string lastVersionStr = "";
 
@@ -61,15 +49,35 @@ namespace TvUndergroundDownloaderLib
                 match = rg.Match(Config.VersionFull);
                 var currentVersion = new Version(match.Value);
 
+                string lastSupportedVersionStr = "";
+
+                foreach (XmlNode t in doc.GetElementsByTagName("lastSupported"))
+                    lastSupportedVersionStr = t.InnerText;
+
+                match = rg.Match(lastSupportedVersionStr);
+                var lastSupportedVersion = new Version(match.Value);
+
+                if (currentVersion < lastSupportedVersion)
+                {
+                    throw new UnsupportedVersionException();
+                }
+
                 if (currentVersion < lastVersion)
                     return true;
 
                 return false;
             }
+            catch (UnsupportedVersionException ex)
+            {
+                logger.Error(ex);
+                throw;
+            }
             catch
             {
                 return false;
             }
+
+            return false;
         }
     }
 }

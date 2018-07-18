@@ -63,7 +63,6 @@
     <Compile Include="Ed2kfile.cs" />
     <Compile Include="ExportImportHelper.cs" />
     <Compile Include="Extensions\BigIntegerFormater.cs" />
-    <Compile Include="GeoIP.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Exception\LoginException.cs" />
     <Compile Include="MainThread.cs" />
@@ -71,6 +70,7 @@
     <Compile Include="RssSubscriptionList.cs" />
     <Compile Include="RssSubscrission.cs" />
     <Compile Include="SmtpSimpleClient.cs" />
+    <Compile Include="Exception\UnsupportedVersionException.cs" />
     <Compile Include="VersionChecker.cs" />
     <Compile Include="LinqExtension.cs" />
     <Compile Include="WebFetch.cs" />

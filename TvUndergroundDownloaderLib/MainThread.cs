@@ -441,6 +441,10 @@ namespace TvUndergroundDownloaderLib
                 if (VersionChecker.CheckNewVersion(Config, true))
                     _logger.Info("New Version is available at http://tvudownloader.sourceforge.net/");
             }
+            catch (UnsupportedVersionException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 _logger.Error(ex);

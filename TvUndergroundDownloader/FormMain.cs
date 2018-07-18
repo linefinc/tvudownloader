@@ -1309,14 +1309,28 @@ namespace TvUndergroundDownloader
 
         private void versionCheckToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (VersionChecker.CheckNewVersion(MainConfig, true))
+            try
             {
-                MessageBox.Show("New Version is available at http://tvudownloader.sourceforge.net/");
+                if (VersionChecker.CheckNewVersion(MainConfig, true))
+                {
+                    MessageBox.Show("New Version is available at http://tvudownloader.sourceforge.net/");
+                }
+                else
+                {
+                    MessageBox.Show("Software is already update");
+                }
             }
-            else
+            catch (UnsupportedVersionException)
             {
-                MessageBox.Show("Software is already update");
+                MessageBox.Show("The support of this version is expired");
             }
+            catch (Exception exception)
+            {
+                _logger.Error(exception);
+                
+            }
+
+            
         }
     }
 }
