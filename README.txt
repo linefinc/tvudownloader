@@ -17,6 +17,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
+##### Version 0.9.4 18/07/2018  #####
+* Fix Enable TLS12
+* Add secondary backup configuration file
+* Improve logger behaviour
+
 ##### Version 0.9.3 08/04/2018  #####
 * Fix bug with Emule with interface in different languages
 * Fix SMTP setup 
