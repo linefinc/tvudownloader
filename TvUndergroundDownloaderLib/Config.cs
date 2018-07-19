@@ -409,7 +409,10 @@ namespace TvUndergroundDownloaderLib
             //
             //  Add copy for backup
             //
-            File.Copy(FileNameConfig, FileNameConfigBackup);
+            var xDoc = new XmlDocument();
+            xDoc.Load(FileNameConfig);
+            xDoc.Save(FileNameConfigBackup);
+
 
         }
 
