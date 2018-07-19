@@ -17,6 +17,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
+##### Version 0.9.5 19/07/2018  #####
+* Fix backup config
+
 ##### Version 0.9.4 18/07/2018  #####
 * Fix Enable TLS12
 * Add secondary backup configuration file
