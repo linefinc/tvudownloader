@@ -8,6 +8,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
+using TvUndergroundDownloaderLib.Interfaces;
 
 namespace TvUndergroundDownloaderLib
 {
@@ -24,7 +25,7 @@ namespace TvUndergroundDownloaderLib
     /// <summary>
     ///     Rss submission container
     /// </summary>
-    public class RssSubscription
+    public class RssSubscription : ISubscription
     {
         private static readonly Regex _regexPageSource = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=episodes&sid=(?<seid>\d{1,10})");
 
