@@ -1,5 +1,4 @@
-﻿using NLog;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -8,10 +7,12 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
+using NLog;
 using TvUndergroundDownloaderLib.Interfaces;
 
 namespace TvUndergroundDownloaderLib
 {
+
     public enum TvuStatus
     {
         Complete,
@@ -34,8 +35,8 @@ namespace TvUndergroundDownloaderLib
         private static Regex _regexEdk2Link = new Regex(@"ed2k://\|file\|(.*)\|\d+\|\w+\|/");
 
         private static Regex _regexFeedLink =
-                new Regex(
-                    @"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=ed2k&season=(?<season>\d{1,10})&sid\[(?<sid>\d{1,10})\]=\d{1,10}");
+            new Regex(
+                @"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=ed2k&season=(?<season>\d{1,10})&sid\[(?<sid>\d{1,10})\]=\d{1,10}");
 
         private readonly List<DownloadFile> _downloadFiles = new List<DownloadFile>();
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();

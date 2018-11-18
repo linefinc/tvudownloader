@@ -68,6 +68,7 @@
     <Compile Include="Interfaces\ISubscription.cs" />
     <Compile Include="MainThread.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RssSubscription.cs" />
     <Compile Include="RssSubscriptionList.cs" />
     <Compile Include="RssSubscrission.cs" />
     <Compile Include="SmtpSimpleClient.cs" />
