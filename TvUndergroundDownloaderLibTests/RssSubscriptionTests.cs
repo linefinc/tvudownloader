@@ -1,96 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Net;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TvUndergroundDownloaderLib;
+using Config = TvUndergroundDownloaderLib.Tests.Config;
 
-namespace TvUndergroundDownloaderLib.Tests
+namespace TvUndergroundDownloaderLibTests
 {
     [TestClass()]
     public class RssSubscriptionTests
     {
-        //[TestMethod()]
-        //public void RssSubscriptionTest()
-        //{
-        //    Assert.Fail();
-        //}
-
-        //[TestMethod()]
-        //public void RssSubscriptionTest1()
-        //{
-        //    Assert.Fail();
-        //}
-
-        //[TestMethod()]
-        //public void LoadFormXmlTest()
-        //{
-        //    Assert.Fail();
-        //}
-
-        //[TestMethod()]
-        //public void AddFileTest()
-        //{
-        //    Assert.Fail();
-        //}
-
-        //[TestMethod()]
-        //public void GetAllFileTest()
-        //{
-        //    Assert.Fail();
-        //}
-
-        //[TestMethod()]
-        //public void GetDownloadedFilesTest()
-        //{
-        //    Assert.Fail();
-        //}
-
-        //[TestMethod()]
-        //public void GetDownloadFileTest()
-        //{
-        //    Assert.Fail();
-        //}
-
-        //[TestMethod()]
-        //public void GetDownloadFileCountTest()
-        //{
-        //    Assert.Fail();
-        //}
-
-        //[TestMethod()]
-        //public void GetLastDownloadDateTest()
-        //{
-        //    Assert.Fail();
-        //}
-
-        //[TestMethod()]
-        //public void GetNewDownloadTest()
-        //{
-        //    Assert.Fail();
-        //}
-
-        //[TestMethod()]
-        //public void GetPendingFilesTest()
-        //{
-        //    Assert.Fail();
-        //}
-
-        //[TestMethod()]
-        //public void SetFileDownloadedTest()
-        //{
-        //    Assert.Fail();
-        //}
-
-        //[TestMethod()]
-        //public void SetFileNotDownloadedTest()
-        //{
-        //    Assert.Fail();
-        //}
-
-        //[TestMethod()]
-        //public void UpdateTest()
-        //{
-        //    Assert.Fail();
-        //}
-
         [TestMethod()]
         public void UpdateTVUStatusTest()
         {
@@ -114,14 +32,6 @@ namespace TvUndergroundDownloaderLib.Tests
             Assert.IsFalse(newRssSubscription.DownloadedFiles.Count != 1);
 
             Assert.IsFalse(file1.DownloadDate.HasValue != true);
-
-            
         }
-
-        //[TestMethod()]
-        //public void WriteTest()
-        //{
-        //    Assert.Fail();
-        //}
     }
 }
