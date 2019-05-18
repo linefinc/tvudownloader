@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -7,12 +8,10 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
-using NLog;
 using TvUndergroundDownloaderLib.Interfaces;
 
 namespace TvUndergroundDownloaderLib
 {
-
     public enum TvuStatus
     {
         Complete,
@@ -28,17 +27,22 @@ namespace TvUndergroundDownloaderLib
     /// </summary>
     public class RssSubscription : ISubscription
     {
-        private static readonly Regex _regexPageSource = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=episodes&sid=(?<seid>\d{1,10})");
-
         private static readonly Regex _regexFeedSource = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/rss.php\?se_id=(?<seid>\d{1,10})");
-
+        private static readonly Regex _regexPageSource = new Regex(@"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=episodes&sid=(?<seid>\d{1,10})");
         private static Regex _regexEdk2Link = new Regex(@"ed2k://\|file\|(.*)\|\d+\|\w+\|/");
 
         private static Regex _regexFeedLink =
             new Regex(
                 @"http(s)?://(www\.)?((tvunderground)|(tvu)).org.ru/index.php\?show=ed2k&season=(?<season>\d{1,10})&sid\[(?<sid>\d{1,10})\]=\d{1,10}");
 
+        /// <summary>
+        /// List of files in RSS subscription
+        /// </summary>
         private readonly List<DownloadFile> _downloadFiles = new List<DownloadFile>();
+
+        /// <summary>
+        /// Logger
+        /// </summary>
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
@@ -117,6 +121,94 @@ namespace TvUndergroundDownloaderLib
         public string Category { get; set; } = string.Empty;
         public TvuStatus CurrentTVUStatus { get; private set; } = TvuStatus.Unknown;
 
+        public bool DeleteWhenCompleted { get; set; } = false;
+
+        /// <summary>
+        /// List of all downloaded files
+        /// </summary>
+        public ReadOnlyCollection<DownloadFile> DownloadedFiles
+        {
+            get
+            {
+                return _downloadFiles.FindAll(o => o.DownloadDate.HasValue)
+                    .OrderBy(o => o.FileName).ToList().AsReadOnly();
+            }
+        }
+
+        public string DubLanguage
+        {
+            get
+            {
+                if (Title.IndexOf("english", 0, StringComparison.InvariantCulture) > -1) return "gb";
+                if (Title.IndexOf("french", 0, StringComparison.InvariantCulture) > -1) return "fr";
+                if (Title.IndexOf("german", 0, StringComparison.InvariantCulture) > -1) return "de";
+                if (Title.IndexOf("italian", 0, StringComparison.InvariantCulture) > -1) return "it";
+                if (Title.IndexOf("japanese", 0, StringComparison.InvariantCulture) > -1) return "jp";
+                if (Title.IndexOf("spanish", 0, StringComparison.InvariantCulture) > -1) return "es";
+                return string.Empty;
+            }
+        }
+
+        public bool Enabled { get; set; } = true;
+
+        /// <summary>
+        /// List of all files
+        /// </summary>
+        public ReadOnlyCollection<DownloadFile> Files => _downloadFiles.AsReadOnly();
+
+        /// <summary>
+        /// Return last updete in the channel
+        /// </summary>
+        public int LastChannelUpdate
+        {
+            get
+            {
+                var diff = DateTime.Now - GetLastDownloadDate();
+                return Convert.ToInt32(diff.TotalDays);
+            }
+        }
+
+        /// <summary>
+        /// Last download
+        /// </summary>
+        /// <remarks>Can be null</remarks>
+        public DateTime? LastDownload
+        {
+            get
+            {
+                if (_downloadFiles == null)
+                {
+                    return null;
+                }
+
+                if (_downloadFiles.Count == 0)
+                {
+                    return null;
+                }
+
+                return _downloadFiles.Where(o => o.DownloadDate.HasValue).Max(o => o.DownloadDate.Value);
+            }
+        }
+
+        public DateTime LastSerieStatusUpgradeDate { get; private set; } = DateTime.MinValue;
+
+        public DateTime LastUpdate { get; set; } = DateTime.MinValue;
+
+        public int MaxSimultaneousDownload { get; set; } = 3;
+
+        public bool PauseDownload { get; set; }
+
+        public int SeasonId { get; }
+
+        public string Title { get; private set; }
+
+        public string TitleCompact => Title.Replace("[ed2k] tvunderground.org.ru:", "").Trim();
+
+        public int TotalFilesDownloaded
+        {
+            get { return _downloadFiles.FindAll(o => o.DownloadDate.HasValue).Count; }
+        }
+
         /// <summary>
         /// TV Underground status human readable
         /// </summary>
@@ -147,73 +239,7 @@ namespace TvUndergroundDownloaderLib
             }
         }
 
-        public DateTime LastUpdate { get; set; } = DateTime.MinValue;
-        public bool DeleteWhenCompleted { get; set; } = false;
-
-        public string DubLanguage
-        {
-            get
-            {
-                if (Title.IndexOf("english", 0, StringComparison.InvariantCulture) > -1) return "gb";
-                if (Title.IndexOf("french", 0, StringComparison.InvariantCulture) > -1) return "fr";
-                if (Title.IndexOf("german", 0, StringComparison.InvariantCulture) > -1) return "de";
-                if (Title.IndexOf("italian", 0, StringComparison.InvariantCulture) > -1) return "it";
-                if (Title.IndexOf("japanese", 0, StringComparison.InvariantCulture) > -1) return "jp";
-                if (Title.IndexOf("spanish", 0, StringComparison.InvariantCulture) > -1) return "es";
-                return string.Empty;
-            }
-        }
-
-        public bool Enabled { get; set; } = true;
-
-        public int LastChannelUpdate
-        {
-            get
-            {
-                var diff = DateTime.Now - GetLastDownloadDate();
-                return Convert.ToInt32(diff.TotalDays);
-            }
-        }
-
-
-        public DateTime LastSerieStatusUpgradeDate { get; private set; } = DateTime.MinValue;
-        public int MaxSimultaneousDownload { get; set; } = 3;
-        public bool PauseDownload { get; set; }
-
-        public int SeasonId { get; }
-
-        public string Title { get; private set; }
-
-        public string TitleCompact => Title.Replace("[ed2k] tvunderground.org.ru:", "").Trim();
-
-        public int TotalFilesDownloaded
-        {
-            get { return _downloadFiles.FindAll(o => o.DownloadDate.HasValue).Count; }
-        }
-
         public string Url { get; }
-
-        /// <summary>
-        /// Last download
-        /// </summary>
-        /// <remarks>Can be null</remarks>
-        public DateTime? LastDownload
-        {
-            get
-            {
-                if (_downloadFiles == null)
-                {
-                    return null;
-                }
-
-                if (_downloadFiles.Count == 0)
-                {
-                    return null;
-                }
-
-                return _downloadFiles.Where(o => o.DownloadDate.HasValue).Max(o => o.DownloadDate.Value);
-            }
-        }
 
         /// <summary>
         ///     Load data from xml
@@ -366,28 +392,10 @@ namespace TvUndergroundDownloaderLib
         }
 
         /// <summary>
-        /// List of all files
-        /// </summary>
-        public ReadOnlyCollection<DownloadFile> Files => _downloadFiles.AsReadOnly();
-
-        /// <summary>
-        /// List of all downloaded files
-        /// </summary>
-        public ReadOnlyCollection<DownloadFile> DownloadedFiles
-        {
-            get
-            {
-                return _downloadFiles.FindAll(o => o.DownloadDate.HasValue)
-                    .OrderBy(o => o.FileName).ToList().AsReadOnly();
-            }
-        }
-
-        /// <summary>
-        /// Last download date
+        /// return last download date
         /// </summary>
         public DateTime GetLastDownloadDate()
         {
-
             var dt = DateTime.MinValue;
             foreach (var file in _downloadFiles)
                 if (file.DownloadDate.HasValue)
@@ -426,14 +434,46 @@ namespace TvUndergroundDownloaderLib
             return outArray;
         }
 
-        public void SetFileDownloaded(Ed2kfile file)
+        /// <summary>
+        /// Download the page and search a valid ed2k link
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="cookieContainer"></param>
+        /// <returns></returns>
+        public Ed2kfile ProcessGuid(string url, CookieContainer cookieContainer)
         {
-            var localFile = _downloadFiles.Find(o => o.Equals(file as DownloadFile));
-            if (localFile == null)
-                throw new Exception("File missing in feed");
-            localFile.DownloadDate = DateTime.Now;
+            _logger.Info("Get page {0}", url);
+            string webPage = WebFetch.Fetch(url, false, cookieContainer);
+            //
+            int i = webPage.IndexOf("ed2k://|file|", StringComparison.InvariantCulture);
+            webPage = webPage.Substring(i);
+            i = webPage.IndexOf("|/", StringComparison.InvariantCulture);
+            webPage = webPage.Substring(0, i + "|/".Length);
+            return new Ed2kfile(webPage);
         }
 
+        /// <summary>
+        /// Set File Downloaded.
+        /// </summary>
+        /// <param name="file"></param>
+        public void SetFileDownloaded(Ed2kfile file)
+        {
+            var list = _downloadFiles.Where(o => o.HashMD4 == file.HashMD4 && o.FileSize == file.FileSize).ToArray();
+            if (list.Any() == false)
+            {
+                throw new Exception("File missing in feed");
+            }
+
+            foreach (var item in list)
+            {
+                item.DownloadDate = DateTime.Now;
+            }
+        }
+
+        /// <summary>
+        /// Set File Not Downloaded
+        /// </summary>
+        /// <param name="file"></param>
         public void SetFileNotDownloaded(Ed2kfile file)
         {
             var localFile = _downloadFiles.Find(o => o.Equals(file as DownloadFile));
@@ -598,6 +638,10 @@ namespace TvUndergroundDownloaderLib
             _logger.Info("Serie status: Unknown");
         }
 
+        /// <summary>
+        /// Save all the data to a xml writer
+        /// </summary>
+        /// <param name="writer"></param>
         public void Write(XmlTextWriter writer)
         {
             if (DeleteWhenCompleted)
@@ -669,18 +713,6 @@ namespace TvUndergroundDownloaderLib
             writer.WriteEndElement(); // end file
 
             writer.WriteEndElement(); // end channel
-        }
-
-        public Ed2kfile ProcessGuid(string url, CookieContainer cookieContainer)
-        {
-            _logger.Info("Get page {0}", url);
-            string webPage = WebFetch.Fetch(url, false, cookieContainer);
-            //
-            int i = webPage.IndexOf("ed2k://|file|", StringComparison.InvariantCulture);
-            webPage = webPage.Substring(i);
-            i = webPage.IndexOf("|/", StringComparison.InvariantCulture);
-            webPage = webPage.Substring(0, i + "|/".Length);
-            return new Ed2kfile(webPage);
         }
     }
 }
