@@ -17,6 +17,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
+##### Version 0.9.6 18/05/2019  #####
+* Fix bug [#18 Duplicate downloaded multiple times]
+
 ##### Version 0.9.5 19/07/2018  #####
 * Fix backup config
 
