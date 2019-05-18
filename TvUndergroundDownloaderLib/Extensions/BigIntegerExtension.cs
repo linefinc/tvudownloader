@@ -1,17 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 
 namespace TvUndergroundDownloaderLib.Extensions
 {
-    public static class BigIntegerFormater
+    public static class BigIntegerExtension
     {
+        /// <summary>
+        /// Return file size with correct size KB, MB, GB
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static string SmartFomater(this BigInteger value)
         {
             if (value < 0)
                 throw new ArgumentOutOfRangeException(nameof(value));
 
             //
-            //  Use base 2 
+            //  Use base 2
             //  https://en.wikipedia.org/wiki/File_size
             //
 
@@ -49,5 +56,38 @@ namespace TvUndergroundDownloaderLib.Extensions
             return value.ToString();
         }
 
+        /// <summary>
+        /// Sum all size in an list
+        /// </summary>
+        /// <param name="source">Data source</param>
+        /// <returns></returns>
+        public static BigInteger SumBigInteger(this IEnumerable<BigInteger> source)
+        {
+            if (source.Count() == 0)
+            {
+                throw new InvalidOperationException("Cannot compute sum for an empty set.");
+            }
+
+            BigInteger bg = 0;
+
+            foreach (BigInteger bigInteger in source)
+            {
+                bg += bigInteger;
+            }
+            return bg;
+        }
+
+        /// <summary>
+        /// Sum all size in an list (labda style)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="numbers"></param>
+        /// <param name="selector"></param>
+        /// <returns></returns>
+        public static BigInteger SumBigInteger<T>(this IEnumerable<T> numbers,
+            Func<T, BigInteger> selector)
+        {
+            return (from num in numbers select selector(num)).SumBigInteger();
+        }
     }
 }

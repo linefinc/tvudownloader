@@ -63,7 +63,7 @@
     <Compile Include="DownloadFile.cs" />
     <Compile Include="Ed2kfile.cs" />
     <Compile Include="ExportImportHelper.cs" />
-    <Compile Include="Extensions\BigIntegerFormater.cs" />
+    <Compile Include="Extensions\BigIntegerExtension.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Exceptions\LoginException.cs" />
     <Compile Include="Interfaces\ISubscription.cs" />
@@ -74,7 +74,6 @@
     <Compile Include="SmtpSimpleClient.cs" />
     <Compile Include="Exceptions\UnsupportedVersionException.cs" />
     <Compile Include="VersionChecker.cs" />
-    <Compile Include="LinqExtension.cs" />
     <Compile Include="WebFetch.cs" />
     <Compile Include="WebClientInterface\aMuleWebManager.cs" />
     <Compile Include="WebClientInterface\eMuleWebManager.cs" />
