@@ -1,6 +1,6 @@
 TV Underground Downloader
 
-Copyright (C) 2017  linefinc[at]users.sourceforge.net
+Copyright (C) 2020  linefinc[at]users.sourceforge.net
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -17,6 +17,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
+##### Version 0.9.7 18/01/2020  #####
+* Fix bug [#20 Error while try to parse or fatch GUID]
+
 ##### Version 0.9.6 18/05/2019  #####
 * Fix bug [#18 Duplicate downloaded multiple times]
 
