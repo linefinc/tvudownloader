@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\CookieContainerExtension.cs" />
     <Compile Include="FullSerieWatcher.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="DownloadFile.cs" />

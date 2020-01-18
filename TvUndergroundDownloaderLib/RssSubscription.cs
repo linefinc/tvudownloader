@@ -3,11 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
+using TvUndergroundDownloaderLib.Extensions;
 using TvUndergroundDownloaderLib.Interfaces;
 
 namespace TvUndergroundDownloaderLib
@@ -442,13 +444,61 @@ namespace TvUndergroundDownloaderLib
         /// <returns></returns>
         public Ed2kfile ProcessGuid(string url, CookieContainer cookieContainer)
         {
+            const string startTag = "ed2k://|file|";
+            const string endTag = "|/";
+            const string needLogin = "You must log in to get links!";
+
             _logger.Info("Get page {0}", url);
             string webPage = WebFetch.Fetch(url, false, cookieContainer);
+
+            if (string.IsNullOrWhiteSpace(webPage))
+            {
+                throw new WrongPageFormatException("Page is empty");
+            }
+
             //
-            int i = webPage.IndexOf("ed2k://|file|", StringComparison.InvariantCulture);
+            //  check need login
+            //
+            if (webPage.IndexOf(needLogin, StringComparison.InvariantCulture) > 0)
+            {
+                throw new LoginException("You must log in to get links, please refresh coocki");
+            }
+
+            //
+            //  looking for start tag
+            //
+            int i = webPage.IndexOf(startTag, StringComparison.InvariantCulture);
+            if (i == -1)
+            {
+#if DEBUG
+                string fileName = string.Format("Dump-{0:yyyy}-{0:MM}-{0:dd}-{0:hh}-{0:mm}-{0:ss}.html", DateTime.Now);
+                webPage += "<!---- " + cookieContainer.DumpToString() + "----->";
+                File.WriteAllText(fileName, webPage);
+#endif
+                throw new WrongPageFormatException("Unable to find \"ed2k://|file|\"");
+            }
+
+            //
+            //  looking for end tag
+            //
+            _logger.Debug("Index of start tag {0}", i);
             webPage = webPage.Substring(i);
-            i = webPage.IndexOf("|/", StringComparison.InvariantCulture);
-            webPage = webPage.Substring(0, i + "|/".Length);
+            i = webPage.IndexOf(endTag, StringComparison.InvariantCulture);
+            if (i == -1)
+            {
+#if DEBUG
+                string fileName = string.Format("Dump-{0:yyyy}-{0:MM}-{0:dd}-{0:hh}-{0:mm}-{0:ss}.html", DateTime.Now);
+                webPage += "<!---- " + cookieContainer.DumpToString() + "----->";
+                File.WriteAllText(fileName, webPage);
+#endif
+                throw new WrongPageFormatException("Unable to find end of link \"ed2k://|file|\"");
+            }
+            _logger.Debug("Index of end tag {0}", i);
+
+            //
+            //  convert data to ed2k
+            //
+            webPage = webPage.Substring(0, i + endTag.Length);
             return new Ed2kfile(webPage);
         }
 
