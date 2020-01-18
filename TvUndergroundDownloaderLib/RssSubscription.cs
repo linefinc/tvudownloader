@@ -354,7 +354,6 @@ namespace TvUndergroundDownloaderLib
                     continue;
 
                 var dwFile = new DownloadFile(newRssSubscrission, newFile, guidLinkNode.InnerText);
-                newRssSubscrission._downloadFiles.Add(dwFile);
 
                 var downloadedNode = fileNode.SelectSingleNode("Downloaded");
                 if (downloadedNode != null)
@@ -368,6 +367,11 @@ namespace TvUndergroundDownloaderLib
                 {
                     var publicationDateNodeDt = DateTime.Parse(publicationDateNode.InnerText);
                     dwFile.PublicationDate = publicationDateNodeDt;
+                }
+
+                if (!newRssSubscrission._downloadFiles.Any(o => o.FileName == dwFile.FileName))
+                {
+                    newRssSubscrission._downloadFiles.Add(dwFile);
                 }
             }
 
@@ -599,6 +603,10 @@ namespace TvUndergroundDownloaderLib
                             _logger.Info("Found new file {0}", newEd2kFile.FileName);
                             newFile = new DownloadFile(this, newEd2kFile, guid);
 
+                            if (_downloadFiles.Any(o => o.FileName == newFile.FileName) == true)
+                            {
+                                throw new Exception("Unexpected duplicate file");
+                            }
                             _downloadFiles.Add(newFile);
                         }
                         catch (Exception ex)
@@ -645,6 +653,10 @@ namespace TvUndergroundDownloaderLib
             }
         }
 
+        /// <summary>
+        /// Update TVU Status
+        /// </summary>
+        /// <param name="cookieContainer"></param>
         public void UpdateTVUStatus(CookieContainer cookieContainer)
         {
             _logger.Info("Checking serie status: \"{0}\"", this.TitleCompact);
