@@ -684,6 +684,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormFirstTimeWizad";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "First Time Wizad";
             this.Load += new System.EventHandler(this.FormFirstTimeWizad_Load);
             this.tableLayoutPanel1.ResumeLayout(false);

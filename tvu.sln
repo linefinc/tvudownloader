@@ -24,8 +24,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TvUndergroundDownloaderLibT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TvUndergroundDownloader", "TvUndergroundDownloader\TvUndergroundDownloader.csproj", "{FBE9E70D-4056-4140-8468-90555E6B5F32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "delete me", "delete me\delete me.csproj", "{91E473C3-1336-4A2D-B6DA-DFB87328F81E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,10 +50,6 @@ Global
 		{FBE9E70D-4056-4140-8468-90555E6B5F32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBE9E70D-4056-4140-8468-90555E6B5F32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBE9E70D-4056-4140-8468-90555E6B5F32}.Release|Any CPU.Build.0 = Release|Any CPU
-		{91E473C3-1336-4A2D-B6DA-DFB87328F81E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{91E473C3-1336-4A2D-B6DA-DFB87328F81E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{91E473C3-1336-4A2D-B6DA-DFB87328F81E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{91E473C3-1336-4A2D-B6DA-DFB87328F81E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
