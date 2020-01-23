@@ -87,7 +87,10 @@ namespace TvUndergroundDownloaderLib
         public bool StartMinimized { get; set; } = false;
         public int TotalDownloads { get; set; } = 0;
 
-        #region Tvu Cookie
+        #region Tvu Indentity
+        public string TvuUserName { get; set; } = string.Empty;
+
+        public string TvuPassword { get; set; } = string.Empty;
 
         public string TVUCookieH { get; set; } = string.Empty;
         public string TVUCookieI { get; set; } = string.Empty;
@@ -175,6 +178,26 @@ namespace TvUndergroundDownloaderLib
 
             if (NodeExist(xDoc, "Password"))
                 Password = ReadString(xDoc, "Password", "password");
+            #region TVU identity
+
+            if (NodeExist(xDoc, "TvuUserName"))
+            {
+                TvuUserName = ReadString(xDoc, "TvuUserName", string.Empty);
+                logger.Info("Raw config TvuUserName {0}", ReadString(xDoc, "TvuUserName", string.Empty));
+            }
+
+            if (NodeExist(xDoc, "TvuUserName"))
+            {
+                TvuPassword = ReadString(xDoc, "TvuPassword", string.Empty);
+                logger.Info("Raw config TvuPassword {0}", ReadString(xDoc, "TvuPassword", string.Empty));
+            }
+
+            if (NodeExist(xDoc, "tvuCookieH"))
+            {
+                TVUCookieH = ReadString(xDoc, "tvuCookieH", string.Empty);
+                logger.Info("Raw config tvuCookieH {0}", ReadString(xDoc, "tvuCookieH", string.Empty));
+            }
+
 
             if (NodeExist(xDoc, "tvuCookieH"))
             {
@@ -193,6 +216,8 @@ namespace TvUndergroundDownloaderLib
                 TVUCookieT = ReadString(xDoc, "tvuCookieT", string.Empty);
                 logger.Info("Raw config tvuCookieI {0}", ReadString(xDoc, "tvuCookieT", string.Empty));
             }
+
+            #endregion
 
             if (NodeExist(xDoc, "IntervalTime"))
                 IntervalTime = ReadInt(xDoc, "IntervalTime", 30, 1, 24 * 60 * 60);
@@ -331,6 +356,8 @@ namespace TvUndergroundDownloaderLib
 
             writer.WriteElementString("ServiceUrl", ServiceUrl);
             writer.WriteElementString("Password", Password);
+            writer.WriteElementString("TvuUserName", TvuUserName);
+            writer.WriteElementString("TvuPassword", TvuPassword);
             writer.WriteElementString("tvuCookieH", TVUCookieH);
             writer.WriteElementString("tvuCookieI", TVUCookieI);
             writer.WriteElementString("tvuCookieT", TVUCookieT);
