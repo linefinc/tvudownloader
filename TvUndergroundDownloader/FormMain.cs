@@ -698,6 +698,8 @@ namespace TvUndergroundDownloader
                 MainConfig.TVUCookieH = optDialog.tvuCookieH;
                 MainConfig.TVUCookieI = optDialog.tvuCookieI;
                 MainConfig.TVUCookieT = optDialog.tvuCookieT;
+                MainConfig.TvuUserName = optDialog.TvuUsername;
+                MainConfig.TvuPassword = optDialog.TvuPassword;
 
                 if (MainConfig.CloseEmuleIfAllIsDone)
                 {

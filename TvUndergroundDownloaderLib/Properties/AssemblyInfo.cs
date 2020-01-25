@@ -12,7 +12,7 @@
 [assembly: System.Reflection.AssemblyDescription("Tv Underground Downloader")]
 [assembly: System.Reflection.AssemblyProduct("Tv Underground Downloader")]
 [assembly: System.Reflection.AssemblyCopyright("Copyright(C) 2020 linefinc[at]users.sourceforge.net")]
-[assembly: System.Reflection.AssemblyInformationalVersion("0.9.7 a67544b [2020-01-23]")]
+[assembly: System.Reflection.AssemblyInformationalVersion("0.9.7 def14c0 [2020-01-25]")]
 [assembly: System.Runtime.InteropServices.ComVisible(false)]
 [assembly: System.CLSCompliant(true)]
 [assembly: System.Reflection.AssemblyVersion("0.9.7")]

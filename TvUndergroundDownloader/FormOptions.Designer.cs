@@ -97,6 +97,10 @@
             this.label20 = new System.Windows.Forms.Label();
             this.textBoxWebServerPortNumber = new System.Windows.Forms.TextBox();
             this.checkBoxWebServerEnabled = new System.Windows.Forms.CheckBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.textBoxTvuUsername = new System.Windows.Forms.TextBox();
+            this.textBoxTvuPassword = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.tabPageLog.SuspendLayout();
             this.tabPageEmail.SuspendLayout();
@@ -725,6 +729,10 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label25);
+            this.tabPage1.Controls.Add(this.label26);
+            this.tabPage1.Controls.Add(this.textBoxTvuUsername);
+            this.tabPage1.Controls.Add(this.textBoxTvuPassword);
             this.tabPage1.Controls.Add(this.label18);
             this.tabPage1.Controls.Add(this.label16);
             this.tabPage1.Controls.Add(this.textBoxCookieI);
@@ -838,6 +846,38 @@
             this.checkBoxWebServerEnabled.UseVisualStyleBackColor = true;
             this.checkBoxWebServerEnabled.CheckedChanged += new System.EventHandler(this.checkBoxWebServerEnabled_CheckedChanged);
             // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(6, 104);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(55, 13);
+            this.label25.TabIndex = 9;
+            this.label25.Text = "Username";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(6, 130);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(53, 13);
+            this.label26.TabIndex = 8;
+            this.label26.Text = "Password";
+            // 
+            // textBoxTvuUsername
+            // 
+            this.textBoxTvuUsername.Location = new System.Drawing.Point(62, 101);
+            this.textBoxTvuUsername.Name = "textBoxTvuUsername";
+            this.textBoxTvuUsername.Size = new System.Drawing.Size(289, 20);
+            this.textBoxTvuUsername.TabIndex = 7;
+            // 
+            // textBoxTvuPassword
+            // 
+            this.textBoxTvuPassword.Location = new System.Drawing.Point(62, 127);
+            this.textBoxTvuPassword.Name = "textBoxTvuPassword";
+            this.textBoxTvuPassword.Size = new System.Drawing.Size(289, 20);
+            this.textBoxTvuPassword.TabIndex = 6;
+            // 
             // FormOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -948,5 +988,9 @@
         private System.Windows.Forms.CheckBox checkBoxEnableAuthentication;
         private System.Windows.Forms.CheckBox checkBoxEnableSSL;
         private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.TextBox textBoxTvuUsername;
+        private System.Windows.Forms.TextBox textBoxTvuPassword;
     }
 }

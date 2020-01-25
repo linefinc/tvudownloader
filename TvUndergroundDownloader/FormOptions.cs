@@ -71,6 +71,9 @@ namespace TvUndergroundDownloader
             textBoxCookieH.Text = inConfig.TVUCookieH;
             textBoxCookieI.Text = inConfig.TVUCookieI;
             textBoxCookieT.Text = inConfig.TVUCookieT;
+            textBoxTvuUsername.Text = inConfig.TvuUserName;
+            textBoxTvuPassword.Text = inConfig.TvuPassword;
+
 
             textBoxWebServerPortNumber.Text = inConfig.WebServerPort.ToString();
 
@@ -110,6 +113,8 @@ namespace TvUndergroundDownloader
         public string tvuCookieH => textBoxCookieH.Text;
         public string tvuCookieI => textBoxCookieI.Text;
         public string tvuCookieT => textBoxCookieT.Text;
+        public string TvuUsername => textBoxTvuUsername.Text;
+        public string TvuPassword => textBoxTvuPassword.Text;
         public bool Verbose => checkBoxVerbose.Checked;
         public bool WebServerEnable => checkBoxWebServerEnabled.Checked;
         public int WebServerPort => int.Parse(textBoxSmtpServerPort.Text);
@@ -251,6 +256,6 @@ namespace TvUndergroundDownloader
             GoogleAnalyticsHelper.TrackScreen("Options");
         }
 
-     
+
     }
 }

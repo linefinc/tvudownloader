@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Numerics;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TvUndergroundDownloaderLib.Extensions;
@@ -16,9 +18,9 @@ namespace TvUndergroundDownloaderLib
     public class Worker
     {
         public Config Config = null;
-        private CancellationTokenSource _cancellationTokenSource;
-        private CancellationToken _cancellationToken;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private CancellationToken _cancellationToken;
+        private CancellationTokenSource _cancellationTokenSource;
         private Task _task;
 
         /// <summary>
@@ -72,25 +74,6 @@ namespace TvUndergroundDownloaderLib
         }
 
         /// <summary>
-        /// Post Run Exception Handle
-        /// </summary>
-        /// <param name="task"></param>
-        private void PostRun(Task task)
-        {
-            if (task.Exception != null)
-            {
-                var flattened = task.Exception.Flatten();
-
-                flattened.Handle(ex =>
-                {
-                    _logger.Error(ex);
-                    return true;
-                });
-            }
-            OnWorkerCompleted();
-        }
-
-        /// <summary>
         /// Main worker function
         /// </summary>
         public void WorkerFunc()
@@ -105,23 +88,21 @@ namespace TvUndergroundDownloaderLib
             //
             var cookieContainer = new CookieContainer();
             var uriTvunderground = new Uri("http://tvunderground.org.ru/");
-            if (string.IsNullOrEmpty(Config.TVUCookieH))
+            if (string.IsNullOrEmpty(Config.TvuUserName))
             {
-                throw new LoginException("Missing Cookie H");
+                throw new LoginException("Missing Tvu UserName");
             }
-            cookieContainer.Add(uriTvunderground, new Cookie("h", Config.TVUCookieH));
 
-            if (string.IsNullOrEmpty(Config.TVUCookieI))
+            if (string.IsNullOrEmpty(Config.TvuPassword))
             {
-                throw new LoginException("Missing Cookie I");
+                throw new LoginException("Missing Tvu Password");
             }
-            cookieContainer.Add(uriTvunderground, new Cookie("i", Config.TVUCookieI));
 
-            if (string.IsNullOrEmpty(Config.TVUCookieT))
+            if (TryToLoignToTvu(Config.TvuUserName, Config.TvuPassword, cookieContainer) == false)
             {
-                throw new LoginException("Missing Cookie T");
+                throw new LoginException("Unable to login to TVU");
             }
-            cookieContainer.Add(uriTvunderground, new Cookie("t", Config.TVUCookieT));
+
             //
             //  start RSS Check
             //
@@ -170,7 +151,7 @@ namespace TvUndergroundDownloaderLib
                 progress = progress / Config.RssFeedList.Count;
             }
 
-            // 
+            //
             //  Add feed to list to download
             //
             foreach (var feed in rssFeedList)
@@ -186,8 +167,6 @@ namespace TvUndergroundDownloaderLib
                     }
                 }
             }
-
-
 
             Config.Save();
 
@@ -347,7 +326,6 @@ namespace TvUndergroundDownloaderLib
 
                 while (downloadFileList.Count > 0 && downloadFileList.SumBigInteger(o => o.FileSize) > freeSpace)
                 {
-
                     var biggestFile = downloadFileList.OrderByDescending(o => o.FileSize).FirstOrDefault();
                     if (biggestFile == null)
                         break;
@@ -501,6 +479,25 @@ namespace TvUndergroundDownloaderLib
         }
 
         /// <summary>
+        /// Post Run Exception Handle
+        /// </summary>
+        /// <param name="task"></param>
+        private void PostRun(Task task)
+        {
+            if (task.Exception != null)
+            {
+                var flattened = task.Exception.Flatten();
+
+                flattened.Handle(ex =>
+                {
+                    _logger.Error(ex);
+                    return true;
+                });
+            }
+            OnWorkerCompleted();
+        }
+
+        /// <summary>
         /// Send Email
         /// </summary>
         /// <param name="fileName"></param>
@@ -521,6 +518,66 @@ namespace TvUndergroundDownloaderLib
                 {
                     _logger.Error(ex);
                 }
+        }
+
+        /// <summary>
+        /// Try to login on TVU site
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="password"></param>
+        /// <param name="cookieContainer"></param>
+        /// <returns></returns>
+        private bool TryToLoignToTvu(string name, string password, CookieContainer cookieContainer)
+        {
+            // Create POST data and convert it to a byte array.
+            string postData = string.Format("name={0}&password={1}&submit=Login", name, password);
+            byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+            string responseFromServer = null;
+
+            var request = (HttpWebRequest)WebRequest.Create("https://tvunderground.org.ru/index.php?show=login&act=login");
+            request.CookieContainer = cookieContainer;
+            request.Credentials = CredentialCache.DefaultCredentials;
+            request.Method = "POST";
+            request.ContentLength = byteArray.Length;
+
+            // Set the ContentType property of the WebRequest.
+            request.ContentType = "application/x-www-form-urlencoded";
+            // Set the ContentLength property of the WebRequest.
+            request.ContentLength = byteArray.Length;
+
+            // Get the request stream.
+            Stream dataStream = request.GetRequestStream();
+            // Write the data to the request stream.
+            dataStream.Write(byteArray, 0, byteArray.Length);
+            // Close the Stream object.
+            dataStream.Close();
+
+            // Get the response.
+            WebResponse response = request.GetResponse();
+            // Display the status.
+            Console.WriteLine(((HttpWebResponse)response).StatusDescription);
+
+            // Get the stream containing content returned by the server.
+            // The using block ensures the stream is automatically closed.
+            using (dataStream = response.GetResponseStream())
+            {
+                // Open the stream using a StreamReader for easy access.
+                StreamReader reader = new StreamReader(dataStream);
+                // Read the content.
+                responseFromServer = reader.ReadToEnd();
+            }
+
+            // Close the response.
+            response.Close();
+
+            File.WriteAllText(string.Format("login-{0:hh}-{0:mm}-{0:ss}.html", DateTime.Now), responseFromServer);
+
+            if (responseFromServer.IndexOf("index.php?show=login&amp;act=logout") > -1)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
