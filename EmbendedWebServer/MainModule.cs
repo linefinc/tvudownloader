@@ -69,9 +69,9 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
                 configModel.ServiceTypeAmule = GlobalVar.Config.ServiceType == Config.eServiceType.aMule;
                 configModel.ServiceUrl = GlobalVar.Config.ServiceUrl;
                 configModel.Password = GlobalVar.Config.Password;
-                configModel.TVUCookieH = GlobalVar.Config.TVUCookieH;
-                configModel.TVUCookieI = GlobalVar.Config.TVUCookieI;
-                configModel.TVUCookieT = GlobalVar.Config.TVUCookieT;
+                configModel.TvuUserName = GlobalVar.Config.TvuUserName;
+                configModel.TvuPassword = GlobalVar.Config.TvuPassword;
+                
                 configModel.CloseEmuleIfAllIsDone = GlobalVar.Config.CloseEmuleIfAllIsDone;
                 configModel.MaxSimultaneousFeedDownloadsDefault = GlobalVar.Config.MaxSimultaneousFeedDownloadsDefault;
                 configModel.PauseDownloadDefault = GlobalVar.Config.PauseDownloadDefault;
@@ -91,9 +91,8 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
                     string serviceType = (string)Request.Form.ServiceType;
                     string serviceUrl = (string)Request.Form.ServiceUrl;
                     string password = (string)Request.Form.Password;
-                    string tvuCookieH = (string)Request.Form.TVUCookieH;
-                    string tvuCookieI = (string)Request.Form.TVUCookieI;
-                    string tvuCookieT = (string)Request.Form.TVUCookieT;
+                    string tvuUserName = (string)Request.Form.TvuUserName;
+                    string tvuPassword = (string)Request.Form.TvuPassword;
                     bool closeEmuleIfAllIsDone = (bool)Request.Form.CloseEmuleIfAllIsDone;
                     uint maxSimultaneousFeedDownloadsDefault = (uint)Request.Form.MaxSimultaneousFeedDownloadsDefault;
                     bool pauseDownloadDefault = (bool)Request.Form.PauseDownloadDefault;
@@ -108,9 +107,8 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
                     config.ServiceType = (Config.eServiceType)Enum.Parse(typeof(Config.eServiceType), serviceType);
                     config.ServiceUrl = serviceUrl;
                     config.Password = password;
-                    config.TVUCookieH = tvuCookieH;
-                    config.TVUCookieI = tvuCookieI;
-                    config.TVUCookieT = tvuCookieT;
+                    config.TvuUserName = tvuUserName;
+                    config.TvuPassword = tvuPassword;
                     config.CloseEmuleIfAllIsDone = closeEmuleIfAllIsDone;
                     config.MaxSimultaneousFeedDownloadsDefault = maxSimultaneousFeedDownloadsDefault;
                     config.PauseDownloadDefault = pauseDownloadDefault;
@@ -153,9 +151,9 @@ namespace TvUndergroundDownloaderLib.EmbendedWebServer
                 {
                     CookieContainer cookieContainer = new CookieContainer();
                     Uri uriTvunderground = new Uri("http://tvunderground.org.ru/");
-                    cookieContainer.Add(uriTvunderground, new Cookie("h", GlobalVar.Config.TVUCookieH));
-                    cookieContainer.Add(uriTvunderground, new Cookie("i", GlobalVar.Config.TVUCookieI));
-                    cookieContainer.Add(uriTvunderground, new Cookie("t", GlobalVar.Config.TVUCookieT));
+                    cookieContainer.Add(uriTvunderground, new Cookie("h", GlobalVar.Config.TVUCookieT));
+                    cookieContainer.Add(uriTvunderground, new Cookie("i", GlobalVar.Config.TVUCookieT));
+                   cookieContainer.Add(uriTvunderground, new Cookie("t", GlobalVar.Config.TVUCookieT));
                     var newSubscription = new RssSubscription(newFeedUrl, cookieContainer);
 
                     if (!string.IsNullOrEmpty(GlobalVar.Config.DefaultCategory))

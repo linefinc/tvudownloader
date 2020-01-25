@@ -549,17 +549,7 @@ namespace TvUndergroundDownloaderLib
             var uri = new Uri(Url);
             var cookies = cookieContainer.GetCookies(uri);
 
-            if (string.IsNullOrWhiteSpace(cookies["h"].Value))
-            {
-                throw new LoginException();
-            }
-
-            if (string.IsNullOrWhiteSpace(cookies["i"].Value))
-            {
-                throw new LoginException();
-            }
-
-            if (string.IsNullOrWhiteSpace(cookies["t"].Value))
+            if (cookies.Count == 0)
             {
                 throw new LoginException();
             }

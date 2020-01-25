@@ -63,24 +63,15 @@
             this.textBoxPassword = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.tabPage6 = new System.Windows.Forms.TabPage();
-            this.label14 = new System.Windows.Forms.Label();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.label15 = new System.Windows.Forms.Label();
-            this.pictureBox5 = new System.Windows.Forms.PictureBox();
-            this.tabPage8 = new System.Windows.Forms.TabPage();
-            this.label16 = new System.Windows.Forms.Label();
-            this.textBoxCookieI = new System.Windows.Forms.TextBox();
-            this.textBoxCookieT = new System.Windows.Forms.TextBox();
-            this.textBoxCookieH = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.pictureBox6 = new System.Windows.Forms.PictureBox();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.pictureBox8 = new System.Windows.Forms.PictureBox();
             this.label17 = new System.Windows.Forms.Label();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.textBoxTvuUserName = new System.Windows.Forms.TextBox();
+            this.textBoxTvuPassword = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -93,14 +84,9 @@
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.tabPage5.SuspendLayout();
-            this.tabPage6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
-            this.tabPage7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
-            this.tabPage8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             this.tabPage9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
+            this.tabPage6.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -170,8 +156,6 @@
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage6);
-            this.tabControl1.Controls.Add(this.tabPage7);
-            this.tabControl1.Controls.Add(this.tabPage8);
             this.tabControl1.Controls.Add(this.tabPage9);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(3, 3);
@@ -483,163 +467,6 @@
             this.label2.TabIndex = 41;
             this.label2.Text = "Password";
             // 
-            // tabPage6
-            // 
-            this.tabPage6.Controls.Add(this.label14);
-            this.tabPage6.Controls.Add(this.pictureBox4);
-            this.tabPage6.Location = new System.Drawing.Point(4, 22);
-            this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(536, 433);
-            this.tabPage6.TabIndex = 6;
-            this.tabPage6.Text = "Step 5";
-            this.tabPage6.UseVisualStyleBackColor = true;
-            this.tabPage6.Enter += new System.EventHandler(this.tabPage6_Enter);
-            // 
-            // label14
-            // 
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(6, 369);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(524, 61);
-            this.label14.TabIndex = 3;
-            this.label14.Text = "Open Chrome, go to https://tvunderground.org.ru/ and login ";
-            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // pictureBox4
-            // 
-            this.pictureBox4.Image = global::TvUndergroundDownloader.Properties.Resources.Page10;
-            this.pictureBox4.Location = new System.Drawing.Point(6, 6);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(524, 360);
-            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox4.TabIndex = 2;
-            this.pictureBox4.TabStop = false;
-            // 
-            // tabPage7
-            // 
-            this.tabPage7.Controls.Add(this.label15);
-            this.tabPage7.Controls.Add(this.pictureBox5);
-            this.tabPage7.Location = new System.Drawing.Point(4, 22);
-            this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(536, 433);
-            this.tabPage7.TabIndex = 7;
-            this.tabPage7.Text = "Step 6";
-            this.tabPage7.UseVisualStyleBackColor = true;
-            this.tabPage7.Enter += new System.EventHandler(this.tabPage7_Enter);
-            // 
-            // label15
-            // 
-            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(6, 369);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(524, 61);
-            this.label15.TabIndex = 4;
-            this.label15.Text = "Follow the image steps\r\n";
-            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // pictureBox5
-            // 
-            this.pictureBox5.Image = global::TvUndergroundDownloader.Properties.Resources.Page12;
-            this.pictureBox5.Location = new System.Drawing.Point(6, 6);
-            this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(524, 360);
-            this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox5.TabIndex = 3;
-            this.pictureBox5.TabStop = false;
-            // 
-            // tabPage8
-            // 
-            this.tabPage8.Controls.Add(this.label16);
-            this.tabPage8.Controls.Add(this.textBoxCookieI);
-            this.tabPage8.Controls.Add(this.textBoxCookieT);
-            this.tabPage8.Controls.Add(this.textBoxCookieH);
-            this.tabPage8.Controls.Add(this.label3);
-            this.tabPage8.Controls.Add(this.label4);
-            this.tabPage8.Controls.Add(this.label5);
-            this.tabPage8.Controls.Add(this.pictureBox6);
-            this.tabPage8.Location = new System.Drawing.Point(4, 22);
-            this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage8.Size = new System.Drawing.Size(536, 433);
-            this.tabPage8.TabIndex = 8;
-            this.tabPage8.Text = "Step 7";
-            this.tabPage8.UseVisualStyleBackColor = true;
-            this.tabPage8.Enter += new System.EventHandler(this.tabPage8_Enter);
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(6, 6);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(210, 96);
-            this.label16.TabIndex = 18;
-            this.label16.Text = "Copy the cookies H, I, T\r\nform Chrome to the \r\nbox below to add \r\nyour credential" +
-    "s.\r\n";
-            // 
-            // textBoxCookieI
-            // 
-            this.textBoxCookieI.Location = new System.Drawing.Point(6, 367);
-            this.textBoxCookieI.Name = "textBoxCookieI";
-            this.textBoxCookieI.Size = new System.Drawing.Size(204, 20);
-            this.textBoxCookieI.TabIndex = 17;
-            this.textBoxCookieI.TextChanged += new System.EventHandler(this.textBoxCookieI_TextChanged);
-            // 
-            // textBoxCookieT
-            // 
-            this.textBoxCookieT.Location = new System.Drawing.Point(6, 406);
-            this.textBoxCookieT.Name = "textBoxCookieT";
-            this.textBoxCookieT.Size = new System.Drawing.Size(204, 20);
-            this.textBoxCookieT.TabIndex = 16;
-            this.textBoxCookieT.TextChanged += new System.EventHandler(this.textBoxCookieT_TextChanged);
-            // 
-            // textBoxCookieH
-            // 
-            this.textBoxCookieH.Location = new System.Drawing.Point(6, 328);
-            this.textBoxCookieH.Name = "textBoxCookieH";
-            this.textBoxCookieH.Size = new System.Drawing.Size(204, 20);
-            this.textBoxCookieH.TabIndex = 15;
-            this.textBoxCookieH.TextChanged += new System.EventHandler(this.textBoxCookieH_TextChanged);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 351);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(46, 13);
-            this.label3.TabIndex = 14;
-            this.label3.Text = "Cookie I";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 390);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(50, 13);
-            this.label4.TabIndex = 13;
-            this.label4.Text = "Cookie T";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 312);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(51, 13);
-            this.label5.TabIndex = 12;
-            this.label5.Text = "Cookie H";
-            // 
-            // pictureBox6
-            // 
-            this.pictureBox6.Image = global::TvUndergroundDownloader.Properties.Resources.Page13;
-            this.pictureBox6.Location = new System.Drawing.Point(216, 6);
-            this.pictureBox6.Name = "pictureBox6";
-            this.pictureBox6.Size = new System.Drawing.Size(314, 421);
-            this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox6.TabIndex = 4;
-            this.pictureBox6.TabStop = false;
-            // 
             // tabPage9
             // 
             this.tabPage9.Controls.Add(this.pictureBox8);
@@ -674,6 +501,65 @@
             this.label17.TabIndex = 0;
             this.label17.Text = "Configuration is completed";
             // 
+            // tabPage6
+            // 
+            this.tabPage6.Controls.Add(this.label5);
+            this.tabPage6.Controls.Add(this.label4);
+            this.tabPage6.Controls.Add(this.label3);
+            this.tabPage6.Controls.Add(this.textBoxTvuPassword);
+            this.tabPage6.Controls.Add(this.textBoxTvuUserName);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage6.Size = new System.Drawing.Size(536, 433);
+            this.tabPage6.TabIndex = 10;
+            this.tabPage6.Text = "Step 5";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // textBoxTvuUserName
+            // 
+            this.textBoxTvuUserName.Location = new System.Drawing.Point(228, 47);
+            this.textBoxTvuUserName.Name = "textBoxTvuUserName";
+            this.textBoxTvuUserName.Size = new System.Drawing.Size(228, 20);
+            this.textBoxTvuUserName.TabIndex = 48;
+            this.textBoxTvuUserName.TextChanged += new System.EventHandler(this.textBoxTvuUserName_TextChanged);
+            // 
+            // textBoxTvuPassword
+            // 
+            this.textBoxTvuPassword.Location = new System.Drawing.Point(228, 73);
+            this.textBoxTvuPassword.Name = "textBoxTvuPassword";
+            this.textBoxTvuPassword.Size = new System.Drawing.Size(228, 20);
+            this.textBoxTvuPassword.TabIndex = 49;
+            this.textBoxTvuPassword.TextChanged += new System.EventHandler(this.textBoxTvuPassword_TextChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(115, 50);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(55, 13);
+            this.label3.TabIndex = 50;
+            this.label3.Text = "Username";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(115, 76);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(53, 13);
+            this.label4.TabIndex = 51;
+            this.label4.Text = "Password";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(104, 19);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(369, 25);
+            this.label5.TabIndex = 52;
+            this.label5.Text = "TV Underground Login and password";
+            // 
             // FormFirstTimeWizad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -704,16 +590,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
-            this.tabPage6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
-            this.tabPage7.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
-            this.tabPage8.ResumeLayout(false);
-            this.tabPage8.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
             this.tabPage9.ResumeLayout(false);
             this.tabPage9.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
+            this.tabPage6.ResumeLayout(false);
+            this.tabPage6.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -734,7 +615,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.ComboBox comboBoxClientType;
         private System.Windows.Forms.Button buttonTestNow;
@@ -744,18 +624,7 @@
         private System.Windows.Forms.LinkLabel linkLabelAddress;
         private System.Windows.Forms.TextBox textBoxAddress;
         private System.Windows.Forms.TextBox textBoxServicePort;
-        private System.Windows.Forms.TabPage tabPage7;
-        private System.Windows.Forms.PictureBox pictureBox4;
-        private System.Windows.Forms.PictureBox pictureBox5;
-        private System.Windows.Forms.TabPage tabPage8;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.PictureBox pictureBox6;
         private System.Windows.Forms.TabPage tabPage9;
-        private System.Windows.Forms.TextBox textBoxCookieI;
-        private System.Windows.Forms.TextBox textBoxCookieT;
-        private System.Windows.Forms.TextBox textBoxCookieH;
         private System.Windows.Forms.Button buttonSelectEmuleApp;
         private System.Windows.Forms.TextBox textBoxEmuleApp;
         private System.Windows.Forms.PictureBox pictureBox7;
@@ -767,10 +636,13 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Label label16;
         private System.Windows.Forms.PictureBox pictureBox8;
         private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBoxTvuPassword;
+        private System.Windows.Forms.TextBox textBoxTvuUserName;
+        private System.Windows.Forms.Label label5;
     }
 }

@@ -30,10 +30,9 @@
 
         public bool StartMinimized;
 
-        public string TVUCookieH;
+       
 
-        public string TVUCookieI;
-
-        public string TVUCookieT;
+        public string TvuUserName { get; internal set; }
+        public string TvuPassword { get; internal set; }
     }
 }

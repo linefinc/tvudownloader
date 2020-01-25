@@ -22,33 +22,16 @@ namespace TvUndergroundDownloader
         public string ServiceAddress { get; set; } = "localhost";
         public int ServicePortNumber { get; set; } = 4711;
         public Config.eServiceType ServiceType { get; set; }
-        public string TVUCookieH { set; get; } = string.Empty;
-        public string TVUCookieI { set; get; } = string.Empty;
-        public string TVUCookieT { set; get; } = string.Empty;
 
+        public string TvuPassword { get; set; } = string.Empty;
+        public string TvuUserName { get; set; } = string.Empty;
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
-        private void buttonLoginToTVUnderground_Click(object sender, EventArgs e)
-        {
-            FormLogin form = new FormLogin();
-            form.ShowDialog();
-
-            if (form.DialogResult != DialogResult.OK)
-            {
-                return;
-            }
-
-            this.TVUCookieT = form.CookieT;
-            this.textBoxCookieT.Text = form.CookieT;
-            this.TVUCookieI = form.CookieI;
-            this.textBoxCookieI.Text = form.CookieI;
-            this.TVUCookieH = form.CookieH;
-            this.textBoxCookieH.Text = form.CookieH;
-        }
+      
 
         private void buttonNext_Click(object sender, EventArgs e)
         {
@@ -139,41 +122,21 @@ namespace TvUndergroundDownloader
                 return;
             }
 
+        
+
             if (tabControl1.SelectedTab == tabPage6)
             {
-                tabControl1.SelectedTab = tabPage7;
-                buttonPrev.Enabled = true;
-                buttonNext.Enabled = true;
-                buttonNext.Text = Resources.FormFirstTimeWizad_buttonPrev_Click_Next;
-                return;
-            }
-
-            if (tabControl1.SelectedTab == tabPage7)
-            {
-                tabControl1.SelectedTab = tabPage8;
-                buttonPrev.Enabled = true;
-                buttonNext.Enabled = true;
-
-                return;
-            }
-
-            if (tabControl1.SelectedTab == tabPage8)
-            {
                 string msg = null;
-                if (string.IsNullOrEmpty(this.TVUCookieI))
+                if (string.IsNullOrEmpty(this.TvuUserName))
                 {
-                    msg = "An error occurred, do you want continue?\r\nCookies are not setted";
+                    msg = "An error occurred, do you want continue?\r\nTvu UserName are not setted";
                 }
 
-                if (string.IsNullOrEmpty(this.TVUCookieH))
+                if (string.IsNullOrEmpty(this.TvuPassword))
                 {
-                    msg = "An error occurred, do you want continue?\r\nCookies are not setted";
+                    msg = "An error occurred, do you want continue?\r\nTvu Password are not setted";
                 }
 
-                if (string.IsNullOrEmpty(this.TVUCookieT))
-                {
-                    msg = "An error occurred, do you want continue?\r\nCookies are not setted";
-                }
                 if (msg != null)
                 {
                     if (MessageBox.Show(msg, "Warning", MessageBoxButtons.YesNo) != DialogResult.Yes)
@@ -249,32 +212,9 @@ namespace TvUndergroundDownloader
                 return;
             }
 
-            if (tabControl1.SelectedTab == tabPage7)
-            {
-                tabControl1.SelectedTab = tabPage6;
-                buttonPrev.Enabled = true;
-                buttonNext.Enabled = true;
-                buttonNext.Text = Resources.FormFirstTimeWizad_buttonPrev_Click_Next;
-                return;
-            }
+          
 
-            if (tabControl1.SelectedTab == tabPage8)
-            {
-                tabControl1.SelectedTab = tabPage7;
-                buttonPrev.Enabled = true;
-                buttonNext.Enabled = true;
-                buttonNext.Text = Resources.FormFirstTimeWizad_buttonPrev_Click_Next;
-                return;
-            }
-
-            if (tabControl1.SelectedTab == tabPage9)
-            {
-                tabControl1.SelectedTab = tabPage8;
-                buttonPrev.Enabled = true;
-                buttonNext.Enabled = true;
-                buttonNext.Text = Resources.FormFirstTimeWizad_buttonPrev_Click_Next;
-                return;
-            }
+          
         }
 
         private void buttonSelectEmuleApp_Click(object sender, EventArgs e)
@@ -352,10 +292,8 @@ namespace TvUndergroundDownloader
                     comboBoxClientType.Text = "eMule";
                     break;
             }
-
-            textBoxCookieT.Text = this.TVUCookieT;
-            textBoxCookieH.Text = this.TVUCookieH;
-            textBoxCookieI.Text = this.TVUCookieI;
+            textBoxTvuUserName.Text = this.TvuUserName;
+            textBoxTvuPassword.Text = this.TvuPassword;
             textBoxEmuleApp.Text = this.eMuleApp;
             textBoxAddress.Text = this.ServiceAddress;
             textBoxServicePort.Text = this.ServicePortNumber.ToString();
@@ -421,21 +359,7 @@ namespace TvUndergroundDownloader
             linkLabelAddress.Text = string.Format("http://{0}:{1}", ServiceAddress, ServicePortNumber);
         }
 
-        private void textBoxCookieH_TextChanged(object sender, EventArgs e)
-        {
-            this.TVUCookieH = textBoxCookieH.Text;
-        }
-
-        private void textBoxCookieI_TextChanged(object sender, EventArgs e)
-        {
-            this.TVUCookieI = textBoxCookieI.Text;
-        }
-
-        private void textBoxCookieT_TextChanged(object sender, EventArgs e)
-        {
-            this.TVUCookieT = textBoxCookieT.Text;
-        }
-
+     
         private void textBoxEmuleApp_TextChanged(object sender, EventArgs e)
         {
             this.eMuleApp = textBoxEmuleApp.Text;
@@ -458,6 +382,16 @@ namespace TvUndergroundDownloader
             this.ServerUrl = string.Format("http://{0}:{1}", ServiceAddress, ServicePortNumber);
 
             linkLabelAddress.Text = string.Format("http://{0}:{1}", ServiceAddress, ServicePortNumber);
+        }
+
+        private void textBoxTvuPassword_TextChanged(object sender, EventArgs e)
+        {
+            this.TvuPassword = textBoxTvuPassword.Text;
+        }
+
+        private void textBoxTvuUserName_TextChanged(object sender, EventArgs e)
+        {
+            this.TvuUserName = textBoxTvuUserName.Text;
         }
     }
 }

@@ -46,6 +46,14 @@ namespace TvUndergroundDownloaderLib
             }
         }
 
+        //Unique id
+        /// <summary>
+        ///     Get full assembly version
+        /// </summary>
+        public static string VersionFull => ((AssemblyInformationalVersionAttribute)Assembly
+            .GetAssembly(typeof(Config))
+            .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false)[0]).InformationalVersion;
+
         public bool AutoClearLog { get; set; } = false;
         public bool CloseEmuleIfAllIsDone { get; set; } = false;
 
@@ -61,11 +69,11 @@ namespace TvUndergroundDownloaderLib
         public DateTime? LastUpgradeCheck { get; set; }
 
         public uint MaxSimultaneousFeedDownloadsDefault { get; set; } = 3;
+        public long MinFreeSpace { get; set; } = 200 * 1024 * 1024;
         public int MinToStartEmule { get; set; } = 0;
         public string Password { get; set; } = "password";
         public bool PauseDownloadDefault { get; set; } = false;
         public RssSubscriptionList RssFeedList { get; set; }
-        public long MinFreeSpace { get; set; } = 200 * 1024 * 1024;
 
         #region Email
 
@@ -88,43 +96,35 @@ namespace TvUndergroundDownloaderLib
         public int TotalDownloads { get; set; } = 0;
 
         #region Tvu Indentity
+        [Obsolete]
+        public string TVUCookieH { get; set; } = string.Empty;
+        [Obsolete]
+        public string TVUCookieI { get; set; } = string.Empty;
+        [Obsolete]
+        public string TVUCookieT { get; set; } = string.Empty;
+        public string TvuPassword { get; set; } = string.Empty;
         public string TvuUserName { get; set; } = string.Empty;
 
-        public string TvuPassword { get; set; } = string.Empty;
-
-        public string TVUCookieH { get; set; } = string.Empty;
-        public string TVUCookieI { get; set; } = string.Empty;
-        public string TVUCookieT { get; set; } = string.Empty;
-
-        #endregion Tvu Cookie
+        #endregion Tvu Indentity
 
         public string tvudwid { get; set; } = null;
         public bool UseHttpInsteadOfHttps { get; set; } = false;    // todo: implement
         public bool Verbose { get; set; } = false;
-
-        //Unique id
-        /// <summary>
-        ///     Get full assembly version
-        /// </summary>
-        public static string VersionFull => ((AssemblyInformationalVersionAttribute)Assembly
-            .GetAssembly(typeof(Config))
-            .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false)[0]).InformationalVersion;
-
         public bool WebServerEnable { get; set; } = false;
         public int WebServerPort { get; set; } = 9696;
 
+        /// <summary>
+        /// Check if is the first time sturt up
+        /// </summary>
+        /// <returns></returns>
         public bool IsFirstStart()
         {
-            if (TotalDownloads > 0)
-                return false;
-            if (!string.IsNullOrEmpty(TVUCookieI))
-                return false;
-            if (!string.IsNullOrEmpty(TVUCookieH))
-                return false;
-            if (!string.IsNullOrEmpty(TVUCookieT))
-                return false;
+            if (string.IsNullOrEmpty(TvuUserName))
+                return true;
+            if (string.IsNullOrEmpty(TvuPassword))
+                return true;
 
-            return true;
+            return false;
         }
 
         public void Load(string fileName)
@@ -149,7 +149,6 @@ namespace TvUndergroundDownloaderLib
                 //
                 xDoc.Load(FileNameConfigBackup);
             }
-
 
             // Check configuration version to avoid bad behaviors
             //string configVersionStr = ReadString(xDoc, "version", string.Empty);
@@ -178,6 +177,7 @@ namespace TvUndergroundDownloaderLib
 
             if (NodeExist(xDoc, "Password"))
                 Password = ReadString(xDoc, "Password", "password");
+
             #region TVU identity
 
             if (NodeExist(xDoc, "TvuUserName"))
@@ -198,7 +198,6 @@ namespace TvUndergroundDownloaderLib
                 logger.Info("Raw config tvuCookieH {0}", ReadString(xDoc, "tvuCookieH", string.Empty));
             }
 
-
             if (NodeExist(xDoc, "tvuCookieH"))
             {
                 TVUCookieH = ReadString(xDoc, "tvuCookieH", string.Empty);
@@ -217,7 +216,7 @@ namespace TvUndergroundDownloaderLib
                 logger.Info("Raw config tvuCookieI {0}", ReadString(xDoc, "tvuCookieT", string.Empty));
             }
 
-            #endregion
+            #endregion TVU identity
 
             if (NodeExist(xDoc, "IntervalTime"))
                 IntervalTime = ReadInt(xDoc, "IntervalTime", 30, 1, 24 * 60 * 60);
@@ -308,7 +307,6 @@ namespace TvUndergroundDownloaderLib
                 }
             }
 
-
             if (NodeExist(xDoc, "TotalDownloads"))
                 TotalDownloads = ReadInt(xDoc, "TotalDownloads", 0);
 
@@ -334,8 +332,6 @@ namespace TvUndergroundDownloaderLib
 
             RssFeedList.Sort((x, y) => string.Compare(x.Title, y.Title, StringComparison.InvariantCulture));
         }
-
-
 
         public void Save()
         {
@@ -439,8 +435,6 @@ namespace TvUndergroundDownloaderLib
             var xDoc = new XmlDocument();
             xDoc.Load(FileNameConfig);
             xDoc.Save(FileNameConfigBackup);
-
-
         }
 
         private static bool NodeExist(XmlDocument xDoc, string nodeName)

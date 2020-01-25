@@ -3,19 +3,15 @@ using NLog.Config;
 using NLog.Windows.Forms;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using NLog.LayoutRenderers;
 using TvUndergroundDownloader.Extensions;
 using TvUndergroundDownloader.Properties;
 using TvUndergroundDownloaderLib;
@@ -42,6 +38,7 @@ namespace TvUndergroundDownloader
         private MenuItem menuItemExit;
         private bool mVisible = true;
         private NotifyIcon notifyIcon1;
+
         public FormMain()
         {
             // load configuration
@@ -63,7 +60,6 @@ namespace TvUndergroundDownloader
             };
 
             _worker.WorkerCompleted += Task_RunWorkerCompleted;
-
 
             string versionFull = ((AssemblyInformationalVersionAttribute)Assembly
             .GetAssembly(typeof(FormMain))
@@ -87,7 +83,6 @@ namespace TvUndergroundDownloader
             };
 
             toolTip1.SetToolTip(checkBoxDeleteWhenCompleted, "Delete the feed when all downloads are completed\r\nand after 3 days");
-
         }
 
         public static string GetUserAppDataPath()
@@ -233,7 +228,6 @@ namespace TvUndergroundDownloader
             timerAutoClose.Enabled = true;
         }
 
-
         protected override void SetVisibleCore(bool value)
         {
             // MSDN http://social.msdn.microsoft.com/forums/en-US/csharpgeneral/thread/eab563c3-37d0-4ebd-a086-b9ea7bb03fed
@@ -247,9 +241,9 @@ namespace TvUndergroundDownloader
         /// </summary>
         private void AddRssChannel()
         {
-            if ((MainConfig.TVUCookieH == string.Empty) | (MainConfig.TVUCookieI == string.Empty) | (MainConfig.TVUCookieT == string.Empty))
+            if ((MainConfig.TvuUserName == string.Empty) | (MainConfig.TvuPassword == string.Empty))
             {
-                MessageBox.Show("Please login before add new RSS feed (File > Login)");
+                MessageBox.Show("Please login before add new RSS feed (File > Option)");
                 return;
             }
 
@@ -262,11 +256,9 @@ namespace TvUndergroundDownloader
             //
             //  Load Cookies from configuration
             //
-            CookieContainer cookieContainer = new CookieContainer();
-            Uri uriTvunderground = new Uri("http://tvunderground.org.ru/");
-            cookieContainer.Add(uriTvunderground, new Cookie("h", MainConfig.TVUCookieH));
-            cookieContainer.Add(uriTvunderground, new Cookie("i", MainConfig.TVUCookieI));
-            cookieContainer.Add(uriTvunderground, new Cookie("t", MainConfig.TVUCookieT));
+
+
+
 
             //
             //  Get list of current feed URL
@@ -294,6 +286,16 @@ namespace TvUndergroundDownloader
             List<string> rssUrlList = dialogPage1.RssUrlList;
             bool fastAdd = dialogPage1.FastAdd;
             dialogPage1.Dispose();
+
+
+            CookieContainer cookieContainer = new CookieContainer();
+            if (!Worker.TryToLoignToTvu(MainConfig.TvuUserName, MainConfig.TvuPassword, cookieContainer))
+            {
+                MessageBox.Show("Unable to procide, you are not logged");
+                return;
+            }
+
+
             //
             //  Open dialog 2 to get all ed2k from feed
             //
@@ -412,7 +414,6 @@ namespace TvUndergroundDownloader
             StartDownloadThread();
         }
 
-
         private void comboBoxCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
             MainConfig.Save();
@@ -422,7 +423,6 @@ namespace TvUndergroundDownloader
         {
             if (e.ColumnIndex == ColumnStatus.Index)
             {
-
             }
 
             if (e.ColumnIndex == ColumnImageDub.Index)
@@ -441,7 +441,6 @@ namespace TvUndergroundDownloader
                 {
                     dataGridViewRowedItem.Cells[e.ColumnIndex].Value = image;
                 }
-
             }
         }
 
@@ -495,7 +494,6 @@ namespace TvUndergroundDownloader
 
             MainConfig.Save();
             UpdateRssFeedGUI(); ///upgrade GUI
-
         }
 
         private void enableToolStripMenuItem_Click(object sender, EventArgs e)
@@ -556,7 +554,6 @@ namespace TvUndergroundDownloader
                 ExportImportHelper.Export(MainConfig, myStream);
                 myStream.Close();
             }
-
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -619,7 +616,7 @@ namespace TvUndergroundDownloader
 
             LogManager.Configuration = nLogLoggingConfiguration;
 
-            #endregion
+            #endregion Nlog config
 
             // setup data binding
             rssSubscriptionListBindingSource.DataSource = new SortableBindingList<RssSubscription>(this.MainConfig.RssFeedList);
@@ -695,9 +692,7 @@ namespace TvUndergroundDownloader
                 //
                 // tvu save cookie
                 //
-                MainConfig.TVUCookieH = optDialog.tvuCookieH;
-                MainConfig.TVUCookieI = optDialog.tvuCookieI;
-                MainConfig.TVUCookieT = optDialog.tvuCookieT;
+
                 MainConfig.TvuUserName = optDialog.TvuUsername;
                 MainConfig.TvuPassword = optDialog.TvuPassword;
 
@@ -753,7 +748,6 @@ namespace TvUndergroundDownloader
                 return;
             }
 
-
             var rssSubscription = dataGridViewMain.SelectedRows[0].DataBoundItem as RssSubscription;
             if (rssSubscription == null)
                 return;
@@ -762,18 +756,7 @@ namespace TvUndergroundDownloader
 
         private void loginToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FormLogin form = new FormLogin();
-            form.ShowDialog();
-
-            if (form.DialogResult != DialogResult.OK)
-            {
-                return;
-            }
-
-            MainConfig.TVUCookieT = form.CookieT;
-            MainConfig.TVUCookieI = form.CookieI;
-            MainConfig.TVUCookieH = form.CookieH;
-            MainConfig.Save();
+          
         }
 
         private void menu_AutoCloseEmule(object sender, EventArgs e)
@@ -1056,9 +1039,8 @@ namespace TvUndergroundDownloader
                 {
                     MainConfig.ServiceType = wizad.ServiceType;
                     MainConfig.Password = wizad.Password;
-                    MainConfig.TVUCookieH = wizad.TVUCookieH;
-                    MainConfig.TVUCookieI = wizad.TVUCookieI;
-                    MainConfig.TVUCookieT = wizad.TVUCookieT;
+                    MainConfig.TvuUserName = wizad.TvuUserName;
+                    MainConfig.TvuPassword = wizad.TvuPassword;
                     MainConfig.Save();
                 }
             }
@@ -1193,7 +1175,6 @@ namespace TvUndergroundDownloader
             MainConfig.Save();
             dataGridViewFeedFiles.Refresh();
             dataGridViewFeedFiles.Update();
-
         }
 
         private void toolStripMenuItemRunFirstTimeWizard_Click(object sender, EventArgs e)
@@ -1201,9 +1182,8 @@ namespace TvUndergroundDownloader
             FormFirstTimeWizad wizad = new FormFirstTimeWizad();
             wizad.Password = MainConfig.Password;
             wizad.ServiceType = MainConfig.ServiceType;
-            wizad.TVUCookieH = MainConfig.TVUCookieH;
-            wizad.TVUCookieI = MainConfig.TVUCookieI;
-            wizad.TVUCookieT = MainConfig.TVUCookieT;
+            wizad.TvuUserName = MainConfig.TvuUserName;
+            wizad.TvuPassword = MainConfig.TvuPassword;
 
             wizad.ShowDialog();
             if (wizad.DialogResult != DialogResult.OK)
@@ -1213,12 +1193,9 @@ namespace TvUndergroundDownloader
 
             MainConfig.ServiceType = wizad.ServiceType;
             MainConfig.Password = wizad.Password;
-            MainConfig.TVUCookieH = wizad.TVUCookieH;
-            MainConfig.TVUCookieI = wizad.TVUCookieI;
-            MainConfig.TVUCookieT = wizad.TVUCookieT;
+            MainConfig.TvuUserName = wizad.TvuUserName;
+            MainConfig.TvuPassword = wizad.TvuPassword;
             MainConfig.Save();
-
-
         }
 
         private void toolStripMenuItemUpdateStatus_Click(object sender, EventArgs e)
@@ -1233,28 +1210,26 @@ namespace TvUndergroundDownloader
             //
             var cookieContainer = new CookieContainer();
             var uriTvunderground = new Uri("http://tvunderground.org.ru/");
-            if (string.IsNullOrEmpty(MainConfig.TVUCookieH))
+            if (string.IsNullOrEmpty(MainConfig.TvuUserName))
             {
-                throw new LoginException("H");
+                throw new LoginException("TvuUserName");
             }
-            cookieContainer.Add(uriTvunderground, new Cookie("h", MainConfig.TVUCookieH));
 
-            if (string.IsNullOrEmpty(MainConfig.TVUCookieI))
-            {
-                throw new LoginException("I");
-            }
-            cookieContainer.Add(uriTvunderground, new Cookie("i", MainConfig.TVUCookieI));
 
-            if (string.IsNullOrEmpty(MainConfig.TVUCookieT))
+            if (string.IsNullOrEmpty(MainConfig.TvuPassword))
             {
-                throw new LoginException("T");
+                throw new LoginException("TvuPassword");
             }
-            cookieContainer.Add(uriTvunderground, new Cookie("t", MainConfig.TVUCookieT));
+
+            if (!Worker.TryToLoignToTvu(MainConfig.TvuUserName, MainConfig.TvuPassword, cookieContainer))
+            {
+                throw new LoginException("Unable to login");
+            }
 
             foreach (DataGridViewRow selectedItem in dataGridViewMain.SelectedRows)
             {
                 var feed = selectedItem.DataBoundItem as RssSubscription;
-                
+
                 if (feed != null)
                 {
                     feed.UpdateTVUStatus(cookieContainer);
@@ -1307,8 +1282,6 @@ namespace TvUndergroundDownloader
             dataGridViewMain.Refresh();
         }
 
-
-
         private void versionCheckToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -1329,10 +1302,7 @@ namespace TvUndergroundDownloader
             catch (Exception exception)
             {
                 _logger.Error(exception);
-                
             }
-
-            
         }
     }
 }

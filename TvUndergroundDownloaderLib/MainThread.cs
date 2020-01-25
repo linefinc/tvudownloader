@@ -527,7 +527,7 @@ namespace TvUndergroundDownloaderLib
         /// <param name="password"></param>
         /// <param name="cookieContainer"></param>
         /// <returns></returns>
-        private bool TryToLoignToTvu(string name, string password, CookieContainer cookieContainer)
+        public static bool TryToLoignToTvu(string name, string password, CookieContainer cookieContainer)
         {
             // Create POST data and convert it to a byte array.
             string postData = string.Format("name={0}&password={1}&submit=Login", name, password);
