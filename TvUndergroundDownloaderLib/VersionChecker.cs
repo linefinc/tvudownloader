@@ -76,8 +76,6 @@ namespace TvUndergroundDownloaderLib
             {
                 return false;
             }
-
-            return false;
         }
     }
 }
