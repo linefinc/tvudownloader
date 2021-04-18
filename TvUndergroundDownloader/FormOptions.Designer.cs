@@ -86,21 +86,15 @@
             this.label7 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.textBoxCookieI = new System.Windows.Forms.TextBox();
-            this.textBoxCookieT = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.textBoxCookieH = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.textBoxTvuUsername = new System.Windows.Forms.TextBox();
+            this.textBoxTvuPassword = new System.Windows.Forms.TextBox();
             this.tabPageWebServer = new System.Windows.Forms.TabPage();
             this.label24 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.textBoxWebServerPortNumber = new System.Windows.Forms.TextBox();
             this.checkBoxWebServerEnabled = new System.Windows.Forms.CheckBox();
-            this.label25 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
-            this.textBoxTvuUsername = new System.Windows.Forms.TextBox();
-            this.textBoxTvuPassword = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.tabPageLog.SuspendLayout();
             this.tabPageEmail.SuspendLayout();
@@ -733,67 +727,45 @@
             this.tabPage1.Controls.Add(this.label26);
             this.tabPage1.Controls.Add(this.textBoxTvuUsername);
             this.tabPage1.Controls.Add(this.textBoxTvuPassword);
-            this.tabPage1.Controls.Add(this.label18);
-            this.tabPage1.Controls.Add(this.label16);
-            this.tabPage1.Controls.Add(this.textBoxCookieI);
-            this.tabPage1.Controls.Add(this.textBoxCookieT);
-            this.tabPage1.Controls.Add(this.label15);
-            this.tabPage1.Controls.Add(this.textBoxCookieH);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(357, 248);
             this.tabPage1.TabIndex = 5;
-            this.tabPage1.Text = "Cookie";
+            this.tabPage1.Text = "Login";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // label18
+            // label25
             // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(6, 35);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(46, 13);
-            this.label18.TabIndex = 5;
-            this.label18.Text = "Cookie I";
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(6, 9);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(55, 13);
+            this.label25.TabIndex = 9;
+            this.label25.Text = "Username";
             // 
-            // label16
+            // label26
             // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(6, 61);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(50, 13);
-            this.label16.TabIndex = 4;
-            this.label16.Text = "Cookie T";
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(6, 35);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(53, 13);
+            this.label26.TabIndex = 8;
+            this.label26.Text = "Password";
             // 
-            // textBoxCookieI
+            // textBoxTvuUsername
             // 
-            this.textBoxCookieI.Location = new System.Drawing.Point(62, 32);
-            this.textBoxCookieI.Name = "textBoxCookieI";
-            this.textBoxCookieI.Size = new System.Drawing.Size(289, 20);
-            this.textBoxCookieI.TabIndex = 3;
+            this.textBoxTvuUsername.Location = new System.Drawing.Point(62, 6);
+            this.textBoxTvuUsername.Name = "textBoxTvuUsername";
+            this.textBoxTvuUsername.Size = new System.Drawing.Size(289, 20);
+            this.textBoxTvuUsername.TabIndex = 7;
             // 
-            // textBoxCookieT
+            // textBoxTvuPassword
             // 
-            this.textBoxCookieT.Location = new System.Drawing.Point(62, 58);
-            this.textBoxCookieT.Name = "textBoxCookieT";
-            this.textBoxCookieT.Size = new System.Drawing.Size(289, 20);
-            this.textBoxCookieT.TabIndex = 2;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(6, 9);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(51, 13);
-            this.label15.TabIndex = 1;
-            this.label15.Text = "Cookie H";
-            // 
-            // textBoxCookieH
-            // 
-            this.textBoxCookieH.Location = new System.Drawing.Point(63, 6);
-            this.textBoxCookieH.Name = "textBoxCookieH";
-            this.textBoxCookieH.Size = new System.Drawing.Size(288, 20);
-            this.textBoxCookieH.TabIndex = 0;
+            this.textBoxTvuPassword.Location = new System.Drawing.Point(62, 32);
+            this.textBoxTvuPassword.Name = "textBoxTvuPassword";
+            this.textBoxTvuPassword.Size = new System.Drawing.Size(289, 20);
+            this.textBoxTvuPassword.TabIndex = 6;
             // 
             // tabPageWebServer
             // 
@@ -845,38 +817,6 @@
             this.checkBoxWebServerEnabled.Text = "Enabled";
             this.checkBoxWebServerEnabled.UseVisualStyleBackColor = true;
             this.checkBoxWebServerEnabled.CheckedChanged += new System.EventHandler(this.checkBoxWebServerEnabled_CheckedChanged);
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(6, 104);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(55, 13);
-            this.label25.TabIndex = 9;
-            this.label25.Text = "Username";
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(6, 130);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(53, 13);
-            this.label26.TabIndex = 8;
-            this.label26.Text = "Password";
-            // 
-            // textBoxTvuUsername
-            // 
-            this.textBoxTvuUsername.Location = new System.Drawing.Point(62, 101);
-            this.textBoxTvuUsername.Name = "textBoxTvuUsername";
-            this.textBoxTvuUsername.Size = new System.Drawing.Size(289, 20);
-            this.textBoxTvuUsername.TabIndex = 7;
-            // 
-            // textBoxTvuPassword
-            // 
-            this.textBoxTvuPassword.Location = new System.Drawing.Point(62, 127);
-            this.textBoxTvuPassword.Name = "textBoxTvuPassword";
-            this.textBoxTvuPassword.Size = new System.Drawing.Size(289, 20);
-            this.textBoxTvuPassword.TabIndex = 6;
             // 
             // FormOptions
             // 
@@ -967,12 +907,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.TextBox textBoxCookieI;
-        private System.Windows.Forms.TextBox textBoxCookieT;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.TextBox textBoxCookieH;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.ComboBox comboBoxClientType;
         private System.Windows.Forms.TabPage tabPageWebServer;

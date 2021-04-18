@@ -67,10 +67,6 @@ namespace TvUndergroundDownloader
             textBoxMailSender.Text = inConfig.MailSender;
 
             // Coockie
-
-            textBoxCookieH.Text = inConfig.TVUCookieH;
-            textBoxCookieI.Text = inConfig.TVUCookieI;
-            textBoxCookieT.Text = inConfig.TVUCookieT;
             textBoxTvuUsername.Text = inConfig.TvuUserName;
             textBoxTvuPassword.Text = inConfig.TvuPassword;
 
@@ -110,9 +106,6 @@ namespace TvUndergroundDownloader
         public bool StartEmuleIfClose => checkBoxStartEmuleIfClose.Checked;
         public bool StartMinimized => checkBoxStartMinimized.Checked;
         public bool StartWithWindows => checkBoxStartWithWindows.Checked;
-        public string tvuCookieH => textBoxCookieH.Text;
-        public string tvuCookieI => textBoxCookieI.Text;
-        public string tvuCookieT => textBoxCookieT.Text;
         public string TvuUsername => textBoxTvuUsername.Text;
         public string TvuPassword => textBoxTvuPassword.Text;
         public bool Verbose => checkBoxVerbose.Checked;
