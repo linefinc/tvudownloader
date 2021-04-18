@@ -569,9 +569,9 @@ namespace TvUndergroundDownloaderLib
 
             // Close the response.
             response.Close();
-
+#if DEBUG
             File.WriteAllText(string.Format("login-{0:hh}-{0:mm}-{0:ss}.html", DateTime.Now), responseFromServer);
-
+#endif 
             if (responseFromServer.IndexOf("index.php?show=login&amp;act=logout") > -1)
             {
                 return true;
