@@ -529,6 +529,12 @@ namespace TvUndergroundDownloaderLib
         /// <returns></returns>
         public static bool TryToLoignToTvu(string name, string password, CookieContainer cookieContainer)
         {
+            //
+            //  Enable TLS 1.2 on legacy code
+            //      https://stackoverflow.com/questions/37869135/is-that-possible-to-send-httpwebrequest-using-tls1-2-on-net-4-0-framework/41854685#41854685
+            //      System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+            ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+
             // Create POST data and convert it to a byte array.
             string postData = string.Format("name={0}&password={1}&submit=Login", name, password);
             byte[] byteArray = Encoding.UTF8.GetBytes(postData);
@@ -570,8 +576,8 @@ namespace TvUndergroundDownloaderLib
             // Close the response.
             response.Close();
 #if DEBUG
-            File.WriteAllText(string.Format("login-{0:hh}-{0:mm}-{0:ss}.html", DateTime.Now), responseFromServer);
-#endif 
+            File.WriteAllText(string.Format("login-{0:HH}-{0:mm}-{0:ss}.html", DateTime.Now), responseFromServer);
+#endif
             if (responseFromServer.IndexOf("index.php?show=login&amp;act=logout") > -1)
             {
                 return true;
