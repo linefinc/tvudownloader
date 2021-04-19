@@ -3,13 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
-using TvUndergroundDownloaderLib.Extensions;
 using TvUndergroundDownloaderLib.Interfaces;
 
 namespace TvUndergroundDownloaderLib
@@ -663,8 +661,15 @@ namespace TvUndergroundDownloaderLib
                     _logger.Info("Serie status: Still Running");
                     return;
                 }
-
+                //eng
                 if (webPage.IndexOf("Complete", 0, StringComparison.InvariantCulture) > 0)
+                {
+                    CurrentTVUStatus = TvuStatus.Complete;
+                    _logger.Info("Serie status: Complete");
+                    return;
+                }
+                // fr
+                if (webPage.IndexOf("<b> Complet</b>", 0, StringComparison.InvariantCulture) > 0)
                 {
                     CurrentTVUStatus = TvuStatus.Complete;
                     _logger.Info("Serie status: Complete");
