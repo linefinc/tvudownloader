@@ -17,6 +17,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ---- Change Log ----
+##### Version 0.9.8 18/04/2021  #####
+* Fix bug [#23 Connection problem] Fix support for TLS 1.2
+
 ##### Version 0.9.7 18/01/2020  #####
 * Fix bug [#20 Error while try to parse or fatch GUID]
 
